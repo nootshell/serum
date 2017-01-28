@@ -40,7 +40,10 @@
 		<Unit filename="core/bool.h" />
 		<Unit filename="core/detect.h" />
 		<Unit filename="core/detect_compiler.h" />
+		<Unit filename="core/detect_endianness.h" />
+		<Unit filename="core/detect_os.h" />
 		<Unit filename="core/detect_platform.h" />
+		<Unit filename="core/intrinsics.h" />
 		<Unit filename="core/lsapi.h" />
 		<Unit filename="core/macro.h" />
 		<Unit filename="core/math.h" />
@@ -51,6 +54,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="crypto/padding/iso9797.h" />
+		<Unit filename="crypto/prng/tsc.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="crypto/xxtea.c">
 			<Option compilerVar="CC" />
 		</Unit>

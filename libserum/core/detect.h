@@ -26,7 +26,7 @@
 ********************************************************************************
 **
 **  Notes:
-**    Unified platform and compiler detection.
+**    Unified operating system, compiler, platform, and endianness detection.
 **
 */
 
@@ -34,8 +34,10 @@
 #define __LS_CORE_DETECT_H
 
 
-#include "./detect_platform.h"
+#include "./detect_os.h"
 #include "./detect_compiler.h"
+#include "./detect_platform.h"
+#include "./detect_endianness.h"
 
 
 #endif

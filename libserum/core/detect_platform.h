@@ -34,50 +34,42 @@
 #define __LS_CORE_DETECT_PLATFORM_H
 
 
-#define LS_PLATFORM_ID_UNKNOWN				0
-#define LS_PLATFORM_ID_LINUX				1
-#define LS_PLATFORM_ID_ANDROID				2
-#define LS_PLATFORM_ID_MAC					3
-#define LS_PLATFORM_ID_WINDOWS				4
+#define LS_ARCH_ID_X86						1
+#define LS_ARCH_ID_X64						2
+#define LS_ARCH_ID_ARM						3
 
-#if (defined(__gnu_linux__) || defined(__linux__) || defined(linux))
-#	if (defined(__ANDROID__) || defined(__ANDROID_API__))
-#		define LS_ANDROID					1
-#		define LS_PLATFORM					LS_PLATFORM_ID_ANDROID
-#		define LS_PLATFORM_STRING			"Android"
+#if (!defined(LS_ARCH))
+#	if (defined(__amd64) || defined(__amd64__) || defined(__x86_64) || defined(__x86_64__) || defined(__ppc64__) || defined(_M_X64) || defined(_M_AMD64))
+#		define LS_ARCH							LS_ARCH_ID_X64
+#		define LS_ARCH_STRING					"x64"
+#	elif (defined(__arm) || defined(__arm__) || defined(__thumb__) || defined(_ARM) || defined(_M_ARM) || defined(_M_ARMT) || defined(__ARMCC_VERSION) || defined(__CC_ARM))
+#		define LS_ARCH							LS_ARCH_ID_ARM
+#		if (defined(__ARM_ARCH_2__))
+#			define LS_ARCH_ARM_VERSION			2
+#		elif (defined(__ARM_ARCH_3__))
+#			define LS_ARCH_ARM_VERSION			3
+#		elif (defined(__ARM_ARCH_4__))
+#			define LS_ARCH_ARM_VERSION			4
+#		elif (defined(__ARM_ARCH_5__))
+#			define LS_ARCH_ARM_VERSION			5
+#		elif (defined(__ARM_ARCH_6__))
+#			define LS_ARCH_ARM_VERSION			6
+#		elif (defined(__ARM_ARCH_7__))
+#			define LS_ARCH_ARM_VERSION			7
+#		elif (defined(__ARM_ARCH_8__))
+#			define LS_ARCH_ARM_VERSION			8
+#		elif (defined(__ARM_ARCH))
+#			define LS_ARCH_ARM_VERSION			__ARM_ARCH
+#		endif
+#		if (defined(LS_ARCH_ARM_VERSION))
+#			define LS_ARCH_STRING				"ARMv"STRINGIFY_MACRO(LS_ARCH_ARM_VERSION)
+#		else
+#			define LS_ARCH_STRING				"ARM"
+#		endif
 #	else
-#		define LS_LINUX						1
-#		define LS_PLATFORM					LS_PLATFORM_ID_LINUX
-#		define LS_PLATFORM_STRING			"Linux"
+#		define LS_ARCH							LS_ARCH_ID_X86
+#		define LS_ARCH_STRING					"x86"
 #	endif
-#elif (defined(_WIN32))
-#	define LS_WINDOWS						1
-#	define LS_PLATFORM						LS_PLATFORM_ID_WINDOWS
-#	define LS_PLATFORM_STRING				"Windows"
-#elif (defined(__APPLE__) && defined(__MACH__))
-#	define LS_MAC							1
-#	define LS_PLATFORM						LS_PLATFORM_ID_MAC
-#	define LS_PLATFORM_STRING				"Mac"
-#else
-#	define LS_PLATFORM						LS_PLATFORM_ID_UNKNOWN
-#	define LS_PLATFORM_STRING				"Unknown"
-#endif
-
-
-#if (!defined(LS_LINUX))
-#define LS_LINUX							0
-#endif
-
-#if (!defined(LS_ANDROID))
-#define LS_ANDROID							0
-#endif
-
-#if (!defined(LS_MAC))
-#define LS_MAC								0
-#endif
-
-#if (!defined(LS_WINDOWS))
-#define LS_WINDOWS							0
 #endif
 
 

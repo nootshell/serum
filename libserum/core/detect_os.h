@@ -30,70 +30,56 @@
 **
 */
 
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
-
-#include <libserum/crypto/xxtea.h>
-#include <libserum/crypto/padding/iso9797.h>
-#include <libserum/debug/memdump.h>
-#include <libserum/core/detect.h>
-#include <libserum/core/intrinsics.h>
+#ifndef __LS_CORE_DETECT_OS_H
+#define __LS_CORE_DETECT_OS_H
 
 
-int main(int argc, char *argv[], char *env[]) {
-	puts(LS_COMPILER_STRING);
-	puts(LS_OS_STRING);
-	puts(LS_ARCH_STRING);
-	puts(LS_ENDIANNESS_STRING);
-	puts(LS_INTRINSICS_STRING);
-	return 0;
+#define LS_OS_ID_UNKNOWN					0
+#define LS_OS_ID_LINUX						1
+#define LS_OS_ID_ANDROID					2
+#define LS_OS_ID_MAC						3
+#define LS_OS_ID_WINDOWS					4
 
-	void *next = &&lbl_iso9797;
+#if (!defined(LS_OS))
+#	if (defined(__gnu_linux__) || defined(__linux__) || defined(linux))
+#		if (defined(__ANDROID__) || defined(__ANDROID_API__))
+#			define LS_ANDROID					1
+#			define LS_OS						LS_OS_ID_ANDROID
+#			define LS_OS_STRING					"Android"
+#		else
+#			define LS_LINUX						1
+#			define LS_OS						LS_OS_ID_LINUX
+#			define LS_OS_STRING					"Linux"
+#		endif
+#	elif (defined(_WIN32))
+#		define LS_WINDOWS						1
+#		define LS_OS							LS_OS_ID_WINDOWS
+#		define LS_OS_STRING						"Windows"
+#	elif (defined(__APPLE__) && defined(__MACH__))
+#		define LS_MAC							1
+#		define LS_OS							LS_OS_ID_MAC
+#		define LS_OS_STRING						"Mac"
+#	else
+#		define LS_OS							LS_OS_ID_UNKNOWN
+#		define LS_OS_STRING						"Unknown"
+#	endif
+#endif
 
-lbl_iso9797:
-	{
-		next = &&lbl_xxtea_simple;
+#if (!defined(LS_LINUX))
+#	define LS_LINUX							0
+#endif
 
-		size_t size;
-        uint8_t input[55], buffer[size = ls_pad_iso9797_size(16, sizeof(input))];
-        memset(input, 0x69, sizeof(input));
-        memset(buffer, 0xBA, size);
+#if (!defined(LS_ANDROID))
+#	define LS_ANDROID						0
+#endif
 
-        ls_memdump(input, sizeof(input));
-        ls_memdump(buffer, sizeof(buffer));
+#if (!defined(LS_MAC))
+#	define LS_MAC							0
+#endif
 
-		ls_pad_iso9797(buffer, input, sizeof(input), size);
+#if (!defined(LS_WINDOWS))
+#	define LS_WINDOWS						0
+#endif
 
-		ls_memdump(input, sizeof(input));
-		ls_memdump(buffer, sizeof(buffer));
-	}
 
-lbl_xxtea_simple:
-	{
-		next = &&lbl_end;
-
-		puts("xxtea (simple, 1)");
-
-		uint32_t key  [4] = { 0xBABAB0B0, 0xCACAC0C0, 0xDADADEDE, 0xBACAD0FE };
-		uint32_t input[5] = { 0xDEADBEEF, 0xF00BAAAA, 0xCAFEBABE, 0xBEEFBABE, 0xDEFEC8ED };
-		uint8_t buffer[sizeof(input)];
-
-		ls_memdump_ex(key, sizeof(key), 4, 4);
-
-		if (!ls_xxtea_encrypt(buffer, input, sizeof(buffer), key).success) {
-			puts("encrypt: e");
-			goto *next;
-		}
-		printf("encrypt: %c\n", (memcmp(buffer, input, sizeof(input)) ? 'y' : 'n'));
-
-		if (!ls_xxtea_decrypt(NULL, buffer, sizeof(buffer), key).success) {
-			puts("decrypt: e");
-			goto *next;
-		}
-		printf("decrypt: %c\n", (memcmp(buffer, input, sizeof(input)) ? 'n' : 'y'));
-	}
-
-lbl_end:
-	return 0;
-}
+#endif
