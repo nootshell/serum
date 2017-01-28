@@ -34,7 +34,7 @@
 #define __LS_CORE_DETECT_COMPILER_H
 
 
-#include "./detect_platform.h"
+#include "./detect_os.h"
 
 
 #define LS_COMPILER_ID_UNKNOWN				0

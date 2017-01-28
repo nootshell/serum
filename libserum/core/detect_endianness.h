@@ -30,70 +30,32 @@
 **
 */
 
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
-
-#include <libserum/crypto/xxtea.h>
-#include <libserum/crypto/padding/iso9797.h>
-#include <libserum/debug/memdump.h>
-#include <libserum/core/detect.h>
-#include <libserum/core/intrinsics.h>
+#ifndef __LS_CORE_DETECT_ENDIANNESS_H
+#define __LS_CORE_DETECT_ENDIANNESS_H
 
 
-int main(int argc, char *argv[], char *env[]) {
-	puts(LS_COMPILER_STRING);
-	puts(LS_OS_STRING);
-	puts(LS_ARCH_STRING);
-	puts(LS_ENDIANNESS_STRING);
-	puts(LS_INTRINSICS_STRING);
-	return 0;
+#define LS_ENDIANNESS_ID_LITTLE				1
+#define LS_ENDIANNESS_ID_BIG				2
 
-	void *next = &&lbl_iso9797;
+#if (!defined(LS_ENDIANNESS))
+#	if (defined(__BIG_ENDIAN__) || defined(__ARMEB__) || defined(__THUMBEB__) || defined(__AARCH64EB__) || defined(_MIPSEB) || defined(__MIPSEB) || defined(__MIPSEB__) || ((LS_PLATFORM == LS_PLATFORM_ID_WINDOWS && REG_DWORD != REG_DWORD_LITTLE_ENDIAN) || (LS_PLATFORM != LS_PLATFORM_ID_WINDOWS && ((__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)))))
+#		define LS_BIG_ENDIAN				1
+#		define LS_ENDIANNESS				LS_ENDIANNESS_ID_BIG
+#		define LS_ENDIANNESS_STRING			"big-endian"
+#	else
+#		define LS_LITTLE_ENDIAN				1
+#		define LS_ENDIANNESS				LS_ENDIANNESS_ID_LITTLE
+#		define LS_ENDIANNESS_STRING			"little-endian"
+#	endif
+#endif
 
-lbl_iso9797:
-	{
-		next = &&lbl_xxtea_simple;
+#if (!defined(LS_BIG_ENDIAN))
+#	define LS_BIG_ENDIAN					0
+#endif
 
-		size_t size;
-        uint8_t input[55], buffer[size = ls_pad_iso9797_size(16, sizeof(input))];
-        memset(input, 0x69, sizeof(input));
-        memset(buffer, 0xBA, size);
+#if (!defined(LS_LITTLE_ENDIAN))
+#	define LS_LITTLE_ENDIAN					0
+#endif
 
-        ls_memdump(input, sizeof(input));
-        ls_memdump(buffer, sizeof(buffer));
 
-		ls_pad_iso9797(buffer, input, sizeof(input), size);
-
-		ls_memdump(input, sizeof(input));
-		ls_memdump(buffer, sizeof(buffer));
-	}
-
-lbl_xxtea_simple:
-	{
-		next = &&lbl_end;
-
-		puts("xxtea (simple, 1)");
-
-		uint32_t key  [4] = { 0xBABAB0B0, 0xCACAC0C0, 0xDADADEDE, 0xBACAD0FE };
-		uint32_t input[5] = { 0xDEADBEEF, 0xF00BAAAA, 0xCAFEBABE, 0xBEEFBABE, 0xDEFEC8ED };
-		uint8_t buffer[sizeof(input)];
-
-		ls_memdump_ex(key, sizeof(key), 4, 4);
-
-		if (!ls_xxtea_encrypt(buffer, input, sizeof(buffer), key).success) {
-			puts("encrypt: e");
-			goto *next;
-		}
-		printf("encrypt: %c\n", (memcmp(buffer, input, sizeof(input)) ? 'y' : 'n'));
-
-		if (!ls_xxtea_decrypt(NULL, buffer, sizeof(buffer), key).success) {
-			puts("decrypt: e");
-			goto *next;
-		}
-		printf("decrypt: %c\n", (memcmp(buffer, input, sizeof(input)) ? 'n' : 'y'));
-	}
-
-lbl_end:
-	return 0;
-}
+#endif
