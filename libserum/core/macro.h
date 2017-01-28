@@ -37,13 +37,5 @@
 #define _STRINGIFY_MACRO(x)					#x
 #define STRINGIFY_MACRO(x)					_STRINGIFY_MACRO(x)
 
-#define EMPTY_MACRO
-#define EMPTY_FUNC()
-#define EMPTY_FUNC_P1(a)
-#define EMPTY_FUNC_P2(a,b)
-#define EMPTY_FUNC_P3(a,b,c)
-#define EMPTY_FUNC_P4(a,b,c,d)
-#define EMPTY_FUNC_P5(a,b,c,d,e)
-
 
 #endif
