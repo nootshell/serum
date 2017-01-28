@@ -1,0 +1,11 @@
+*
+!*/
+!*.c
+!*.h
+!*.cbp
+!*.workspace
+!.gitignore
+!.gitattributes
+!.editorconfig
+!*.sh
+!*.md
