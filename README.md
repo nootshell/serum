@@ -7,7 +7,7 @@ Features
 ===
 - Crypto
 	- Padding
-			- [ISO 9797-1 methods 1 and 2](https://en.wikipedia.org/wiki/ISO/IEC_9797-1#Padding)
+		- [ISO 9797-1 methods 1 and 2](https://en.wikipedia.org/wiki/ISO/IEC_9797-1#Padding)
 	- Block ciphers
 		- [XXTEA](https://en.wikipedia.org/wiki/XXTEA)
 - Misc
