@@ -2,10 +2,6 @@ Serum
 ===
 
 Cryptography library, work in progress.
-Serum
-===
-
-Cryptography library, work in progress.
 
 Features
 ===
