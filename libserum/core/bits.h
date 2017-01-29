@@ -30,56 +30,27 @@
 **
 */
 
-#define FILE_PATH							"crypto/padding/iso9797.c"
-
-#include <string.h>
-#include "./iso9797.h"
-#include "../../core/ptrarithmetic.h"
+#ifndef __LS_CORE_BITS_H
+#define __LS_CORE_BITS_H
 
 
-ID("ISO 9797-1 padding methods 1 and 2");
+#define HAS_FLAG(flags, flag)				(((flags) & (flag)) == (flag))
 
 
-ls_result_t
-ls_pad_iso9797_zero_ex(void *out, void *in, const size_t inputsz, const size_t outputsz) {
-	if (!in) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
-	}
-	if (!outputsz || (outputsz <= inputsz)) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);
-	}
-#if (!defined(LS_ALLOW_PAD_INPUTSZ_ZERO) || !LS_ALLOW_PAD_INPUTSZ_ZERO)
-	if (!inputsz) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 2);
-	}
+#define LS_ROT(s1, s2, bits, value, shift)	(((value) s1 (shift)) | ((value) s2 (-(shift) & ((bits) - 1))))
+
+#define LS_ROTL(bits, value, shift)			LS_ROT(<<, >>, (bits), (value), (shift))
+#define LS_ROTR(bits, value, shift)			LS_ROT(>>, <<, (bits), (value), (shift))
+
+#define LS_ROTL8(value, shift)				LS_ROTL(8, (value), (shift))
+#define LS_ROTL16(value, shift)				LS_ROTL(16, (value), (shift))
+#define LS_ROTL32(value, shift)				LS_ROTL(32, (value), (shift))
+#define LS_ROTL64(value, shift)				LS_ROTL(64, (value), (shift))
+
+#define LS_ROTR8(value, shift)				LS_ROTR(8, (value), (shift))
+#define LS_ROTR16(value, shift)				LS_ROTR(16, (value), (shift))
+#define LS_ROTR32(value, shift)				LS_ROTR(32, (value), (shift))
+#define LS_ROTR64(value, shift)				LS_ROTR(64, (value), (shift))
+
+
 #endif
-
-	memset((LS_SELECT_IO_PTR_WCPY(out, in, inputsz) + inputsz), 0, (outputsz - inputsz));
-
-	return LS_RESULT_SUCCESS;
-}
-
-
-ls_result_t
-ls_pad_iso9797_zero_block(void *out, void *in, const size_t inputsz, const int blocksz) {
-	return ls_pad_iso9797_zero_ex(out, in, inputsz, ls_pad_iso9797_size_m1(blocksz, inputsz));
-}
-
-
-ls_result_t
-ls_pad_iso9797_ex(void *out, void *in, const size_t inputsz, const size_t outputsz) {
-	ls_result_t result = ls_pad_iso9797_zero_ex(out, in, inputsz, outputsz);
-	if (!result.success) {
-		return result;
-	}
-
-    ((uint8_t*)LS_SELECT_IO_PTR(out, in))[inputsz] = 0x80;
-
-    return LS_RESULT_SUCCESS;
-}
-
-
-ls_result_t
-ls_pad_iso9797_block(void *out, void *in, const size_t inputsz, const int blocksz) {
-	return ls_pad_iso9797_ex(out, in, inputsz, ls_pad_iso9797_size(blocksz, inputsz));
-}

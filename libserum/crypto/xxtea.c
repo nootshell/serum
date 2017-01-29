@@ -30,15 +30,14 @@
 **
 */
 
-#define __RFILE__							"crypto/xxtea.c"
-
-
-#include "./xxtea.h"
+#define FILE_PATH							"crypto/xxtea.c"
 
 #include <string.h>
-#include <stdio.h>
-
+#include "./xxtea.h"
 #include "../core/ptrarithmetic.h"
+
+
+ID("XXTEA implementation");
 
 
 #define XXTEA_INIT()											\

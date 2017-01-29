@@ -56,8 +56,23 @@ typedef struct ls_result {		// bitrg
 #define LS_RESULT_CODE_NULL					1	// Null pointer
 #define LS_RESULT_CODE_MISC					2	// Misc. error
 #define LS_RESULT_CODE_SIZE					3	// Size invalid
+#define LS_RESULT_CODE_ACCESS				4	// Access denied
+#define LS_RESULT_CODE_DESCRIPTOR			5	// File/socket descriptor invalid
+#define LS_RESULT_CODE_ALLOCATION			6	// Allocation failure
+#define LS_RESULT_CODE_EARLY_EXIT			7	// Early exit (e.g. of a read operation)
+#define LS_RESULT_CODE_LOCK					8	// Lock failure
+#define LS_RESULT_CODE_UNSUPPORTED			9	// Unsupported operation
 
-#define LS_RESULT(system,critical,code,param,success) ((ls_result_t){(!!(system)),(!!(critical)),0,(code),(param),0,(!!(success))})
+#define LS_RESULT(_system,_critical,_code,_param,_success)	\
+	((ls_result_t){							\
+		.system		= (!!(_system)),		\
+		.critical	= (!!(_critical)),		\
+		._reserved1	= 0,					\
+		.code		= (_code),				\
+		.param		= (_param),				\
+		._reserved2	= 0,					\
+		.success	= (!!(_success))		\
+	})
 
 #define LS_RESULT_SUCCESS					LS_RESULT(true,false,LS_RESULT_CODE_SUCCESS,0,true)
 #define LS_RESULT_ERROR(code)				LS_RESULT(true,false,(code),0,false)

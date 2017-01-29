@@ -30,56 +30,40 @@
 **
 */
 
-#define FILE_PATH							"crypto/padding/iso9797.c"
-
-#include <string.h>
-#include "./iso9797.h"
-#include "../../core/ptrarithmetic.h"
+#ifndef __LS_CRYPTO_PRNG_DEVICE_H
+#define __LS_CRYPTO_PRNG_DEVICE_H
 
 
-ID("ISO 9797-1 padding methods 1 and 2");
+#include "../../core/stdincl.h"
+#include <stdio.h>
 
 
-ls_result_t
-ls_pad_iso9797_zero_ex(void *out, void *in, const size_t inputsz, const size_t outputsz) {
-	if (!in) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
-	}
-	if (!outputsz || (outputsz <= inputsz)) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);
-	}
-#if (!defined(LS_ALLOW_PAD_INPUTSZ_ZERO) || !LS_ALLOW_PAD_INPUTSZ_ZERO)
-	if (!inputsz) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 2);
-	}
+typedef struct ls_prng_device {
+	FILE *fp;
+	uint8_t *buffer;
+	size_t buffer_size;
+} ls_prng_device_t;
+
+typedef enum ls_prng_device_type {
+	DEV_UNSPECIFIED		= 0,
+	DEV_HARDWARE		= 1,	// Use /dev/hwrng, if available
+	DEV_URANDOM			= 2,	// Allow falling back to /dev/urandom, if available
+	DEV_FORCE_UNLIMITED	= 4		// Force using /dev/urandom, if available
+} ls_prng_device_type_t;
+
+
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-	memset((LS_SELECT_IO_PTR_WCPY(out, in, inputsz) + inputsz), 0, (outputsz - inputsz));
+	LSAPI ls_result_t ls_prng_device_init(ls_prng_device_t *device, const char *file, size_t buffer_size);
+	LSAPI ls_result_t ls_prng_device_clear(ls_prng_device_t *device);
+	LSAPI ls_result_t ls_prng_device_generate(ls_prng_device_t *device, void *out, size_t size);
+	LSAPI ls_result_t ls_prng_device_sys(ls_prng_device_t *device, size_t buffer_size, ls_prng_device_type_t type);
 
-	return LS_RESULT_SUCCESS;
+#ifdef __cplusplus
 }
+#endif
 
 
-ls_result_t
-ls_pad_iso9797_zero_block(void *out, void *in, const size_t inputsz, const int blocksz) {
-	return ls_pad_iso9797_zero_ex(out, in, inputsz, ls_pad_iso9797_size_m1(blocksz, inputsz));
-}
-
-
-ls_result_t
-ls_pad_iso9797_ex(void *out, void *in, const size_t inputsz, const size_t outputsz) {
-	ls_result_t result = ls_pad_iso9797_zero_ex(out, in, inputsz, outputsz);
-	if (!result.success) {
-		return result;
-	}
-
-    ((uint8_t*)LS_SELECT_IO_PTR(out, in))[inputsz] = 0x80;
-
-    return LS_RESULT_SUCCESS;
-}
-
-
-ls_result_t
-ls_pad_iso9797_block(void *out, void *in, const size_t inputsz, const int blocksz) {
-	return ls_pad_iso9797_ex(out, in, inputsz, ls_pad_iso9797_size(blocksz, inputsz));
-}
+#endif // __LS_CRYPTO_PRNG_DEVICE_H

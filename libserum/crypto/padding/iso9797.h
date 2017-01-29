@@ -34,11 +34,7 @@
 #define __LS_CRYPTO_PADDING_ISO9797_H
 
 
-//#include <stdint.h>
-#include <stdlib.h>
-
-#include "../../core/lsapi.h"
-#include "../../core/result.h"
+#include "../../core/stdincl.h"
 #include "../../core/math.h"
 
 
@@ -46,9 +42,12 @@
 extern "C" {
 #endif
 
-#	define ls_pad_iso9797_size(bsz, isz)	LS_MATH_ROUND_BLOCK((bsz), (isz))
-	LSAPI ls_result_t ls_pad_iso9797_zero(void *out, void *in, const size_t inputsz, const size_t outputsz);
-	LSAPI ls_result_t ls_pad_iso9797(void *out, void *in, const size_t inputsz, const size_t outputsz);
+#	define ls_pad_iso9797_size(bsz, isz)	LS_MATH_ROUND_BLOCK_INCL((bsz), (isz))
+#	define ls_pad_iso9797_size_m1(bsz, isz)	LS_MATH_ROUND_BLOCK_EXCL((bsz), (isz))
+	LSAPI ls_result_t ls_pad_iso9797_zero_ex(void *out, void *in, const size_t inputsz, const size_t outputsz);
+	LSAPI ls_result_t ls_pad_iso9797_zero_block(void *out, void *in, const size_t inputsz, const int blocksz);
+	LSAPI ls_result_t ls_pad_iso9797_ex(void *out, void *in, const size_t inputsz, const size_t outputsz);
+	LSAPI ls_result_t ls_pad_iso9797_block(void *out, void *in, const size_t inputsz, const int blocksz);
 
 #ifdef __cplusplus
 }

@@ -34,11 +34,14 @@
 #define __LS_CORE_DETECT_ENDIANNESS_H
 
 
+#include "./detect_os.h"
+
+
 #define LS_ENDIANNESS_ID_LITTLE				1
 #define LS_ENDIANNESS_ID_BIG				2
 
 #if (!defined(LS_ENDIANNESS))
-#	if (defined(__BIG_ENDIAN__) || defined(__ARMEB__) || defined(__THUMBEB__) || defined(__AARCH64EB__) || defined(_MIPSEB) || defined(__MIPSEB) || defined(__MIPSEB__) || ((LS_PLATFORM == LS_PLATFORM_ID_WINDOWS && REG_DWORD != REG_DWORD_LITTLE_ENDIAN) || (LS_PLATFORM != LS_PLATFORM_ID_WINDOWS && ((__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)))))
+#	if (defined(__BIG_ENDIAN__) || defined(__ARMEB__) || defined(__THUMBEB__) || defined(__AARCH64EB__) || defined(_MIPSEB) || defined(__MIPSEB) || defined(__MIPSEB__) || ((LS_WINDOWS && REG_DWORD != REG_DWORD_LITTLE_ENDIAN) || (!LS_WINDOWS && ((__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)))))
 #		define LS_BIG_ENDIAN				1
 #		define LS_ENDIANNESS				LS_ENDIANNESS_ID_BIG
 #		define LS_ENDIANNESS_STRING			"big-endian"

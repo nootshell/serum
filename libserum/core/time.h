@@ -30,56 +30,26 @@
 **
 */
 
-#define FILE_PATH							"crypto/padding/iso9797.c"
-
-#include <string.h>
-#include "./iso9797.h"
-#include "../../core/ptrarithmetic.h"
+#ifndef __LS_CORE_TIME_H
+#define __LS_CORE_TIME_H
 
 
-ID("ISO 9797-1 padding methods 1 and 2");
+#include "./stdincl.h"
 
 
-ls_result_t
-ls_pad_iso9797_zero_ex(void *out, void *in, const size_t inputsz, const size_t outputsz) {
-	if (!in) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
-	}
-	if (!outputsz || (outputsz <= inputsz)) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);
-	}
-#if (!defined(LS_ALLOW_PAD_INPUTSZ_ZERO) || !LS_ALLOW_PAD_INPUTSZ_ZERO)
-	if (!inputsz) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 2);
-	}
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-	memset((LS_SELECT_IO_PTR_WCPY(out, in, inputsz) + inputsz), 0, (outputsz - inputsz));
+	LSAPI uint64_t ls_rdtsc();
+	LSAPI uint64_t ls_nanos();
+#define ls_micros()							(ls_nanos() / 1000)
+#define ls_millis()							(ls_nanos() / 1000000)
+#define ls_secs()							(ls_nanos() / 1000000000)
 
-	return LS_RESULT_SUCCESS;
+#ifdef __cplusplus
 }
+#endif
 
 
-ls_result_t
-ls_pad_iso9797_zero_block(void *out, void *in, const size_t inputsz, const int blocksz) {
-	return ls_pad_iso9797_zero_ex(out, in, inputsz, ls_pad_iso9797_size_m1(blocksz, inputsz));
-}
-
-
-ls_result_t
-ls_pad_iso9797_ex(void *out, void *in, const size_t inputsz, const size_t outputsz) {
-	ls_result_t result = ls_pad_iso9797_zero_ex(out, in, inputsz, outputsz);
-	if (!result.success) {
-		return result;
-	}
-
-    ((uint8_t*)LS_SELECT_IO_PTR(out, in))[inputsz] = 0x80;
-
-    return LS_RESULT_SUCCESS;
-}
-
-
-ls_result_t
-ls_pad_iso9797_block(void *out, void *in, const size_t inputsz, const int blocksz) {
-	return ls_pad_iso9797_ex(out, in, inputsz, ls_pad_iso9797_size(blocksz, inputsz));
-}
+#endif

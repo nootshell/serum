@@ -42,26 +42,26 @@
 
 #if (!defined(LS_OS))
 #	if (defined(__gnu_linux__) || defined(__linux__) || defined(linux))
+#		define LS_LINUX						1
 #		if (defined(__ANDROID__) || defined(__ANDROID_API__))
-#			define LS_ANDROID					1
-#			define LS_OS						LS_OS_ID_ANDROID
-#			define LS_OS_STRING					"Android"
+#			define LS_ANDROID				1
+#			define LS_OS					LS_OS_ID_ANDROID
+#			define LS_OS_STRING				"Android"
 #		else
-#			define LS_LINUX						1
-#			define LS_OS						LS_OS_ID_LINUX
-#			define LS_OS_STRING					"Linux"
+#			define LS_OS					LS_OS_ID_LINUX
+#			define LS_OS_STRING				"Linux"
 #		endif
 #	elif (defined(_WIN32))
-#		define LS_WINDOWS						1
-#		define LS_OS							LS_OS_ID_WINDOWS
-#		define LS_OS_STRING						"Windows"
+#		define LS_WINDOWS					1
+#		define LS_OS						LS_OS_ID_WINDOWS
+#		define LS_OS_STRING					"Windows"
 #	elif (defined(__APPLE__) && defined(__MACH__))
-#		define LS_MAC							1
-#		define LS_OS							LS_OS_ID_MAC
-#		define LS_OS_STRING						"Mac"
+#		define LS_MAC						1
+#		define LS_OS						LS_OS_ID_MAC
+#		define LS_OS_STRING					"Mac"
 #	else
-#		define LS_OS							LS_OS_ID_UNKNOWN
-#		define LS_OS_STRING						"Unknown"
+#		define LS_OS						LS_OS_ID_UNKNOWN
+#		define LS_OS_STRING					"Unknown"
 #	endif
 #endif
 
