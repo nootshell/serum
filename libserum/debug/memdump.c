@@ -37,7 +37,8 @@
 #include <stdio.h>
 
 
-void ls_memdump_ex(const void *ptr, size_t size, int columns, int items_per_column) {
+void
+ls_memdump_ex(const void *ptr, const size_t size, int columns, int items_per_column) {
 	if (!ptr || !size) {
 		return;
 	}
@@ -78,6 +79,28 @@ void ls_memdump_ex(const void *ptr, size_t size, int columns, int items_per_colu
     }
 }
 
-void ls_memdump(const void *ptr, size_t size) {
+
+void
+ls_memdump(const void *ptr, const size_t size) {
     ls_memdump_ex(ptr, size, 16, 1);
+}
+
+
+void
+ls_vmemdump_ex(const void *ptr, const size_t size, int columns, int items_per_column, const char *str) {
+	if (!ptr || !size) {
+		return;
+	}
+
+	if (str) {
+		puts(str);
+	}
+
+	ls_memdump_ex(ptr, size, columns, items_per_column);
+}
+
+
+void
+ls_vmemdump(const void *ptr, const size_t size, const char *str) {
+	ls_vmemdump_ex(ptr, size, 16, 1, str);
 }

@@ -1,7 +1,7 @@
 Serum
 ===
 
-Cryptography library, work in progress.
+C library focused on cryptography and more.
 
 Features
 ===

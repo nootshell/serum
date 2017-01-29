@@ -34,7 +34,8 @@
 #define __LS_CORE_MACRO_MATH_H
 
 
-#define LS_MATH_ROUND_BLOCK(bsz,isz)		(((isz)|((bsz)-1))+1)
+#define LS_MATH_ROUND_BLOCK_INCL(bsz, isz)	(((isz) | ((bsz) - 1)) + 1)
+#define LS_MATH_ROUND_BLOCK_EXCL(bsz, isz)	((((isz) & ((bsz) - 1)) != 0) ? LS_MATH_ROUND_BLOCK_INCL((bsz), (isz)) : (isz))
 
 
 #endif

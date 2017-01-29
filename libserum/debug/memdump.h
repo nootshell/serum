@@ -44,8 +44,10 @@
 extern "C" {
 #endif
 
-	LSAPI void ls_memdump_ex(const void *ptr, size_t size, int columns, int items_per_column);
-	LSAPI void ls_memdump(const void *ptr, size_t size);
+	LSAPI void ls_memdump_ex(const void *ptr, const size_t size, int columns, int items_per_column);
+	LSAPI void ls_memdump(const void *ptr, const size_t size);
+	LSAPI void ls_vmemdump_ex(const void *ptr, const size_t size, int columns, int items_per_column, const char *str);
+	LSAPI void ls_vmemdump(const void *ptr, const size_t size, const char *str);
 
 #ifdef __cplusplus
 }

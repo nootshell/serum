@@ -30,56 +30,73 @@
 **
 */
 
-#define FILE_PATH							"crypto/padding/iso9797.c"
+#define FILE_PATH							"core/time.c"
 
-#include <string.h>
-#include "./iso9797.h"
-#include "../../core/ptrarithmetic.h"
-
-
-ID("ISO 9797-1 padding methods 1 and 2");
+#include <time.h>
+#include "./time.h"
+#include "./detect_os.h"
+#include "./detect_platform.h"
 
 
-ls_result_t
-ls_pad_iso9797_zero_ex(void *out, void *in, const size_t inputsz, const size_t outputsz) {
-	if (!in) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
+ID("timing functionality");
+
+
+uint64_t
+ls_rdtsc() {
+#if (LS_ARM)
+#	if defined(LS_ARM_VERSION)
+# 		if (LS_ARCH_ARM_VERSION == 8)
+	uint64_t r = 0;
+	asm volatile ("mrs %0, cntvct_e10" : "=r"(r));
+	return r;
+#		elif (LS_ARCH_ARM_VERSION >= 6)
+	uint32_t r = 0;
+	asm volatile ("mrc p15, 0, %0, c9, c14, 0" : "=r"(r));
+	if (HAS_FLAG(r, 0x00000001)) {
+		asm volatile ("mrc, p15, 0, %0, c9, c12, 1", "=r"(r));
+		if (HAS_FLAG(r, 0x80000000)) {
+			asm volatile ("mrc p15, 0, %0, c9, c13, 0" : "=r"(r));
+			return (((uint64_t)r) << 6);
+		}
 	}
-	if (!outputsz || (outputsz <= inputsz)) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);
-	}
-#if (!defined(LS_ALLOW_PAD_INPUTSZ_ZERO) || !LS_ALLOW_PAD_INPUTSZ_ZERO)
-	if (!inputsz) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 2);
+#		endif
+#	else
+#		error RDTSC unsupported.
+#	endif
+#else
+#	if (LS_INTRINSICS)
+	return __rdtsc();
+#	else
+	uint32_t hi, lo;
+	asm volatile ("rdtscp\n"
+				  "movl %%edx, %0\n"
+				  "movl %%eax, %1\n"
+				  "cpuid"
+				  : "=r"(hi), "=r"(lo)
+				  :
+				  : "%rax", "%rbx", "%rcx", "%rdx");
+	return ((((uint64_t)hi) << 32) | lo);
+#	endif
+#endif
+
+	// Failsafe
+	return ls_nanos();
+}
+
+
+uint64_t
+ls_nanos() {
+#if (LS_WINDOWS)
+	FILETIME ft;
+	GetSystemTimeAsFileTime(&ft);
+	return (((((uint64_t)ft.dwHighDateTime << 32) | ft.dwLowDateTime) / 10) - 0x295E9648864000);
+#else
+	struct timespec ts;
+	if (clock_gettime(CLOCK_REALTIME, &ts) == 0) {
+		return (ts.tv_sec * 1000000000) + ts.tv_nsec;
 	}
 #endif
 
-	memset((LS_SELECT_IO_PTR_WCPY(out, in, inputsz) + inputsz), 0, (outputsz - inputsz));
-
-	return LS_RESULT_SUCCESS;
-}
-
-
-ls_result_t
-ls_pad_iso9797_zero_block(void *out, void *in, const size_t inputsz, const int blocksz) {
-	return ls_pad_iso9797_zero_ex(out, in, inputsz, ls_pad_iso9797_size_m1(blocksz, inputsz));
-}
-
-
-ls_result_t
-ls_pad_iso9797_ex(void *out, void *in, const size_t inputsz, const size_t outputsz) {
-	ls_result_t result = ls_pad_iso9797_zero_ex(out, in, inputsz, outputsz);
-	if (!result.success) {
-		return result;
-	}
-
-    ((uint8_t*)LS_SELECT_IO_PTR(out, in))[inputsz] = 0x80;
-
-    return LS_RESULT_SUCCESS;
-}
-
-
-ls_result_t
-ls_pad_iso9797_block(void *out, void *in, const size_t inputsz, const int blocksz) {
-	return ls_pad_iso9797_ex(out, in, inputsz, ls_pad_iso9797_size(blocksz, inputsz));
+	// Failsafe
+	return 0;
 }

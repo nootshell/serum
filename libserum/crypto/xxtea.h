@@ -34,11 +34,8 @@
 #define __LS_CRYPTO_XXTEA_H
 
 
-#include <stdint.h>
-#include <stdlib.h>
-
+#include "../core/stdincl.h"
 #include "./enum.h"
-#include "../core/result.h"
 
 
 #ifdef __cplusplus
