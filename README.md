@@ -16,4 +16,8 @@ Features
 		- [Memory dump functions](./libserum/debug/memdump.h)
 	- Macros
 		- [I/O pointer selection (w/ and w/out copy)](./libserum/core/ptrarithmetic.h#L40)
-	- Compile-time [compiler](./libserum/core/detect_compiler.h) and [platform](./libserum/core/detect_platform.h) detection
+	- Compile-time detection of:
+		- [Operating system](./libserum/core/detect_os.h)
+		- [Compiler](./libserum/core/detect_compiler.h)
+		- [Platform](./libserum/core/detect_platform.h)
+		- [Endianness](./libserum/core/detect_endianness.h)
