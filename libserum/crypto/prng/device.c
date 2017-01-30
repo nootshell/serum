@@ -89,7 +89,7 @@ ls_prng_device_clear(ls_prng_device_t *device) {
 	}
 
 	if (fclose(device->fp) != 0) {
-        return LS_RESULT_ERROR(LS_RESULT_CODE_DESCRIPTOR);
+		return LS_RESULT_ERROR(LS_RESULT_CODE_DESCRIPTOR);
 	}
 
 	return LS_RESULT_SUCCESS;
