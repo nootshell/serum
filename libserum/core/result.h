@@ -67,7 +67,7 @@ typedef struct ls_result {		// bitrg
 #define LS_RESULT_CODE_EARLY_EXIT			 7	// Early exit (e.g. of a read operation)
 #define LS_RESULT_CODE_LOCK					 8	// Lock failure
 #define LS_RESULT_CODE_UNSUPPORTED			 9	// Unsupported operation
-#define LS_RESULT_CODE_DATA					10
+#define LS_RESULT_CODE_DATA					10	// Data invalid
 
 #define LS_RESULT(_system,_critical,_code,_param,_success)	\
 	((ls_result_t){							\
