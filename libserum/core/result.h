@@ -52,16 +52,22 @@ typedef struct ls_result {		// bitrg
 } ls_result_t;
 
 
-#define LS_RESULT_CODE_SUCCESS				0	// Success, no error
-#define LS_RESULT_CODE_NULL					1	// Null pointer
-#define LS_RESULT_CODE_MISC					2	// Misc. error
-#define LS_RESULT_CODE_SIZE					3	// Size invalid
-#define LS_RESULT_CODE_ACCESS				4	// Access denied
-#define LS_RESULT_CODE_DESCRIPTOR			5	// File/socket descriptor invalid
-#define LS_RESULT_CODE_ALLOCATION			6	// Allocation failure
-#define LS_RESULT_CODE_EARLY_EXIT			7	// Early exit (e.g. of a read operation)
-#define LS_RESULT_CODE_LOCK					8	// Lock failure
-#define LS_RESULT_CODE_UNSUPPORTED			9	// Unsupported operation
+#define LS_RESULT_PRINTF_FORMAT				"sys=%c crit=%c code=%u param=%u success=%c"
+#define LS_RESULT_PRINTF_PARAMS(result)		((result).system ? 'y' : 'n'),((result).critical ? 'y' : 'n'),((result).code),((result).param),((result).success ? 'y' : 'n')
+#define LS_RESULT_PRINTF(result)			printf(LS_RESULT_PRINTF_FORMAT"\n", LS_RESULT_PRINTF_PARAMS(result))
+
+
+#define LS_RESULT_CODE_SUCCESS				 0	// Success, no error
+#define LS_RESULT_CODE_NULL					 1	// Null pointer
+#define LS_RESULT_CODE_MISC					 2	// Misc. error
+#define LS_RESULT_CODE_SIZE					 3	// Size invalid
+#define LS_RESULT_CODE_ACCESS				 4	// Access denied
+#define LS_RESULT_CODE_DESCRIPTOR			 5	// File/socket descriptor invalid
+#define LS_RESULT_CODE_ALLOCATION			 6	// Allocation failure
+#define LS_RESULT_CODE_EARLY_EXIT			 7	// Early exit (e.g. of a read operation)
+#define LS_RESULT_CODE_LOCK					 8	// Lock failure
+#define LS_RESULT_CODE_UNSUPPORTED			 9	// Unsupported operation
+#define LS_RESULT_CODE_DATA					10
 
 #define LS_RESULT(_system,_critical,_code,_param,_success)	\
 	((ls_result_t){							\

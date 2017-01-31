@@ -81,6 +81,9 @@ lbl_iso9797: {
 		ls_pad_iso9797_ex(buffer, input, sizeof(input), size);
 
 		testexpr("ls_pad_iso9797_ex", 'y', 'n', (memcmp(input, buffer, sizeof(input)) == 0) && (buffer[sizeof(input)] == 0x80) && (memcmp(buffer + sizeof(input) + 1, zeroed, sizeof(buffer) - sizeof(input) - 1) == 0));
+
+		size_t offset = 0;
+		testexpr("ls_pad_iso9797_offset", 'y', 'n', (ls_pad_iso9797_offset(&offset, buffer, size).success && (offset == sizeof(input))));
 	}
 
 lbl_prng_device: {
@@ -89,16 +92,16 @@ lbl_prng_device: {
 		ls_prng_device_t device;
 
 		if (ls_prng_device_sys(&device, 512, (DEV_HARDWARE | DEV_FORCE_UNLIMITED)).success) {
+			uint8_t pad[8];
+			memset(pad, 0xBA, sizeof(pad));
+
 			uint8_t buffer[616];
 			memset(buffer, 0xBA, sizeof(buffer));
+
 			uint8_t *ptr = (buffer + 8);
 			size_t size = 600;
-			if (ls_prng_device_generate(&device, ptr, size).success) {
-				ls_memdump_ex(buffer, sizeof(buffer), 8, 4);
-			}
-			if (!ls_prng_device_clear(&device).success) {
-				puts("ls_prng_device_clear: cleanup failure");
-			}
+			testexpr("ls_prng_device_generate", 'y', 'n', (ls_prng_device_generate(&device, ptr, size).success && (memcmp(buffer, pad, 8) == 0) && (memcmp(buffer + 608, pad, 8) == 0)));
+			testexpr("ls_prng_device_clear", 'y', 'n', ls_prng_device_clear(&device).success);
 		}
 	}
 
