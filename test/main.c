@@ -90,8 +90,9 @@ lbl_prng_device: {
 		next = &&lbl_xxtea_simple;
 
 		ls_prng_device_t device;
-
 		if (ls_prng_device_sys(&device, 512, (DEV_HARDWARE | DEV_FORCE_UNLIMITED)).success) {
+			testexpr("ls_prng_device_sys", 'y', 'n', 1);
+
 			uint8_t pad[8];
 			memset(pad, 0xBA, sizeof(pad));
 
@@ -102,6 +103,8 @@ lbl_prng_device: {
 			size_t size = 600;
 			testexpr("ls_prng_device_generate", 'y', 'n', (ls_prng_device_generate(&device, ptr, size).success && (memcmp(buffer, pad, 8) == 0) && (memcmp(buffer + 608, pad, 8) == 0)));
 			testexpr("ls_prng_device_clear", 'y', 'n', ls_prng_device_clear(&device).success);
+		} else {
+			testexpr("ls_prng_device_sys", 'y', 'n', 0);
 		}
 	}
 
