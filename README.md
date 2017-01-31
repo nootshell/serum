@@ -1,15 +1,17 @@
 Serum
 ===
 
-C library focused on cryptography and more.
+**Experimental** C library focused on cryptography and more, licensed under the MIT license.
 
 Features
 ===
 - Crypto
-	- Padding
-		- [ISO 9797-1 methods 1 and 2](https://en.wikipedia.org/wiki/ISO/IEC_9797-1#Padding)
 	- Block ciphers
 		- [XXTEA](https://en.wikipedia.org/wiki/XXTEA)
+	- Padding
+		- [ISO 9797-1 methods 1 and 2](https://en.wikipedia.org/wiki/ISO/IEC_9797-1#Padding)
+	- Pseudo-random number generation
+		- [Reading from a ```/dev```ice](./libserum/crypto/prng/device.h)
 - Misc
 	- Debugging
 		- [Detailed function return values](./libserum/core/result.h)

@@ -94,7 +94,7 @@ lbl_prng_device: {
 			uint8_t *ptr = (buffer + 8);
 			size_t size = 600;
 			if (ls_prng_device_generate(&device, ptr, size).success) {
-			ls_memdump_ex(buffer, sizeof(buffer), 8, 4);
+				ls_memdump_ex(buffer, sizeof(buffer), 8, 4);
 			}
 			if (!ls_prng_device_clear(&device).success) {
 				puts("ls_prng_device_clear: cleanup failure");
