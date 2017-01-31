@@ -38,7 +38,7 @@
 #include "./detect_platform.h"
 
 
-ID("timing functionality");
+ID("time related functionality");
 
 
 uint64_t
@@ -80,7 +80,11 @@ ls_rdtsc() {
 #endif
 
 	// Failsafe
+#if (LS_RDTSC_NANOS_FAILSAFE)
 	return ls_nanos();
+#else
+	return 0;
+#endif
 }
 
 

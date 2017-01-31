@@ -137,8 +137,9 @@ ls_prng_device_sys(ls_prng_device_t *device, size_t buffer_size, ls_prng_device_
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
 
-#if (LS_LINUX)
+#if (LS_LINUX || LS_MAC)
 #	define TRY_DEVICE(path) { if (ls_prng_device_init(device, (path), buffer_size).success) { return LS_RESULT_SUCCESS; } }
+
 	if (HAS_FLAG(type, DEV_FORCE_UNLIMITED)) {
 		TRY_DEVICE("/dev/urandom");
 	}
