@@ -62,7 +62,38 @@ ls_pad_iso9797_zero_ex(void *out, void *in, const size_t inputsz, const size_t o
 
 ls_result_t
 ls_pad_iso9797_zero_block(void *out, void *in, const size_t inputsz, const int blocksz) {
-	return ls_pad_iso9797_zero_ex(out, in, inputsz, ls_pad_iso9797_size_m1(blocksz, inputsz));
+	return ls_pad_iso9797_zero_ex(out, in, inputsz, ls_pad_iso9797_zero_size(blocksz, inputsz));
+}
+
+
+ls_result_t
+ls_pad_iso9797_zero_offset(size_t *out, const void *in, const size_t size) {
+	if (!out) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
+	}
+	if (!in) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);
+	}
+	if (!size) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);
+	}
+
+	const uint8_t *ptr = in;
+	size_t sz = size;
+
+	do {
+		if (ptr[--sz]) {
+			*out = (sz + 1);
+			return LS_RESULT_SUCCESS;
+		}
+	} while (sz);
+
+#if (LS_ISO9797M1_ALLOW_ALL_ZERO)
+	*out = 0;
+	return LS_RESULT_SUCCESS;
+#else
+	return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
+#endif
 }
 
 
@@ -82,4 +113,22 @@ ls_pad_iso9797_ex(void *out, void *in, const size_t inputsz, const size_t output
 ls_result_t
 ls_pad_iso9797_block(void *out, void *in, const size_t inputsz, const int blocksz) {
 	return ls_pad_iso9797_ex(out, in, inputsz, ls_pad_iso9797_size(blocksz, inputsz));
+}
+
+
+ls_result_t
+ls_pad_iso9797_offset(size_t *out, const void *in, const size_t size) {
+	size_t offset = 0;
+
+	ls_result_t result;
+	if (!(result = ls_pad_iso9797_zero_offset(&offset, in, size)).success) {
+		return result;
+	}
+
+	if (((uint8_t*)in)[offset - 1] == 0x80) {
+		*out = (offset - 1);
+		return LS_RESULT_SUCCESS;
+	} else {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
+	}
 }
