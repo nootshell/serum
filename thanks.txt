@@ -1,0 +1,17 @@
+Special thanks to:
+
+- My parents for making and maintaining me, and especially my dad because he's
+  also my taxi driver.
+
+- My girlfriend for being my girlfriend, and thus making me a cool nerd.
+
+- Dennis Ritchie, for C (and partly Unix). Most amazing language ever.
+
+- Developers, maintainers, and donators of Arch Linux (my all-time favorite
+  distro, I'd slap a sticker saying Arch-Powered on this project if I could).
+
+- Italians, for making pasta, pizza, and other stuff.
+
+- My college, for making me realize that I could be off worse (by e.g. becoming
+  a programming teacher). (Note that my school has been ripping me and other
+  students off by making us pay money to learn... NOTHING.)
