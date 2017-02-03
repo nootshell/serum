@@ -56,10 +56,10 @@ typedef enum ls_prng_device_type {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_prng_device_init(ls_prng_device_t *device, const char *file, size_t buffer_size);
+	LSAPI ls_result_t ls_prng_device_init(ls_prng_device_t *device, const char *file, const size_t buffer_size);
 	LSAPI ls_result_t ls_prng_device_clear(ls_prng_device_t *device);
-	LSAPI ls_result_t ls_prng_device_generate(ls_prng_device_t *device, void *out, size_t size);
-	LSAPI ls_result_t ls_prng_device_sys(ls_prng_device_t *device, size_t buffer_size, ls_prng_device_type_t type);
+	LSAPI ls_result_t ls_prng_device_generate(const ls_prng_device_t *device, void *out, const size_t size);
+	LSAPI ls_result_t ls_prng_device_sys(ls_prng_device_t *device, const size_t buffer_size, const ls_prng_device_type_t type);
 
 #ifdef __cplusplus
 }
