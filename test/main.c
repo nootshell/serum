@@ -42,8 +42,9 @@
 #include <libserum/crypto/prng/device.h>
 
 
-static void testexpr(const char *desc, char expr_true, char expr_false, uint64_t expr) {
+static uint64_t testexpr(const char *desc, char expr_true, char expr_false, uint64_t expr) {
 	printf("\033[3%c;1m%c\033[0m %s\n", ((expr) ? '2' : '1'), ((expr) ? expr_true : expr_false), desc);
+	return expr;
 }
 
 
@@ -90,9 +91,7 @@ lbl_prng_device: {
 		next = &&lbl_xxtea_simple;
 
 		ls_prng_device_t device;
-		if (ls_prng_device_sys(&device, 512, (DEV_HARDWARE | DEV_FORCE_UNLIMITED)).success) {
-			testexpr("ls_prng_device_sys", 'y', 'n', 1);
-
+		if (testexpr("ls_prng_device_sys", 'y', 'n', ls_prng_device_sys(&device, 512, (DEV_HARDWARE | DEV_FORCE_UNLIMITED)).success)) {
 			uint8_t pad[8];
 			memset(pad, 0xBA, sizeof(pad));
 
@@ -103,8 +102,6 @@ lbl_prng_device: {
 			size_t size = 600;
 			testexpr("ls_prng_device_generate", 'y', 'n', (ls_prng_device_generate(&device, ptr, size).success && (memcmp(buffer, pad, 8) == 0) && (memcmp(buffer + 608, pad, 8) == 0)));
 			testexpr("ls_prng_device_clear", 'y', 'n', ls_prng_device_clear(&device).success);
-		} else {
-			testexpr("ls_prng_device_sys", 'y', 'n', 0);
 		}
 	}
 
