@@ -40,6 +40,7 @@
 #include <libserum/core/time.h>
 #include <libserum/core/bits.h>
 #include <libserum/crypto/prng/device.h>
+#include <libserum/crypto/prng/isaac.h>
 
 
 static uint64_t testexpr(const char *desc, char expr_true, char expr_false, uint64_t expr) {
@@ -52,7 +53,7 @@ int main(int argc, char *argv[], char *env[]) {
 	void *next = &&lbl_rot;
 
 lbl_rot: {
-		next = &&lbl_time;
+		next = &&lbl_bitmask;
 
 		uint32_t i, r;
 		i = 0b00001101011101010010100010101110;
@@ -62,6 +63,12 @@ lbl_rot: {
 
 		r = 0b10111000001101011101010010100010;
 		testexpr("LS_ROTR32", 'y', 'n', (LS_ROTR32(i, 6) == r));
+	}
+
+lbl_bitmask: {
+		next = &&lbl_time;
+
+		testexpr("BITMASK", 'y', 'n', ((BITMASK(4) == 0x0F) && (BITMASK(8) == 0xFF) && (BITMASK(16) == 0xFFFF) && (BITMASK(32) == 0xFFFFFFFF) && (BITMASK(48) == 0xFFFFFFFFFFFF)));
 	}
 
 lbl_time: {
@@ -88,7 +95,7 @@ lbl_iso9797: {
 	}
 
 lbl_prng_device: {
-		next = &&lbl_xxtea_simple;
+		next = &&lbl_prng_isaac;
 
 		ls_prng_device_t device;
 		if (testexpr("ls_prng_device_sys", 'y', 'n', ls_prng_device_sys(&device, 512, (DEV_HARDWARE | DEV_FORCE_UNLIMITED)).success)) {
@@ -103,6 +110,12 @@ lbl_prng_device: {
 			testexpr("ls_prng_device_generate", 'y', 'n', (ls_prng_device_generate(&device, ptr, size).success && (memcmp(buffer, pad, 8) == 0) && (memcmp(buffer + 608, pad, 8) == 0)));
 			testexpr("ls_prng_device_clear", 'y', 'n', ls_prng_device_clear(&device).success);
 		}
+	}
+
+lbl_prng_isaac: {
+		next = &&lbl_xxtea_simple;
+
+		testexpr("ls_prng_isaac_test", 'y', 'n', ls_prng_isaac_test().success);
 	}
 
 lbl_xxtea_simple: {

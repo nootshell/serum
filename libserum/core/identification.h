@@ -38,7 +38,7 @@
 
 
 #define ID_CODENAME							"Chocolate"
-#define ID(desc)							static LS_ATTR_USED char __id__[] = "$Id: ["ID_CODENAME"] "__DATE__" "FILE_PATH": "desc" $"
+#define ID(desc)							static LS_ATTR_USED char __id__[] = "$Id: [" ID_CODENAME "] " __DATE__ " " FILE_PATH ": " desc " $"
 
 
 #endif
