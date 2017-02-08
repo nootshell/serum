@@ -39,7 +39,7 @@
 #include "../../core/math.h"
 
 
-ID("PRNG using a device as source");
+ID("PRNG: device as source");
 
 
 ls_result_t

@@ -30,30 +30,46 @@
 **
 */
 
-#ifndef __LS_CORE_BITS_H
-#define __LS_CORE_BITS_H
+#ifndef __LS_CRYPTO_PRNG_ISAAC_H
+#define __LS_CRYPTO_PRNG_ISAAC_H
 
 
-#define HAS_FLAG(flags, flag)				(((flags) & (flag)) == (flag))
+#include "../../core/stdincl.h"
+#include "./device.h"
 
 
-#define LS_ROT(s1, s2, bits, value, shift)	(((value) s1 (shift)) | ((value) s2 (-(shift) & ((bits) - 1))))
-
-#define LS_ROTL(bits, value, shift)			LS_ROT(<<, >>, (bits), (value), (shift))
-#define LS_ROTR(bits, value, shift)			LS_ROT(>>, <<, (bits), (value), (shift))
-
-#define LS_ROTL8(value, shift)				LS_ROTL(8, (value), (shift))
-#define LS_ROTL16(value, shift)				LS_ROTL(16, (value), (shift))
-#define LS_ROTL32(value, shift)				LS_ROTL(32, (value), (shift))
-#define LS_ROTL64(value, shift)				LS_ROTL(64, (value), (shift))
-
-#define LS_ROTR8(value, shift)				LS_ROTR(8, (value), (shift))
-#define LS_ROTR16(value, shift)				LS_ROTR(16, (value), (shift))
-#define LS_ROTR32(value, shift)				LS_ROTR(32, (value), (shift))
-#define LS_ROTR64(value, shift)				LS_ROTR(64, (value), (shift))
+#define LS_CRYPTO_PRNG_ISAAC_SIZEL			(8U)
+#define LS_CRYPTO_PRNG_ISAAC_SIZE			(1 << LS_CRYPTO_PRNG_ISAAC_SIZEL)
 
 
-#define BITMASK(bits)						((1LLU << (bits)) - 1)
+typedef struct ls_prng_isaac {
+	uint32_t a, b, c;
+	uint32_t count;
+	uint32_t rsl[LS_CRYPTO_PRNG_ISAAC_SIZE];
+	uint32_t mem[LS_CRYPTO_PRNG_ISAAC_SIZE];
+	//uint32_t guard;
+} ls_prng_isaac_t;
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_result_t ls_prng_isaac_init_ex(ls_prng_isaac_t *ctx, const void *seed, const size_t size);
+	LSAPI ls_result_t ls_prng_isaac_init(ls_prng_isaac_t *ctx);
+	LSAPI ls_result_t ls_prng_isaac_init_device(ls_prng_isaac_t *ctx, const ls_prng_device_t *device);
+
+	LSAPI ls_result_t ls_prng_isaac_update(ls_prng_isaac_t *ctx);
+
+	LSAPI uint32_t ls_prng_isaac(ls_prng_isaac_t *ctx);
+
+#if DEBUG
+	LSAPI ls_result_t ls_prng_isaac_test();
+#endif
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

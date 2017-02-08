@@ -15,6 +15,7 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-DDEBUG" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -65,6 +66,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="crypto/prng/device.h" />
+		<Unit filename="crypto/prng/isaac.c">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="crypto/prng/isaac.h" />
 		<Unit filename="crypto/xxtea.c">
 			<Option compilerVar="CC" />
 		</Unit>
