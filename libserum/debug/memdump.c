@@ -51,8 +51,8 @@ ls_memdump_ex(const void *ptr, const size_t size, int columns, int items_per_col
 	}
 
 	int c = 0, ic = 0;
-    size_t i;
-    if (items_per_column == 1) {
+	size_t i;
+	if (items_per_column == 1) {
 		for (i = 0; i < size; ++i) {
 			printf("%02X ", ((uint8_t*)ptr)[i]);
 			if (++c >= columns) {
@@ -60,9 +60,9 @@ ls_memdump_ex(const void *ptr, const size_t size, int columns, int items_per_col
 				puts("");
 			}
 		}
-    } else {
+	} else {
 		for (i = 0; i < size; ++i) {
-            printf("%02X", ((uint8_t*)ptr)[i]);
+			printf("%02X", ((uint8_t*)ptr)[i]);
 			if (++ic >= items_per_column) {
 				ic = 0;
 				if (++c >= columns) {
@@ -73,16 +73,16 @@ ls_memdump_ex(const void *ptr, const size_t size, int columns, int items_per_col
 				}
 			}
 		}
-    }
-    if (c > 0) {
+	}
+	if (c > 0) {
 		puts("");
-    }
+	}
 }
 
 
 void
 ls_memdump(const void *ptr, const size_t size) {
-    ls_memdump_ex(ptr, size, 16, 1);
+	ls_memdump_ex(ptr, size, 16, 1);
 }
 
 

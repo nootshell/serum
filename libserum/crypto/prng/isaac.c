@@ -222,8 +222,8 @@ ls_result_t
 ls_prng_isaac_test() {
 	ls_result_t result = LS_RESULT_SUCCESS;
 
-    ls_prng_isaac_t ctx;
-    if (ls_prng_isaac_init(&ctx).success) {
+	ls_prng_isaac_t ctx;
+	if (ls_prng_isaac_init(&ctx).success) {
 		uint32_t vectors[512] = {
 			0xF650E4C8, 0xE448E96D, 0x98DB2FB4, 0xF5FAD54F, 0x433F1AFB, 0xEDEC154A, 0xD8370487, 0x46CA4F9A,
 			0x5DE3743E, 0x88381097, 0xF1D444EB, 0x823CEDB6, 0x6A83E1E0, 0x4A5F6355, 0xC7442433, 0x25890E2E,
@@ -295,24 +295,24 @@ ls_prng_isaac_test() {
 		uint_fast16_t vi;
 		for (i = vi = 0; i < 2; ++i) {
 			for (j = 0; j < LS_CRYPTO_PRNG_ISAAC_SIZE; ++j) {
-                if (ctx.rsl[j] != vectors[vi++]) {
+				if (ctx.rsl[j] != vectors[vi++]) {
 					result = LS_RESULT_ERROR(LS_RESULT_CODE_EARLY_EXIT);
 					goto __cleanup;
-                }
+				}
 			}
 			if (!ls_prng_isaac_update(&ctx).success) {
 				result = LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 1);
 				goto __cleanup;
 			}
 		}
-    } else {
+	} else {
 		result = LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 2);
-    }
+	}
 
 __cleanup:
-    if (!ls_crypto_prng_isaac_clear(&ctx).success) {
+	if (!ls_crypto_prng_isaac_clear(&ctx).success) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 3);
-    }
-    return result;
+	}
+	return result;
 }
 #endif

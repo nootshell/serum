@@ -53,12 +53,12 @@ ls_prng_device_init(ls_prng_device_t *device, const char *file, const size_t buf
 	}
 
 	if (access(file, (F_OK|R_OK)) != 0) {
-        return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_ACCESS, 1);
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_ACCESS, 1);
 	}
 
-    if (!(device->fp = fopen(file, "r"))) {
+	if (!(device->fp = fopen(file, "r"))) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_DESCRIPTOR);
-    }
+	}
 
 	device->buffer = malloc(
 		device->buffer_size = LS_MATH_ROUND_BLOCK_INCL(64, buffer_size)
@@ -110,24 +110,24 @@ ls_prng_device_generate(const ls_prng_device_t *device, void *out, const size_t 
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 3);
 	}
 
-    if (!out) {
+	if (!out) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 4);
-    }
+	}
 
-    if (!size) {
-        return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);
-    }
+	if (!size) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);
+	}
 
-    size_t read_total = 0, read;
-    while (((read = fread(device->buffer, 1, device->buffer_size, device->fp)) > 0) && (read_total < size)) {
+	size_t read_total = 0, read;
+	while (((read = fread(device->buffer, 1, device->buffer_size, device->fp)) > 0) && (read_total < size)) {
 		if ((read_total + read) > size) {
-            read = (size - read_total);
+			read = (size - read_total);
 		}
 		memcpy((out + read_total), device->buffer, read);
 		read_total += read;
-    }
+	}
 
-    return ((read_total == size) ? LS_RESULT_SUCCESS : LS_RESULT_ERROR(LS_RESULT_CODE_EARLY_EXIT));
+	return ((read_total == size) ? LS_RESULT_SUCCESS : LS_RESULT_ERROR(LS_RESULT_CODE_EARLY_EXIT));
 }
 
 

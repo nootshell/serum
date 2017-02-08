@@ -104,9 +104,9 @@ ls_pad_iso9797_ex(void *out, void *in, const size_t inputsz, const size_t output
 		return result;
 	}
 
-    ((uint8_t*)LS_SELECT_IO_PTR(out, in))[inputsz] = 0x80;
+	((uint8_t*)LS_SELECT_IO_PTR(out, in))[inputsz] = 0x80;
 
-    return LS_RESULT_SUCCESS;
+	return LS_RESULT_SUCCESS;
 }
 
 
