@@ -11,7 +11,7 @@ Features
 	- Padding
 		- [ISO 9797-1 methods 1 and 2](https://en.wikipedia.org/wiki/ISO/IEC_9797-1#Padding)
 	- Pseudo-random number generation
-		- [Reading from a ```/dev```ice](./libserum/crypto/prng/device.h)
+		- [Reading from a **/dev**ice (or file)](./libserum/crypto/prng/device.h)
 		- [ISAAC](https://en.wikipedia.org/wiki/ISAAC_(cipher))
 - Misc
 	- Time retrieval
@@ -27,3 +27,21 @@ Features
 		- [Compiler](./libserum/core/detect_compiler.h)
 		- [Platform](./libserum/core/detect_platform.h)
 		- [Endianness](./libserum/core/detect_endianness.h)
+
+TODO
+===
+- Crypto
+	- Key exchange
+		- Diffie Hellman
+	- Block ciphers
+		- Rijndael
+	- Hash functions (+ HMACs)
+		- SHA-2
+		- SHA-3
+		- RIPEMD-160
+	- KDF
+		- PBKDF2
+		- Argon2
+		- Lyra2
+- Optimizations
+	- ```restrict``` pointers where applicable
