@@ -37,9 +37,10 @@
 #if AUTOTOOLS
 #	include <config.h>
 #else
-#	include <stdint.h>
 #	include <stdlib.h>
 #endif
+
+#include "./integers.h"
 
 #include "./lsapi.h"
 #include "./bits.h"

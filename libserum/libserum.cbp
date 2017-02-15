@@ -46,6 +46,7 @@
 		<Unit filename="core/detect_os.h" />
 		<Unit filename="core/detect_platform.h" />
 		<Unit filename="core/identification.h" />
+		<Unit filename="core/integers.h" />
 		<Unit filename="core/intrinsics.h" />
 		<Unit filename="core/lsapi.h" />
 		<Unit filename="core/macro.h" />
