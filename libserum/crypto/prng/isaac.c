@@ -64,13 +64,12 @@ ID("PRNG: ISAAC");
 	ROUND();
 
 ls_result_t
-ls_prng_isaac_init_ex(ls_prng_isaac_t *ctx, const void *seed, const size_t size) {
+ls_prng_isaac_init_ex(ls_prng_isaac_t *const ctx, const void *const seed, const size_t size) {
 	if (!ctx) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
 
 	memset(ctx, 0, sizeof(*ctx));
-	//ctx->guard = 0xDEADBEEF;
 
 	uint_fast32_t i = 0;
 	uint32_t a, b, c, d, e, f, g, h,
@@ -111,13 +110,13 @@ ls_prng_isaac_init_ex(ls_prng_isaac_t *ctx, const void *seed, const size_t size)
 
 
 ls_result_t
-ls_prng_isaac_init(ls_prng_isaac_t *ctx) {
+ls_prng_isaac_init(ls_prng_isaac_t *const ctx) {
 	return ls_prng_isaac_init_ex(ctx, NULL, 1);
 }
 
 
 ls_result_t
-ls_prng_isaac_init_device(ls_prng_isaac_t *ctx, const ls_prng_device_t *device) {
+ls_prng_isaac_init_device(ls_prng_isaac_t *const ctx, const ls_prng_device_t *const device) {
 	if (!device) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);
 	}
@@ -153,19 +152,19 @@ ls_crypto_prng_isaac_clear(ls_prng_isaac_t *ctx) {
 
 
 #define ind(mm, x)  ((mm)[((x) >> 2) & (LS_CRYPTO_PRNG_ISAAC_SIZE - 1)])
-#define STEP(mix)                                   \
-	(x) = *(m);                                     \
-	(a) = (((a) ^ (mix)) + *((m2)++));              \
-	*((m)++) = (y) = (ind((mm), (x)) + (a) + (b));  \
+#define STEP(mix)									\
+	(x) = *(m);										\
+	(a) = (((a) ^ (mix)) + *((m2)++));				\
+	*((m)++) = (y) = (ind((mm), (x)) + (a) + (b));	\
 	*((r)++) = (b) = (ind((mm), ((y) >> LS_CRYPTO_PRNG_ISAAC_SIZEL)) + (x)) & BITMASK(32);
-#define ROUND()                             \
-	STEP(a << 13);                          \
-	STEP((a & BITMASK(32)) >> 6);           \
-	STEP(a << 2);                           \
-	STEP((a & BITMASK(32)) >> 16);
+#define ROUND()										\
+	STEP((a << 13));								\
+	STEP(((a & BITMASK(32)) >>  6));				\
+	STEP((a <<  2));								\
+	STEP(((a & BITMASK(32)) >> 16));
 
 ls_result_t
-ls_prng_isaac_update(ls_prng_isaac_t *ctx) {
+ls_prng_isaac_update(ls_prng_isaac_t *const ctx) {
 	if (!ctx) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
@@ -201,7 +200,7 @@ ls_prng_isaac_update(ls_prng_isaac_t *ctx) {
 
 
 uint32_t
-ls_prng_isaac(ls_prng_isaac_t *ctx) {
+ls_prng_isaac(ls_prng_isaac_t *const ctx) {
 	if (!ctx) {
 		return 0;
 	}

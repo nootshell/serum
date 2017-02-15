@@ -30,77 +30,12 @@
 **
 */
 
-#define __RFILE__							"core/memdump.c"
-
-#include "./memdump.h"
-
-#include <stdio.h>
+#ifndef __LS_CORE_INTEGERS_H
+#define __LS_CORE_INTEGERS_H
 
 
-void
-ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_per_column) {
-	if (!ptr || !size) {
-		return;
-	}
-
-	if (columns < 1) {
-		columns = 1;
-	}
-	if (items_per_column < 1) {
-		items_per_column = 1;
-	}
-
-	int c = 0, ic = 0;
-	size_t i;
-	if (items_per_column == 1) {
-		for (i = 0; i < size; ++i) {
-			printf("%02X ", ((uint8_t*)ptr)[i]);
-			if (++c >= columns) {
-				c = 0;
-				puts("");
-			}
-		}
-	} else {
-		for (i = 0; i < size; ++i) {
-			printf("%02X", ((uint8_t*)ptr)[i]);
-			if (++ic >= items_per_column) {
-				ic = 0;
-				if (++c >= columns) {
-					c = 0;
-					puts("");
-				} else {
-					fputs(" ", stdout);
-				}
-			}
-		}
-	}
-	if (c > 0) {
-		puts("");
-	}
-}
+//#include "./detect_platform.h"
+#include <stdint.h>
 
 
-void
-ls_memdump(const void *const ptr, const size_t size) {
-	ls_memdump_ex(ptr, size, 16, 1);
-}
-
-
-void
-ls_vmemdump_ex(const void *const ptr, const size_t size, int columns, int items_per_column, const char *const str) {
-	if (!ptr || !size) {
-		return;
-	}
-
-	if (str) {
-		puts(str);
-	}
-
-	ls_memdump_ex(ptr, size, columns, items_per_column);
-}
-
-
-void
-ls_vmemdump(const void *const ptr, const size_t size, const char *const str) {
-	ls_vmemdump_ex(ptr, size, 16, 1, str);
-}
+#endif // __LS_CORE_INTEGERS_H
