@@ -12,8 +12,18 @@
 !*.md
 
 # Visual Studio on the other hand, doesn't give a shit.
+bin
+obj
 .suo
 *.suo
 *.filters
 *.user
 *.sdf
+*.dll
+*.exp
+*.ilk
+*.tlog
+*.obj
+*.log
+*.idb
+*.pdb
