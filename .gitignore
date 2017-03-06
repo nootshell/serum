@@ -1,3 +1,4 @@
+# Decent git implementations will support this flawlessly.
 *
 !*/
 !*.c
@@ -9,3 +10,10 @@
 !.editorconfig
 !*.sh
 !*.md
+
+# Visual Studio on the other hand, doesn't give a shit.
+.suo
+*.suo
+*.filters
+*.user
+*.sdf
