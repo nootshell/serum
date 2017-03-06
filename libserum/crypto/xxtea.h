@@ -42,10 +42,10 @@
 extern "C" {
 #endif
 
-	ls_result_t ls_xxtea_encrypt_ex(void *const out, const void *const in, const size_t size, const void *const key, const crypto_pad_type_t padding);
-	ls_result_t ls_xxtea_encrypt(void *const out, const void *const in, const size_t size, const void *const key);
-	ls_result_t ls_xxtea_decrypt_ex(void *const out, const void *const in, const size_t size, const void *const key, const crypto_pad_type_t padding);
-	ls_result_t ls_xxtea_decrypt(void *out, const void *const in, const size_t size, const void *const key);
+	LSAPI ls_result_t ls_xxtea_encrypt_ex(void *const out, const void *const in, const size_t size, const void *const key, const crypto_pad_type_t padding);
+	LSAPI ls_result_t ls_xxtea_encrypt(void *const out, const void *const in, const size_t size, const void *const key);
+	LSAPI ls_result_t ls_xxtea_decrypt_ex(void *const out, const void *const in, const size_t size, const void *const key, const crypto_pad_type_t padding);
+	LSAPI ls_result_t ls_xxtea_decrypt(void *out, const void *const in, const size_t size, const void *const key);
 
 #ifdef __cplusplus
 }

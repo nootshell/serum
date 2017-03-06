@@ -69,8 +69,10 @@ typedef struct ls_result {		// bitrg
 #define LS_RESULT_CODE_UNSUPPORTED			 9	// Unsupported operation
 #define LS_RESULT_CODE_DATA					10	// Data invalid
 #define LS_RESULT_CODE_FUNCTION				11	// Function execution within function failed
+#define LS_RESULT_CODE_CLOSE				12	// Close failure
 
-#define LS_RESULT(_system,_critical,_code,_param,_success)	\
+
+#define LS_RESULT_SA(_system, _critical, _code, _param, _success)	\
 	((ls_result_t){							\
 		.system		= (!!(_system)),		\
 		.critical	= (!!(_critical)),		\
@@ -80,6 +82,19 @@ typedef struct ls_result {		// bitrg
 		._reserved2	= 0,					\
 		.success	= (!!(_success))		\
 	})
+
+#if DEBUG
+#	include <stdio.h>
+#	include "./time.h"
+	static ls_result_t __LS_RESULT_PRINT(ls_result_t ret, char const *const func, char const *const file, uint32_t const line) {
+		printf("%llu %s %s:%lu %08X (%u, %u, %u, %u, %u)\n", ls_nanos(), func, file, line, (*(uint32_t*)(&ret)), ret.system, ret.critical, ret.code, ret.param, ret.success);
+		return ret;
+	}
+#	define LS_RESULT(_system, _critical, _code, _param, _success)	\
+	__LS_RESULT_PRINT(LS_RESULT_SA(_system, _critical, _code, _param, _success), __func__, FILE_PATH, __LINE__)
+#else
+#	define LS_RESULT						LS_RESULT_SA
+#endif
 
 #define LS_RESULT_SUCCESS					LS_RESULT(true,false,LS_RESULT_CODE_SUCCESS,0,true)
 #define LS_RESULT_ERROR(code)				LS_RESULT(true,false,(code),0,false)
