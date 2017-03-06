@@ -72,7 +72,7 @@ ID("XXTEA implementation");
 
 
 ls_result_t
-ls_xxtea_encrypt_ex(void *const out, const void *const in, const size_t size, const void *const key, const crypto_pad_type_t padding) {
+ls_xxtea_encrypt_ex(void *const out, const void *const in, const size_t size, const void *const restrict key, const crypto_pad_type_t padding) {
 	XXTEA_INIT();
 
 	b = ptr[nm1];

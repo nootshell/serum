@@ -43,7 +43,7 @@ ID("PRNG: device as source");
 
 
 ls_result_t
-ls_prng_device_init(ls_prng_device_t *const device, const char *const file, const size_t buffer_size) {
+ls_prng_device_init(ls_prng_device_t *const device, const char *const file, size_t const buffer_size) {
 	if (!device) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
@@ -97,7 +97,7 @@ ls_prng_device_clear(ls_prng_device_t *const device) {
 
 
 ls_result_t
-ls_prng_device_generate(const ls_prng_device_t *const device, void *const out, const size_t size) {
+ls_prng_device_generate(const ls_prng_device_t *const device, void *const out, size_t const size) {
 	if (!device) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
@@ -132,7 +132,7 @@ ls_prng_device_generate(const ls_prng_device_t *const device, void *const out, c
 
 
 ls_result_t
-ls_prng_device_sys(ls_prng_device_t *const device, const size_t buffer_size, const ls_prng_device_type_t type) {
+ls_prng_device_sys(ls_prng_device_t *const device, size_t const buffer_size, ls_prng_device_type_t const type) {
 	if (!device) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
