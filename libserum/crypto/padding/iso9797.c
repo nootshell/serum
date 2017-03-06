@@ -54,7 +54,7 @@ ls_pad_iso9797_zero_ex(void *const out, void *const in, size_t const inputsz, si
 	}
 #endif
 
-	memset((LS_SELECT_IO_PTR_WCPY(out, in, inputsz) + inputsz), 0, (outputsz - inputsz));
+	memset((((char *const)LS_SELECT_IO_PTR_WCPY(out, in, inputsz)) + inputsz), 0, (outputsz - inputsz));
 
 	return LS_RESULT_SUCCESS;
 }
