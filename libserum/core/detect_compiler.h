@@ -48,7 +48,7 @@
 #		define LS_COMPILER					LS_COMPILER_ID_MSC
 #		define LS_COMPILER_STRING			"MSC"
 #		define LS_COMPILER_STRING_FULL		"Microsoft Visual C++"
-#		define LS_ATTR_THREAD			__declspec(thread)
+#		define LS_ATTR_THREAD				__declspec(thread)
 #	elif (defined(__llvm__) || defined(__clang__))
 #		define LS_COMPILER					LS_COMPILER_ID_LLVM
 #		define LS_COMPILER_STRING			"LLVM"
