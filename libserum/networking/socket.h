@@ -30,57 +30,50 @@
 **
 */
 
-#ifndef __LS_CORE_DETECT_OS_H
-#define __LS_CORE_DETECT_OS_H
+#ifndef __LS_NETWORKING_SOCKET_H
+#define __LS_NETWORKING_SOCKET_H
 
 
-#define LS_OS_ID_UNKNOWN					0
-#define LS_OS_ID_LINUX						1
-#define LS_OS_ID_ANDROID					2
-#define LS_OS_ID_MAC						3
-#define LS_OS_ID_WINDOWS					0xDEFEC8ED
+#include "../core/stdincl.h"
 
-#if (!defined(LS_OS))
-#	if (defined(__gnu_linux__) || defined(__linux__) || defined(linux))
-#		define LS_LINUX						1
-#		if (defined(__ANDROID__) || defined(__ANDROID_API__))
-#			define LS_ANDROID				1
-#			define LS_OS					LS_OS_ID_ANDROID
-#			define LS_OS_STRING				"Android"
-#		else
-#			define LS_OS					LS_OS_ID_LINUX
-#			define LS_OS_STRING				"Linux"
-#		endif
-#	elif (defined(_WIN32))
-#		define LS_WINDOWS					1
-#		define LS_OS						LS_OS_ID_WINDOWS
-#		define LS_OS_STRING					"Windows"
-#		define WIN32_LEAN_AND_MEAN
-#		include <Windows.h>
-#	elif (defined(__APPLE__) && defined(__MACH__))
-#		define LS_MAC						1
-#		define LS_OS						LS_OS_ID_MAC
-#		define LS_OS_STRING					"Mac"
-#	else
-#		define LS_OS						LS_OS_ID_UNKNOWN
-#		define LS_OS_STRING					"Unknown"
-#	endif
+
+#define LS_INVALID_SOCKET					(((uint32_t)0)-1)
+
+
+#define LS_SOCKET_EXITED					BIT_1	// Read-only, TODO
+#define LS_SOCKET_ACCEPTED					BIT_2	// Read-only, TODO
+#define LS_SOCKET_REFUSED					BIT_3	// Read-only, TODO
+#define LS_SOCKET_SERVER					BIT_4
+
+#define LS_SOCKET_REUSEADDR					BIT_5	// TODO
+#define LS_SOCKET_REUSEPORT					BIT_6	// TODO
+#define LS_SOCKET_REUSE						(LS_SOCKET_REUSEADDR | LS_SOCKET_REUSEPORT)
+
+#define LS_SOCKET_ASYNC						BIT_7	// TODO
+#define LS_SOCKET_ASYNC_CHILDREN			BIT_8	// TODO
+
+#define LS_SOCKET_UDP						BIT_9
+
+#define LS_SOCKET_CRYPTO					BIT_10	// TODO
+
+
+typedef struct ls_socket {
+	struct addrinfo *addrinfo;
+	uint32_t fd;
+	uint32_t flags;
+} ls_socket_t;
+
+
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-#if (!defined(LS_LINUX))
-#	define LS_LINUX							0
-#endif
+	ls_result_t ls_socket_init_ex(ls_socket_t *const ctx, char const *node, uint32_t const flags);
+	ls_result_t ls_socket_init(ls_socket_t *const ctx, char const *node);
+	ls_result_t ls_socket_clear(ls_socket_t *const ctx);
 
-#if (!defined(LS_ANDROID))
-#	define LS_ANDROID						0
-#endif
-
-#if (!defined(LS_MAC))
-#	define LS_MAC							0
-#endif
-
-#if (!defined(LS_WINDOWS))
-#	define LS_WINDOWS						0
+#ifdef __cplusplus
+}
 #endif
 
 

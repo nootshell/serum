@@ -34,7 +34,9 @@
 #define __LS_CORE_TIME_H
 
 
-#include "./stdincl.h"
+#include "./integers.h"
+#include "./lsapi.h"
+#include "./identification.h"
 
 
 #ifdef __cplusplus
