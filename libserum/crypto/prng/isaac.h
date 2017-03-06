@@ -54,9 +54,10 @@ typedef struct ls_prng_isaac {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_prng_isaac_init_ex(ls_prng_isaac_t *const ctx, const void *const seed, const size_t size);
+	LSAPI ls_result_t ls_prng_isaac_init_ex(ls_prng_isaac_t *const ctx, const void *const seed, size_t const size);
 	LSAPI ls_result_t ls_prng_isaac_init(ls_prng_isaac_t *const ctx);
 	LSAPI ls_result_t ls_prng_isaac_init_device(ls_prng_isaac_t *const ctx, const ls_prng_device_t *const device);
+	LSAPI ls_result_t ls_crypto_prng_isaac_clear(ls_prng_isaac_t *const ctx);
 
 	LSAPI ls_result_t ls_prng_isaac_update(ls_prng_isaac_t *const ctx);
 

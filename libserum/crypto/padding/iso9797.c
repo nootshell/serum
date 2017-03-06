@@ -41,7 +41,7 @@ ID("ISO 9797-1 padding methods 1 and 2");
 
 
 ls_result_t
-ls_pad_iso9797_zero_ex(void *const out, void *const in, const size_t inputsz, const size_t outputsz) {
+ls_pad_iso9797_zero_ex(void *const out, void *const in, size_t const inputsz, size_t const outputsz) {
 	if (!in) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
@@ -61,13 +61,13 @@ ls_pad_iso9797_zero_ex(void *const out, void *const in, const size_t inputsz, co
 
 
 ls_result_t
-ls_pad_iso9797_zero_block(void *const out, void *const in, const size_t inputsz, const int blocksz) {
+ls_pad_iso9797_zero_block(void *const out, void *const in, size_t const inputsz, int const blocksz) {
 	return ls_pad_iso9797_zero_ex(out, in, inputsz, ls_pad_iso9797_zero_size(blocksz, inputsz));
 }
 
 
 ls_result_t
-ls_pad_iso9797_zero_offset(size_t *const out, const void *const in, const size_t size) {
+ls_pad_iso9797_zero_offset(size_t *const out, const void *const in, size_t const size) {
 	if (!out) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
@@ -98,7 +98,7 @@ ls_pad_iso9797_zero_offset(size_t *const out, const void *const in, const size_t
 
 
 ls_result_t
-ls_pad_iso9797_ex(void *const out, void *const in, const size_t inputsz, const size_t outputsz) {
+ls_pad_iso9797_ex(void *const out, void *const in, size_t const inputsz, size_t const outputsz) {
 	ls_result_t result = ls_pad_iso9797_zero_ex(out, in, inputsz, outputsz);
 	if (!result.success) {
 		return result;
@@ -111,13 +111,13 @@ ls_pad_iso9797_ex(void *const out, void *const in, const size_t inputsz, const s
 
 
 ls_result_t
-ls_pad_iso9797_block(void *const out, void *const in, const size_t inputsz, const int blocksz) {
+ls_pad_iso9797_block(void *const out, void *const in, size_t const inputsz, int const blocksz) {
 	return ls_pad_iso9797_ex(out, in, inputsz, ls_pad_iso9797_size(blocksz, inputsz));
 }
 
 
 ls_result_t
-ls_pad_iso9797_offset(size_t *const out, const void *const in, const size_t size) {
+ls_pad_iso9797_offset(size_t *const out, const void *const in, size_t const size) {
 	size_t offset = 0;
 
 	ls_result_t result;

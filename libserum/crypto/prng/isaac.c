@@ -64,7 +64,7 @@ ID("PRNG: ISAAC");
 	ROUND();
 
 ls_result_t
-ls_prng_isaac_init_ex(ls_prng_isaac_t *const ctx, const void *const seed, const size_t size) {
+ls_prng_isaac_init_ex(ls_prng_isaac_t *const ctx, const void *const seed, size_t const size) {
 	if (!ctx) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
@@ -140,7 +140,7 @@ ls_prng_isaac_init_device(ls_prng_isaac_t *const ctx, const ls_prng_device_t *co
 
 
 ls_result_t
-ls_crypto_prng_isaac_clear(ls_prng_isaac_t *ctx) {
+ls_crypto_prng_isaac_clear(ls_prng_isaac_t *const ctx) {
 	if (!ctx) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}

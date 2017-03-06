@@ -61,6 +61,7 @@
 #		define LS_COMPILER_STRING_FULL		"GNU Compiler Collection"
 #		define LS_ATTR_THREAD				__thread
 #		define LS_ATTR_USED					__attribute__((used))
+//#		define restrict						__restrict__
 #	elif (defined(__INTEL_COMPILER) || defined(__ICL) || defined(__ICC))
 #		define LS_COMPILER					LS_COMPILER_ID_INTEL
 #		define LS_COMPILER_STRING			"ICL"
@@ -80,6 +81,10 @@
 #ifndef LS_ATTR_USED
 #define LS_ATTR_USED
 #endif
+
+/*#ifndef restrict
+#define restrict
+#endif*/
 
 
 #endif
