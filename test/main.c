@@ -50,10 +50,14 @@ static uint64_t testexpr(const char *desc, char expr_true, char expr_false, uint
 
 
 int main(int argc, char *argv[], char *env[]) {
+#if (!LS_WINDOWS)
 	void *next = &&lbl_rot;
+#endif
 
 lbl_rot: {
+#if (!LS_WINDOWS)
 		next = &&lbl_bitmask;
+#endif
 
 		uint32_t i, r;
 		i = 0b00001101011101010010100010101110;
@@ -66,19 +70,26 @@ lbl_rot: {
 	}
 
 lbl_bitmask: {
+#if (!LS_WINDOWS)
 		next = &&lbl_time;
+#endif
 
 		testexpr("BITMASK", 'y', 'n', ((BITMASK(4) == 0x0F) && (BITMASK(8) == 0xFF) && (BITMASK(16) == 0xFFFF) && (BITMASK(32) == 0xFFFFFFFF) && (BITMASK(48) == 0xFFFFFFFFFFFF)));
 	}
 
 lbl_time: {
+#if (!LS_WINDOWS)
 		next = &&lbl_iso9797;
+#endif
+
 		testexpr("ls_rdtsc", 'y', 'n', (ls_rdtsc() != 0));
 		testexpr("ls_nanos", 'y', 'n', (ls_nanos() != 0));
 	}
 
-lbl_iso9797: {
+/*lbl_iso9797: {
+#if (!LS_WINDOWS)
 		next = &&lbl_prng_device;
+#endif
 
 		size_t size;
 		uint8_t input[55], buffer[size = ls_pad_iso9797_size(16, sizeof(input))], zeroed[sizeof(buffer) - sizeof(input)];
@@ -92,10 +103,12 @@ lbl_iso9797: {
 
 		size_t offset = 0;
 		testexpr("ls_pad_iso9797_offset", 'y', 'n', (ls_pad_iso9797_offset(&offset, buffer, size).success && (offset == sizeof(input))));
-	}
+	}*/
 
 lbl_prng_device: {
+#if (!LS_WINDOWS)
 		next = &&lbl_prng_isaac;
+#endif
 
 		ls_prng_device_t device;
 		if (testexpr("ls_prng_device_sys", 'y', 'n', ls_prng_device_sys(&device, 512, (DEV_HARDWARE | DEV_FORCE_UNLIMITED)).success)) {
@@ -113,13 +126,17 @@ lbl_prng_device: {
 	}
 
 lbl_prng_isaac: {
+#if (!LS_WINDOWS)
 		next = &&lbl_xxtea_simple;
+#endif
 
 		testexpr("ls_prng_isaac_test", 'y', 'n', ls_prng_isaac_test().success);
 	}
 
 lbl_xxtea_simple: {
+#if (!LS_WINDOWS)
 		next = &&lbl_end;
+#endif
 
 		uint32_t key  [4] = { 0xBABAB0B0, 0xCACAC0C0, 0xDADADEDE, 0xBACAD0FE };
 		uint32_t input[5] = { 0xDEADBEEF, 0xF00BAAAA, 0xCAFEBABE, 0xBEEFBABE, 0xDEFEC8ED };
@@ -127,17 +144,22 @@ lbl_xxtea_simple: {
 
 		if (!ls_xxtea_encrypt(buffer, input, sizeof(buffer), key).success) {
 			puts("ls_xxtea_encrypt: e");
+#if (!LS_WINDOWS)
 			goto *next;
+#endif
 		}
 		testexpr("ls_xxtea_encrypt", 'y', 'n', (memcmp(buffer, input, sizeof(input)) != 0));
 
 		if (!ls_xxtea_decrypt(NULL, buffer, sizeof(buffer), key).success) {
 			puts("ls_xxtea_decrypt: e");
+#if (!LS_WINDOWS)
 			goto *next;
+#endif
 		}
 		testexpr("ls_xxtea_decrypt", 'y', 'n', !memcmp(buffer, input, sizeof(input)));
 	}
 
 lbl_end:
+	fgetc(stdin);
 	return 0;
 }

@@ -33,10 +33,24 @@
 #define FILE_PATH							"crypto/prng/device.c"
 
 #include <string.h>
-#include <sys/mman.h> // Don't give a jack *&^# about Windows for now
-#include <unistd.h>
 #include "./device.h"
 #include "../../core/math.h"
+
+#if (LS_WINDOWS)
+#	include <io.h>
+#	define access							_access
+#	define F_OK								00
+#	define W_OK								02
+#	define R_OK								04
+#	define RW_OK							(R_OK | W_OK)
+
+#	define MEMLOCK(ptr, size)				(VirtualLock((ptr), (size)) != 0)
+#else
+#	include <sys/mman.h>
+#	include <unistd.h>
+
+#	define MEMLOCK(ptr, size)				(mlock((ptr), (size)) == 0)
+#endif
 
 
 ID("PRNG: device as source");
@@ -56,6 +70,7 @@ ls_prng_device_init(ls_prng_device_t *const device, const char *const file, size
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_ACCESS, 1);
 	}
 
+#pragma warning (disable: 4996)
 	if (!(device->fp = fopen(file, "r"))) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_DESCRIPTOR);
 	}
@@ -67,7 +82,7 @@ ls_prng_device_init(ls_prng_device_t *const device, const char *const file, size
 		return LS_RESULT_ERROR(LS_RESULT_CODE_ALLOCATION);
 	}
 
-	if (mlock(device->buffer, device->buffer_size) != 0) {
+	if (MEMLOCK(device->buffer, device->buffer_size)) {
 		free(device->buffer);
 		device->buffer = NULL;
 		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
@@ -123,7 +138,7 @@ ls_prng_device_generate(const ls_prng_device_t *const device, void *const out, s
 		if ((read_total + read) > size) {
 			read = (size - read_total);
 		}
-		memcpy((out + read_total), device->buffer, read);
+		memcpy((((char*)out) + read_total), device->buffer, read);
 		read_total += read;
 	}
 
