@@ -156,6 +156,7 @@
     <ClInclude Include="core\detect_endianness.h" />
     <ClInclude Include="core\detect_os.h" />
     <ClInclude Include="core\detect_platform.h" />
+    <ClInclude Include="core\errstr.h" />
     <ClInclude Include="core\identification.h" />
     <ClInclude Include="core\integers.h" />
     <ClInclude Include="core\intrinsics.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="crypto\prng\device.h" />
     <ClInclude Include="crypto\prng\isaac.h" />
     <ClInclude Include="crypto\xxtea.h" />
+    <ClInclude Include="debug\log.h" />
     <ClInclude Include="debug\memdump.h" />
     <ClInclude Include="networking\socket.h" />
   </ItemGroup>
@@ -180,6 +182,7 @@
     <ClCompile Include="crypto\prng\device.c" />
     <ClCompile Include="crypto\prng\isaac.c" />
     <ClCompile Include="crypto\xxtea.c" />
+    <ClCompile Include="debug\log.c" />
     <ClCompile Include="debug\memdump.c" />
     <ClCompile Include="networking\socket.c" />
   </ItemGroup>

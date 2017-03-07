@@ -34,31 +34,25 @@
 #define __LS_CORE_PTRARITHMETIC_H
 
 
-#include "./macro.h"
-
+#define _LS_PTR_DIFF(ptr1, ptr2)			(((char*)(ptr1)) - ((char*)(ptr2)))
+#define LS_PTR_DIFF(ptr1, ptr2)				((size_t)((((char*)(ptr1)) > ((char*)(ptr2))) ? _LS_PTR_DIFF((ptr1), (ptr2)) : _LS_PTR_DIFF((ptr2), (ptr1))))
 
 #define LS_SELECT_IO_PTR(out, in)			((out) ? (out) : (in))
 
-//#define LS_SELECT_IO_PTR_WCPY_EX(out, in, sz, _mcpy) (((out)) ? (((_mcpy)) ? (((out) != (in)) ? _mcpy((out), (in), sz) : (out)) : (out)) : (in))
 #define LS_SELECT_IO_PTR_WCPY(out, in, sz)	(((out)) ? (((out) != (in)) ? memcpy((out), (in), sz) : (out)) : (in))
 /*
 **  The code above translates to:
 **	if ((out)) {
-**		if ((_mcpy)) {		// -
-**			if ((out) != (in)) {
-**				return _mcpy((out), (in), (sz));
-**			} else {
-**				return (out);
-**			}
-**		} else {			// -
-**			return (out);	// -
+**		if ((out) != (in)) {
+**			return _mcpy((out), (in), (sz));
+**		} else {
+**			return (out);
 **		}
 **	} else {
 **		return (in);
 **	}
 **
 */
-//#define LS_SELECT_IO_PTR_WCPY(out, in, sz)	LS_SELECT_IO_PTR_WCPY_EX((out), (in), (sz), memcpy)
 
 
 #endif

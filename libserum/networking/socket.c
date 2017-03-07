@@ -26,16 +26,20 @@
 ********************************************************************************
 **
 **  Notes:
-**    -
+**    Needs testing.
 **
 */
 
 #define FILE_PATH							"networking/socket.c"
 
 #include "./socket.h"
+#include "../core/ptrarithmetic.h"
 
 
 ID("universal socket");
+
+
+#define STOP_TIMEOUT_INTERVAL				250
 
 
 #if (LS_WINDOWS)
@@ -48,18 +52,60 @@ static size_t num_init_sockets = 0;
 #endif
 
 
-static inline ls_bool close_socket(ls_socket_t *const ctx) {
-	if (
+uint32_t
+static inline get_mtu() {
+	return 4096;
+}
+
+uint32_t
+static inline validate_sockfd(int fd, ls_bool *const valid) {
 #if (LS_WINDOWS)
-		closesocket(ctx->fd)
+	return ((*valid = (fd != INVALID_SOCKET)) ? fd : LS_INVALID_SOCKET);
 #else
-		close(ctx->fd)
+	return ((*valid = (fd < 0)) ? fd : LS_INVALID_SOCKET);
 #endif
-	/*close*/) {
+}
+
+
+ls_bool
+static inline create_socket(ls_socket_t *const ctx, struct addrinfo *addr) {
+	ls_bool valid = false;
+
+	ctx->fd = validate_sockfd(
+		socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol),
+		&valid
+	);
+
+	return valid;
+}
+
+ls_bool
+static inline accept_socket(uint32_t *const fd, const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen) {
+	ls_bool valid = false;
+
+	*fd = validate_sockfd(
+		accept(ctx->fd, saddr, saddrlen),
+		&valid
+	);
+
+	return valid;
+}
+
+ls_bool
+static inline close_socket(ls_socket_t *const ctx) {
+#if (LS_WINDOWS)
+	if (closesocket(ctx->fd) != 0) {
 		return false;
 	}
+#else
+	if (close(ctx->fd) != 0) {
+		return false;
+	}
+#endif
 
 	ctx->fd = LS_INVALID_SOCKET;
+	ctx->selected = NULL;
+	ctx->flags = ((ctx->flags | LS_SOCKET_EXITED) & ~(LS_SOCKET_END_READ | LS_SOCKET_END_WRITE));
 
 	return true;
 }
@@ -92,8 +138,10 @@ ls_socket_init_ex(ls_socket_t *const ctx, char const *node, uint32_t const flags
 
 
 	ctx->addrinfo = NULL;
+	ctx->selected = NULL;
 	ctx->fd = LS_INVALID_SOCKET;
 	ctx->flags = flags;
+	ctx->mtu = get_mtu();
 
 
 	struct addrinfo hints;
@@ -136,6 +184,8 @@ ls_socket_clear(ls_socket_t *const ctx) {
 		ctx->addrinfo = NULL;
 	}
 
+	ctx->selected = NULL;
+
 #if (LS_WINDOWS)
 	if (!num_init_sockets) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_UNSUPPORTED);
@@ -153,5 +203,368 @@ ls_socket_clear(ls_socket_t *const ctx) {
 	--num_init_sockets;
 #endif
 
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_socket_start(ls_socket_t *const ctx, uint16_t const port) {
+	if (!port) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_DATA, 1);
+	}
+
+	if (!ctx) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
+	}
+
+	if (!ctx->addrinfo) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);
+	}
+
+	uint32_t const enable = 1;
+	struct addrinfo *ptr;
+	uint16_t nport = htons(port);
+	for (ptr = ctx->addrinfo; ptr; ptr = ptr->ai_next) {
+		((struct sockaddr_in*)ptr->ai_addr)->sin_port = nport;
+
+		if (!create_socket(ctx, ptr)) {
+			continue;
+		}
+
+		if (HAS_FLAG(ctx->flags, LS_SOCKET_SERVER)) {
+#ifdef SO_REUSEADDR
+			if (HAS_FLAG(ctx->flags, LS_SOCKET_REUSEADDR)) {
+				if (setsockopt(ctx->fd, SOL_SOCKET, SO_REUSEADDR, (void*)&enable, sizeof(enable)) == -1) {
+					ls_log_w(LS_ERRSTR_OPTION_UNAVAILABLE": REUSEADDR");
+				}
+			}
+#else
+			LS_COMPILER_WARN("LS_SOCKET_REUSEADDR unavailable: SO_REUSEADDR undefined")
+#endif
+#ifdef SO_REUSEPORT
+				if (HAS_FLAG(ctx->flags, LS_SOCKET_REUSEPORT)) {
+					if (setsockopt(ctx->fd, SOL_SOCKET, SO_REUSEPORT, (void*)&enable, sizeof(enable)) == -1) {
+						ls_log_w(LS_ERRSTR_OPTION_UNAVAILABLE": REUSEPORT");
+					}
+				}
+#else
+				LS_COMPILER_WARN("LS_SOCKET_REUSEPORT unavailable: SO_REUSEPORT undefined");
+#endif
+			if (bind(ctx->fd, ptr->ai_addr, ptr->ai_addrlen) == 0) {
+				if (listen(ctx->fd, SOMAXCONN) == 0) {
+					break;
+				} else {
+					// ls_log_...
+				}
+			} else {
+				// ls_log...
+			}
+		} else {
+			if (connect(ctx->fd, ptr->ai_addr, ptr->ai_addrlen) == 0) {
+				break;
+			} else {
+				// ls_log...
+			}
+		}
+
+		close_socket(ctx);
+	}
+
+	ctx->selected = ptr;
+
+	if (!ctx->selected) {
+		ctx->fd = LS_INVALID_SOCKET;
+		return LS_RESULT_ERROR(LS_RESULT_CODE_INITIALIZATION);
+	}
+
+	ctx->flags &= ~LS_SOCKET_EXITED;
+
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_socket_stop_ex(ls_socket_t *const ctx, ls_bool const force, uint_fast16_t const timeout) {
+	if (!ctx) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
+	}
+
+	if (ctx->fd == LS_INVALID_SOCKET) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_DESCRIPTOR);
+	}
+
+#define CHECK								(HAS_FLAG(ctx->flags, LS_SOCKET_END_READ) && HAS_FLAG(ctx->flags, LS_SOCKET_END_WRITE))
+	if (!CHECK) {
+		if (timeout) {
+			uint32_t n = ((timeout / STOP_TIMEOUT_INTERVAL) + 1);
+
+			do {
+				if (CHECK) {
+					break;
+				}
+				ls_sleep_millis(STOP_TIMEOUT_INTERVAL);
+			} while (--n);
+
+			if (!CHECK) {
+				if (!force) {
+					return LS_RESULT_ERROR(LS_RESULT_CODE_TIMEOUT);
+				} else {
+					// ls_log...
+				}
+			}
+		} else {
+			if (!force) {
+				return LS_RESULT_ERROR(LS_RESULT_CODE_CHECK);
+			} else {
+				// ls_log...
+			}
+		}
+	}
+#undef CHECK
+
+#if(LS_WINDOWS)
+#	define SHUTDOWN_FLAGS					SD_BOTH
+#else
+#	define SHUTDOWN_FLAGS					SHUT_RDWR
+#endif
+	if (shutdown(ctx->fd, SHUTDOWN_FLAGS) != 0) {
+		if (!force) {
+			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_CLOSE, 1);
+		} else {
+			// ls_log...
+		}
+	}
+#undef SHUTDOWN_FLAGS
+
+	return (close_socket(ctx) ? LS_RESULT_SUCCESS : LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_CLOSE, 2));
+}
+
+ls_result_t
+ls_socket_stop(ls_socket_t *const ctx, ls_bool const force) {
+	return ls_socket_stop_ex(ctx, force, 5000);
+}
+
+
+ls_result_t
+ls_socket_fromfd(ls_socket_t *const ctx, uint32_t const fd, uint32_t const flags) {
+	if (!ctx) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
+	}
+
+	memset(ctx, 0, sizeof(*ctx));
+
+	ctx->fd = fd;
+	ctx->flags = flags;
+
+	return LS_RESULT_SUCCESS;
+}
+
+uint32_t
+ls_socket_acceptfd(const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen) {
+	if (!ctx || ctx->fd == LS_INVALID_SOCKET) {
+		return LS_INVALID_SOCKET;
+	}
+
+	uint32_t fd;
+
+	if (!accept_socket(&fd, ctx, saddr, saddrlen)) {
+		// ls_log...
+	}
+
+	return fd;
+}
+
+ls_result_t
+ls_socket_accept(ls_socket_t *const out, const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen) {
+	if (!ctx) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);
+	}
+
+	if (ctx->fd == LS_INVALID_SOCKET) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_DESCRIPTOR);
+	}
+
+	ls_result_t res;
+	if (!(res = ls_socket_fromfd(out, ls_socket_acceptfd(ctx, saddr, saddrlen), LS_SOCKET_ACCEPTED)).success) {
+		// ls_log...
+		return res;
+	}
+
+	// TODO: Async
+
+	return LS_RESULT_SUCCESS;
+}
+
+
+ssize_t
+static inline safe_send(const ls_socket_t *const ctx, const void *const in, uint32_t const size) {
+	ssize_t sent;
+	while ((sent = send(ctx->fd, in, size, 0)) == 0) {
+		;
+	}
+	return sent;
+}
+
+
+ls_result_t
+ls_socket_write(size_t *const out_size, const ls_socket_t *const ctx, const void *const in, size_t size) {
+	if (!ctx) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
+	}
+
+	if (!in) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);
+	}
+
+	if (!size) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);
+	}
+
+	if (ctx->fd == LS_INVALID_SOCKET) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_DESCRIPTOR);
+	}
+
+	ssize_t sent;
+	const uint8_t *ptr = in;
+	if (size > ctx->mtu) {
+		do {
+			if ((sent = safe_send(ctx, ptr, ctx->mtu)) > 0) {
+				ptr += sent;
+				size -= sent;
+				if (size <= ctx->mtu) {
+					goto __send_remaining;
+				}
+			} else {
+				if (out_size) {
+					*out_size = LS_PTR_DIFF(ptr, in);
+				}
+
+				return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_WRITE, 1);
+			}
+		} while (size > ctx->mtu);
+	} else {
+__send_remaining:
+		if ((sent = safe_send(ctx, ptr, (uint32_t)size)) > 0) {
+			ptr += sent;
+		} else {
+			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_WRITE, 2);
+		}
+	}
+
+	if (out_size) {
+		*out_size = LS_PTR_DIFF(ptr, in);
+	}
+
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_socket_write_str(size_t *const out_size, const ls_socket_t *const ctx, const char *const str) {
+	return ls_socket_write(out_size, ctx, str, (str ? (strlen(str) + 1) : 0));
+}
+
+
+ls_result_t
+ls_socket_read(size_t *const out_size, const ls_socket_t *const ctx, void *const out, size_t const size) {
+	if (!ctx) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
+	}
+
+	if (!out) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);
+	}
+
+	if (!size) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);
+	}
+
+	if (ctx->fd == LS_INVALID_SOCKET) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_DESCRIPTOR);
+	}
+
+	ssize_t received;
+	if ((received = recv(ctx->fd, out, size, 0)) > 0) {
+		if (out_size) {
+			*out_size = (size_t)received;
+		}
+		return LS_RESULT_SUCCESS;
+	}
+
+	return LS_RESULT_ERROR(LS_RESULT_CODE_READ);
+}
+
+
+ls_result_t
+ls_socket_set_option(ls_socket_t *const ctx, enum ls_socket_option_type const type, uint32_t const value) {
+	if (!ctx) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
+	}
+
+	if (!type) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_EARLY_EXIT);
+	}
+
+	if (ctx->fd == LS_INVALID_SOCKET) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_DESCRIPTOR);
+	}
+
+	if (HAS_FLAG(type, LS_SO_ASYNC)) {
+#if (LS_WINDOWS)
+#	ifdef FIONBIO
+		if ((ioctlsocket(ctx->fd, FIONBIO, (void*)&value)) == -1) {
+			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 1);
+		}
+#	else
+		LS_COMPILER_WARN("FIONBIO undefined; cannot put sockets in async mode");
+#	endif
+#else
+#	error TODO
+#endif
+		if (value) {
+			ctx->flags |= LS_SOCKET_ASYNC;
+		} else {
+			ctx->flags &= ~LS_SOCKET_ASYNC;
+		}
+	}
+
+	{
+		const void *optptr = &value;
+		size_t optsz = sizeof(value);
+
+#if (!LS_WINDOWS)
+		struct timeval opttv = { 0 };
+		opttv.tv_sec = (value / 1000);
+		opttv.tv_usec = ((value - (opttv.tv_sec * 1000)) * 1000);
+
+		optptr = &opttv;
+		optsz = sizeof(opttv);
+#endif
+
+		if (HAS_FLAG(type, LS_SO_TIMEOUT_R)) {
+			if (setsockopt(ctx->fd, SOL_SOCKET, SO_RCVTIMEO, optptr, optsz) != 0) {
+				return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 2);
+			}
+			
+			if (value) {
+				ctx->flags |= LS_SOCKET_TIMEOUT_R;
+			} else {
+				ctx->flags &= ~LS_SOCKET_TIMEOUT_R;
+			}
+		}
+
+		if (HAS_FLAG(type, LS_SO_TIMEOUT_W)) {
+			if (setsockopt(ctx->fd, SOL_SOCKET, SO_SNDTIMEO, optptr, optsz) != 0) {
+				return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 3);
+			}
+
+			if (value) {
+				ctx->flags |= LS_SOCKET_TIMEOUT_W;
+			} else {
+				ctx->flags &= ~LS_SOCKET_TIMEOUT_W;
+			}
+		}
+	}
+	
 	return LS_RESULT_SUCCESS;
 }
