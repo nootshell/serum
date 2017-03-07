@@ -34,8 +34,15 @@
 #define __LS_CORE_INTEGERS_H
 
 
-//#include "./detect_platform.h"
 #include <stdint.h>
+
+
+#include "./detect_compiler.h"
+#include "./detect_platform.h"
+
+#if (LS_MSC)
+typedef intptr_t ssize_t;
+#endif
 
 
 #endif // __LS_CORE_INTEGERS_H

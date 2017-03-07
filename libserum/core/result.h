@@ -70,6 +70,11 @@ typedef struct ls_result {		// bitrg
 #define LS_RESULT_CODE_DATA					10	// Data invalid
 #define LS_RESULT_CODE_FUNCTION				11	// Function execution within function failed
 #define LS_RESULT_CODE_CLOSE				12	// Close failure
+#define LS_RESULT_CODE_INITIALIZATION		0xD	// Initialization failure
+#define LS_RESULT_CODE_TIMEOUT				14	// Operation timed-out
+#define LS_RESULT_CODE_CHECK				15	// Check failure
+#define LS_RESULT_CODE_WRITE				16	// Write failure
+#define LS_RESULT_CODE_READ					17	// Read failure
 
 
 #define LS_RESULT_SA(_system, _critical, _code, _param, _success)	\
@@ -85,9 +90,10 @@ typedef struct ls_result {		// bitrg
 
 #if DEBUG
 #	include <stdio.h>
+#	include "../debug/log.h"
 #	include "./time.h"
 	static ls_result_t __LS_RESULT_PRINT(ls_result_t ret, char const *const func, char const *const file, uint32_t const line) {
-		printf("%llu %s %s:%lu %08X (%u, %u, %u, %u, %u)\n", ls_nanos(), func, file, line, (*(uint32_t*)(&ret)), ret.system, ret.critical, ret.code, ret.param, ret.success);
+		ls_logf("%llu %s %s:%lu %08X (%u, %u, %u, %u, %u)\n", ls_nanos(), func, file, line, (*(uint32_t*)(&ret)), ret.system, ret.critical, ret.code, ret.param, ret.success);
 		return ret;
 	}
 #	define LS_RESULT(_system, _critical, _code, _param, _success)	\

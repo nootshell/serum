@@ -36,6 +36,11 @@
 
 #include "../core/stdincl.h"
 
+#if (LS_WINDOWS)
+#	include <WinSock2.h>
+#	include <WS2tcpip.h>
+#endif
+
 
 #define LS_INVALID_SOCKET					(((uint32_t)0)-1)
 
@@ -52,25 +57,59 @@
 #define LS_SOCKET_ASYNC						BIT_7	// TODO
 #define LS_SOCKET_ASYNC_CHILDREN			BIT_8	// TODO
 
-#define LS_SOCKET_UDP						BIT_9
+#define LS_SOCKET_TIMEOUT_R					BIT_9
+#define LS_SOCKET_TIMEOUT_W					BIT_10
 
-#define LS_SOCKET_CRYPTO					BIT_10	// TODO
+#define LS_SOCKET_UDP						BIT_11
+
+#define LS_SOCKET_CRYPTO					BIT_12	// TODO
+
+#define LS_SOCKET_END_READ					BIT_13
+#define LS_SOCKET_END_WRITE					BIT_14
 
 
 typedef struct ls_socket {
 	struct addrinfo *addrinfo;
+	struct addrinfo *selected;
 	uint32_t fd;
 	uint32_t flags;
+	uint32_t mtu;
 } ls_socket_t;
+
+
+enum ls_socket_option_type {
+	LS_SO_NONE = 0,
+	LS_SO_ASYNC = 1,
+	// TODO: LS_SO_CRYPTO = 2,
+	LS_SO_TIMEOUT_R = 4,
+	LS_SO_TIMEOUT_W = 8,
+	LS_SO_TIMEOUT_RW = (LS_SO_TIMEOUT_R | LS_SO_TIMEOUT_W)
+};
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	ls_result_t ls_socket_init_ex(ls_socket_t *const ctx, char const *node, uint32_t const flags);
-	ls_result_t ls_socket_init(ls_socket_t *const ctx, char const *node);
-	ls_result_t ls_socket_clear(ls_socket_t *const ctx);
+	LSAPI ls_result_t ls_socket_init_ex(ls_socket_t *const ctx, char const *node, uint32_t const flags);
+	LSAPI ls_result_t ls_socket_init(ls_socket_t *const ctx, char const *node);
+	LSAPI ls_result_t ls_socket_clear(ls_socket_t *const ctx);
+
+	LSAPI ls_result_t ls_socket_start(ls_socket_t *const ctx, uint16_t const port);
+	LSAPI ls_result_t ls_socket_stop_ex(ls_socket_t *const ctx, ls_bool const force, uint_fast16_t const timeout);
+	LSAPI ls_result_t ls_socket_stop(ls_socket_t *const ctx, ls_bool const force);
+
+	LSAPI ls_result_t ls_socket_fromfd(ls_socket_t *const ctx, uint32_t const fd, uint32_t const flags);
+
+	LSAPI uint32_t ls_socket_acceptfd(const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen);
+	LSAPI ls_result_t ls_socket_accept(ls_socket_t *const out, const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen);
+
+	LSAPI ls_result_t ls_socket_write(size_t *const out_size, const ls_socket_t *const ctx, const void *const in, size_t size);
+	LSAPI ls_result_t ls_socket_write_str(size_t *const out, const ls_socket_t *const ctx, const char *const str);
+
+	LSAPI ls_result_t ls_socket_read(size_t *const out_size, const ls_socket_t *const ctx, void *const out, size_t const size);
+
+	LSAPI ls_result_t ls_socket_set_option(ls_socket_t *const ctx, enum ls_socket_option_type const type, uint32_t const value);
 
 #ifdef __cplusplus
 }
