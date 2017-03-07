@@ -172,6 +172,7 @@
     <ClInclude Include="crypto\prng\device.h" />
     <ClInclude Include="crypto\prng\isaac.h" />
     <ClInclude Include="crypto\xxtea.h" />
+
     <ClInclude Include="debug\log.h" />
     <ClInclude Include="debug\memdump.h" />
     <ClInclude Include="networking\socket.h" />
