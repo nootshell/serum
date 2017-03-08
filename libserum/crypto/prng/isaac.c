@@ -36,6 +36,14 @@
 #include <string.h>
 
 
+struct ls_prng_isaac {
+	uint32_t a, b, c;
+	uint32_t count;
+	uint32_t rsl[LS_CRYPTO_PRNG_ISAAC_SIZE];
+	uint32_t mem[LS_CRYPTO_PRNG_ISAAC_SIZE];
+};
+
+
 ID("PRNG: ISAAC");
 
 
@@ -64,7 +72,7 @@ ID("PRNG: ISAAC");
 	ROUND();
 
 ls_result_t
-ls_prng_isaac_init_ex(ls_prng_isaac_t *const ctx, const void *const seed, size_t const size) {
+ls_prng_isaac_init_ex(ls_prng_isaac_t *const ctx, const void *const seed, const size_t size) {
 	if (!ctx) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}

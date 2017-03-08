@@ -50,7 +50,7 @@ extern "C" {
 #define ls_millis()							(ls_nanos() / 1000000)
 #define ls_secs()							(ls_nanos() / 1000000000)
 
-	LSAPI void ls_sleep_nanos(uint64_t nanos);
+	LSAPI void ls_sleep_nanos(const uint64_t nanos);
 #define ls_sleep_micros(x)					ls_sleep_nanos((x) * 1000)
 #define ls_sleep_millis(x)					ls_sleep_nanos((x) * 1000000)
 #define ls_sleep_secs(x)					ls_sleep_nanos((x) * 1000000000)

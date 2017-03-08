@@ -127,8 +127,8 @@
 #	endif
 #	define LS_COMPILER_MESG(msg)
 #endif
-#define LS_COMPILER_INFO(msg)				LS_COMPILER_MESG(" "LS_COMPILER_INFO_PREFIX" > "msg)
-#define LS_COMPILER_WARN(msg)				LS_COMPILER_MESG(" "LS_COMPILER_WARN_PREFIX" > "msg)
+#define LS_COMPILER_INFO(msg)				LS_COMPILER_MESG(" " LS_COMPILER_INFO_PREFIX " > "msg)
+#define LS_COMPILER_WARN(msg)				LS_COMPILER_MESG(" " LS_COMPILER_WARN_PREFIX " > "msg)
 
 
 #endif

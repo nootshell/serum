@@ -59,8 +59,8 @@
 extern "C" {
 #endif
 
-	void ls_log(char const *const str);
-	void ls_logf(char const *const fmt, ...);
+	void ls_log(const char *const str);
+	void ls_logf(const char *const fmt, ...);
 
 #ifdef __cplusplus
 }

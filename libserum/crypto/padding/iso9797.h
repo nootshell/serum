@@ -43,14 +43,14 @@ extern "C" {
 #endif
 
 #	define ls_pad_iso9797_zero_size(bsz,isz) LS_MATH_ROUND_BLOCK_EXCL((bsz), (isz))
-	LSAPI ls_result_t ls_pad_iso9797_zero_ex(void *const out, void *const in, size_t const inputsz, size_t const outputsz);
-	LSAPI ls_result_t ls_pad_iso9797_zero_block(void *const out, void *const in, size_t const inputsz, int const blocksz);
-	LSAPI ls_result_t ls_pad_iso9797_zero_offset(size_t *const out, const void *const in, size_t const size);
+	LSAPI ls_result_t ls_pad_iso9797_zero_ex(void *const out, void *const in, const size_t inputsz, const size_t outputsz);
+	LSAPI ls_result_t ls_pad_iso9797_zero_block(void *const out, void *const in, const size_t inputsz, const int blocksz);
+	LSAPI ls_result_t ls_pad_iso9797_zero_offset(size_t *const out, const void *const in, const size_t size);
 
 #	define ls_pad_iso9797_size(bsz, isz)	LS_MATH_ROUND_BLOCK_INCL((bsz), (isz))
-	LSAPI ls_result_t ls_pad_iso9797_ex(void *const out, void *const in, size_t const inputsz, size_t const outputsz);
-	LSAPI ls_result_t ls_pad_iso9797_block(void *const out, void *const in, size_t const inputsz, int const blocksz);
-	LSAPI ls_result_t ls_pad_iso9797_offset(size_t *const out, const void *const in, size_t const size);
+	LSAPI ls_result_t ls_pad_iso9797_ex(void *const out, void *const in, const size_t inputsz, const size_t outputsz);
+	LSAPI ls_result_t ls_pad_iso9797_block(void *const out, void *const in, const size_t inputsz, const int blocksz);
+	LSAPI ls_result_t ls_pad_iso9797_offset(size_t *const out, const void *const in, const size_t size);
 
 #ifdef __cplusplus
 }

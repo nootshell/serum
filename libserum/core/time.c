@@ -107,15 +107,15 @@ ls_nanos() {
 
 
 void
-ls_sleep_nanos(uint64_t nanos) {
+ls_sleep_nanos(const uint64_t nanos) {
 #if (LS_WINDOWS)
-	DWORD s = (DWORD)(nanos / 1000000);
+	const DWORD s = (DWORD)(nanos / 1000000);
 	Sleep((s ? s : 1));
 #else
 	struct timespec ts = { 0 };
 
-	ts.tv_sec = (nsec / 1000000000);
-	ts.tv_nsec = (nsec - (ts.tv_sec * 1000000000));
+	ts.tv_sec = (nanos / 1000000000);
+	ts.tv_nsec = (nanos - (ts.tv_sec * 1000000000));
 
 	while (nanosleep(&ts, &ts) == -1) {
 		;
