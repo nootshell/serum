@@ -72,7 +72,7 @@ ID("XXTEA implementation");
 
 
 ls_result_t
-ls_xxtea_encrypt_ex(void *const out, const void *const in, const size_t size, const void *const key, const crypto_pad_type_t padding) {
+ls_xxtea_encrypt_ex(void *const out, void *const in, const size_t size, const void *const key, const crypto_pad_type_t padding) {
 	XXTEA_INIT();
 
 	b = ptr[nm1];
@@ -90,15 +90,14 @@ ls_xxtea_encrypt_ex(void *const out, const void *const in, const size_t size, co
 	return LS_RESULT_SUCCESS;
 }
 
-
 ls_result_t
-ls_xxtea_encrypt(void *const out, const void *const in, const size_t size, const void *const key) {
+ls_xxtea_encrypt(void *const out, void *const in, const size_t size, const void *const key) {
 	return ls_xxtea_encrypt_ex(out, in, size, key, PAD_NONE);
 }
 
 
 ls_result_t
-ls_xxtea_decrypt_ex(void *const out, const void *const in, const size_t size, const void *const key, const crypto_pad_type_t padding) {
+ls_xxtea_decrypt_ex(void *const out, void *const in, const size_t size, const void *const key, const crypto_pad_type_t padding) {
 	XXTEA_INIT();
 
 	sum = (rounds * 0x9E3779B9);
@@ -117,8 +116,7 @@ ls_xxtea_decrypt_ex(void *const out, const void *const in, const size_t size, co
 	return LS_RESULT_SUCCESS;
 }
 
-
 ls_result_t
-ls_xxtea_decrypt(void *const out, const void *const in, const size_t size, const void *const key) {
+ls_xxtea_decrypt(void *const out, void *const in, const size_t size, const void *const key) {
 	return ls_xxtea_decrypt_ex(out, in, size, key, PAD_NONE);
 }

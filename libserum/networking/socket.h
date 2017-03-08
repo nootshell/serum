@@ -39,6 +39,9 @@
 #if (LS_WINDOWS)
 #	include <WinSock2.h>
 #	include <WS2tcpip.h>
+#else
+#	include <sys/types.h>
+#	include <sys/socket.h>
 #endif
 
 
@@ -68,13 +71,7 @@
 #define LS_SOCKET_END_WRITE					BIT_14
 
 
-typedef struct ls_socket {
-	struct addrinfo *addrinfo;
-	struct addrinfo *selected;
-	uint32_t fd;
-	uint32_t flags;
-	uint32_t mtu;
-} ls_socket_t;
+typedef struct ls_socket ls_socket_t;
 
 
 enum ls_socket_option_type {
@@ -91,25 +88,25 @@ enum ls_socket_option_type {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_socket_init_ex(ls_socket_t *const ctx, char const *node, uint32_t const flags);
-	LSAPI ls_result_t ls_socket_init(ls_socket_t *const ctx, char const *node);
+	LSAPI ls_result_t ls_socket_init_ex(ls_socket_t *const ctx, const char *node, const uint32_t flags);
+	LSAPI ls_result_t ls_socket_init(ls_socket_t *const ctx, const char *node);
 	LSAPI ls_result_t ls_socket_clear(ls_socket_t *const ctx);
 
-	LSAPI ls_result_t ls_socket_start(ls_socket_t *const ctx, uint16_t const port);
-	LSAPI ls_result_t ls_socket_stop_ex(ls_socket_t *const ctx, ls_bool const force, uint_fast16_t const timeout);
-	LSAPI ls_result_t ls_socket_stop(ls_socket_t *const ctx, ls_bool const force);
+	LSAPI ls_result_t ls_socket_start(ls_socket_t *const ctx, const uint16_t port);
+	LSAPI ls_result_t ls_socket_stop_ex(ls_socket_t *const ctx, const ls_bool force, const uint_fast16_t timeout);
+	LSAPI ls_result_t ls_socket_stop(ls_socket_t *const ctx, const ls_bool force);
 
-	LSAPI ls_result_t ls_socket_fromfd(ls_socket_t *const ctx, uint32_t const fd, uint32_t const flags);
+	LSAPI ls_result_t ls_socket_fromfd(ls_socket_t *const ctx, const uint32_t fd, const uint32_t flags);
 
 	LSAPI uint32_t ls_socket_acceptfd(const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen);
 	LSAPI ls_result_t ls_socket_accept(ls_socket_t *const out, const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen);
 
-	LSAPI ls_result_t ls_socket_write(size_t *const out_size, const ls_socket_t *const ctx, const void *const in, size_t size);
+	LSAPI ls_result_t ls_socket_write(size_t *const out_size, const ls_socket_t *const ctx, const void *const in, const size_t size);
 	LSAPI ls_result_t ls_socket_write_str(size_t *const out, const ls_socket_t *const ctx, const char *const str);
 
-	LSAPI ls_result_t ls_socket_read(size_t *const out_size, const ls_socket_t *const ctx, void *const out, size_t const size);
+	LSAPI ls_result_t ls_socket_read(size_t *const out_size, const ls_socket_t *const ctx, void *const out, const size_t size);
 
-	LSAPI ls_result_t ls_socket_set_option(ls_socket_t *const ctx, enum ls_socket_option_type const type, uint32_t const value);
+	LSAPI ls_result_t ls_socket_set_option(ls_socket_t *const ctx, const enum ls_socket_option_type type, const uint32_t value);
 
 #ifdef __cplusplus
 }

@@ -38,14 +38,14 @@
 
 // TODO
 void
-ls_log(char const *const str) {
+ls_log(const char *const str) {
 	puts(str);
 }
 
 
 // TODO
 void
-ls_logf(char const *const fmt, ...) {
+ls_logf(const char *const fmt, ...) {
 	va_list vl;
 	va_start(vl, fmt);
 	vprintf(fmt, vl);
