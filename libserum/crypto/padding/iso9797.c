@@ -42,16 +42,11 @@ ID("ISO 9797-1 padding methods 1 and 2");
 
 ls_result_t
 ls_pad_iso9797_zero_ex(void *const out, void *const in, const size_t inputsz, const size_t outputsz) {
-	if (!in) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
-	}
-	if (!outputsz || (outputsz <= inputsz)) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);
-	}
+	LS_RESULT_CHECK_NULL(in, 1);
+	LS_RESULT_CHECK_SIZE(outputsz, 1);
+	LS_RESULT_CHECK_SIZE((outputsz > inputsz), 2);
 #if (!defined(LS_ALLOW_PAD_INPUTSZ_ZERO) || !LS_ALLOW_PAD_INPUTSZ_ZERO)
-	if (!inputsz) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 2);
-	}
+	LS_RESULT_CHECK_SIZE(inputsz, 3);
 #endif
 
 	memset((((char *const)LS_SELECT_IO_PTR_WCPY(out, in, inputsz)) + inputsz), 0, (outputsz - inputsz));
@@ -68,15 +63,9 @@ ls_pad_iso9797_zero_block(void *const out, void *const in, const size_t inputsz,
 
 ls_result_t
 ls_pad_iso9797_zero_offset(size_t *const out, const void *const in, size_t size) {
-	if (!out) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
-	}
-	if (!in) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);
-	}
-	if (!size) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);
-	}
+	LS_RESULT_CHECK_NULL(out, 1);
+	LS_RESULT_CHECK_NULL(in, 2);
+	LS_RESULT_CHECK_SIZE(size, 1);
 
 	const uint8_t *ptr = in;
 
