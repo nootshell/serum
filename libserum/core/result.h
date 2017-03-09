@@ -57,24 +57,24 @@ typedef struct ls_result {		// bitrg
 #define LS_RESULT_PRINTF(result)			printf(LS_RESULT_PRINTF_FORMAT"\n", LS_RESULT_PRINTF_PARAMS(result))
 
 
-#define LS_RESULT_CODE_SUCCESS				 0	// Success, no error
-#define LS_RESULT_CODE_NULL					 1	// Null pointer
-#define LS_RESULT_CODE_MISC					 2	// Misc. error
-#define LS_RESULT_CODE_SIZE					 3	// Size invalid
-#define LS_RESULT_CODE_ACCESS				 4	// Access denied
-#define LS_RESULT_CODE_DESCRIPTOR			 5	// File/socket descriptor invalid
-#define LS_RESULT_CODE_ALLOCATION			 6	// Allocation failure
-#define LS_RESULT_CODE_EARLY_EXIT			 7	// Early exit (e.g. of a read operation)
-#define LS_RESULT_CODE_LOCK					 8	// Lock failure
-#define LS_RESULT_CODE_UNSUPPORTED			 9	// Unsupported operation
-#define LS_RESULT_CODE_DATA					10	// Data invalid
-#define LS_RESULT_CODE_FUNCTION				11	// Function execution within function failed
-#define LS_RESULT_CODE_CLOSE				12	// Close failure
-#define LS_RESULT_CODE_INITIALIZATION		0xD	// Initialization failure
-#define LS_RESULT_CODE_TIMEOUT				14	// Operation timed-out
-#define LS_RESULT_CODE_CHECK				15	// Check failure
-#define LS_RESULT_CODE_WRITE				16	// Write failure
-#define LS_RESULT_CODE_READ					17	// Read failure
+#define LS_RESULT_CODE_SUCCESS				0x0000	// Success, no error
+#define LS_RESULT_CODE_NULL					0x0001	// Null pointer
+#define LS_RESULT_CODE_MISC					0x0002	// Misc. error
+#define LS_RESULT_CODE_SIZE					0x0003	// Size invalid
+#define LS_RESULT_CODE_ACCESS				0x0004	// Access denied
+#define LS_RESULT_CODE_DESCRIPTOR			0x0005	// File/socket descriptor invalid
+#define LS_RESULT_CODE_ALLOCATION			0x0006	// Allocation failure
+#define LS_RESULT_CODE_EARLY_EXIT			0x0007	// Early exit (e.g. of a read operation)
+#define LS_RESULT_CODE_LOCK					0x0008	// Lock failure
+#define LS_RESULT_CODE_UNSUPPORTED			0x0009	// Unsupported operation
+#define LS_RESULT_CODE_DATA					0x000A	// Data invalid
+#define LS_RESULT_CODE_FUNCTION				0x000B	// Function execution within function failed
+#define LS_RESULT_CODE_CLOSE				0x000C	// Close failure
+#define LS_RESULT_CODE_INITIALIZATION		0x000D	// Initialization failure
+#define LS_RESULT_CODE_TIMEOUT				0x000E	// Operation timed-out
+#define LS_RESULT_CODE_CHECK				0x000F	// Check failure
+#define LS_RESULT_CODE_WRITE				0x0010	// Write failure
+#define LS_RESULT_CODE_READ					0x0011	// Read failure
 
 
 #define LS_RESULT_SA(_system, _critical, _code, _param, _success)	\
@@ -107,6 +107,9 @@ typedef struct ls_result {		// bitrg
 #define LS_RESULT_ERROR_PARAM(code,param)	LS_RESULT(true,false,(code),(param),false)
 #define LS_RESULT_ERROR_CRIT(code)			LS_RESULT(true,true,(code),0,false)
 #define LS_RESULT_ERROR_CRIT_PARAM(code,param) LS_RESULT(true,true,(code),(param),false)
+
+#define LS_RESULT_CHECK_NULL(var, param)	if (!(var)) { return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, (param)); }
+#define LS_RESULT_CHECK_SIZE(var, param)	if (!(var)) { return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, (param)); }
 
 
 #endif

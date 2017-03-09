@@ -39,9 +39,12 @@
 #include <libserum/debug/memdump.h>
 #include <libserum/core/time.h>
 #include <libserum/core/bits.h>
+#include <libserum/core/varsize.h>
 #include <libserum/crypto/prng/device.h>
 #include <libserum/crypto/prng/isaac.h>
 #include <libserum/core/memory.h>
+
+#include <inttypes.h>
 
 
 static uint64_t testexpr(const char *desc, char expr_true, char expr_false, uint64_t expr) {
@@ -51,6 +54,19 @@ static uint64_t testexpr(const char *desc, char expr_true, char expr_false, uint
 
 
 int main(int argc, char *argv[], char *env[]) {
+	uint64_t value = 1234456789;
+	uint8_t data[10];
+	size_t size;
+	ls_memdump(data, sizeof(data));
+	if (ls_varsize_get_bytes(data, &size, value).success) {
+        uint64_t value2 = 0;
+        if (ls_varsize_get_value(&value2, data).success) {
+			ls_memdump(data, sizeof(data));
+            printf("org = %"PRIu64"\nnew = %"PRIu64"\n", value, value2);
+        }
+	}
+	return 0;
+
 #if (!LS_WINDOWS)
 	void *next = &&lbl_rot;
 #endif
@@ -80,7 +96,7 @@ lbl_bitmask: {
 
 lbl_time: {
 #if (!LS_WINDOWS)
-		next = &&lbl_iso9797;
+		//next = &&lbl_iso9797;
 #endif
 
 		testexpr("ls_rdtsc", 'y', 'n', (ls_rdtsc() != 0));
