@@ -26,20 +26,19 @@
 ********************************************************************************
 **
 **  Notes:
-**    -
+**    Template file, used by sha2.c
 **
 */
 
 
-#if ((defined(LS_SHA2_224) || defined(LS_SHA2_256)) && !defined(LS_SHA2_32))
-#	define LS_SHA2_32
-#elif ((defined(LS_SHA2_384) || defined(LS_SHA2_512)) && !defined(LS_SHA2_64))
-#	define LS_SHA2_64
+#if ((defined(LS_SHA2_224) || defined(LS_SHA2_256)) && !defined(SHA2_32))
+#	define SHA2_32
+#elif ((defined(LS_SHA2_384) || defined(LS_SHA2_512)) && !defined(SHA2_64))
+#	define SHA2_64
 #endif
 
-
-#ifdef BITS
-#undef BITS
+#ifdef SHA2_BITS
+#undef SHA2_BITS
 #endif
 
 #ifdef SHA2_CTX
@@ -54,27 +53,50 @@
 #undef SHA2_CLEAR
 #endif
 
+#ifdef SHA2_FINISH
+#undef SHA2_FINISH
+#endif
+
+#ifdef SHA2_DIGEST_SIZE
+#undef SHA2_DIGEST_SIZE
+#endif
+
 #if (defined(LS_SHA2_224))
-
+#	define SHA2_BITS						32
+#	define SHA2_CTX							struct ls_sha2_32
+#	define SHA2_INIT						ls_sha2_224_init
+#	define SHA2_CLEAR						ls_sha2_224_clear
+#	define SHA2_FINISH						ls_sha2_224_finish
+#	define SHA2_DIGEST_SIZE					28
 #elif (defined(LS_SHA2_256))
-#define SHA2_CTX							struct ls_sha2_32
-#define SHA2_INIT							ls_sha2_256_init
-#define SHA2_CLEAR							ls_sha2_256_clear
+#	define SHA2_BITS						32
+#	define SHA2_CTX							struct ls_sha2_32
+#	define SHA2_INIT						ls_sha2_256_init
+#	define SHA2_CLEAR						ls_sha2_256_clear
+#	define SHA2_FINISH						ls_sha2_256_finish
+#	define SHA2_DIGEST_SIZE					32
 #elif (defined(LS_SHA2_384))
-
+#	define SHA2_BITS						64
+#	define SHA2_CTX							struct ls_sha2_64
+#	define SHA2_INIT						ls_sha2_384_init
+#	define SHA2_CLEAR						ls_sha2_384_clear
+#	define SHA2_FINISH						ls_sha2_384_finish
+#	define SHA2_DIGEST_SIZE					48
 #elif (defined(LS_SHA2_512))
-#define SHA2_CTX							struct ls_sha2_64
-#define SHA2_INIT							ls_sha2_512_init
-#define SHA2_CLEAR							ls_sha2_512_clear
+#	define SHA2_BITS						64
+#	define SHA2_CTX							struct ls_sha2_64
+#	define SHA2_INIT						ls_sha2_512_init
+#	define SHA2_CLEAR						ls_sha2_512_clear
+#	define SHA2_DIGEST_SIZE					64
+#endif
+
+#ifdef SHA2_BITS
+#define SHA2_BYTES							(SHA2_BITS / 8)
 #endif
 
 
-#if (defined(LS_SHA2_32) && !defined(LS_SHA2_32_C))
-#	define LS_SHA2_32_C
-
-struct ls_sha2_32 {
-	uint32_t h[8];
-};
+#if (defined(SHA2_32) && !defined(SHA2_32_C))
+#	define SHA2_32_C
 
 static const uint32_t constants32[] = {
 	0x428A2F98U, 0x71374491U, 0xB5C0FBCFU, 0xE9B5DBA5U,
@@ -130,12 +152,8 @@ static const uint32_t constants32[] = {
 #	undef SHA2_ROTR_10
 #	undef SHA2_SHR_1
 #	undef SHA2_SHR_2
-#elif (defined(LS_SHA2_64) && !defined(LS_SHA2_64_C))
-#	define LS_SHA2_64_C
-
-struct ls_sha2_64 {
-	uint64_t h[8];
-};
+#elif (defined(SHA2_64) && !defined(SHA2_64_C))
+#	define SHA2_64_C
 
 static const uint64_t constants64[] = {
 	0x428A2F98D728AE22U, 0x7137449123EF65CDU, 0xB5C0FBCFEC4D3B2FU, 0xE9B5DBA58189DBBCU,
@@ -198,19 +216,6 @@ static const uint64_t constants64[] = {
 #endif
 
 
-/*
-#if (defined(LS_SHA2_224))
-
-#elif (defined(LS_SHA2_256))
-
-#elif (defined(LS_SHA2_384))
-
-#elif (defined(LS_SHA2_512))
-
-#endif
-*/
-
-
 #ifdef SHA2_CTX
 ls_result_t
 SHA2_CLEAR(SHA2_CTX *ctx) {
@@ -264,10 +269,36 @@ SHA2_INIT(SHA2_CTX *ctx) {
 	ctx->h[5] = 0x9B05688C2B3E6C1FU;
 	ctx->h[6] = 0x1F83D9ABFB41BD6BU;
 	ctx->h[7] = 0x5BE0CD19137E2179U;
+#else
+#	error SHA-2-?
 #endif
 
 	return LS_RESULT_SUCCESS;
 }
 
-// TODO: SHA2_FINISH
+
+// TODO: expand finish with SHA2_NATIVE_TYPE block[16] and add size thingy
+ls_result_t
+SHA2_FINISH(SHA2_CTX *ctx, uint8_t digest[SHA2_DIGEST_SIZE]) {
+	LS_RESULT_CHECK_NULL(ctx, 1);
+	LS_RESULT_CHECK_NULL(digest, 2);
+
+	uint_fast8_t i;
+	for (i = SHA2_BYTES; i--;) {                                                           	// 224 256 384 512
+		digest[i                   ] = ((ctx->h[0] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
+		digest[i + (SHA2_BYTES * 1)] = ((ctx->h[1] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
+		digest[i + (SHA2_BYTES * 2)] = ((ctx->h[2] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
+		digest[i + (SHA2_BYTES * 3)] = ((ctx->h[3] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
+		digest[i + (SHA2_BYTES * 4)] = ((ctx->h[4] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
+		digest[i + (SHA2_BYTES * 5)] = ((ctx->h[5] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
+#if (defined(LS_SHA2_224) || defined(LS_SHA2_256) || defined(LS_SHA2_512))
+		digest[i + (SHA2_BYTES * 6)] = ((ctx->h[6] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   n   y
+#endif
+#if (defined(LS_SHA2_256) || defined(LS_SHA2_512))
+		digest[i + (SHA2_BYTES * 7)] = ((ctx->h[7] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  n   y   n   y
+#endif
+	}
+
+	return LS_RESULT_SUCCESS;
+}
 #endif

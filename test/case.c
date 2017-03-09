@@ -26,69 +26,49 @@
 ********************************************************************************
 **
 **  Notes:
-**    Template file, used by sha2-template.c
+**    -
 **
 */
 
+#include "./case.h"
 
-#ifdef SHA2_UPDATE
-ls_result_t
-SHA2_UPDATE(SHA2_CTX *ctx, SHA2_NATIVE_TYPE block[16]) {
-	LS_RESULT_CHECK_NULL(ctx, 1);
-	LS_RESULT_CHECK_NULL(block, 2);
 
-	register SHA2_NATIVE_TYPE
-		a = ctx->h[0],
-		b = ctx->h[1],
-		c = ctx->h[2],
-		d = ctx->h[3],
-		e = ctx->h[4],
-		f = ctx->h[5],
-		g = ctx->h[6],
-		h = ctx->h[7],
-		s0, s1, ch, temp1, temp2, maj;
-
-	SHA2_NATIVE_TYPE w[SHA2_WR];
-
-	register uint_fast16_t i;
-
-	for (i = 16; i--;) {
-		w[i] = block[i];
+int ls_testcase_init(ls_testcase_t *ctx, void *data, void(*f_init)(void *data), int(*f_perform)(void *data, void *input, size_t input_size), void(*f_clear)(void *data)) {
+	if (!ctx || !f_init || !f_perform || !f_clear) {
+		return -1;
 	}
 
-	for (i = 16; i < SHA2_WR; ++i) {
-		s0 = (SHA2_ROTR(w[(i - 15)], SHA2_ROTR_1) ^ SHA2_ROTR(w[(i - 15)], SHA2_ROTR_2) ^ (w[(i - 15)] >> SHA2_SHR_1));
-		s1 = (SHA2_ROTR(w[(i -  2)], SHA2_ROTR_3) ^ SHA2_ROTR(w[(i -  2)], SHA2_ROTR_4) ^ (w[(i -  2)] >> SHA2_SHR_2));
-		w[i] = (w[(i - 16)] + s0 + w[(i - 7)] + s1);
-	}
+	ctx->d_data = data;
+	ctx->f_init = f_init;
+	ctx->f_perform = f_perform;
+	ctx->f_clear = f_clear;
 
-	for (i = 0; i < SHA2_WR; ++i) {
-		s1 = (SHA2_ROTR(e, SHA2_ROTR_5) ^ SHA2_ROTR(e, SHA2_ROTR_6) ^ SHA2_ROTR(e, SHA2_ROTR_7));
-		ch = ((e & f) ^ (~(e)& g));
-		temp1 = (h + s1 + ch + SHA2_CONSTANTS[i] + w[i]);
-		s0 = (SHA2_ROTR(a, SHA2_ROTR_8) ^ SHA2_ROTR(a, SHA2_ROTR_9) ^ SHA2_ROTR(a, SHA2_ROTR_10));
-		maj = ((a & b) ^ (a & c) ^ (b & c));
-		temp2 = (s0 + maj);
-
-		h = g;
-		g = f;
-		f = e;
-		e = (d + temp1);
-		d = c;
-		c = b;
-		b = a;
-		a = (temp1 + temp2);
-   }
-
-	ctx->h[0] += a;
-	ctx->h[1] += b;
-	ctx->h[2] += c;
-	ctx->h[3] += d;
-	ctx->h[4] += e;
-	ctx->h[5] += f;
-	ctx->h[6] += g;
-	ctx->h[7] += h;
-
-	return LS_RESULT_SUCCESS;
+	return 0;
 }
-#endif
+
+int ls_testcase_clear(ls_testcase_t *ctx) {
+	if (!ctx) {
+		return -1;
+	}
+
+	ctx->d_data = NULL;
+	ctx->f_init = NULL;
+	ctx->f_perform = NULL;
+	ctx->f_clear = NULL;
+
+	return 0;
+}
+
+int ls_testcase_run(ls_testcase_t *ctx, void *input, size_t input_size) {
+	if (!ctx || !ctx->d_data || !ctx->f_init || !ctx->f_perform || !ctx->f_clear) {
+		return -1;
+	}
+
+	int result;
+
+	ctx->f_init(ctx->d_data);
+	result = ctx->f_perform(ctx->d_data, input, input_size);
+	ctx->f_clear(ctx->d_data);
+
+	return result;
+}

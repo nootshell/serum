@@ -37,10 +37,47 @@
 #include "../../core/stdincl.h"
 
 
+struct ls_sha2_32 {
+	uint32_t h[8];
+};
+
+struct ls_sha2_64 {
+	uint64_t h[8];
+};
+
 typedef struct ls_sha2_32 ls_sha2_224_t;
 typedef struct ls_sha2_32 ls_sha2_256_t;
 typedef struct ls_sha2_64 ls_sha2_384_t;
 typedef struct ls_sha2_64 ls_sha2_512_t;
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_result_t ls_sha2_224_init(ls_sha2_224_t *ctx);
+	LSAPI ls_result_t ls_sha2_224_clear(ls_sha2_224_t *ctx);
+	LSAPI ls_result_t ls_sha2_224_update(ls_sha2_224_t *ctx, uint32_t block[16]);
+	LSAPI ls_result_t ls_sha2_224_finish(ls_sha2_224_t *ctx, uint8_t digest[28]);
+
+	LSAPI ls_result_t ls_sha2_256_init(ls_sha2_256_t *ctx);
+	LSAPI ls_result_t ls_sha2_256_clear(ls_sha2_256_t *ctx);
+	LSAPI ls_result_t ls_sha2_256_update(ls_sha2_256_t *ctx, uint32_t block[16]);
+	LSAPI ls_result_t ls_sha2_256_finish(ls_sha2_256_t *ctx, uint8_t digest[32]);
+
+	LSAPI ls_result_t ls_sha2_384_init(ls_sha2_384_t *ctx);
+	LSAPI ls_result_t ls_sha2_384_clear(ls_sha2_384_t *ctx);
+	LSAPI ls_result_t ls_sha2_384_update(ls_sha2_384_t *ctx, uint64_t block[16]);
+	LSAPI ls_result_t ls_sha2_384_finish(ls_sha2_384_t *ctx, uint8_t digest[48]);
+
+	LSAPI ls_result_t ls_sha2_512_init(ls_sha2_512_t *ctx);
+	LSAPI ls_result_t ls_sha2_512_clear(ls_sha2_512_t *ctx);
+	LSAPI ls_result_t ls_sha2_512_update(ls_sha2_512_t *ctx, uint64_t block[16]);
+	LSAPI ls_result_t ls_sha2_512_finish(ls_sha2_512_t *ctx, uint8_t digest[64]);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif
