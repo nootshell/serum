@@ -93,7 +93,7 @@ typedef struct ls_result {		// bitrg
 #	include "../debug/log.h"
 #	include "./time.h"
 	static ls_result_t LS_ATTR_USED __LS_RESULT_PRINT(ls_result_t ret, char const *const func, char const *const file, uint32_t const line) {
-		ls_logf("%llu %s %s:%lu %08X (%u, %u, %u, %u, %u)\n", ls_nanos(), func, file, line, (*(uint32_t*)(&ret)), ret.system, ret.critical, ret.code, ret.param, ret.success);
+		ls_logf("%llu %s %s:%lu %08X (" LS_RESULT_PRINTF_FORMAT ")\n", ls_nanos(), func, file, line, (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret));
 		return ret;
 	}
 #	define LS_RESULT(_system, _critical, _code, _param, _success)	\

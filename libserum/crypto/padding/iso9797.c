@@ -67,7 +67,7 @@ ls_pad_iso9797_zero_block(void *const out, void *const in, const size_t inputsz,
 
 
 ls_result_t
-ls_pad_iso9797_zero_offset(size_t *const out, const void *const in, const size_t size) {
+ls_pad_iso9797_zero_offset(size_t *const out, const void *const in, size_t size) {
 	if (!out) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
@@ -79,14 +79,13 @@ ls_pad_iso9797_zero_offset(size_t *const out, const void *const in, const size_t
 	}
 
 	const uint8_t *ptr = in;
-	size_t sz = size;
 
 	do {
-		if (ptr[--sz]) {
-			*out = (sz + 1);
+		if (ptr[--size]) {
+			*out = (size + 1);
 			return LS_RESULT_SUCCESS;
 		}
-	} while (sz);
+	} while (size);
 
 #if (LS_ISO9797M1_ALLOW_ALL_ZERO)
 	*out = 0;

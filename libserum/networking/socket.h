@@ -101,7 +101,7 @@ extern "C" {
 	LSAPI uint32_t ls_socket_acceptfd(const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen);
 	LSAPI ls_result_t ls_socket_accept(ls_socket_t *const out, const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen);
 
-	LSAPI ls_result_t ls_socket_write(size_t *const out_size, const ls_socket_t *const ctx, const void *const in, const size_t size);
+	LSAPI ls_result_t ls_socket_write(size_t *const out_size, const ls_socket_t *const ctx, const void *const in, size_t size);
 	LSAPI ls_result_t ls_socket_write_str(size_t *const out, const ls_socket_t *const ctx, const char *const str);
 
 	LSAPI ls_result_t ls_socket_read(size_t *const out_size, const ls_socket_t *const ctx, void *const out, const size_t size);
