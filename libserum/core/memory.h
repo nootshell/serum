@@ -30,14 +30,23 @@
 **
 */
 
-#ifndef __LS_CORE_MACRO_H
-#define __LS_CORE_MACRO_H
+#ifndef __LS_CORE_MEMORY_H
+#define __LS_CORE_MEMORY_H
 
 
-#define _MACRO_STRINGIFY(x)					#x
-#define MACRO_STRINGIFY(x)					_MACRO_STRINGIFY(x)
+#include "./macro.h"
+#include "./detect_os.h"
 
-#define MACRO_CONCAT(x, y)					x##y
+#if (LS_WINDOWS)
+#	include <malloc.h>
+#	define stacksizeof(name)				MACRO_CONCAT(_, name)##_sizeof
+#	define stackalloc(name, size)			*name = _malloca((size)); size_t stacksizeof(name) = ((size))
+#	define stackfree(name)					_freea(name); name = NULL
+#else
+#	define stacksizeof(name)				sizeof((name))
+#	define stackalloc(name, size)			name[(size)]
+#	define stackfree(name)
+#endif
 
 
 #endif

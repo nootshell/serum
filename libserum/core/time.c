@@ -32,10 +32,11 @@
 
 #define FILE_PATH							"core/time.c"
 
-#include <time.h>
 #include "./time.h"
 #include "./detect_os.h"
 #include "./detect_platform.h"
+#include "./intrinsics.h"
+#include <time.h>
 
 
 ID("time related functionality");
