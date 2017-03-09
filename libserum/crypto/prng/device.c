@@ -58,16 +58,11 @@ ID("PRNG: device as source");
 
 ls_result_t
 ls_prng_device_init(ls_prng_device_t *const device, const char *const file, const size_t buffer_size) {
-	if (!device) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
-	}
-
-	if (!file) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);
-	}
+	LS_RESULT_CHECK_NULL(device, 1);
+	LS_RESULT_CHECK_NULL(file, 2);
 
 	if (access(file, (F_OK|R_OK)) != 0) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_ACCESS, 1);
+		return LS_RESULT_ERROR(LS_RESULT_CODE_ACCESS);
 	}
 
 	if (!(device->fp = fopen(file, "r"))) {
