@@ -10,6 +10,7 @@
 !.editorconfig
 !*.sh
 !*.md
+!*.kdev4
 
 # Visual Studio on the other hand, doesn't give a shit.
 bin

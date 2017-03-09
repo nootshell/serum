@@ -34,6 +34,8 @@
 
 #include "./socket.h"
 #include "../core/ptrarithmetic.h"
+#include "../core/time.h"
+#include "../debug/log.h"
 #include <string.h>
 
 
@@ -405,7 +407,7 @@ ls_socket_accept(ls_socket_t *const out, const ls_socket_t *const ctx, struct so
 	}
 
 	if (HAS_FLAG(ctx->flags, LS_SOCKET_ASYNC_CHILDREN)) {
-        return ls_socket_set_option(out, LS_SO_ASYNC, 1);
+		return ls_socket_set_option(out, LS_SO_ASYNC, 1);
 	}
 
 	return LS_RESULT_SUCCESS;

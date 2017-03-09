@@ -33,11 +33,12 @@
 #define FILE_PATH							"crypto/hashing/sha2.c"
 
 #include "./sha2.h"
+#include <string.h>
 
 
-/*#define LS_SHA2_224
+#define LS_SHA2_224
 #include "./sha2-template.c"
-#undef LS_SHA2_224*/
+#undef LS_SHA2_224
 
 
 #define LS_SHA2_256
@@ -45,9 +46,9 @@
 #undef LS_SHA2_256
 
 
-/*#define LS_SHA2_384
+#define LS_SHA2_384
 #include "./sha2-template.c"
-#undef LS_SHA2_384*/
+#undef LS_SHA2_384
 
 
 #define LS_SHA2_512

@@ -30,7 +30,15 @@
 **
 */
 
-#include <stdint.h>
+#include <stdio.h>
+
+int main(int argc, char *argv[], char *env[]) {
+	puts("TODO: some reasonable testing");
+	return 0;
+}
+
+
+/*#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -59,11 +67,11 @@ int main(int argc, char *argv[], char *env[]) {
 	size_t size;
 	ls_memdump(data, sizeof(data));
 	if (ls_varsize_get_bytes(data, &size, value).success) {
-        uint64_t value2 = 0;
-        if (ls_varsize_get_value(&value2, data).success) {
+		uint64_t value2 = 0;
+		if (ls_varsize_get_value(&value2, data).success) {
 			ls_memdump(data, sizeof(data));
-            printf("org = %"PRIu64"\nnew = %"PRIu64"\n", value, value2);
-        }
+			printf("org = %"PRIu64"\nnew = %"PRIu64"\n", value, value2);
+		}
 	}
 	return 0;
 
@@ -192,3 +200,4 @@ lbl_end:
 	fgetc(stdin);
 	return 0;
 }
+*/
