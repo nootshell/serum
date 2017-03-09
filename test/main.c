@@ -41,6 +41,7 @@
 #include <libserum/core/bits.h>
 #include <libserum/crypto/prng/device.h>
 #include <libserum/crypto/prng/isaac.h>
+#include <libserum/core/memory.h>
 
 
 static uint64_t testexpr(const char *desc, char expr_true, char expr_false, uint64_t expr) {
@@ -86,24 +87,36 @@ lbl_time: {
 		testexpr("ls_nanos", 'y', 'n', (ls_nanos() != 0));
 	}
 
-/*lbl_iso9797: {
+lbl_iso9797: {
 #if (!LS_WINDOWS)
 		next = &&lbl_prng_device;
 #endif
 
 		size_t size;
-		uint8_t input[55], buffer[size = ls_pad_iso9797_size(16, sizeof(input))], zeroed[sizeof(buffer) - sizeof(input)];
-		memset(input, 0x69, sizeof(input));
+
+		uint8_t stackalloc(input, 55);
+		uint8_t stackalloc(buffer, (size = ls_pad_iso9797_size(16, stacksizeof(input))));
+		uint8_t stackalloc(zeroed, stacksizeof(buffer) - stacksizeof(input));
+
+		memset(input, 0x69, stacksizeof(input));
 		memset(buffer, 0xBA, size);
-		memset(zeroed, 0, sizeof(zeroed));
+		memset(zeroed, 0, stacksizeof(zeroed));
 
-		ls_pad_iso9797_ex(buffer, input, sizeof(input), size);
+		ls_memdump(input, stacksizeof(input));
+		ls_memdump(buffer, size);
 
-		testexpr("ls_pad_iso9797_ex", 'y', 'n', (memcmp(input, buffer, sizeof(input)) == 0) && (buffer[sizeof(input)] == 0x80) && (memcmp(buffer + sizeof(input) + 1, zeroed, sizeof(buffer) - sizeof(input) - 1) == 0));
+		ls_pad_iso9797_ex(buffer, input, stacksizeof(input), size);
+
+		ls_memdump(buffer, size);
+
+		testexpr("ls_pad_iso9797_ex", 'y', 'n', (memcmp(input, buffer, stacksizeof(input)) == 0) && (buffer[stacksizeof(input)] == 0x80) && (memcmp(buffer + stacksizeof(input) + 1, zeroed, stacksizeof(buffer) - stacksizeof(input) - 1) == 0));
 
 		size_t offset = 0;
-		testexpr("ls_pad_iso9797_offset", 'y', 'n', (ls_pad_iso9797_offset(&offset, buffer, size).success && (offset == sizeof(input))));
-	}*/
+		testexpr("ls_pad_iso9797_offset", 'y', 'n', (ls_pad_iso9797_offset(&offset, buffer, size).success && (offset == stacksizeof(input))));
+
+		stackfree(buffer);
+		stackfree(zeroed);
+	}
 
 lbl_prng_device: {
 #if (!LS_WINDOWS)

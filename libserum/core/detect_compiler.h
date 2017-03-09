@@ -77,7 +77,7 @@
 #		define LS_ATTR_THREAD				__thread
 #		define LS_ATTR_USED					__attribute__((used))
 
-#		define LS_COMPILER_MESG(msg)		_Pragma(STRINGIFY_MACRO(message msg))
+#		define LS_COMPILER_MESG(msg)		_Pragma(MACRO_STRINGIFY(message msg))
 #	elif (defined(__INTEL_COMPILER) || defined(__ICL) || defined(__ICC))
 #		define LS_COMPILER					LS_COMPILER_ID_INTEL
 #		define LS_ICL						1

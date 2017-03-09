@@ -35,8 +35,6 @@
 #include "./socket.h"
 #include "../core/ptrarithmetic.h"
 #include <string.h>
-#include <netdb.h>
-#include <unistd.h>
 
 
 #define STOP_TIMEOUT_INTERVAL				250
@@ -51,6 +49,8 @@ static WSADATA wsaData;
 static size_t num_init_sockets = 0;
 #else
 #	include <fcntl.h>
+#	include <netdb.h>
+#	include <unistd.h>
 #endif
 
 

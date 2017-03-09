@@ -63,7 +63,7 @@
 #			define LS_ARCH_ARM_VERSION		__ARM_ARCH
 #		endif
 #		if (defined(LS_ARCH_ARM_VERSION))
-#			define LS_ARCH_STRING			"ARMv"STRINGIFY_MACRO(LS_ARCH_ARM_VERSION)
+#			define LS_ARCH_STRING			"ARMv"MACRO_STRINGIFY(LS_ARCH_ARM_VERSION)
 #		else
 #			define LS_ARCH_STRING			"ARM"
 #		endif
