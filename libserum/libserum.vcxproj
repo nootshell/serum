@@ -169,6 +169,7 @@
     <ClInclude Include="core\stdincl.h" />
     <ClInclude Include="core\time.h" />
     <ClInclude Include="crypto\enum.h" />
+    <ClInclude Include="crypto\hashing\sha2.h" />
     <ClInclude Include="crypto\padding\iso9797.h" />
     <ClInclude Include="crypto\prng\device.h" />
     <ClInclude Include="crypto\prng\isaac.h" />
@@ -179,6 +180,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\time.c" />
+    <ClCompile Include="crypto\hashing\sha2-template.c" />
+    <ClCompile Include="crypto\hashing\sha2.c" />
     <ClCompile Include="crypto\padding\iso9797.c" />
     <ClCompile Include="crypto\prng\device.c" />
     <ClCompile Include="crypto\prng\isaac.c" />
