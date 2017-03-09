@@ -50,16 +50,22 @@
 #undef SHA2_INIT
 #endif
 
+#ifdef SHA2_CLEAR
+#undef SHA2_CLEAR
+#endif
+
 #if (defined(LS_SHA2_224))
 
 #elif (defined(LS_SHA2_256))
 #define SHA2_CTX							struct ls_sha2_32
 #define SHA2_INIT							ls_sha2_256_init
+#define SHA2_CLEAR							ls_sha2_256_clear
 #elif (defined(LS_SHA2_384))
 
 #elif (defined(LS_SHA2_512))
 #define SHA2_CTX							struct ls_sha2_64
 #define SHA2_INIT							ls_sha2_512_init
+#define SHA2_CLEAR							ls_sha2_512_clear
 #endif
 
 
@@ -88,6 +94,42 @@ static const uint32_t constants32[] = {
 	0x748F82EEU, 0x78A5636FU, 0x84C87814U, 0x8CC70208U,
 	0x90BEFFFAU, 0xA4506CEBU, 0xBEF9A3F7U, 0xC67178F2U
 };
+
+#	define SHA2_CONSTANTS					constants32
+#	define SHA2_UPDATE						ls_sha2_32_update
+#	define SHA2_NATIVE_TYPE					uint32_t
+#	define SHA2_WR							64
+#	define SHA2_ROTR						LS_ROTR32
+#	define SHA2_ROTR_1						7
+#	define SHA2_ROTR_2						18
+#	define SHA2_ROTR_3						17
+#	define SHA2_ROTR_4						19
+#	define SHA2_ROTR_5						6
+#	define SHA2_ROTR_6						11
+#	define SHA2_ROTR_7						25
+#	define SHA2_ROTR_8						2
+#	define SHA2_ROTR_9						13
+#	define SHA2_ROTR_10						22
+#	define SHA2_SHR_1						3
+#	define SHA2_SHR_2						10
+#	include "./sha2-template-update.c"
+#	undef SHA2_CONSTANTS
+#	undef SHA2_UPDATE
+#	undef SHA2_NATIVE_TYPE
+#	undef SHA2_WR
+#	undef SHA2_ROTR
+#	undef SHA2_ROTR_1
+#	undef SHA2_ROTR_2
+#	undef SHA2_ROTR_3
+#	undef SHA2_ROTR_4
+#	undef SHA2_ROTR_5
+#	undef SHA2_ROTR_6
+#	undef SHA2_ROTR_7
+#	undef SHA2_ROTR_8
+#	undef SHA2_ROTR_9
+#	undef SHA2_ROTR_10
+#	undef SHA2_SHR_1
+#	undef SHA2_SHR_2
 #elif (defined(LS_SHA2_64) && !defined(LS_SHA2_64_C))
 #	define LS_SHA2_64_C
 
@@ -117,6 +159,42 @@ static const uint64_t constants64[] = {
 	0x28DB77F523047D84U, 0x32CAAB7B40C72493U, 0x3C9EBE0A15C9BEBCU, 0x431D67C49C100D4CU,
 	0x4CC5D4BECB3E42B6U, 0x597F299CFC657E2AU, 0x5FCB6FAB3AD6FAECU, 0x6C44198C4A475817U
 };
+
+#	define SHA2_CONSTANTS					constants64
+#	define SHA2_UPDATE						ls_sha2_64_update
+#	define SHA2_NATIVE_TYPE					uint64_t
+#	define SHA2_WR							80
+#	define SHA2_ROTR						LS_ROTR64
+#	define SHA2_ROTR_1						1
+#	define SHA2_ROTR_2						8
+#	define SHA2_ROTR_3						19
+#	define SHA2_ROTR_4						61
+#	define SHA2_ROTR_5						14
+#	define SHA2_ROTR_6						18
+#	define SHA2_ROTR_7						41
+#	define SHA2_ROTR_8						28
+#	define SHA2_ROTR_9						34
+#	define SHA2_ROTR_10						39
+#	define SHA2_SHR_1						7
+#	define SHA2_SHR_2						6
+#	include "./sha2-template-update.c"
+#	undef SHA2_CONSTANTS
+#	undef SHA2_UPDATE
+#	undef SHA2_NATIVE_TYPE
+#	undef SHA2_WR
+#	undef SHA2_ROTR
+#	undef SHA2_ROTR_1
+#	undef SHA2_ROTR_2
+#	undef SHA2_ROTR_3
+#	undef SHA2_ROTR_4
+#	undef SHA2_ROTR_5
+#	undef SHA2_ROTR_6
+#	undef SHA2_ROTR_7
+#	undef SHA2_ROTR_8
+#	undef SHA2_ROTR_9
+#	undef SHA2_ROTR_10
+#	undef SHA2_SHR_1
+#	undef SHA2_SHR_2
 #endif
 
 
@@ -135,10 +213,20 @@ static const uint64_t constants64[] = {
 
 #ifdef SHA2_CTX
 ls_result_t
-SHA2_INIT(SHA2_CTX *ctx) {
+SHA2_CLEAR(SHA2_CTX *ctx) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
 
 	memset(ctx, 0, sizeof(*ctx));
+
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+SHA2_INIT(SHA2_CTX *ctx) {
+	LS_RESULT_CHECK_NULL(ctx, 1);
+
+	SHA2_CLEAR(ctx);
 
 #if (defined(LS_SHA2_224))
 	ctx->h[0] = 0xC1059ED8U;
@@ -180,4 +268,6 @@ SHA2_INIT(SHA2_CTX *ctx) {
 
 	return LS_RESULT_SUCCESS;
 }
+
+// TODO: SHA2_FINISH
 #endif
