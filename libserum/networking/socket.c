@@ -56,15 +56,6 @@ static size_t num_init_sockets = 0;
 #endif
 
 
-struct ls_socket {
-	struct addrinfo *addrinfo;
-	struct addrinfo *selected;
-	uint32_t fd;
-	uint32_t flags;
-	uint32_t mtu;
-};
-
-
 ID("universal socket");
 
 
@@ -73,8 +64,8 @@ static inline get_mtu() {
 	return 4096;
 }
 
-uint32_t
-static inline validate_sockfd(int fd, ls_bool *const valid) {
+ls_sockfd_t
+static inline validate_sockfd(ls_sockfd_t fd, ls_bool *const valid) {
 #if (LS_WINDOWS)
 	return ((*valid = (fd != INVALID_SOCKET)) ? fd : LS_INVALID_SOCKET);
 #else
@@ -96,13 +87,17 @@ static inline create_socket(ls_socket_t *const ctx, struct addrinfo *const addr)
 }
 
 ls_bool
-static inline accept_socket(uint32_t *const fd, const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen) {
+static inline accept_socket(ls_sockfd_t *const fd, const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen) {
 	ls_bool valid = false;
 
 	*fd = validate_sockfd(
 		accept(ctx->fd, saddr, saddrlen),
 		&valid
 	);
+
+	if (!valid) {
+		perror("accept");
+	}
 
 	return valid;
 }
@@ -207,6 +202,7 @@ ls_socket_clear(ls_socket_t *const ctx) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_UNSUPPORTED);
 	} else if (num_init_sockets == 1) {
 		if (wsaStartup) {
+			ls_log_d("ws2 cleanup");
 			if (WSACleanup() == 0) {
 				wsaStartup = false;
 			} else {
@@ -266,7 +262,11 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 #else
 			LS_COMPILER_WARN("LS_SOCKET_REUSEPORT unavailable: SO_REUSEPORT undefined");
 #endif
-			if (bind(ctx->fd, ptr->ai_addr, ptr->ai_addrlen) == 0) {
+			if (bind(ctx->fd, ptr->ai_addr,
+#if (LS_WINDOWS) // Thanks.
+					 (int)
+#endif
+					 ptr->ai_addrlen) == 0) {
 				if (listen(ctx->fd, SOMAXCONN) == 0) {
 					break;
 				} else {
@@ -276,7 +276,11 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 				ls_log_w(LS_ERRSTR_OPERATION_FAILURE": unable to bind");
 			}
 		} else {
-			if (connect(ctx->fd, ptr->ai_addr, ptr->ai_addrlen) == 0) {
+			if (connect(ctx->fd, ptr->ai_addr,
+#if (LS_WINDOWS) // Thanks.
+						(int)
+#endif
+						ptr->ai_addrlen) == 0) {
 				break;
 			} else {
 				ls_log_w(LS_ERRSTR_OPERATION_FAILURE": unable to connect");
@@ -343,11 +347,14 @@ ls_socket_stop_ex(ls_socket_t *const ctx, const ls_bool force, const uint_fast16
 #else
 #	define SHUTDOWN_FLAGS					SHUT_RDWR
 #endif
-	if (shutdown(ctx->fd, SHUTDOWN_FLAGS) != 0) {
-		if (!force) {
-			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_CLOSE, 1);
-		} else {
-			ls_log_w(LS_ERRSTR_OPERATION_FAILURE": shutdown failed, forcing close");
+	if (!HAS_FLAG(ctx->flags, LS_SOCKET_ACCEPTED)) {
+		ls_log_d("shutdown");
+		if (shutdown(ctx->fd, SHUTDOWN_FLAGS) != 0) {
+			if (!force) {
+				return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_CLOSE, 1);
+			} else {
+				ls_log_w(LS_ERRSTR_OPERATION_FAILURE": shutdown failed, forcing close");
+			}
 		}
 	}
 #undef SHUTDOWN_FLAGS
@@ -362,29 +369,35 @@ ls_socket_stop(ls_socket_t *const ctx, const ls_bool force) {
 
 
 ls_result_t
-ls_socket_fromfd(ls_socket_t *const ctx, const uint32_t fd, const uint32_t flags) {
+ls_socket_fromfd(ls_socket_t *const ctx, const ls_sockfd_t fd, const uint32_t flags) {
 	if (!ctx) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
+	}
+
+	if (ctx->fd == LS_INVALID_SOCKET) {
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_DESCRIPTOR, 1);
 	}
 
 	memset(ctx, 0, sizeof(*ctx));
 
 	ctx->fd = fd;
 	ctx->flags = flags;
+	ctx->mtu = get_mtu();
 
 	return LS_RESULT_SUCCESS;
 }
 
-uint32_t
+ls_sockfd_t
 ls_socket_acceptfd(const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen) {
 	if (!ctx || ctx->fd == LS_INVALID_SOCKET) {
 		return LS_INVALID_SOCKET;
 	}
 
-	uint32_t fd;
+	ls_sockfd_t fd;
 
 	if (!accept_socket(&fd, ctx, saddr, saddrlen)) {
 		ls_log_w(LS_ERRSTR_OPERATION_FAILURE": unable to accept socket");
+		return LS_INVALID_SOCKET;
 	}
 
 	return fd;
@@ -502,7 +515,11 @@ ls_socket_read(size_t *const out_size, const ls_socket_t *const ctx, void *const
 	}
 
 	ssize_t received;
-	if ((received = recv(ctx->fd, out, size, 0)) > 0) {
+	if ((received = recv(ctx->fd, out,
+#if (LS_WINDOWS) // Thanks.
+						(int)
+#endif
+						size, 0)) > 0) {
 		if (out_size) {
 			*out_size = (size_t)received;
 		}
@@ -565,7 +582,13 @@ ls_socket_set_option(ls_socket_t *const ctx, const enum ls_socket_option_type ty
 
 	/* sub-scope for setting timeouts */ {
 		const void *optptr = &value;
-		size_t optsz = sizeof(value);
+
+#if (LS_WINDOWS) // Thanks.
+		int
+#else
+		size_t
+#endif
+		optsz = sizeof(value);
 
 #if (!LS_WINDOWS)
 		struct timeval opttv = { 0 };
