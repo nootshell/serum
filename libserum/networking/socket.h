@@ -71,7 +71,14 @@
 #define LS_SOCKET_END_WRITE					BIT_14
 
 
-typedef struct ls_socket ls_socket_t;
+typedef uintptr_t ls_sockfd_t;
+typedef struct ls_socket {
+	struct addrinfo *addrinfo;
+	struct addrinfo *selected;
+	ls_sockfd_t fd;
+	uint32_t flags;
+	uint32_t mtu;
+} ls_socket_t;
 
 
 enum ls_socket_option_type {
@@ -96,9 +103,9 @@ extern "C" {
 	LSAPI ls_result_t ls_socket_stop_ex(ls_socket_t *const ctx, const ls_bool force, const uint_fast16_t timeout);
 	LSAPI ls_result_t ls_socket_stop(ls_socket_t *const ctx, const ls_bool force);
 
-	LSAPI ls_result_t ls_socket_fromfd(ls_socket_t *const ctx, const uint32_t fd, const uint32_t flags);
+	LSAPI ls_result_t ls_socket_fromfd(ls_socket_t *const ctx, const ls_sockfd_t fd, const uint32_t flags);
 
-	LSAPI uint32_t ls_socket_acceptfd(const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen);
+	LSAPI ls_sockfd_t ls_socket_acceptfd(const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen);
 	LSAPI ls_result_t ls_socket_accept(ls_socket_t *const out, const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen);
 
 	LSAPI ls_result_t ls_socket_write(size_t *const out_size, const ls_socket_t *const ctx, const void *const in, size_t size);
