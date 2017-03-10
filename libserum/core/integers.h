@@ -35,6 +35,7 @@
 
 
 #include <stdint.h>
+#include <stddef.h>
 
 
 #include "./detect_compiler.h"
