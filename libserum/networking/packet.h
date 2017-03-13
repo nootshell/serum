@@ -30,33 +30,31 @@
 **
 */
 
-#define FILE_PATH							"debug/log.c"
-
-#include "./log.h"
-#include "../core/time.h"
-#include <stdio.h>
+#ifndef __LS_NETWORKING_PACKET_H
+#define __LS_NETWORKING_PACKET_H
 
 
-static void print_origin(const char *func, const char *file, const int line) {
-	printf("%llu %s %s:%lu > ", ls_nanos(), func, file, line);
-}
+#include "../core/stdincl.h"
+
+#define LS_PACKET_PAYLOAD					BIT_1
 
 
-// TODO
-void
-_ls_log(const char *func, const char *file, const int line, const char *const str) {
-	print_origin(func, file, line);
-	puts(str);
-}
+typedef struct ls_packet_header {
+	void *value;
+	uint8_t size;
+} ls_packet_header_t;
+
+#define neuk sizeof(ls_packet_header_t)
+
+typedef struct ls_packet {
+	ls_packet_header_t *headers;
+	void *payload;
+	uint32_t payload_size;
+	uint8_t command			: 4;
+	uint8_t header_count	: 4;
+	uint8_t flags;
+	uint8_t __h_alloc_sz;
+} ls_packet_t;
 
 
-// TODO
-void
-_ls_logf(const char *func, const char *file, const int line, const char *const fmt, ...) {
-	va_list vl;
-	va_start(vl, fmt);
-	print_origin(func, file, line);
-	vprintf(fmt, vl);
-	puts("");
-	va_end(vl);
-}
+#endif

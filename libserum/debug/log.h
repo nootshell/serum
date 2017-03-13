@@ -43,13 +43,17 @@
 #include <stdarg.h>
 
 
-#define ls_log_e(s)							ls_log(s)
-#define ls_log_w(s)							ls_log(s)
-#define ls_log_i(s)							ls_log(s)
-#define ls_log_v(s)							ls_log(s)
+#define ls_log(s)							_ls_log(__func__, FILE_PATH, __LINE__, (s))
+#define ls_logf(fmt, ...)					_ls_logf(__func__, FILE_PATH, __LINE__, (fmt), __VA_ARGS__)
+
+
+#define ls_log_e(s)							ls_log("EE " s)
+#define ls_log_w(s)							ls_log("WW " s)
+#define ls_log_i(s)							ls_log("II " s)
+#define ls_log_v(s)							ls_log("VV " s)
 
 #if DEBUG
-#	define ls_log_d(s)						ls_log(s)
+#	define ls_log_d(s)						ls_log("DD " s)
 #else
 #	define ls_log_d(s)
 #endif
@@ -59,8 +63,8 @@
 extern "C" {
 #endif
 
-	void ls_log(const char *const str);
-	void ls_logf(const char *const fmt, ...);
+	LSAPI void _ls_log(const char *func, const char *file, const int line, const char *const str);
+	LSAPI void _ls_logf(const char *func, const char *file, const int line, const char *const fmt, ...);
 
 #ifdef __cplusplus
 }
