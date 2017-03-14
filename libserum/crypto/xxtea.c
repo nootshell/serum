@@ -57,12 +57,12 @@ ID("XXTEA implementation");
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 3);	\
 	}															\
 																\
-	size_t n = (size >> 2);										\
+	size_t n = (size >> 2), p;									\
 	size_t nm1 = (n - 1);										\
 																\
 	register uint32_t a, b, sum;								\
-	uint_fast16_t p, e, rounds = (6 + (52 / n));				\
-	a = b = sum = p = e = 0;									\
+	uint_fast16_t e, rounds = (uint_fast16_t)(6 + (52 / n));	\
+	p = a = b = sum = e = 0;									\
 																\
 	uint32_t *const ptr = (uint32_t *const)LS_SELECT_IO_PTR_WCPY(out, in, size); \
 																\

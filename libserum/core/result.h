@@ -40,15 +40,15 @@
 
 
 typedef struct ls_result {		// bitrg
-	uint32_t system		: 1;	// 00-01
-	uint32_t critical	: 1;	// 01-02
-	uint32_t _reserved1	: 6;	// 02-08
+	uint32_t system : 1;	// 00-01
+	uint32_t critical : 1;	// 01-02
+	uint32_t _reserved1 : 6;	// 02-08
 
-	uint32_t code		: 16;	// 08-24
+	uint32_t code : 16;	// 08-24
 
-	uint32_t param      : 4;	// 24-28
-	uint32_t _reserved2	: 3;	// 28-31
-	uint32_t success	: 1;	// 31-32
+	uint32_t param : 4;	// 24-28
+	uint32_t _reserved2 : 3;	// 28-31
+	uint32_t success : 1;	// 31-32
 } ls_result_t;
 
 
@@ -75,6 +75,7 @@ typedef struct ls_result {		// bitrg
 #define LS_RESULT_CODE_CHECK				0x000F	// Check failure
 #define LS_RESULT_CODE_WRITE				0x0010	// Write failure
 #define LS_RESULT_CODE_READ					0x0011	// Read failure
+#define LS_RESULT_CODE_INDEX				0x0012	// Index invalid
 
 
 #define LS_RESULT_SA(_system, _critical, _code, _param, _success)	\
@@ -89,13 +90,11 @@ typedef struct ls_result {		// bitrg
 	})
 
 #if DEBUG
-#	include <stdio.h>
 #	include "../debug/log.h"
-#	include "./time.h"
-	static ls_result_t LS_ATTR_USED __LS_RESULT_PRINT(ls_result_t ret, char const *const func, char const *const file, uint32_t const line) {
-		ls_logf("%llu %s %s:%lu %08X (" LS_RESULT_PRINTF_FORMAT ")\n", ls_nanos(), func, file, line, (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret));
-		return ret;
-	}
+static ls_result_t LS_ATTR_USED __LS_RESULT_PRINT(ls_result_t ret, char const *const func, char const *const file, uint32_t const line) {
+	_ls_logf(func, file, line, "%08X (" LS_RESULT_PRINTF_FORMAT ")", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret));
+	return ret;
+}
 #	define LS_RESULT(_system, _critical, _code, _param, _success)	\
 	__LS_RESULT_PRINT(LS_RESULT_SA(_system, _critical, _code, _param, _success), __func__, FILE_PATH, __LINE__)
 #else
@@ -110,6 +109,9 @@ typedef struct ls_result {		// bitrg
 
 #define LS_RESULT_CHECK_NULL(var, param)	if (!(var)) { return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, (param)); }
 #define LS_RESULT_CHECK_SIZE(var, param)	if (!(var)) { return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, (param)); }
+
+#define LS_RESULT_CHECK_INDEX(var, param, lti, gti)	\
+											if (((var) < (lti)) || ((var) > (gti))) { return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_INDEX, (param)); }
 
 
 #endif

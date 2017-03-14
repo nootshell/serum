@@ -36,6 +36,7 @@
 
 #define LS_ERRSTR_OPTION_UNAVAILABLE		"option unavailable"
 #define LS_ERRSTR_OPERATION_FAILURE			"operation failure"
+#define LS_ERRSTR_CHECK_FAILURE				"check failure"
 
 
 #endif

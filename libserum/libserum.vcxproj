@@ -176,6 +176,7 @@
     <ClInclude Include="crypto\xxtea.h" />
     <ClInclude Include="debug\log.h" />
     <ClInclude Include="debug\memdump.h" />
+    <ClInclude Include="networking\packet.h" />
     <ClInclude Include="networking\socket.h" />
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +190,7 @@
     <ClCompile Include="crypto\xxtea.c" />
     <ClCompile Include="debug\log.c" />
     <ClCompile Include="debug\memdump.c" />
+    <ClCompile Include="networking\packet.c" />
     <ClCompile Include="networking\socket.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
