@@ -43,6 +43,11 @@
 #include <stdarg.h>
 
 
+#ifndef FILE_PATH
+#define FILE_PATH							"unspec_file"
+#endif
+
+
 #define ls_log(s)							_ls_log(__func__, FILE_PATH, __LINE__, (s))
 #define ls_logf(fmt, ...)					_ls_logf(__func__, FILE_PATH, __LINE__, (fmt), __VA_ARGS__)
 
@@ -63,8 +68,8 @@
 extern "C" {
 #endif
 
-	LSAPI void _ls_log(const char *func, const char *file, const int line, const char *const str);
-	LSAPI void _ls_logf(const char *func, const char *file, const int line, const char *const fmt, ...);
+	LSAPI void _ls_log(const char *func, const char *file, const uint32_t line, const char *const str);
+	LSAPI void _ls_logf(const char *func, const char *file, const uint32_t line, const char *const fmt, ...);
 
 #ifdef __cplusplus
 }

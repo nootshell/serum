@@ -30,9 +30,50 @@
 **
 */
 
+#define FILE_PATH "main.c"
+
 #include <stdio.h>
+#include <inttypes.h>
+#include <string.h>
+
+#include <libserum/core/varsize.h>
+#include <libserum/debug/log.h>
+#include <libserum/debug/memdump.h>
 
 int main(int argc, char *argv[], char *env[]) {
+	ls_vs_value_t vsv = 123456789;
+	if (argc > 1) {
+		vsv = (ls_vs_value_t)strtoumax(argv[1], NULL, 10);
+	}
+
+	uint8_t vsb[LS_VARSIZE_BUFFER_SIZE]; // VarSize Buffer
+	memset(vsb, 0x88, sizeof(vsb));
+
+	size_t osz; // Out SiZe
+	if (ls_varsize_get_bytes(vsb, &osz, vsv).success) {
+		ls_vs_value_t ov;
+		if (ls_varsize_get_value(&ov, vsb, sizeof(vsb)).success) {
+			ls_logf("buffer..........: 0x%"PRIXPTR, (uintptr_t)vsb);
+			ls_logf("buffer_size.....: %"PRIuMAX, (uintmax_t)sizeof(vsb));
+			ls_logf("original value..: %"PRIuMAX, vsv);
+			ls_logf("new value.......: %"PRIuMAX, ov);
+			ls_logf("value size......: %"PRIuMAX, (uintmax_t)sizeof(vsv));
+			ls_logf("bytes used......: %"PRIuPTR, osz);
+
+			double ratio = (((double)osz / ((double)sizeof(vsv))) * 100.0D);
+			ls_logf("ratio...........: \033[3%s;1m%.2lf%%\033[0m", ((ratio < 100.0D) ? "2" : ((ratio == 100.0D) ? "3" : "1")), ratio);
+			puts("");
+			ls_vmemdump(vsb, sizeof(vsb), "buffer contents");
+			return 0;
+		} else {
+			puts("error");
+			return 2;
+		}
+	} else {
+		puts("error");
+		return 1;
+	}
+
 	puts("TODO: some reasonable testing");
 	return 0;
 }

@@ -30,29 +30,26 @@
 **
 */
 
-#define FILE_PATH							"crypto/hashing/sha2.c"
-
-#include "./sha2.h"
-#include "../../core/math.h"
-#include "../../core/memory.h"
-#include <string.h>
+#ifndef __LS_CRYPTO_CIPHER_H
+#define __LS_CRYPTO_CIPHER_H
 
 
-#define LS_SHA2_224
-#include "./sha2-template.c"
-#undef LS_SHA2_224
+#include "../core/stdincl.h"
 
 
-#define LS_SHA2_256
-#include "./sha2-template.c"
-#undef LS_SHA2_256
+
+typedef struct ls_cipher ls_cipher_t;
 
 
-#define LS_SHA2_384
-#include "./sha2-template.c"
-#undef LS_SHA2_384
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
-#define LS_SHA2_512
-#include "./sha2-template.c"
-#undef LS_SHA2_512
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#endif

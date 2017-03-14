@@ -97,7 +97,7 @@ static inline accept_socket(ls_sockfd_t *const fd, const ls_socket_t *const ctx,
 	);
 
 	if (!valid) {
-		perror("accept");
+		ls_log_e("accept failed");
 	} else {
 		ls_logf("%"PRIu64, (uint64_t)*fd);
 	}
@@ -441,7 +441,9 @@ ls_socket_accept(ls_socket_t *const out, const ls_socket_t *const ctx, struct so
 		return res;
 	}
 
+	#if (LS_WINDOWS)
 	++num_init_sockets;
+	#endif
 
 	if (HAS_FLAG(ctx->flags, LS_SOCKET_ASYNC_CHILDREN)) {
 		return ls_socket_set_option(out, LS_SO_ASYNC, 1);

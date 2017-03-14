@@ -41,6 +41,10 @@
 #undef SHA2_BITS
 #endif
 
+#ifdef SHA2_NATIVE_TYPE
+#undef SHA2_NATIVE_TYPE
+#endif
+
 #ifdef SHA2_CTX
 #undef SHA2_CTX
 #endif
@@ -53,6 +57,14 @@
 #undef SHA2_CLEAR
 #endif
 
+#ifdef SHA2_UPDATE
+#undef SHA2_UPDATE
+#endif
+
+#ifdef SHA2_UPDATE_BLOCK
+#undef SHA2_UPDATE_BLOCK
+#endif
+
 #ifdef SHA2_FINISH
 #undef SHA2_FINISH
 #endif
@@ -63,30 +75,43 @@
 
 #if (defined(LS_SHA2_224))
 #	define SHA2_BITS						32
+#	define SHA2_NATIVE_TYPE					uint32_t
 #	define SHA2_CTX							struct ls_sha2_32
 #	define SHA2_INIT						ls_sha2_224_init
 #	define SHA2_CLEAR						ls_sha2_224_clear
+#	define SHA2_UPDATE						ls_sha2_224_update
+#	define SHA2_UPDATE_BLOCK				ls_sha2_32_update_block
 #	define SHA2_FINISH						ls_sha2_224_finish
 #	define SHA2_DIGEST_SIZE					28
 #elif (defined(LS_SHA2_256))
 #	define SHA2_BITS						32
+#	define SHA2_NATIVE_TYPE					uint32_t
 #	define SHA2_CTX							struct ls_sha2_32
 #	define SHA2_INIT						ls_sha2_256_init
 #	define SHA2_CLEAR						ls_sha2_256_clear
+#	define SHA2_UPDATE						ls_sha2_256_update
+#	define SHA2_UPDATE_BLOCK				ls_sha2_32_update_block
 #	define SHA2_FINISH						ls_sha2_256_finish
 #	define SHA2_DIGEST_SIZE					32
 #elif (defined(LS_SHA2_384))
 #	define SHA2_BITS						64
+#	define SHA2_NATIVE_TYPE					uint64_t
 #	define SHA2_CTX							struct ls_sha2_64
 #	define SHA2_INIT						ls_sha2_384_init
 #	define SHA2_CLEAR						ls_sha2_384_clear
+#	define SHA2_UPDATE						ls_sha2_384_update
+#	define SHA2_UPDATE_BLOCK				ls_sha2_64_update_block
 #	define SHA2_FINISH						ls_sha2_384_finish
 #	define SHA2_DIGEST_SIZE					48
 #elif (defined(LS_SHA2_512))
 #	define SHA2_BITS						64
+#	define SHA2_NATIVE_TYPE					uint64_t
 #	define SHA2_CTX							struct ls_sha2_64
 #	define SHA2_INIT						ls_sha2_512_init
 #	define SHA2_CLEAR						ls_sha2_512_clear
+#	define SHA2_UPDATE						ls_sha2_512_update
+#	define SHA2_UPDATE_BLOCK				ls_sha2_64_update_block
+#	define SHA2_FINISH						ls_sha2_512_finish
 #	define SHA2_DIGEST_SIZE					64
 #endif
 
@@ -118,8 +143,6 @@ static const uint32_t constants32[] = {
 };
 
 #	define SHA2_CONSTANTS					constants32
-#	define SHA2_UPDATE						ls_sha2_32_update
-#	define SHA2_NATIVE_TYPE					uint32_t
 #	define SHA2_WR							64
 #	define SHA2_ROTR						LS_ROTR32
 #	define SHA2_ROTR_1						7
@@ -136,8 +159,6 @@ static const uint32_t constants32[] = {
 #	define SHA2_SHR_2						10
 #	include "./sha2-template-update.c"
 #	undef SHA2_CONSTANTS
-#	undef SHA2_UPDATE
-#	undef SHA2_NATIVE_TYPE
 #	undef SHA2_WR
 #	undef SHA2_ROTR
 #	undef SHA2_ROTR_1
@@ -179,8 +200,6 @@ static const uint64_t constants64[] = {
 };
 
 #	define SHA2_CONSTANTS					constants64
-#	define SHA2_UPDATE						ls_sha2_64_update
-#	define SHA2_NATIVE_TYPE					uint64_t
 #	define SHA2_WR							80
 #	define SHA2_ROTR						LS_ROTR64
 #	define SHA2_ROTR_1						1
@@ -197,8 +216,6 @@ static const uint64_t constants64[] = {
 #	define SHA2_SHR_2						6
 #	include "./sha2-template-update.c"
 #	undef SHA2_CONSTANTS
-#	undef SHA2_UPDATE
-#	undef SHA2_NATIVE_TYPE
 #	undef SHA2_WR
 #	undef SHA2_ROTR
 #	undef SHA2_ROTR_1
@@ -217,16 +234,6 @@ static const uint64_t constants64[] = {
 
 
 #ifdef SHA2_CTX
-ls_result_t
-SHA2_CLEAR(SHA2_CTX *ctx) {
-	LS_RESULT_CHECK_NULL(ctx, 1);
-
-	memset(ctx, 0, sizeof(*ctx));
-
-	return LS_RESULT_SUCCESS;
-}
-
-
 ls_result_t
 SHA2_INIT(SHA2_CTX *ctx) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
@@ -277,11 +284,52 @@ SHA2_INIT(SHA2_CTX *ctx) {
 }
 
 
+ls_result_t
+SHA2_CLEAR(SHA2_CTX *ctx) {
+	LS_RESULT_CHECK_NULL(ctx, 1);
+
+	memset(ctx, 0, sizeof(*ctx));
+
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+SHA2_UPDATE(SHA2_CTX *ctx, const SHA2_NATIVE_TYPE block[16]) {
+	return SHA2_UPDATE_BLOCK(ctx, block);
+}
+
+
 // TODO: expand finish with SHA2_NATIVE_TYPE block[16] and add size thingy
 ls_result_t
-SHA2_FINISH(SHA2_CTX *ctx, uint8_t digest[SHA2_DIGEST_SIZE]) {
+SHA2_FINISH(SHA2_CTX *ctx, const SHA2_NATIVE_TYPE *block, size_t size, uint8_t digest[SHA2_DIGEST_SIZE]) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
-	LS_RESULT_CHECK_NULL(digest, 2);
+	LS_RESULT_CHECK_NULL(block, 2);
+	LS_RESULT_CHECK_SIZE(size, 1);
+	LS_RESULT_CHECK_NULL(digest, 3);
+
+	while (size > 16) {
+		if (!SHA2_UPDATE(ctx, block).success) {
+			// error
+		}
+		block += 16;
+		size -= 16;
+	}
+
+	SHA2_NATIVE_TYPE stackalloc(final, LS_MATH_ROUND_BLOCK_INCL(16, size));
+
+	size_t bsz = (sizeof(*block) * size);
+
+	memcpy(final, block, bsz);
+	memset(final + size, 0, (sizeof(*block) * stacksizeof(final)) - bsz);
+
+	final[size] = 0x80;
+	final[stacksizeof(final) - 4] = (((8 * size) >> 24) & 0xFF);
+	final[stacksizeof(final) - 3] = (((8 * size) >> 16) & 0xFF);
+	final[stacksizeof(final) - 2] = (((8 * size) >>  8) & 0xFF);
+	final[stacksizeof(final) - 1] = (((8 * size) >>  0) & 0xFF);
+
+	stackfree(final);
 
 	uint_fast8_t i;
 	for (i = SHA2_BYTES; i--;) {                                                           	// 224 256 384 512

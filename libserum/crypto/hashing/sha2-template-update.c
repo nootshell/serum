@@ -31,9 +31,9 @@
 */
 
 
-#ifdef SHA2_UPDATE
+#ifdef SHA2_UPDATE_BLOCK
 ls_result_t
-SHA2_UPDATE(SHA2_CTX *ctx, SHA2_NATIVE_TYPE block[16]) {
+static SHA2_UPDATE_BLOCK(SHA2_CTX *ctx, const SHA2_NATIVE_TYPE block[16]) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
 	LS_RESULT_CHECK_NULL(block, 2);
 

@@ -30,29 +30,29 @@
 **
 */
 
-#define FILE_PATH							"crypto/hashing/sha2.c"
-
-#include "./sha2.h"
-#include "../../core/math.h"
-#include "../../core/memory.h"
-#include <string.h>
+#ifndef __LS_CORE_VARSIZE_H
+#define __LS_CORE_VARSIZE_H
 
 
-#define LS_SHA2_224
-#include "./sha2-template.c"
-#undef LS_SHA2_224
+#include "./stdincl.h"
 
 
-#define LS_SHA2_256
-#include "./sha2-template.c"
-#undef LS_SHA2_256
+#define LS_VARSIZE_BUFFER_SIZE				(sizeof(ls_vs_value_t) + (sizeof(ls_vs_value_t) / 8) + 1)
 
 
-#define LS_SHA2_384
-#include "./sha2-template.c"
-#undef LS_SHA2_384
+typedef uintmax_t ls_vs_value_t;
 
 
-#define LS_SHA2_512
-#include "./sha2-template.c"
-#undef LS_SHA2_512
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_result_t ls_varsize_get_bytes(void *const out, size_t *const out_size, ls_vs_value_t value);
+	LSAPI ls_result_t ls_varsize_get_value(ls_vs_value_t *const out, const void *const in, size_t max_size);
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#endif

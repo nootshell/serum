@@ -33,7 +33,7 @@
 #include "./case.h"
 
 
-int ls_testcase_init(ls_testcase_t *ctx, void *data, void(*f_init)(void *data), int(*f_perform)(void *data, void *input, size_t input_size), void(*f_clear)(void *data)) {
+int ls_testcase_init(ls_testcase_t *ctx, void *data, int(*f_init)(void *data), int(*f_perform)(void *data, void *input, size_t input_size), int(*f_clear)(void *data)) {
 	if (!ctx || !f_init || !f_perform || !f_clear) {
 		return -1;
 	}
@@ -66,9 +66,9 @@ int ls_testcase_run(ls_testcase_t *ctx, void *input, size_t input_size) {
 
 	int result;
 
-	ctx->f_init(ctx->d_data);
+	result = ctx->f_init(ctx->d_data);
 	result = ctx->f_perform(ctx->d_data, input, input_size);
-	ctx->f_clear(ctx->d_data);
+	result = ctx->f_clear(ctx->d_data);
 
 	return result;
 }

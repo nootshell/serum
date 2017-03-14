@@ -30,29 +30,34 @@
 **
 */
 
-#define FILE_PATH							"crypto/hashing/sha2.c"
+#define FILE_PATH							"crypto/cipher.c"
 
-#include "./sha2.h"
-#include "../../core/math.h"
-#include "../../core/memory.h"
-#include <string.h>
+#include "./cipher.h"
+#include "./prng/isaac.h"
 
 
-#define LS_SHA2_224
-#include "./sha2-template.c"
-#undef LS_SHA2_224
+struct ls_cipher {
+	uint32_t(*f_prng)(void*);				// PRNG function
+	void *d_prng;							// PRNG data
+
+	void *sym_data;							// Symmetric cipher data.
+	ls_result_t(*sym_init)(void*);
+
+	uint32_t rs_buff;						// Round selection buffer
+};
 
 
-#define LS_SHA2_256
-#include "./sha2-template.c"
-#undef LS_SHA2_256
+ID("generalized cipher functionality");
 
 
-#define LS_SHA2_384
-#include "./sha2-template.c"
-#undef LS_SHA2_384
+uint32_t
+static inline ls_sym_rounds(ls_cipher_t *const ctx) {
+	if (!ctx->rs_buff) {
+		ctx->rs_buff = ctx->f_prng(ctx->d_prng);
+	}
 
+	uint32_t value = (((ctx->rs_buff & 0xFF) << 4) | 0x0F);
+	ctx->rs_buff >>= 8;
+	return value;
+}
 
-#define LS_SHA2_512
-#include "./sha2-template.c"
-#undef LS_SHA2_512
