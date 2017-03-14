@@ -30,29 +30,57 @@
 **
 */
 
-#define FILE_PATH							"crypto/hashing/sha2.c"
+#define FILE_PATH							"core/varsize.c"
 
-#include "./sha2.h"
-#include "../../core/math.h"
-#include "../../core/memory.h"
+#include "./varsize.h"
 #include <string.h>
 
 
-#define LS_SHA2_224
-#include "./sha2-template.c"
-#undef LS_SHA2_224
+ls_result_t
+ls_varsize_get_bytes(void *const out, size_t *const out_size, ls_vs_value_t value) {
+	LS_RESULT_CHECK_NULL(out, 1);
+	LS_RESULT_CHECK_NULL(out_size, 2);
+
+	if (!value) {
+		*((uint8_t*)out) = 0;
+		*out_size = 1;
+		return LS_RESULT_SUCCESS;
+	}
+
+	size_t sz = 0;
+	uint8_t *ptr = (((uint8_t*)out) - 1);
+	do {
+		*(++ptr) = (uint8_t)((value & 0x7F) | 0x80); // 0x80 = MSB = further processing indicator
+		++sz;
+	} while (value >>= 7);
+
+	// Remove the MSB to indicate the end.
+	*ptr = (*ptr & 0x7F);
+
+	*out_size = sz;
+
+	return LS_RESULT_SUCCESS;
+}
 
 
-#define LS_SHA2_256
-#include "./sha2-template.c"
-#undef LS_SHA2_256
+ls_result_t
+ls_varsize_get_value(ls_vs_value_t *const out, const void *const in, size_t max_size) {
+	LS_RESULT_CHECK_NULL(out, 1);
+	LS_RESULT_CHECK_NULL(in, 2);
+	LS_RESULT_CHECK_SIZE(max_size, 1);
 
+	int bpos = 0;
+	ls_vs_value_t value = 0;
+	const uint8_t *ptr = in;
+	for (; max_size--;) {
+		value |= (((ls_vs_value_t)(*ptr & 0x7F)) << (7 * bpos++));
+		if (!HAS_FLAG(*(ptr++), 0x80)) {
+			*out = value;
+			return LS_RESULT_SUCCESS;
+		}
+	}
 
-#define LS_SHA2_384
-#include "./sha2-template.c"
-#undef LS_SHA2_384
+	*out = value;
 
-
-#define LS_SHA2_512
-#include "./sha2-template.c"
-#undef LS_SHA2_512
+	return LS_RESULT_ERROR(LS_RESULT_CODE_EARLY_EXIT);
+}

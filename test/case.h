@@ -40,9 +40,9 @@
 
 typedef struct ls_testcase {
 	void *d_data;
-	void(*f_init)(void *data);
+	int(*f_init)(void *data);
 	int(*f_perform)(void *data, void *input, size_t input_size);
-	void(*f_clear)(void *data);
+	int(*f_clear)(void *data);
 } ls_testcase_t;
 
 

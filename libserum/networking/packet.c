@@ -34,6 +34,8 @@
 
 #include "./packet.h"
 #include "../core/memory.h"
+#include "../debug/log.h"
+#include <string.h>
 
 
 ls_result_t

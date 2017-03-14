@@ -11,7 +11,7 @@ all_dbg: debug test
 
 clean:
 	@echo cleanup
-	@rm -R bin obj
+	@rm -Rf bin obj
 
 
 

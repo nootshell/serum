@@ -44,6 +44,7 @@ struct ls_tc_sha2 {
 
 int ls_tc_sha2_init(void *data) {
 	struct ls_tc_sha2 *ctx = data;
+
 	switch (ctx->type) {
 		case 224:
 			if (!ls_sha2_224_init(&ctx->data.s224).success) {
@@ -51,15 +52,43 @@ int ls_tc_sha2_init(void *data) {
 			}
 			break;
 		case 256:
-
+			if (!ls_sha2_256_init(&ctx->data.s256).success) {
+				return -3;
+			}
 			break;
 		case 384:
-
+			if (!ls_sha2_384_init(&ctx->data.s384).success) {
+				return -4;
+			}
 			break;
 		case 512:
-
+			if (!ls_sha2_512_init(&ctx->data.s512).success) {
+				return -5;
+			}
 			break;
 		default:
 			return -1;
 	}
+
+	return 0;
+}
+
+int ls_tc_sha2_perform(void *data, void *input, size_t size) {
+	struct ls_tc_sha2 *ctx = data;
+
+	switch (ctx->type) {
+		case 224:
+
+			break;
+		case 256:
+			break;
+		case 384:
+			break;
+		case 512:
+			break;
+		default:
+			return -1;
+	}
+
+	return 0;
 }

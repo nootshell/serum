@@ -35,16 +35,17 @@
 #include "./log.h"
 #include "../core/time.h"
 #include <stdio.h>
+#include <inttypes.h>
 
 
-static void print_origin(const char *func, const char *file, const int line) {
-	printf("%llu %s %s:%lu > ", ls_nanos(), func, file, line);
+static void print_origin(const char *func, const char *file, const uint32_t line) {
+	printf("%"PRIu64" %s %s:%"PRIu32" > ", ls_nanos(), func, file, line);
 }
 
 
 // TODO
 void
-_ls_log(const char *func, const char *file, const int line, const char *const str) {
+_ls_log(const char *func, const char *file, const uint32_t line, const char *const str) {
 	print_origin(func, file, line);
 	puts(str);
 }
@@ -52,7 +53,7 @@ _ls_log(const char *func, const char *file, const int line, const char *const st
 
 // TODO
 void
-_ls_logf(const char *func, const char *file, const int line, const char *const fmt, ...) {
+_ls_logf(const char *func, const char *file, const uint32_t line, const char *const fmt, ...) {
 	va_list vl;
 	va_start(vl, fmt);
 	print_origin(func, file, line);

@@ -52,6 +52,7 @@
 		<Unit filename="core/lsapi.h" />
 		<Unit filename="core/macro.h" />
 		<Unit filename="core/math.h" />
+		<Unit filename="core/memory.h" />
 		<Unit filename="core/ptrarithmetic.h" />
 		<Unit filename="core/result.h" />
 		<Unit filename="core/stdincl.h" />
@@ -59,7 +60,25 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="core/time.h" />
+		<Unit filename="core/varsize.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/varsize.h" />
+		<Unit filename="crypto/cipher.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="crypto/cipher.h" />
 		<Unit filename="crypto/enum.h" />
+		<Unit filename="crypto/hashing/sha2-template-update.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="crypto/hashing/sha2-template.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="crypto/hashing/sha2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="crypto/hashing/sha2.h" />
 		<Unit filename="crypto/padding/iso9797.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -84,6 +103,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="debug/memdump.h" />
+		<Unit filename="networking/packet.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="networking/packet.h" />
 		<Unit filename="networking/socket.c">
 			<Option compilerVar="CC" />
 		</Unit>
