@@ -31,21 +31,29 @@ Features
 		- [Compiler](./libserum/core/detect_compiler.h)
 		- [Platform](./libserum/core/detect_platform.h)
 		- [Endianness](./libserum/core/detect_endianness.h)
+	- Networking
+		- [Universal socket](./libserum/networking/socket.h)
+		- [Packets](./libserum/networking/packet.h)
+	- Misc
+		- [Variable size integer encoding/decoding](./libserum/core/varsize.h)
 
 TODO
 ===
 - Crypto
 	- Key exchange
+		- Curve25519 <sup>priority</sup>
 		- Diffie Hellman
 	- Block ciphers
-		- Rijndael
+		- Rijndael <sup>priority</sup>
+	- Stream ciphers
+		- Rabbit
 	- Hash functions (+ HMACs)
-		- SHA-2
+		- SHA-2 <sup>being implemented</sup>
 		- SHA-3
 		- RIPEMD-160
 	- KDF
-		- PBKDF2
+		- PBKDF2 <sup>priority</sup>
 		- Argon2
 		- Lyra2
 - Optimizations
-	- ```restrict``` pointers where applicable
+	- ```restrict``` pointers where applicable <sup>low priority</sup>
