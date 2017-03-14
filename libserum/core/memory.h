@@ -48,5 +48,7 @@
 #	define stackfree(name)
 #endif
 
+#define safefree(ptr)						if ((ptr)) { free((ptr)); ((ptr)) = NULL; }
+
 
 #endif
