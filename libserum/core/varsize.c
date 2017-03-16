@@ -69,7 +69,7 @@ ls_varsize_get_value(ls_vs_value_t *const out, const void *const in, size_t max_
 	LS_RESULT_CHECK_NULL(in, 2);
 	LS_RESULT_CHECK_SIZE(max_size, 1);
 
-	int bpos = 0;
+	uint_fast16_t bpos = 0;
 	ls_vs_value_t value = 0;
 	const uint8_t *ptr = in;
 	for (; max_size--;) {
