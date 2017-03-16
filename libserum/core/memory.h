@@ -39,10 +39,17 @@
 
 #if (LS_MSC)
 #	include <malloc.h>
-#	define stacksizeof(name)				MACRO_CONCAT(_, name)##_sizeof
-#	define stackalloc(name, size)			*name = _malloca((size)); size_t stacksizeof(name) = ((size))
-#	define stackfree(name)					_freea(name); name = NULL
+#	define dstacksizeof(name)				MACRO_CONCAT(_, name)##_sizeof
+#	define dstackalloc(name, size)			*name = _malloca((size)); size_t stacksizeof(name) = ((size))
+#	define dstackfree(name)					_freea(name); name = NULL
+#	define stacksizeof(name)				dstacksizeof((name))
+#	define stackalloc(name, size)			dstackalloc((name), (size))
+#	define stackfree(name)					dstackfree((name))
 #else
+#	include <alloca.h>
+#	define dstacksizeof(name)				MACRO_CONCAT(_, name)##_sizeof
+#	define dstackalloc(name, size)			*name = alloca((size)); size_t stacksizeof(name) = ((size))
+#	define dstackfree(name)					name = NULL
 #	define stacksizeof(name)				sizeof((name))
 #	define stackalloc(name, size)			name[(size)]
 #	define stackfree(name)

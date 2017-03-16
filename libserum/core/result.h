@@ -101,11 +101,13 @@ static ls_result_t LS_ATTR_USED __LS_RESULT_PRINT(ls_result_t ret, char const *c
 #	define LS_RESULT						LS_RESULT_SA
 #endif
 
-#define LS_RESULT_SUCCESS					LS_RESULT(true,false,LS_RESULT_CODE_SUCCESS,0,true)
-#define LS_RESULT_ERROR(code)				LS_RESULT(true,false,(code),0,false)
-#define LS_RESULT_ERROR_PARAM(code,param)	LS_RESULT(true,false,(code),(param),false)
-#define LS_RESULT_ERROR_CRIT(code)			LS_RESULT(true,true,(code),0,false)
-#define LS_RESULT_ERROR_CRIT_PARAM(code,param) LS_RESULT(true,true,(code),(param),false)
+#define LS_RESULT_SUCCESS_CODE(code)		LS_RESULT(true, false, (code), 0      , true )
+#define LS_RESULT_SUCCESS					LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_SUCCESS)
+#define LS_RESULT_ERROR(code)				LS_RESULT(true, false, (code), 0      , false)
+#define LS_RESULT_ERROR_PARAM(code,param)	LS_RESULT(true, false, (code), (param), false)
+#define LS_RESULT_ERROR_CRIT(code)			LS_RESULT(true, true , (code), 0      , false)
+#define LS_RESULT_ERROR_CRIT_PARAM(code,param) \
+											LS_RESULT(true, true , (code), (param),false)
 
 #define LS_RESULT_CHECK_NULL(var, param)	if (!(var)) { return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, (param)); }
 #define LS_RESULT_CHECK_SIZE(var, param)	if (!(var)) { return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, (param)); }

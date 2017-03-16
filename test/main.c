@@ -39,8 +39,39 @@
 #include <libserum/core/varsize.h>
 #include <libserum/debug/log.h>
 #include <libserum/debug/memdump.h>
+#include <libserum/crypto/hashing/sha2.h>
 
 int main(int argc, char *argv[], char *env[]) {
+	int ret = 0;
+
+	ls_sha2_224_t sha2;
+
+	if (!ls_sha2_224_init(&sha2).success) {
+		ret = 1;
+		goto __cleanup;
+	}
+
+	/*uint8_t data[4];
+	strcpy((void*)data, "abc");
+	data[3] = 0;
+
+	if (!ls_sha2_224_update(&sha2, data, 3).success) {
+		ret = 2;
+		goto __cleanup;
+	}*/
+
+	uint8_t digest[LS_SHA2_224_DIGEST_SIZE];
+	if (!ls_sha2_224_finish(&sha2, digest).success) {
+		ret = 3;
+		goto __cleanup;
+	}
+
+	ls_memdump(digest, sizeof(digest));
+
+__cleanup:
+	ls_sha2_224_clear(&sha2);
+	return ret;
+
 	ls_vs_value_t vsv = 123456789;
 	if (argc > 1) {
 		vsv = (ls_vs_value_t)strtoumax(argv[1], NULL, 10);

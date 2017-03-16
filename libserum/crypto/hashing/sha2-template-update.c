@@ -30,10 +30,11 @@
 **
 */
 
+#include <stdio.h>
 
 #ifdef SHA2_UPDATE_BLOCK
 ls_result_t
-static SHA2_UPDATE_BLOCK(SHA2_CTX *ctx, const SHA2_NATIVE_TYPE block[16]) {
+static SHA2_UPDATE_BLOCK(SHA2_CTX *const ctx, const SHA2_NATIVE_TYPE block[LS_SHA2_BLOCK_NUM]) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
 	LS_RESULT_CHECK_NULL(block, 2);
 
@@ -80,6 +81,7 @@ static SHA2_UPDATE_BLOCK(SHA2_CTX *ctx, const SHA2_NATIVE_TYPE block[16]) {
 		a = (temp1 + temp2);
    }
 
+   puts("gotcha");
 	ctx->h[0] += a;
 	ctx->h[1] += b;
 	ctx->h[2] += c;

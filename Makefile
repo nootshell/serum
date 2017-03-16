@@ -11,12 +11,17 @@ all_dbg: debug test
 
 clean:
 	@echo cleanup
-	@rm -Rf bin obj
+#	@rm -Rf bin obj
+	@rm -f bin/libserum.so
+	@rm -f bin/test
+	@rm -Rf obj
+
+r: clean debug test
 
 
 
 obj/%.o: %.c
-	@echo $@
+	@echo "*$@"
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -c $^ -o $@
 
@@ -27,6 +32,7 @@ bin/libserum.so: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find libserum -t
 	@echo $@
 	@mkdir -p $(@D)
 	@$(LD) -o $@ -shared $^
+	@echo
 
 bin/test: bin/libserum.so
 bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name '*.c')))
