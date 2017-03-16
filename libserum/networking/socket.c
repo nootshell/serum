@@ -54,6 +54,7 @@ static size_t num_init_sockets = 0;
 #	include <fcntl.h>
 #	include <netdb.h>
 #	include <unistd.h>
+#	include <arpa/inet.h>
 #endif
 
 

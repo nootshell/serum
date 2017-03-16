@@ -35,9 +35,9 @@
 
 
 #include "./macro.h"
-#include "./detect_os.h"
+#include "./detect_compiler.h"
 
-#if (LS_WINDOWS)
+#if (LS_MSC)
 #	include <malloc.h>
 #	define stacksizeof(name)				MACRO_CONCAT(_, name)##_sizeof
 #	define stackalloc(name, size)			*name = _malloca((size)); size_t stacksizeof(name) = ((size))
