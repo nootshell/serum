@@ -89,7 +89,7 @@ typedef struct ls_result {		// bitrg
 		.success	= (!!(_success))		\
 	})
 
-#if DEBUG
+#if (LS_LOG_RESULTS)
 #	include "../debug/log.h"
 static ls_result_t LS_ATTR_USED __LS_RESULT_PRINT(ls_result_t ret, char const *const func, char const *const file, uint32_t const line) {
 	_ls_logf(func, file, line, "%08X (" LS_RESULT_PRINTF_FORMAT ")", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret));

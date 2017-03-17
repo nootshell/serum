@@ -51,33 +51,42 @@ int main(int argc, char *argv[], char *env[]) {
 
 	ls_sha2_224_t sha2;
 
+	memset(&sha2, 0xFF, sizeof(sha2));
+	memset(&sha2.size, 0xAA, sizeof(sha2.size));
+	memset(sha2.h, 0xBB, sizeof(sha2.h));
+	memset(&sha2.__psize, 0xCC, sizeof(sha2.__psize));
+	memset(sha2.__pcache, 0xDD, sizeof(sha2.__pcache));
+	memset(&sha2.pad, 0xEE, sizeof(sha2.pad));
+
+	//ls_vmemdump(&sha2, sizeof(sha2), "initial");
+
 	if (!ls_sha2_224_init(&sha2).success) {
 		ret = 1;
 		goto __cleanup;
 	}
+	//ls_vmemdump(&sha2, sizeof(sha2), "post-init");
 
-	uint8_t data[4];
-	strcpy((void*)data, "abc");
-	data[3] = 0;
+	char *data = NULL;
+	if (argc >= 2) {
+		data = argv[1];
+	} else {
+		data = "abc";
+	}
 
-	if (!ls_sha2_224_update(&sha2, data, 3).success) {
+	if (!ls_sha2_224_update(&sha2, data, strlen(data)).success) {
 		ret = 2;
 		goto __cleanup;
 	}
+	//ls_vmemdump(&sha2, sizeof(sha2), "post-update");
 
 	uint8_t digest[LS_SHA2_224_DIGEST_SIZE];
 	if (!ls_sha2_224_finish(&sha2, digest).success) {
 		ret = 3;
 		goto __cleanup;
 	}
+	//ls_vmemdump(&sha2, sizeof(sha2), "post-finish");
 
-	int i;
-	for (i = 0; i < 8; ++i) {
-		printf("%08X ", sha2.h[i]);
-	}
-	puts("");
-
-	ls_memdump_ex(digest, sizeof(digest), 32, 4);
+	ls_vmemdump(digest, sizeof(digest), "digest");
 
 __cleanup:
 	ls_sha2_224_clear(&sha2);
