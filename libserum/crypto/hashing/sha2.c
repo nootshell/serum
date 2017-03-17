@@ -33,6 +33,7 @@
 #define FILE_PATH							"crypto/hashing/sha2.c"
 
 #include "./sha2.h"
+#include "../../core/bits.h"
 #include "../../core/math.h"
 #include "../../core/memory.h"
 #include <string.h>

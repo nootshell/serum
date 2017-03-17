@@ -165,6 +165,7 @@ static const uint32_t constants32[] = {
 #	define SHA2_ROTR_10						22
 #	define SHA2_SHR_1						3
 #	define SHA2_SHR_2						10
+#	define SHA2_SWAP						LS_SWAP_ENDIAN_BIG_32
 #	include "./sha2-template-update.c"
 #	undef SHA2_CONSTANTS
 #	undef SHA2_WR
@@ -181,6 +182,7 @@ static const uint32_t constants32[] = {
 #	undef SHA2_ROTR_10
 #	undef SHA2_SHR_1
 #	undef SHA2_SHR_2
+#	undef SHA2_SWAP
 #elif (defined(SHA2_64) && !defined(SHA2_64_C))
 #	define SHA2_64_C
 
@@ -222,6 +224,7 @@ static const uint64_t constants64[] = {
 #	define SHA2_ROTR_10						39
 #	define SHA2_SHR_1						7
 #	define SHA2_SHR_2						6
+#	define SHA2_SWAP						LS_SWAP_ENDIAN_BIG_64
 #	include "./sha2-template-update.c"
 #	undef SHA2_CONSTANTS
 #	undef SHA2_WR
@@ -238,6 +241,7 @@ static const uint64_t constants64[] = {
 #	undef SHA2_ROTR_10
 #	undef SHA2_SHR_1
 #	undef SHA2_SHR_2
+#	undef SHA2_SWAP
 #endif
 
 
@@ -312,9 +316,9 @@ SHA2_UPDATE(SHA2_CTX *const restrict ctx, const void *const restrict in, size_t 
 
 	ctx->size += size;
 
-	if (size == (sizeof(SHA2_NATIVE_TYPE) * 16)) {
+	/*if (size == (sizeof(SHA2_NATIVE_TYPE) * 16)) {
 		return SHA2_UPDATE_BLOCK(ctx, in);
-	} else {
+	} else */{
 		if ((ctx->__psize + size) <= sizeof(ctx->__pcache)) {
 			memcpy(ctx->__pcache + ctx->__psize, in, size);
 			ctx->__psize += size;
@@ -359,7 +363,6 @@ SHA2_UPDATE(SHA2_CTX *const restrict ctx, const void *const restrict in, size_t 
 	}
 }
 
-#include <stdio.h>
 ls_result_t
 SHA2_FINISH(SHA2_CTX *const ctx, uint8_t digest[SHA2_DIGEST_SIZE]) {
 	LS_RESULT_CHECK_NULL(ctx, 1);

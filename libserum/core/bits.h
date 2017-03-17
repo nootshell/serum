@@ -124,5 +124,57 @@
 #define BIT_64								MKBIT(64)
 
 
+#if (LS_SWAP_USE_INTRINSICS)
+#include "./intrinsics.h"
+#endif
+
+
+#if ((LS_GCC || LS_LLVM) && LS_INTRINSICS)
+#	define LS_SWAP_16(x)					__builtin_bswap16(x)
+#	define LS_SWAP_32(x)					__builtin_bswap32(x)
+#	define LS_SWAP_64(x)					__builtin_bswap64(x)
+#else
+#	define LS_SWAP_16(x) (					 \
+		(((x) & 0xFF00            ) >>  8) | \
+		(((x) & 0x00FF            ) <<  8)	 \
+	)
+#	define LS_SWAP_32(x) (					 \
+		(((x) & 0xFF000000        ) >> 24) | \
+		(((x) & 0x00FF0000        ) >>  8) | \
+		(((x) & 0x0000FF00        ) <<  8) | \
+		(((x) & 0x000000FF        ) << 24)	 \
+	)
+#	define LS_SWAP_64(x) (					 \
+		(((x) & 0xFF00000000000000) >> 56) | \
+		(((x) & 0x00FF000000000000) >> 40) | \
+		(((x) & 0x0000FF0000000000) >> 24) | \
+		(((x) & 0x000000FF00000000) >>  8) | \
+		(((x) & 0x00000000FF000000) <<  8) | \
+		(((x) & 0x0000000000FF0000) << 24) | \
+		(((x) & 0x000000000000FF00) << 40) | \
+		(((x) & 0x00000000000000FF) << 56)	 \
+	)
+#endif
+
+
+#include "./detect_endianness.h"
+
+
+#if (LS_BIG_ENDIAN)
+#	define LS_SWAP_ENDIAN_BIG_16(x)			(x) // already big endian
+#	define LS_SWAP_ENDIAN_BIG_32(x)			(x) // already big endian
+#	define LS_SWAP_ENDIAN_BIG_64(x)			(x) // already big endian
+#	define LS_SWAP_ENDIAN_LITTLE_16(x)		LS_SWAP_16((x))
+#	define LS_SWAP_ENDIAN_LITTLE_32(x)		LS_SWAP_32((x))
+#	define LS_SWAP_ENDIAN_LITTLE_64(x)		LS_SWAP_64((x))
+#else
+#	define LS_SWAP_ENDIAN_BIG_16(x)			LS_SWAP_16((x))
+#	define LS_SWAP_ENDIAN_BIG_32(x)			LS_SWAP_32((x))
+#	define LS_SWAP_ENDIAN_BIG_64(x)			LS_SWAP_64((x))
+#	define LS_SWAP_ENDIAN_LITTLE_16(x)		(x) // already little endian
+#	define LS_SWAP_ENDIAN_LITTLE_32(x)		(x) // already little endian
+#	define LS_SWAP_ENDIAN_LITTLE_64(x)		(x) // already little endian
+#endif
+
 
 #endif
