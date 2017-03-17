@@ -30,6 +30,9 @@
  **
  */
 
+#include "../../debug/memdump.h"
+#include <stdio.h>
+
 #ifdef SHA2_UPDATE_BLOCK
 ls_result_t
 static SHA2_UPDATE_BLOCK(SHA2_CTX *const ctx, const SHA2_NATIVE_TYPE block[LS_SHA2_BLOCK_NUM]) {
@@ -37,14 +40,14 @@ static SHA2_UPDATE_BLOCK(SHA2_CTX *const ctx, const SHA2_NATIVE_TYPE block[LS_SH
 	LS_RESULT_CHECK_NULL(block, 2);
 
 	register SHA2_NATIVE_TYPE
-		h0 = ctx->h[0],
-		h1 = ctx->h[1],
-		h2 = ctx->h[2],
-		h3 = ctx->h[3],
-		h4 = ctx->h[4],
-		h5 = ctx->h[5],
-		h6 = ctx->h[6],
-		h7 = ctx->h[7],
+		a = ctx->h[0],
+		b = ctx->h[1],
+		c = ctx->h[2],
+		d = ctx->h[3],
+		e = ctx->h[4],
+		f = ctx->h[5],
+		g = ctx->h[6],
+		h = ctx->h[7],
 		s0, s1, ch, temp1, temp2, maj;
 
 	SHA2_NATIVE_TYPE w[SHA2_WR];
@@ -53,41 +56,48 @@ static SHA2_UPDATE_BLOCK(SHA2_CTX *const ctx, const SHA2_NATIVE_TYPE block[LS_SH
 
 	for (i = 16; i--;) {
 		w[i] = SHA2_SWAP(block[i]);
+		//printf("w[%02u] = %08X\n", i, w[i]);
 	}
 
 	for (i = 16; i < SHA2_WR; ++i) {
 		s0 = (SHA2_ROTR(w[(i - 15)], SHA2_ROTR_1) ^ SHA2_ROTR(w[(i - 15)], SHA2_ROTR_2) ^ (w[(i - 15)] >> SHA2_SHR_1));
 		s1 = (SHA2_ROTR(w[(i -  2)], SHA2_ROTR_3) ^ SHA2_ROTR(w[(i -  2)], SHA2_ROTR_4) ^ (w[(i -  2)] >> SHA2_SHR_2));
 		w[i] = (w[(i - 16)] + s0 + w[(i - 7)] + s1);
+
+		//printf("w[%02u] = %08X\n", i, w[i]);
 	}
 
 	for (i = 0; i < SHA2_WR; ++i) {
-		s1 = (SHA2_ROTR(h4, SHA2_ROTR_5) ^ SHA2_ROTR(h4, SHA2_ROTR_6) ^ SHA2_ROTR(h4, SHA2_ROTR_7));
-		ch = ((h4 & h5) ^ (~h4 & h6));
-		temp1 = (h7 + s1 + ch + SHA2_CONSTANTS[i] + w[i]);
+		s1 = (SHA2_ROTR(e, SHA2_ROTR_5) ^ SHA2_ROTR(e, SHA2_ROTR_6) ^ SHA2_ROTR(e, SHA2_ROTR_7));
+		ch = ((e & f) ^ (~e & g));
+		temp1 = (h + s1 + ch + SHA2_CONSTANTS[i] + w[i]);
 
-		s0 = (SHA2_ROTR(h0, SHA2_ROTR_8) ^ SHA2_ROTR(h0, SHA2_ROTR_9) ^ SHA2_ROTR(h0, SHA2_ROTR_10));
-		maj = ((h0 & h1) ^ (h0 & h2) ^ (h1 & h2));
+		s0 = (SHA2_ROTR(a, SHA2_ROTR_8) ^ SHA2_ROTR(a, SHA2_ROTR_9) ^ SHA2_ROTR(a, SHA2_ROTR_10));
+		maj = ((a & b) ^ (a & c) ^ (b & c));
 		temp2 = (s0 + maj);
 
-		h7 = h6;
-		h6 = h5;
-		h5 = h4;
-		h4 = (h3 + temp1);
-		h3 = h2;
-		h2 = h1;
-		h1 = h0;
-		h0 = (temp1 + temp2);
+		h = g;
+		g = f;
+		f = e;
+		e = (d + temp1);
+		d = c;
+		c = b;
+		b = a;
+		a = (temp1 + temp2);
+
+		//printf("t=%02u: %08X %08X %08X %08X %08X %08X %08X %08X\n", i, a, b, c, d, e, f, g, h);
 	}
 
-	ctx->h[0] += h0;
-	ctx->h[1] += h1;
-	ctx->h[2] += h2;
-	ctx->h[3] += h3;
-	ctx->h[4] += h4;
-	ctx->h[5] += h5;
-	ctx->h[6] += h6;
-	ctx->h[7] += h7;
+	ctx->h[0] += a;
+	ctx->h[1] += b;
+	ctx->h[2] += c;
+	ctx->h[3] += d;
+	ctx->h[4] += e;
+	ctx->h[5] += f;
+	ctx->h[6] += g;
+	ctx->h[7] += h;
+
+	//printf("%08X %08X %08X %08X %08X %08X %08X %08X\n", ctx->h[0], ctx->h[1], ctx->h[2], ctx->h[3], ctx->h[4], ctx->h[5], ctx->h[6], ctx->h[7]);
 
 	return LS_RESULT_SUCCESS;
 }

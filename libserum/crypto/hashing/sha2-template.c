@@ -314,53 +314,56 @@ SHA2_UPDATE(SHA2_CTX *const restrict ctx, const void *const restrict in, size_t 
 	LS_RESULT_CHECK_NULL(in, 2);
 	LS_RESULT_CHECK_SIZE(size, 1);
 
+
 	ctx->size += size;
 
-	/*if (size == (sizeof(SHA2_NATIVE_TYPE) * 16)) {
-		return SHA2_UPDATE_BLOCK(ctx, in);
-	} else */{
-		if ((ctx->__psize + size) <= sizeof(ctx->__pcache)) {
-			memcpy(ctx->__pcache + ctx->__psize, in, size);
-			ctx->__psize += size;
-			return LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_EARLY_EXIT);
-		}
 
-		SHA2_NATIVE_TYPE buffer[LS_SHA2_BLOCK_NUM];
+	// Check if we have enough data to make a full block, if not append the input to the cache and return.
+	if ((ctx->__psize + size) <= sizeof(ctx->__pcache)) {
+		memcpy(ctx->__pcache + ctx->__psize, in, size);
+		ctx->__psize += size;
+		return LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_EARLY_EXIT);
+	}
 
-		const uint8_t *iptr = in;
 
-		// check if partial data
-		if (ctx->__psize) {
-			memcpy(buffer, ctx->__pcache, ctx->__psize);
+	const uint8_t *iptr = in;
+	SHA2_NATIVE_TYPE buffer[LS_SHA2_BLOCK_NUM];
 
-			size_t from_input = (sizeof(buffer) - ctx->__psize);
-			memcpy(((uint8_t*)buffer) + ctx->__psize, iptr, from_input);
-			iptr += from_input;
-			size += ctx->__psize;
-		} else {
+
+	// Check if we have partial data cached. If we do, slam it in front of the buffer.
+	if (ctx->__psize) {
+		memcpy(buffer, ctx->__pcache, ctx->__psize);
+
+		size_t from_input = (sizeof(buffer) - ctx->__psize);
+		memcpy(((uint8_t*)buffer) + ctx->__psize, iptr, from_input);
+		iptr += from_input;
+		size += ctx->__psize;
+	} else {
+		memcpy(buffer, iptr, sizeof(buffer));
+		iptr += sizeof(buffer);
+	}
+
+
+	// While we have at least a full block, update that block and move on to the next.
+	do {
+		SHA2_UPDATE_BLOCK(ctx, buffer);
+		if ((size -= sizeof(buffer)) >= sizeof(buffer)) {
 			memcpy(buffer, iptr, sizeof(buffer));
 			iptr += sizeof(buffer);
+		} else {
+			break;
 		}
+	} while (true);
 
-		// while have full block, update block
-		do {
-			SHA2_UPDATE_BLOCK(ctx, buffer);
-			if ((size -= sizeof(buffer)) >= sizeof(buffer)) {
-				memcpy(buffer, iptr, sizeof(buffer));
-				iptr += sizeof(buffer);
-			} else {
-				break;
-			}
-		} while (true);
 
-		// if partial block, cache
-		if (ctx->__psize = (uint32_t)size) {
-			memcpy(ctx->__pcache, iptr, size);
-			return LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_SIZE);
-		}
-
-		return LS_RESULT_SUCCESS;
+	// If we have a partial block remaining, cache it.
+	if (ctx->__psize = (uint32_t)size) {
+		memcpy(ctx->__pcache, iptr, size);
+		return LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_SIZE);
 	}
+
+
+	return LS_RESULT_SUCCESS;
 }
 
 ls_result_t
@@ -372,19 +375,28 @@ SHA2_FINISH(SHA2_CTX *const ctx, uint8_t digest[SHA2_DIGEST_SIZE]) {
 	uint8_t buffer[SHA2_BLOCK_SIZE];
 	uintptr_t offset = 0;
 
+
+	// Check if we have partial data cached. If we do, append it to the buffer and set the appropriate offset.
 	if (ctx->__psize) {
 		memcpy(buffer, ctx->__pcache, ctx->__psize);
 		offset = ctx->__psize;
 	}
 
+
+	// Calculate how many bytes we have left and apply the first two parts of padding (padding byte, zeroes).
 	size_t diff = (sizeof(buffer) - offset);
 	memset(buffer + offset, 0, diff);
 	buffer[offset] = ctx->pad;
 
+	// If we don't have enough bytes left to append proper padding, use the current buffer and clear it.
 	if (diff < 9) {
 		SHA2_UPDATE_BLOCK(ctx, (void*)buffer);
 		memset(buffer, 0, sizeof(buffer));
 	}
+
+
+	// Apply the last part of the padding (size). We want the number of bits instead of the number of bytes, so we multiply by 8. (2^3=8)
+	ctx->size <<= 3;
 
 	buffer[sizeof(buffer) - 8] = ((ctx->size >> 56) & 0xFF);
 	buffer[sizeof(buffer) - 7] = ((ctx->size >> 48) & 0xFF);
@@ -394,6 +406,8 @@ SHA2_FINISH(SHA2_CTX *const ctx, uint8_t digest[SHA2_DIGEST_SIZE]) {
 	buffer[sizeof(buffer) - 3] = ((ctx->size >> 16) & 0xFF);
 	buffer[sizeof(buffer) - 2] = ((ctx->size >>  8) & 0xFF);
 	buffer[sizeof(buffer) - 1] = ((ctx->size      ) & 0xFF);
+
+	ctx->size >>= 3;
 
 
 	SHA2_UPDATE_BLOCK(ctx, (void*)buffer);
