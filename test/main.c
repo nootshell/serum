@@ -41,7 +41,12 @@
 #include <libserum/debug/memdump.h>
 #include <libserum/crypto/hashing/sha2.h>
 
+#include <libserum/core/info.h>
+
 int main(int argc, char *argv[], char *env[]) {
+	puts(ls_info_compilation_environment());
+	puts("");
+
 	int ret = 0;
 
 	ls_sha2_224_t sha2;
@@ -51,14 +56,14 @@ int main(int argc, char *argv[], char *env[]) {
 		goto __cleanup;
 	}
 
-	/*uint8_t data[4];
+	uint8_t data[4];
 	strcpy((void*)data, "abc");
 	data[3] = 0;
 
 	if (!ls_sha2_224_update(&sha2, data, 3).success) {
 		ret = 2;
 		goto __cleanup;
-	}*/
+	}
 
 	uint8_t digest[LS_SHA2_224_DIGEST_SIZE];
 	if (!ls_sha2_224_finish(&sha2, digest).success) {
@@ -66,7 +71,13 @@ int main(int argc, char *argv[], char *env[]) {
 		goto __cleanup;
 	}
 
-	ls_memdump(digest, sizeof(digest));
+	int i;
+	for (i = 0; i < 8; ++i) {
+		printf("%08X ", sha2.h[i]);
+	}
+	puts("");
+
+	ls_memdump_ex(digest, sizeof(digest), 32, 4);
 
 __cleanup:
 	ls_sha2_224_clear(&sha2);

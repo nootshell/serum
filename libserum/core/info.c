@@ -30,62 +30,14 @@
 **
 */
 
-#ifndef __LS_CORE_INTRINSICS_H
-#define __LS_CORE_INTRINSICS_H
+#define FILE_PATH							"core/info.c"
+
+#include "./info.h"
+#include "./detect.h"
+#include "./intrinsics.h"
 
 
-#if (!defined(LS_INTRINSICS_DISABLE))
-
-
-#if (defined(_exit_))
-#	undef _exit_
-#endif
-
-
-#if (!defined(LS_INTRINSICS))
-#	if (defined(__has_include))
-#		if (__has_include(<x86intrin.h>))
-#			include <x86intrin.h>
-#			define LS_INTRINSICS			1
-#			if (!defined(LS_INTRINSICS_CONTINUE))
-#				define _exit_
-#			endif
-#		endif
-#		if (!defined(_exit_) && __has_include(<intrin.h>))
-#			include <intrin.h>
-#			define LS_INTRINSICS			1
-#		endif
-#	else
-#		include "./detect_compiler.h"
-#		if (LS_GCC || LS_LLVM)
-#			include <x86intrin.h>
-#			define LS_INTRINSICS			1
-#		elif (LS_MSC)
-#			include <intrin.h>
-#			define LS_INTRINSICS			1
-#		endif
-#	endif
-#endif
-
-#if (!defined(LS_INTRINSICS))
-#	define LS_INTRINSICS					0
-#endif
-
-#if (!defined(LS_INTRINSICS_STRING))
-#	if (LS_INTRINSICS)
-#		define LS_INTRINSICS_STRING			"+"
-#	else
-#		define LS_INTRINSICS_STRING			"-"
-#	endif
-#endif
-
-
-#if (defined(_exit_))
-#	undef _exit_
-#endif
-
-
-#endif // LS_INTRINSICS_DISABLE
-
-
-#endif
+const char*
+ls_info_compilation_environment() {
+	return ("[" __DATE__ ", " __TIME__ "] " LS_COMPILER_STRING LS_INTRINSICS_STRING " " __VERSION__ " @ " LS_OS_STRING " (" LS_ARCH_STRING ", " LS_ENDIANNESS_STRING ")");
+}
