@@ -38,6 +38,9 @@
 #include <string.h>
 
 
+ID("built-in packet structure");
+
+
 ls_result_t
 ls_packet_init(ls_packet_t *packet, uint8_t command, uint8_t flags) {
 	LS_RESULT_CHECK_NULL(packet, 1);

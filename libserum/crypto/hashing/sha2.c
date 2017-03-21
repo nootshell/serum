@@ -39,6 +39,9 @@
 #include <string.h>
 
 
+ID("SHA-2-224, SHA-2-256, SHA-2-384, and SHA-2-512 implementations");
+
+
 #define LS_SHA2_224
 #include "./sha2-template.c"
 #undef LS_SHA2_224

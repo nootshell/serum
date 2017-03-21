@@ -36,6 +36,9 @@
 #include <string.h>
 
 
+ID("variable size integer storage");
+
+
 ls_result_t
 ls_varsize_get_bytes(void *const out, size_t *const out_size, ls_vs_value_t value) {
 	LS_RESULT_CHECK_NULL(out, 1);

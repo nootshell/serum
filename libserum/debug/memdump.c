@@ -30,11 +30,22 @@
 **
 */
 
-#define __RFILE__							"core/memdump.c"
+#define FILE_PATH								"debug/memdump.c"
 
 #include "./memdump.h"
 
 #include <stdio.h>
+#include <inttypes.h>
+
+
+ID("memory dumping");
+
+
+#if (LS_ARCH_BITS == 32)
+#	define PTRFMT								"0x%08"PRIXPTR
+#else
+#	define PTRFMT								"0x%016"PRIXPTR
+#endif
 
 
 void
@@ -50,24 +61,28 @@ ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_p
 		items_per_column = 1;
 	}
 
+
+	const uint8_t *p8 = ptr;
+	printf(PTRFMT": ", p8);
+
 	int c = 0, ic = 0;
 	size_t i;
 	if (items_per_column == 1) {
 		for (i = 0; i < size; ++i) {
-			printf("%02X ", ((uint8_t*)ptr)[i]);
+			printf("%02X ", *(p8++));
 			if (++c >= columns) {
 				c = 0;
-				puts("");
+				printf("\n"PTRFMT": ", p8);
 			}
 		}
 	} else {
 		for (i = 0; i < size; ++i) {
-			printf("%02X", ((uint8_t*)ptr)[i]);
+			printf("%02X", *(p8++));
 			if (++ic >= items_per_column) {
 				ic = 0;
 				if (++c >= columns) {
 					c = 0;
-					puts("");
+					printf("\n"PTRFMT": ", p8);
 				} else {
 					fputs(" ", stdout);
 				}

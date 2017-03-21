@@ -38,13 +38,13 @@
 
 
 #if (LS_WINDOWS)
-#	if (LIBSERUM_EXPORTING)
+#	if (defined(LIBSERUM_EXPORTS) && LIBSERUM_EXPORTS)
 #		define LSAPI						__declspec(dllexport)
 #	else
 #		define LSAPI						__declspec(dllimport)
 #	endif
 #elif (LS_GCC || LS_LLVM)
-#	if (LIBSERUM_EXPORTING)
+#	if (defined(LIBSERUM_EXPORTS) && LIBSERUM_EXPORTS)
 #		define LSAPI						__attribute__((visibility("default")))
 #	endif
 #	define LSSYS							__attribute__((visibility("hidden")))
