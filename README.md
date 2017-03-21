@@ -10,6 +10,8 @@ This project is basically for me to learn stuff, it aims to be the complete tool
 Features
 ===
 - Crypto
+	- Hashing
+		- [SHA-2](./libserum/crypto/hashing/sha2.h)
 	- Block ciphers
 		- [XXTEA](https://en.wikipedia.org/wiki/XXTEA)
 	- Padding
@@ -48,7 +50,6 @@ TODO
 	- Stream ciphers
 		- Rabbit
 	- Hash functions (+ HMACs)
-		- SHA-2 <sup>being implemented</sup>
 		- SHA-3
 		- RIPEMD-160
 	- KDF
