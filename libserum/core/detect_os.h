@@ -49,7 +49,11 @@
 #			define LS_OS_STRING				"Android"
 #		else
 #			define LS_OS					LS_OS_ID_LINUX
-#			define LS_OS_STRING				"Linux"
+#			if (defined(DISTRO))
+#				define LS_OS_STRING			"Linux ("DISTRO")"
+#			else
+#				define LS_OS_STRING			"Linux"
+#			endif
 #		endif
 #	elif (defined(_WIN32))
 #		define LS_WINDOWS					1

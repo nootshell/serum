@@ -11,7 +11,7 @@ parserArgumentsC=-ferror-limit=100 -fspell-checking -Wdocumentation -Wunused-par
 Name=GCC
 
 [Filters]
-size=11
+size=12
 
 [Filters][0]
 inclusive=0
@@ -26,6 +26,11 @@ targets=2
 [Filters][10]
 inclusive=1
 pattern=*.md
+targets=1
+
+[Filters][11]
+inclusive=1
+pattern=*.sh
 targets=1
 
 [Filters][2]

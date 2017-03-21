@@ -130,5 +130,11 @@
 #define LS_COMPILER_INFO(msg)				LS_COMPILER_MESG(" " LS_COMPILER_INFO_PREFIX " > "msg)
 #define LS_COMPILER_WARN(msg)				LS_COMPILER_MESG(" " LS_COMPILER_WARN_PREFIX " > "msg)
 
+#if (defined(MAKEFILE) && MAKEFILE)
+#	define LS_MAKEFILE_STRING				"Makefile"
+#else
+#	define LS_MAKEFILE_STRING				"Custom build system"
+#endif
+
 
 #endif

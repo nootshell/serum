@@ -53,7 +53,7 @@
 #endif
 
 
-ID("PRNG: device as source");
+ID("filesystem-based PRNG");
 
 
 ls_result_t

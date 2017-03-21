@@ -44,7 +44,7 @@ struct ls_prng_isaac {
 };
 
 
-ID("PRNG: ISAAC");
+ID("ISAAC implementation");
 
 
 #define MIX()								\

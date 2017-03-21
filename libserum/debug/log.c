@@ -38,6 +38,9 @@
 #include <inttypes.h>
 
 
+ID("centralized logging");
+
+
 static void print_origin(const char *func, const char *file, const uint32_t line) {
 	printf("%"PRIu64" %s %s:%"PRIu32" > ", ls_nanos(), func, file, line);
 }

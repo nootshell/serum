@@ -30,7 +30,6 @@
 **
 */
 
-
 #if ((defined(LS_SHA2_224) || defined(LS_SHA2_256)) && !defined(SHA2_32))
 #	define SHA2_32
 #elif ((defined(LS_SHA2_384) || defined(LS_SHA2_512)) && !defined(SHA2_64))
@@ -73,6 +72,10 @@
 #undef SHA2_DIGEST_SIZE
 #endif
 
+#ifdef SHA2_DIGEST_TYPE
+#undef SHA2_DIGEST_TYPE
+#endif
+
 #ifdef SHA2_BLOCK_SIZE
 #undef SHA2_BLOCK_SIZE
 #endif
@@ -87,6 +90,7 @@
 #	define SHA2_UPDATE_BLOCK				ls_sha2_32_update_block
 #	define SHA2_FINISH						ls_sha2_224_finish
 #	define SHA2_DIGEST_SIZE					LS_SHA2_224_DIGEST_SIZE
+#	define SHA2_DIGEST_TYPE					ls_sha2_224_digest
 #	define SHA2_BLOCK_SIZE					LS_SHA2_224_BLOCK_SIZE
 #elif (defined(LS_SHA2_256))
 #	define SHA2_BITS						32
@@ -98,6 +102,7 @@
 #	define SHA2_UPDATE_BLOCK				ls_sha2_32_update_block
 #	define SHA2_FINISH						ls_sha2_256_finish
 #	define SHA2_DIGEST_SIZE					LS_SHA2_256_DIGEST_SIZE
+#	define SHA2_DIGEST_TYPE					ls_sha2_256_digest
 #	define SHA2_BLOCK_SIZE					LS_SHA2_256_BLOCK_SIZE
 #elif (defined(LS_SHA2_384))
 #	define SHA2_BITS						64
@@ -109,6 +114,7 @@
 #	define SHA2_UPDATE_BLOCK				ls_sha2_64_update_block
 #	define SHA2_FINISH						ls_sha2_384_finish
 #	define SHA2_DIGEST_SIZE					LS_SHA2_384_DIGEST_SIZE
+#	define SHA2_DIGEST_TYPE					ls_sha2_384_digest
 #	define SHA2_BLOCK_SIZE					LS_SHA2_384_BLOCK_SIZE
 #elif (defined(LS_SHA2_512))
 #	define SHA2_BITS						64
@@ -120,6 +126,7 @@
 #	define SHA2_UPDATE_BLOCK				ls_sha2_64_update_block
 #	define SHA2_FINISH						ls_sha2_512_finish
 #	define SHA2_DIGEST_SIZE					LS_SHA2_512_DIGEST_SIZE
+#	define SHA2_DIGEST_TYPE					ls_sha2_512_digest
 #	define SHA2_BLOCK_SIZE					LS_SHA2_512_BLOCK_SIZE
 #endif
 
@@ -367,7 +374,7 @@ SHA2_UPDATE(SHA2_CTX *const restrict ctx, const void *const restrict in, size_t 
 }
 
 ls_result_t
-SHA2_FINISH(SHA2_CTX *const ctx, uint8_t digest[SHA2_DIGEST_SIZE]) {
+SHA2_FINISH(SHA2_CTX *const ctx, SHA2_DIGEST_TYPE digest) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
 	LS_RESULT_CHECK_NULL(digest, 2);
 

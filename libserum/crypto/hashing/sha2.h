@@ -68,30 +68,35 @@ typedef struct ls_sha2_64 {
 	uint8_t pad; // See: (struct ls_sha2_32).pad
 } ls_sha2_384_t, ls_sha2_512_t;
 
+typedef uint8_t ls_sha2_224_digest[LS_SHA2_224_DIGEST_SIZE];
+typedef uint8_t ls_sha2_256_digest[LS_SHA2_256_DIGEST_SIZE];
+typedef uint8_t ls_sha2_384_digest[LS_SHA2_384_DIGEST_SIZE];
+typedef uint8_t ls_sha2_512_digest[LS_SHA2_512_DIGEST_SIZE];
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_sha2_224_init(ls_sha2_224_t *ctx);
-	LSAPI ls_result_t ls_sha2_224_clear(ls_sha2_224_t *ctx);
-	LSAPI ls_result_t ls_sha2_224_update(ls_sha2_224_t *ctx, const void *const in, size_t size);
-	LSAPI ls_result_t ls_sha2_224_finish(ls_sha2_224_t *ctx, uint8_t digest[LS_SHA2_224_DIGEST_SIZE]);
+	LSAPI ls_result_t ls_sha2_224_init(ls_sha2_224_t *const ctx);
+	LSAPI ls_result_t ls_sha2_224_clear(ls_sha2_224_t *const ctx);
+	LSAPI ls_result_t ls_sha2_224_update(ls_sha2_224_t *const restrict ctx, const void *const restrict in, size_t size);
+	LSAPI ls_result_t ls_sha2_224_finish(ls_sha2_224_t *const ctx, ls_sha2_224_digest digest);
 
-	LSAPI ls_result_t ls_sha2_256_init(ls_sha2_256_t *ctx);
-	LSAPI ls_result_t ls_sha2_256_clear(ls_sha2_256_t *ctx);
-	LSAPI ls_result_t ls_sha2_256_update(ls_sha2_256_t *ctx, const void *const in, size_t size);
-	LSAPI ls_result_t ls_sha2_256_finish(ls_sha2_256_t *ctx, uint8_t digest[LS_SHA2_256_DIGEST_SIZE]);
+	LSAPI ls_result_t ls_sha2_256_init(ls_sha2_256_t *const ctx);
+	LSAPI ls_result_t ls_sha2_256_clear(ls_sha2_256_t *const ctx);
+	LSAPI ls_result_t ls_sha2_256_update(ls_sha2_256_t *const restrict ctx, const void *const restrict in, size_t size);
+	LSAPI ls_result_t ls_sha2_256_finish(ls_sha2_256_t *const ctx, ls_sha2_256_digest digest);
 
-	LSAPI ls_result_t ls_sha2_384_init(ls_sha2_384_t *ctx);
-	LSAPI ls_result_t ls_sha2_384_clear(ls_sha2_384_t *ctx);
-	LSAPI ls_result_t ls_sha2_384_update(ls_sha2_384_t *ctx, const void *const in, size_t size);
-	LSAPI ls_result_t ls_sha2_384_finish(ls_sha2_384_t *ctx, uint8_t digest[LS_SHA2_384_DIGEST_SIZE]);
+	LSAPI ls_result_t ls_sha2_384_init(ls_sha2_384_t *const ctx);
+	LSAPI ls_result_t ls_sha2_384_clear(ls_sha2_384_t *const ctx);
+	LSAPI ls_result_t ls_sha2_384_update(ls_sha2_384_t *const restrict ctx, const void *const restrict in, size_t size);
+	LSAPI ls_result_t ls_sha2_384_finish(ls_sha2_384_t *const ctx, ls_sha2_384_digest digest);
 
-	LSAPI ls_result_t ls_sha2_512_init(ls_sha2_512_t *ctx);
-	LSAPI ls_result_t ls_sha2_512_clear(ls_sha2_512_t *ctx);
-	LSAPI ls_result_t ls_sha2_512_update(ls_sha2_512_t *ctx, const void *const in, size_t size);
-	LSAPI ls_result_t ls_sha2_512_finish(ls_sha2_512_t *ctx, uint8_t digest[LS_SHA2_512_DIGEST_SIZE]);
+	LSAPI ls_result_t ls_sha2_512_init(ls_sha2_512_t *const ctx);
+	LSAPI ls_result_t ls_sha2_512_clear(ls_sha2_512_t *const ctx);
+	LSAPI ls_result_t ls_sha2_512_update(ls_sha2_512_t *const restrict ctx, const void *const restrict in, size_t size);
+	LSAPI ls_result_t ls_sha2_512_finish(ls_sha2_512_t *const ctx, ls_sha2_512_digest digest);
 
 #ifdef __cplusplus
 }

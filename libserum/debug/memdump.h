@@ -34,10 +34,7 @@
 #define __LS_CORE_MEMDUMP_H
 
 
-#include <stdint.h>
-#include <stdlib.h>
-
-#include "../core/lsapi.h"
+#include "../core/stdincl.h"
 
 
 #ifdef __cplusplus

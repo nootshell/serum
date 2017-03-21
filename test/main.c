@@ -47,7 +47,7 @@ int main(int argc, char *argv[], char *env[]) {
 	puts(ls_info_compilation_environment());
 	puts("");
 
-	int ret = 0;
+	/*int ret = 0;
 
 	ls_sha2_224_t sha2;
 
@@ -79,18 +79,18 @@ int main(int argc, char *argv[], char *env[]) {
 	}
 	//ls_vmemdump(&sha2, sizeof(sha2), "post-update");
 
-	uint8_t digest[LS_SHA2_224_DIGEST_SIZE];
+	ls_sha2_224_digest digest;
 	if (!ls_sha2_224_finish(&sha2, digest).success) {
 		ret = 3;
 		goto __cleanup;
 	}
 	//ls_vmemdump(&sha2, sizeof(sha2), "post-finish");
 
-	ls_vmemdump(digest, sizeof(digest), "digest");
+	ls_vmemdump_ex(digest, sizeof(digest), 8, 2, "digest");
 
 __cleanup:
 	ls_sha2_224_clear(&sha2);
-	return ret;
+	return ret;*/
 
 	ls_vs_value_t vsv = 123456789;
 	if (argc > 1) {
@@ -104,17 +104,13 @@ __cleanup:
 	if (ls_varsize_get_bytes(vsb, &osz, vsv).success) {
 		ls_vs_value_t ov;
 		if (ls_varsize_get_value(&ov, vsb, sizeof(vsb)).success) {
-			ls_logf("buffer..........: 0x%"PRIXPTR, (uintptr_t)vsb);
-			ls_logf("buffer_size.....: %"PRIuMAX, (uintmax_t)sizeof(vsb));
+			ls_vmemdump(vsb, sizeof(vsb), "buffer");
+			puts("");
+
+			float ratio = (((float)osz / ((float)sizeof(vsv))) * 100.0F);
 			ls_logf("original value..: %"PRIuMAX, vsv);
 			ls_logf("new value.......: %"PRIuMAX, ov);
-			ls_logf("value size......: %"PRIuMAX, (uintmax_t)sizeof(vsv));
-			ls_logf("bytes used......: %"PRIuPTR, osz);
-
-			double ratio = (((double)osz / ((double)sizeof(vsv))) * 100.0D);
-			ls_logf("ratio...........: \033[3%s;1m%.2lf%%\033[0m", ((ratio < 100.0D) ? "2" : ((ratio == 100.0D) ? "3" : "1")), ratio);
-			puts("");
-			ls_vmemdump(vsb, sizeof(vsb), "buffer contents");
+			ls_logf("bytes used......: %"PRIuMAX"/%"PRIuMAX" (\033[3%s;1m%.2lf%%\033[0m)", (uintmax_t)osz, (uintmax_t)sizeof(vsv), ((ratio < 100.0F) ? "2" : ((ratio == 100.0F) ? "3" : "1")), ratio);
 			return 0;
 		} else {
 			puts("error");
