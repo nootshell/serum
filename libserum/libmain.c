@@ -42,8 +42,9 @@
 #endif
 
 
-#if ((defined(DEBUG) && DEBUG) && (defined(__has_include) && __has_include(<mcheck.h>)))
-#	include <mcheck.h>
+#if ((defined(DEBUG) && DEBUG) && defined(__has_include))
+#	if (__has_include(<mcheck.h>))
+#		include <mcheck.h>
 
 void
 static ls_mcheck_abort(enum mcheck_status status) {
@@ -66,6 +67,11 @@ int
 static ls_hook_mcheck() {
 	return mcheck(ls_mcheck_abort);
 }
+
+#	else
+#		define ls_hook_mcheck()				-1
+LS_COMPILER_WARN("Unable to include mcheck.h");
+#	endif
 #else
 #	define ls_hook_mcheck()					-1
 #endif
