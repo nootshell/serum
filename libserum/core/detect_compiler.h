@@ -90,6 +90,7 @@
 #
 #	define LS_COMPILER_STRING				"MSC"
 #	define LS_COMPILER_STRING_FULL			"Microsoft Visual C++"
+#	define LS_COMPILER_VERSION				_MSC_VER
 #
 #	define LS_ATTR_THREAD					__declspec(thread)
 #
@@ -99,6 +100,7 @@
 #
 #	define LS_COMPILER_STRING				"GCC"
 #	define LS_COMPILER_STRING_FULL			"GNU Compiler Collection"
+#	define LS_COMPILER_VERSION				__VERSION__
 #
 #	define LS_ATTR_THREAD					__thread
 #	define LS_ATTR_USED						__attribute__((used))
@@ -142,6 +144,10 @@
 #define LS_COMPILER_INFO(msg)				LS_COMPILER_MESG(" " LS_COMPILER_INFO_PREFIX ": " msg)
 #define LS_COMPILER_WARN(msg)				LS_COMPILER_MESG(" " LS_COMPILER_WARN_PREFIX ": " msg)
 
+
+#ifndef LS_COMPILER_VERSION
+#define LS_COMPILER_VERSION					"v/unknown"
+#endif
 
 #ifndef LS_ATTR_THREAD
 #define LS_ATTR_THREAD
