@@ -63,7 +63,7 @@ ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_p
 
 
 	const uint8_t *p8 = ptr;
-	printf(PTRFMT": ", p8);
+	printf(PTRFMT": ", ((uintptr_t)p8));
 
 	int c = 0, ic = 0;
 	size_t i;
@@ -73,7 +73,7 @@ ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_p
 			if (++c >= columns) {
 				c = 0;
 				if (i != (size - 1)) {
-					printf("\n"PTRFMT": ", p8);
+					printf("\n"PTRFMT": ", ((uintptr_t)p8));
 				} else {
 					puts("");
 				}
@@ -87,7 +87,7 @@ ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_p
 				if (++c >= columns) {
 					c = 0;
 					if (i != (size - 1)) {
-						printf("\n"PTRFMT": ", p8);
+						printf("\n"PTRFMT": ", ((uintptr_t)p8));
 					} else {
 						puts("");
 					}
