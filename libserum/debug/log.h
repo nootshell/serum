@@ -52,16 +52,18 @@
 #define ls_logf(fmt, ...)					_ls_logf(__func__, FILE_PATH, __LINE__, (fmt), __VA_ARGS__)
 
 
-#define ls_log_e(s)							ls_log("EE " s)
-#define ls_log_w(s)							ls_log("WW " s)
-#define ls_log_i(s)							ls_log("II " s)
-#define ls_log_v(s)							ls_log("VV " s)
+#define ls_log_e(s)							ls_log("[err] " s)
+#define ls_log_w(s)							ls_log("[wrn] " s)
+#define ls_log_i(s)							ls_log("[inf] " s)
+#define ls_log_v(s)							ls_log("[ver] " s)
 
 #if DEBUG
-#	define ls_log_d(s)						ls_log("DD " s)
+#	define ls_log_d(s)						ls_log("[dbg] " s)
 #else
 #	define ls_log_d(s)
 #endif
+
+#define ls_lognull()						_ls_log(NULL, NULL, 0, NULL);
 
 
 #ifdef __cplusplus

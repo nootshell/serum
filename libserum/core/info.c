@@ -43,5 +43,5 @@ ID("compile-time build information");
 
 const char*
 ls_info_compilation_environment() {
-	return ("[" __DATE__ ", " __TIME__ "] (" LS_MAKEFILE_STRING ") " LS_COMPILER_STRING LS_INTRINSICS_STRING " " __VERSION__ " @ " LS_OS_STRING " (" LS_ARCH_STRING ", " LS_ENDIANNESS_STRING ")");
+	return (LS_COMPILATION_ENVIRONMENT);
 }

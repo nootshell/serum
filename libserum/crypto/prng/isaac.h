@@ -42,24 +42,29 @@
 #define LS_CRYPTO_PRNG_ISAAC_SIZE			(1 << LS_CRYPTO_PRNG_ISAAC_SIZEL)
 
 
-typedef struct ls_prng_isaac ls_prng_isaac_t;
+typedef struct ls_isaac {
+	uint32_t a, b, c;
+	uint32_t count;
+	uint32_t rsl[LS_CRYPTO_PRNG_ISAAC_SIZE];
+	uint32_t mem[LS_CRYPTO_PRNG_ISAAC_SIZE];
+} ls_isaac_t;
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_prng_isaac_init_ex(ls_prng_isaac_t *const ctx, const void *const seed, const size_t size);
-	LSAPI ls_result_t ls_prng_isaac_init(ls_prng_isaac_t *const ctx);
-	LSAPI ls_result_t ls_prng_isaac_init_device(ls_prng_isaac_t *const ctx, const ls_prng_device_t *const device);
-	LSAPI ls_result_t ls_crypto_prng_isaac_clear(ls_prng_isaac_t *const ctx);
+	LSAPI ls_result_t ls_isaac_init_ex(ls_isaac_t *const ctx, const void *const seed, const size_t size);
+	LSAPI ls_result_t ls_isaac_init(ls_isaac_t *const ctx);
+	LSAPI ls_result_t ls_isaac_init_device(ls_isaac_t *const ctx, const ls_device_t *const device);
+	LSAPI ls_result_t ls_isaac_clear(ls_isaac_t *const ctx);
 
-	LSAPI ls_result_t ls_prng_isaac_update(ls_prng_isaac_t *const ctx);
+	LSAPI ls_result_t ls_isaac_update(ls_isaac_t *const ctx);
 
-	LSAPI uint32_t ls_prng_isaac(ls_prng_isaac_t *const ctx);
+	LSAPI uint32_t ls_isaac(ls_isaac_t *const ctx);
 
 #if DEBUG
-	LSAPI ls_result_t ls_prng_isaac_test();
+	LSAPI ls_result_t ls_isaac_test();
 #endif
 
 #ifdef __cplusplus

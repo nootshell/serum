@@ -49,18 +49,26 @@ static void print_origin(const char *func, const char *file, const uint32_t line
 // TODO
 void
 _ls_log(const char *func, const char *file, const uint32_t line, const char *const str) {
-	print_origin(func, file, line);
-	puts(str);
+	if (!func || !file || !line || !str) {
+		puts("");
+	} else {
+		print_origin(func, file, line);
+		puts(str);
+	}
 }
 
 
 // TODO
 void
 _ls_logf(const char *func, const char *file, const uint32_t line, const char *const fmt, ...) {
-	va_list vl;
-	va_start(vl, fmt);
-	print_origin(func, file, line);
-	vprintf(fmt, vl);
-	puts("");
-	va_end(vl);
+	if (!func || !file || !line || !fmt) {
+		puts("");
+	} else {
+		va_list vl;
+		va_start(vl, fmt);
+		print_origin(func, file, line);
+		vprintf(fmt, vl);
+		puts("");
+		va_end(vl);
+	}
 }

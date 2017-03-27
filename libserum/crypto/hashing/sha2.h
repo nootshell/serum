@@ -55,9 +55,9 @@ typedef struct ls_sha2_32 {
 	uint32_t __psize;
 	uint8_t __pcache[(LS_SHA2_BLOCK_NUM * sizeof(uint32_t)) - 1];
 	uint8_t pad; // No real use for this byte: it would be used as a structure
-	             // padding. I figured I could make this useful to some tiny
-	             // extent by using this value as the pad byte in the *_finish
-	             // routines.
+				 // padding. I figured I could make this useful to some tiny
+				 // extent by using this value as the pad byte in the *_finish
+				 // routines.
 } ls_sha2_224_t, ls_sha2_256_t;
 
 typedef struct ls_sha2_64 {
@@ -80,22 +80,22 @@ extern "C" {
 
 	LSAPI ls_result_t ls_sha2_224_init(ls_sha2_224_t *const ctx);
 	LSAPI ls_result_t ls_sha2_224_clear(ls_sha2_224_t *const ctx);
-	LSAPI ls_result_t ls_sha2_224_update(ls_sha2_224_t *const restrict ctx, const void *const restrict in, size_t size);
+	LSAPI ls_result_t ls_sha2_224_update(ls_sha2_224_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT in, size_t size);
 	LSAPI ls_result_t ls_sha2_224_finish(ls_sha2_224_t *const ctx, ls_sha2_224_digest digest);
 
 	LSAPI ls_result_t ls_sha2_256_init(ls_sha2_256_t *const ctx);
 	LSAPI ls_result_t ls_sha2_256_clear(ls_sha2_256_t *const ctx);
-	LSAPI ls_result_t ls_sha2_256_update(ls_sha2_256_t *const restrict ctx, const void *const restrict in, size_t size);
+	LSAPI ls_result_t ls_sha2_256_update(ls_sha2_256_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT in, size_t size);
 	LSAPI ls_result_t ls_sha2_256_finish(ls_sha2_256_t *const ctx, ls_sha2_256_digest digest);
 
 	LSAPI ls_result_t ls_sha2_384_init(ls_sha2_384_t *const ctx);
 	LSAPI ls_result_t ls_sha2_384_clear(ls_sha2_384_t *const ctx);
-	LSAPI ls_result_t ls_sha2_384_update(ls_sha2_384_t *const restrict ctx, const void *const restrict in, size_t size);
+	LSAPI ls_result_t ls_sha2_384_update(ls_sha2_384_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT in, size_t size);
 	LSAPI ls_result_t ls_sha2_384_finish(ls_sha2_384_t *const ctx, ls_sha2_384_digest digest);
 
 	LSAPI ls_result_t ls_sha2_512_init(ls_sha2_512_t *const ctx);
 	LSAPI ls_result_t ls_sha2_512_clear(ls_sha2_512_t *const ctx);
-	LSAPI ls_result_t ls_sha2_512_update(ls_sha2_512_t *const restrict ctx, const void *const restrict in, size_t size);
+	LSAPI ls_result_t ls_sha2_512_update(ls_sha2_512_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT in, size_t size);
 	LSAPI ls_result_t ls_sha2_512_finish(ls_sha2_512_t *const ctx, ls_sha2_512_digest digest);
 
 #ifdef __cplusplus

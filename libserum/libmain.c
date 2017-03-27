@@ -30,40 +30,82 @@
 **
 */
 
-#ifndef __LS_CRYPTO_PRNG_DEVICE_H
-#define __LS_CRYPTO_PRNG_DEVICE_H
+#define FILE_PATH							"entrypoint.c"
 
+#include "./core/detect_compiler.h"
 
-#include "../../core/stdincl.h"
-#include <stdio.h>
-
-
-typedef struct ls_device {
-	FILE *fp;
-	uint8_t *buffer;
-	size_t buffer_size;
-} ls_device_t;
-
-typedef enum ls_prng_device_type {
-	DEV_UNSPECIFIED			= 0,
-	DEV_HARDWARE			= 1,	// Use /dev/hwrng, if available
-	DEV_URANDOM				= 2,	// Allow falling back to /dev/urandom, if available
-	DEV_PRIORITIZE_URANDOM	= 4		// Prioritize using /dev/urandom, if available
-} ls_prng_device_type_t;
-
-
-#ifdef __cplusplus
-extern "C" {
+#if (defined(DEBUG) && DEBUG)
+#include "./core/intrinsics.h"
+#include "./core/detect.h"
+#include "./core/info.h"
+#include "./debug/log.h"
 #endif
 
-	LSAPI ls_result_t ls_device_init(ls_device_t *const LS_RESTRICT device, const char *const LS_RESTRICT file, const size_t buffer_size);
-	LSAPI ls_result_t ls_device_clear(ls_device_t *const device);
-	LSAPI ls_result_t ls_device_generate(const ls_device_t *const LS_RESTRICT device, void *const LS_RESTRICT out, const size_t size);
-	LSAPI ls_result_t ls_device_sys(ls_device_t *const device, const size_t buffer_size, const ls_prng_device_type_t type);
 
-#ifdef __cplusplus
+#if ((defined(DEBUG) && DEBUG) && (defined(__has_include) && __has_include(<mcheck.h>)))
+#	include <mcheck.h>
+
+void
+static ls_mcheck_abort(enum mcheck_status status) {
+	switch (status) {
+		case MCHECK_OK:
+			return;
+		case MCHECK_FREE:
+			ls_log_e("Block freed twice.");
+			return;
+		case MCHECK_HEAD:
+			ls_log_e("Memory before the block was clobbered.");
+			return;
+		case MCHECK_TAIL:
+			ls_log_e("Memory after the block was clobbered.");
+			return;
+	}
+}
+
+int
+static ls_hook_mcheck() {
+	return mcheck(ls_mcheck_abort);
+}
+#else
+#	define ls_hook_mcheck()					-1
+#endif
+
+
+int
+static LS_ATTR_CONSTRUCTOR libmain() {
+#if (defined(DEBUG) && DEBUG)
+	ls_log_d("Compilation environment: " LS_COMPILATION_ENVIRONMENT);
+	if (ls_hook_mcheck() == 0) {
+		ls_log_d("mcheck hooks successfully installed");
+	} else {
+		ls_log_e("mcheck hooks failed to install (not linked with -lmcheck?)");
+	}
+	ls_lognull();
+#endif
+	return 0;
+}
+
+int
+static LS_ATTR_DESTRUCTOR libniam() {
+	return 0;
+}
+
+
+/*
+** Special treatment section.
+*/
+
+// Guess who's in here.
+#if (LS_MSC)
+#	include <Windows.h>
+
+int
+WINAPI DllMain(HINSTANCE handle, DWORD reason, LPVOID reserved) {
+	if (reason == DLL_PROCESS_ATTACH) {
+		return (libmain() == 0);
+	}
+	if (reason == DLL_PROCESS_DETACH) {
+		return (libniam() == 0);
+	}
 }
 #endif
-
-
-#endif // __LS_CRYPTO_PRNG_DEVICE_H

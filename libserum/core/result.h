@@ -40,15 +40,16 @@
 
 
 typedef struct ls_result {		// bitrg
-	uint32_t system : 1;	// 00-01
-	uint32_t critical : 1;	// 01-02
-	uint32_t _reserved1 : 6;	// 02-08
+	uint32_t system		: 1;	// 00-01
+	uint32_t critical	: 1;	// 01-02
+	uint32_t strict		: 1;	// 02-03
+	uint32_t _reserved1	: 5;	// 03-08
 
-	uint32_t code : 16;	// 08-24
+	uint32_t code		: 16;	// 08-24
 
-	uint32_t param : 4;	// 24-28
-	uint32_t _reserved2 : 3;	// 28-31
-	uint32_t success : 1;	// 31-32
+	uint32_t param		: 4;	// 24-28
+	uint32_t _reserved2	: 3;	// 28-31
+	uint32_t success	: 1;	// 31-32
 } ls_result_t;
 
 
@@ -78,10 +79,11 @@ typedef struct ls_result {		// bitrg
 #define LS_RESULT_CODE_INDEX				0x0012	// Index invalid
 
 
-#define LS_RESULT_SA(_system, _critical, _code, _param, _success)	\
+#define LS_RESULT_SA(_system, _critical, _strict, _code, _param, _success)	\
 	((ls_result_t){							\
 		.system		= (!!(_system)),		\
 		.critical	= (!!(_critical)),		\
+		.strict		= (!!(_strict)),		\
 		._reserved1	= 0,					\
 		.code		= (_code),				\
 		.param		= (_param),				\
@@ -95,25 +97,31 @@ static ls_result_t LS_ATTR_USED __LS_RESULT_PRINT(ls_result_t ret, char const *c
 	_ls_logf(func, file, line, "%08X (" LS_RESULT_PRINTF_FORMAT ")", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret));
 	return ret;
 }
-#	define LS_RESULT(_system, _critical, _code, _param, _success)	\
-	__LS_RESULT_PRINT(LS_RESULT_SA(_system, _critical, _code, _param, _success), __func__, FILE_PATH, __LINE__)
+#	define LS_RESULT(_system, _critical, _strict, _code, _param, _success)	\
+	__LS_RESULT_PRINT(LS_RESULT_SA(_system, _critical, _strict, _code, _param, _success), __func__, FILE_PATH, __LINE__)
 #else
 #	define LS_RESULT						LS_RESULT_SA
 #endif
 
-#define LS_RESULT_SUCCESS_CODE(code)		LS_RESULT(true, false, (code), 0      , true )
+#define LS_RESULT_SUCCESS_CODE(code)		LS_RESULT(true, false, false, (code), 0      , true )
 #define LS_RESULT_SUCCESS					LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_SUCCESS)
-#define LS_RESULT_ERROR(code)				LS_RESULT(true, false, (code), 0      , false)
-#define LS_RESULT_ERROR_PARAM(code,param)	LS_RESULT(true, false, (code), (param), false)
-#define LS_RESULT_ERROR_CRIT(code)			LS_RESULT(true, true , (code), 0      , false)
-#define LS_RESULT_ERROR_CRIT_PARAM(code,param) \
-											LS_RESULT(true, true , (code), (param),false)
+#define LS_RESULT_ERROR(code)				LS_RESULT(true, false, false, (code), 0      , false)
+#define LS_RESULT_ERROR_PARAM(code, param)	LS_RESULT(true, false, false, (code), (param), false)
+#define LS_RESULT_ERROR_CRIT(code)			LS_RESULT(true, true , false, (code), 0      , false)
+#define LS_RESULT_ERROR_CRIT_PARAM(code, param) \
+											LS_RESULT(true, true , false, (code), (param), false)
+#define LS_RESULT_ERROR_STRICT(code)		LS_RESULT(true, false, true , (code), 0      , false)
+#define LS_RESULT_ERROR_STRICT_PARAM(code, param) \
+											LS_RESULT(true, false, true , (code), (param), false)
 
-#define LS_RESULT_CHECK_NULL(var, param)	if (!(var)) { return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, (param)); }
-#define LS_RESULT_CHECK_SIZE(var, param)	if (!(var)) { return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, (param)); }
+
+#define LS_RESULT_CHECK(cond, code, param)	if ((cond)) { return LS_RESULT_ERROR_PARAM((code), (param)); }
+
+#define LS_RESULT_CHECK_NULL(var, param)	LS_RESULT_CHECK(!(var), LS_RESULT_CODE_NULL, (param))
+#define LS_RESULT_CHECK_SIZE(var, param)	LS_RESULT_CHECK(!(var), LS_RESULT_CODE_SIZE, (param))
 
 #define LS_RESULT_CHECK_INDEX(var, param, lti, gti)	\
-											if (((var) < (lti)) || ((var) > (gti))) { return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_INDEX, (param)); }
+											LS_RESULT_CHECK((((var) < (lti)) || ((var) > (gti))), LS_RESULT_CODE_INDEX, (param))
 
 
 #endif

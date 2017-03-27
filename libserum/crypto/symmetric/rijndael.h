@@ -35,6 +35,26 @@
 
 
 #include "../../core/stdincl.h"
+#include "../storage/key.h"
+
+
+typedef struct ls_rijndael {
+	ls_key_t *key_encrypt;
+	ls_key_t *key_decrypt;
+	uint16_t flags;
+	uint16_t rounds;
+} ls_rijndael_t;
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_result_t ls_rijndael_init(ls_rijndael_t *ctx, void *key, size_t key_size);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

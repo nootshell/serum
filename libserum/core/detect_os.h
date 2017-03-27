@@ -59,8 +59,6 @@
 #		define LS_WINDOWS					1
 #		define LS_OS						LS_OS_ID_WINDOWS
 #		define LS_OS_STRING					"Windows"
-#		define WIN32_LEAN_AND_MEAN
-#		include <Windows.h>
 #	elif (defined(__APPLE__) && defined(__MACH__))
 #		define LS_MAC						1
 #		define LS_OS						LS_OS_ID_MAC

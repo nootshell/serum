@@ -72,7 +72,11 @@ ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_p
 			printf("%02X ", *(p8++));
 			if (++c >= columns) {
 				c = 0;
-				printf("\n"PTRFMT": ", p8);
+				if (i != (size - 1)) {
+					printf("\n"PTRFMT": ", p8);
+				} else {
+					puts("");
+				}
 			}
 		}
 	} else {
@@ -82,7 +86,11 @@ ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_p
 				ic = 0;
 				if (++c >= columns) {
 					c = 0;
-					printf("\n"PTRFMT": ", p8);
+					if (i != (size - 1)) {
+						printf("\n"PTRFMT": ", p8);
+					} else {
+						puts("");
+					}
 				} else {
 					fputs(" ", stdout);
 				}

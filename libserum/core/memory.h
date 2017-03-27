@@ -45,6 +45,9 @@
 #	define stacksizeof(name)				dstacksizeof((name))
 #	define stackalloc(name, size)			dstackalloc((name), (size))
 #	define stackfree(name)					dstackfree((name))
+
+#	define LS_MEMLOCK(ptr, size)			(VirtualLock((ptr), (size)) != 0)
+#	define LS_MEMUNLOCK(ptr, size)			(VirtualUnlock((ptr), (size)) != 0)
 #else
 #	include <alloca.h>
 #	define dstacksizeof(name)				MACRO_CONCAT(_, name)##_sizeof
@@ -53,9 +56,11 @@
 #	define stacksizeof(name)				sizeof((name))
 #	define stackalloc(name, size)			name[(size)]
 #	define stackfree(name)
-#endif
 
-#define safefree(ptr)						if ((ptr)) { free((ptr)); ((ptr)) = NULL; }
+#	include <sys/mman.h>
+#	define LS_MEMLOCK(ptr, size)			(mlock((ptr), (size)) == 0)
+#	define LS_MEMUNLOCK(ptr, size)			(munlock((ptr), (size)) == 0)
+#endif
 
 
 #endif
