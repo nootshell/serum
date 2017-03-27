@@ -90,7 +90,7 @@
 #
 #	define LS_COMPILER_STRING				"MSC"
 #	define LS_COMPILER_STRING_FULL			"Microsoft Visual C++"
-#	define LS_COMPILER_VERSION				_MSC_VER
+#	define LS_COMPILER_VERSION				MACRO_STRINGIFY(_MSC_VER)
 #
 #	define LS_ATTR_THREAD					__declspec(thread)
 #
