@@ -3,7 +3,7 @@ LD = gcc
 
 DISTRO_DEF = $(shell sh ./get-distro.sh)
 CFLAGS = -fPIC -fstack-protector-strong -I. -DMAKEFILE=1 -DDISTRO=\"$(DISTRO_DEF)\"
-
+LS_MCHECK =
 
 
 all: release test
@@ -35,7 +35,7 @@ bin/libserum.so: CFLAGS += -DLIBSERUM_EXPORTS=1
 bin/libserum.so: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find libserum -type f -name '*.c')))
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
-	@$(LD) -o $@ -shared $^
+	@$(LD) -o $@ -shared $(LS_MCHECK) $^
 	@echo " (done)"
 	@echo
 
@@ -50,6 +50,7 @@ bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name
 
 
 debug: CFLAGS += -g -DDEBUG
+debug: LS_MCHECK += $(shell sh ./get-mcheck.sh)
 debug: lib
 
 release: CFLAGS += -O3 -DRELEASE

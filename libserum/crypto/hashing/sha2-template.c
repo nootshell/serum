@@ -316,7 +316,7 @@ SHA2_CLEAR(SHA2_CTX *const ctx) {
 
 
 ls_result_t
-SHA2_UPDATE(SHA2_CTX *const restrict ctx, const void *const restrict in, size_t size) {
+SHA2_UPDATE(SHA2_CTX *const LS_RESTRICT ctx, const void *const LS_RESTRICT in, size_t size) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
 	LS_RESULT_CHECK_NULL(in, 2);
 	LS_RESULT_CHECK_SIZE(size, 1);

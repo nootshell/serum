@@ -37,8 +37,13 @@
 #if (!defined(LS_INTRINSICS_DISABLE))
 
 
-#if (defined(_exit_))
-#	undef _exit_
+#ifdef _exit_
+#undef _exit_
+#endif
+
+
+#ifdef LS_INTRINSICS_STRING
+#undef LS_INTRINSICS_STRING
 #endif
 
 

@@ -36,14 +36,6 @@
 #include <string.h>
 
 
-struct ls_prng_isaac {
-	uint32_t a, b, c;
-	uint32_t count;
-	uint32_t rsl[LS_CRYPTO_PRNG_ISAAC_SIZE];
-	uint32_t mem[LS_CRYPTO_PRNG_ISAAC_SIZE];
-};
-
-
 ID("ISAAC implementation");
 
 
@@ -72,7 +64,7 @@ ID("ISAAC implementation");
 	ROUND();
 
 ls_result_t
-ls_prng_isaac_init_ex(ls_prng_isaac_t *const ctx, const void *const seed, const size_t size) {
+ls_isaac_init_ex(ls_isaac_t *const ctx, const void *const seed, const size_t size) {
 	if (!ctx) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
@@ -109,8 +101,8 @@ ls_prng_isaac_init_ex(ls_prng_isaac_t *const ctx, const void *const seed, const 
 		}
 	}
 
-	if (ls_prng_isaac_update(ctx).success) {
-		return ls_prng_isaac_update(ctx);
+	if (ls_isaac_update(ctx).success) {
+		return ls_isaac_update(ctx);
 	} else {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_MISC);
 	}
@@ -118,13 +110,13 @@ ls_prng_isaac_init_ex(ls_prng_isaac_t *const ctx, const void *const seed, const 
 
 
 ls_result_t
-ls_prng_isaac_init(ls_prng_isaac_t *const ctx) {
-	return ls_prng_isaac_init_ex(ctx, NULL, 1);
+ls_isaac_init(ls_isaac_t *const ctx) {
+	return ls_isaac_init_ex(ctx, NULL, 1);
 }
 
 
 ls_result_t
-ls_prng_isaac_init_device(ls_prng_isaac_t *const ctx, const ls_prng_device_t *const device) {
+ls_isaac_init_device(ls_isaac_t *const ctx, const ls_device_t *const device) {
 	if (!device) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);
 	}
@@ -132,8 +124,8 @@ ls_prng_isaac_init_device(ls_prng_isaac_t *const ctx, const ls_prng_device_t *co
 	ls_result_t result;
 
 	uint32_t seed[LS_CRYPTO_PRNG_ISAAC_SIZE];
-	if (ls_prng_device_generate(device, seed, sizeof(seed)).success) {
-		result = ls_prng_isaac_init_ex(ctx, seed, sizeof(seed));
+	if (ls_device_generate(device, seed, sizeof(seed)).success) {
+		result = ls_isaac_init_ex(ctx, seed, sizeof(seed));
 	} else {
 		result = LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 	}
@@ -148,7 +140,7 @@ ls_prng_isaac_init_device(ls_prng_isaac_t *const ctx, const ls_prng_device_t *co
 
 
 ls_result_t
-ls_crypto_prng_isaac_clear(ls_prng_isaac_t *const ctx) {
+ls_isaac_clear(ls_isaac_t *const ctx) {
 	if (!ctx) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
@@ -172,7 +164,7 @@ ls_crypto_prng_isaac_clear(ls_prng_isaac_t *const ctx) {
 	STEP(((a & BITMASK(32)) >> 16));
 
 ls_result_t
-ls_prng_isaac_update(ls_prng_isaac_t *const ctx) {
+ls_isaac_update(ls_isaac_t *const ctx) {
 	if (!ctx) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
@@ -208,13 +200,13 @@ ls_prng_isaac_update(ls_prng_isaac_t *const ctx) {
 
 
 uint32_t
-ls_prng_isaac(ls_prng_isaac_t *const ctx) {
+ls_isaac(ls_isaac_t *const ctx) {
 	if (!ctx) {
 		return 0;
 	}
 
 	if (!ctx->count--) {
-		if (!ls_prng_isaac_update(ctx).success) {
+		if (!ls_isaac_update(ctx).success) {
 			return 0;
 		}
 		ctx->count = (LS_CRYPTO_PRNG_ISAAC_SIZE - 1);
@@ -226,11 +218,11 @@ ls_prng_isaac(ls_prng_isaac_t *const ctx) {
 
 #if DEBUG
 ls_result_t
-ls_prng_isaac_test() {
+ls_isaac_test() {
 	ls_result_t result = LS_RESULT_SUCCESS;
 
-	ls_prng_isaac_t ctx;
-	if (ls_prng_isaac_init(&ctx).success) {
+	ls_isaac_t ctx;
+	if (ls_isaac_init(&ctx).success) {
 		uint32_t vectors[512] = {
 			0xF650E4C8, 0xE448E96D, 0x98DB2FB4, 0xF5FAD54F, 0x433F1AFB, 0xEDEC154A, 0xD8370487, 0x46CA4F9A,
 			0x5DE3743E, 0x88381097, 0xF1D444EB, 0x823CEDB6, 0x6A83E1E0, 0x4A5F6355, 0xC7442433, 0x25890E2E,
@@ -307,7 +299,7 @@ ls_prng_isaac_test() {
 					goto __cleanup;
 				}
 			}
-			if (!ls_prng_isaac_update(&ctx).success) {
+			if (!ls_isaac_update(&ctx).success) {
 				result = LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 1);
 				goto __cleanup;
 			}
@@ -317,7 +309,7 @@ ls_prng_isaac_test() {
 	}
 
 __cleanup:
-	if (!ls_crypto_prng_isaac_clear(&ctx).success) {
+	if (!ls_isaac_clear(&ctx).success) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 3);
 	}
 	return result;
