@@ -54,8 +54,6 @@ extern "C" {
 	LSAPI ls_key_t* ls_key_alloc_from(const void *const in, const size_t size);
 	LSAPI ls_key_t* ls_key_clone(const ls_key_t *const src);
 	LSAPI ls_key_t* ls_key_free(ls_key_t *const key);
-	LSAPI ls_result_t ls_key_set(const ls_key_t *const LS_RESTRICT key, const void *const LS_RESTRICT in, const uintptr_t offset, const size_t size);
-	LSAPI ls_result_t ls_key_get(const ls_key_t *const LS_RESTRICT key, void *const LS_RESTRICT out, const uintptr_t offset, const size_t size);
 
 #ifdef __cplusplus
 }

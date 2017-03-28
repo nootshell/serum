@@ -56,7 +56,7 @@
 #define BITMASK(bits)						((1LLU << (bits)) - 1)
 
 
-#define MKBIT(x)							(1 << ((x) - 1))
+#define MKBIT(x)							(1LLU << ((x) - 1))
 
 #define BIT_1								MKBIT( 1)
 #define BIT_2								MKBIT( 2)

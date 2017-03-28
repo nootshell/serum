@@ -33,12 +33,15 @@
 #define FILE_PATH							"entrypoint.c"
 
 #include "./core/detect_compiler.h"
+#include "./core/detect_endianness.h"
+#include "./debug/log.h"
+#include <stdint.h>
+#include <stdlib.h>
 
 #if (defined(DEBUG) && DEBUG)
 #include "./core/intrinsics.h"
 #include "./core/detect.h"
 #include "./core/info.h"
-#include "./debug/log.h"
 #endif
 
 
@@ -82,12 +85,31 @@ static LS_ATTR_CONSTRUCTOR libmain() {
 #if (defined(DEBUG) && DEBUG)
 	ls_log_d("Compilation environment: " LS_COMPILATION_ENVIRONMENT);
 	if (ls_hook_mcheck() == 0) {
-		ls_log_d("mcheck hooks successfully installed");
+		ls_log_d("Successfully installed mcheck hooks.");
 	} else {
-		ls_log_e("mcheck hooks failed to install (not linked with -lmcheck?)");
+		ls_log_e("Failed to install mcheck hooks (not linked with -lmcheck?).");
 	}
-	ls_lognull();
 #endif
+
+	/* Check endianness. */ {
+		uint16_t e_val = 0x6927;
+		uint8_t e_val_f = ((uint8_t*)&e_val)[0];
+
+#if (LS_BIG_ENDIAN)
+#	define E_VAL_F_VALID					0x69
+#else
+#	define E_VAL_F_VALID					0x27
+#endif
+
+		if (e_val_f != E_VAL_F_VALID) {
+			ls_log_e("Compile-time/run-time endianness mismatch - aborting.");
+			abort();
+		} else {
+			ls_log_d("Compile-time/run-time endianness match.");
+		}
+	}
+
+	ls_lognull();
 	return 0;
 }
 

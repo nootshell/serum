@@ -30,93 +30,93 @@
 **
 */
 
-#define FILE_PATH							"crypto/xxtea.c"
+#define FILE_PATH							"crypto/symmetric/xxtea.c"
 
-#include <string.h>
 #include "./xxtea.h"
-#include "../core/ptrarithmetic.h"
+#include "../../core/ptrarithmetic.h"
+#include <string.h>
 
 
 ID("XXTEA implementation");
 
 
-#define XXTEA_INIT()											\
-	if (!in) {													\
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);	\
-	}															\
-	if (!key) {													\
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);	\
-	}															\
-	if (!size) {												\
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);	\
-	}															\
-	if (size < 8) {												\
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 2);	\
-	}															\
-	if ((size & 3) != 0) {										\
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 3);	\
-	}															\
-																\
-	size_t n = (size >> 2), p;									\
-	size_t nm1 = (n - 1);										\
-																\
-	register uint32_t a, b, sum;								\
-	uint_fast16_t e, rounds = (uint_fast16_t)(6 + (52 / n));	\
-	p = a = b = sum = e = 0;									\
-																\
-	uint32_t *const ptr = (uint32_t *const)LS_SELECT_IO_PTR_WCPY(out, in, size); \
-																\
-	const uint32_t *const k = key;
-
-#define XXTEA_ROUND							((((b >> 5) ^ (a << 2)) + ((a >> 3) ^ (b << 4))) ^ ((sum ^ a) + (k[(p & 3) ^ e] ^ b)))
+#define XXTEA_ROUND(key, a, b, e, p, sum)	((((b >> 5) ^ (a << 2)) + ((a >> 3) ^ (b << 4))) ^ ((sum ^ a) + (key[(p & 3) ^ e] ^ b)))
 
 
 ls_result_t
-ls_xxtea_encrypt_ex(void *const out, void *const in, const size_t size, const void *const key, const crypto_pad_type_t padding) {
-	XXTEA_INIT();
+ls_xxtea_init(ls_xxtea_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT key) {
+	LS_RESULT_CHECK_NULL(ctx, 1);
+	LS_RESULT_CHECK_NULL(key, 2);
 
-	b = ptr[nm1];
+	ctx->key = ls_key_alloc_from(key, 16);
+
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_xxtea_clear(ls_xxtea_t *const ctx) {
+	LS_RESULT_CHECK_NULL(ctx, 1);
+
+	if (ctx->key) {
+		ctx->key = ls_key_free(ctx->key);
+	}
+
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_xxtea_encrypt_block(const ls_xxtea_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block, const size_t block_count) {
+	size_t p;
+	const size_t nm1 = (block_count - 1);
+	register uint32_t a, b, sum;
+	const uint32_t *const key = ((uint32_t*)ctx->key->data);
+	uint_fast16_t e, rounds;
+
+	p = a = b = e = 0;
+	rounds = (uint_fast16_t)(6 + (52U / block_count));
+	sum = 0;
+	b = block[nm1];
+
 	do {
 		sum += 0x9E3779B9;
 		e = ((sum >> 2) & 3);
 		for (p = 0; p < nm1; ++p) {
-			a = ptr[p + 1];
-			b = (ptr[p] += XXTEA_ROUND);
+			a = block[p + 1];
+			b = (block[p] += XXTEA_ROUND(key, a, b, e, p, sum));
 		}
-		a = ptr[0];
-		b = (ptr[nm1] += XXTEA_ROUND);
+		a = block[0];
+		b = (block[nm1] += XXTEA_ROUND(key, a, b, e, p, sum));
 	} while (--rounds);
 
 	return LS_RESULT_SUCCESS;
 }
 
-ls_result_t
-ls_xxtea_encrypt(void *const out, void *const in, const size_t size, const void *const key) {
-	return ls_xxtea_encrypt_ex(out, in, size, key, PAD_NONE);
-}
-
 
 ls_result_t
-ls_xxtea_decrypt_ex(void *const out, void *const in, const size_t size, const void *const key, const crypto_pad_type_t padding) {
-	XXTEA_INIT();
+ls_xxtea_decrypt_block(const ls_xxtea_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block, const size_t block_count) {
+	size_t p;
+	const size_t nm1 = (block_count - 1);
+	register uint32_t a, b, sum;
+	const uint32_t *const key = ((uint32_t*)ctx->key->data);
+	uint_fast16_t e, rounds;
 
+	p = a = b = e = 0;
+	rounds = (uint_fast16_t)(6 + (52U / block_count));
 	sum = (rounds * 0x9E3779B9);
-	a = ptr[0];
+	a = block[0];
+
 	do {
 		e = ((sum >> 2) & 3);
-		for (p = n; --p > 0;) {
-			b = ptr[p - 1];
-			a = (ptr[p] -= XXTEA_ROUND);
+		for (p = block_count; --p > 0;) {
+			b = block[p - 1];
+			a = (block[p] -= XXTEA_ROUND(key, a, b, e, p, sum));
 		}
-		b = ptr[nm1];
-		a = (ptr[0] -= XXTEA_ROUND);
+		b = block[nm1];
+		a = (block[0] -= XXTEA_ROUND(key, a, b, e, p, sum));
 		sum -= 0x9E3779B9;
 	} while (--rounds);
 
 	return LS_RESULT_SUCCESS;
-}
-
-ls_result_t
-ls_xxtea_decrypt(void *const out, void *const in, const size_t size, const void *const key) {
-	return ls_xxtea_decrypt_ex(out, in, size, key, PAD_NONE);
 }
