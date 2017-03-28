@@ -45,12 +45,19 @@ typedef struct ls_rijndael {
 	uint16_t rounds;
 } ls_rijndael_t;
 
+#define LS_RIJNDAEL_128						BIT_1	// Read-only
+#define LS_RIJNDAEL_192						BIT_2	// Read-only
+#define LS_RIJNDAEL_256						BIT_3	// Read-only
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_rijndael_init(ls_rijndael_t *ctx, void *key, size_t key_size);
+	LSAPI ls_result_t ls_rijndael_init(ls_rijndael_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size);
+	LSAPI ls_result_t ls_rijndael_clear(ls_rijndael_t *const ctx);
+	LSAPI ls_result_t ls_rijndael_encrypt_block(const ls_rijndael_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block);
+	LSAPI ls_result_t ls_rijndael_decrypt_block(const ls_rijndael_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block);
 
 #ifdef __cplusplus
 }

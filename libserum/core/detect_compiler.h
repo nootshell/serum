@@ -169,6 +169,11 @@ LS_COMPILER_WARN("Compiler doesn't seem to have the constructor attribute.");
 LS_COMPILER_WARN("Compiler doesn't seem to have the destructor attribute.");
 #endif
 
+#ifndef LS_ATTR_INLINE
+#define LS_ATTR_INLINE
+LS_COMPILER_WARN("Compiler doesn't seem to have the inline attribute.");
+#endif
+
 
 #ifndef LS_RESTRICT
 #define LS_RESTRICT

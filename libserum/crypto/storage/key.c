@@ -40,21 +40,14 @@
 ID("key storage");
 
 
-void
-static LS_ATTR_INLINE __ls_key_clear(ls_key_t *const key) {
-	memset(key->data, 0, key->size);
-	key->size = 0;
-}
-
-
 ls_result_t
 ls_key_init(ls_key_t *const key, const size_t size) {
 	LS_RESULT_CHECK_NULL(key, 1);
 	LS_RESULT_CHECK_SIZE(size, 1);
 
-	__ls_key_clear(key);
-
 	key->size = size;
+
+	memset(key->data, 0, key->size);
 
 	if (!LS_MEMLOCK(key, (sizeof(*key) + key->size))) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
@@ -69,11 +62,11 @@ ls_key_clear(ls_key_t *const key) {
 	LS_RESULT_CHECK_NULL(key, 1);
 	LS_RESULT_CHECK_SIZE(key->size, 1);
 
-	size_t size = key->size;
+	// First we clear...
+	memset(key->data, 0, key->size);
 
-	__ls_key_clear(key);
-
-	if (!LS_MEMUNLOCK(key, (sizeof(*key) + size))) {
+	// ... then we unlock.
+	if (!LS_MEMUNLOCK(key, (sizeof(*key) + key->size))) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
 	}
 
@@ -83,16 +76,20 @@ ls_key_clear(ls_key_t *const key) {
 
 ls_key_t*
 ls_key_alloc(const size_t size) {
-	ls_key_t *key = malloc(sizeof(*key) + size);
+	if (!size) {
+		return NULL;
+	}
 
+	ls_key_t *key = malloc(sizeof(*key) + size);
 	if (ls_key_init(key, size).success) {
 		return key;
 	} else {
 		if (key) {
 			free(key);
 		}
-		return NULL;
 	}
+
+	return NULL;
 }
 
 
@@ -104,9 +101,7 @@ ls_key_alloc_from(const void *const in, const size_t size) {
 
 	ls_key_t *key = ls_key_alloc(size);
 	if (key) {
-		if (!ls_key_set(key, in, 0, size).success) {
-			return ls_key_free(key);
-		}
+		memcpy(key->data, in, size);
 	}
 	return key;
 }
@@ -129,37 +124,8 @@ ls_key_clone(const ls_key_t *const src) {
 ls_key_t*
 ls_key_free(ls_key_t *const key) {
 	if (key) {
-		__ls_key_clear(key);
+		memset(key->data, 0, key->size);
 		free(key);
 	}
 	return NULL;
-}
-
-
-ls_result_t
-ls_key_set(const ls_key_t *const LS_RESTRICT key, const void *const LS_RESTRICT in, const uintptr_t offset, const size_t size) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_NULL(in, 2);
-	LS_RESULT_CHECK_SIZE(size, 1);
-	LS_RESULT_CHECK_SIZE(key->size, 2);
-	LS_RESULT_CHECK((size > key->size), LS_RESULT_CODE_SIZE, 3);
-	LS_RESULT_CHECK(((offset + size) > key->size), LS_RESULT_CODE_INDEX, 1);
-
-	memcpy((((char*)key->data) + offset), in, size);
-
-	return LS_RESULT_SUCCESS;
-}
-
-
-ls_result_t
-ls_key_get(const ls_key_t *const LS_RESTRICT key, void *const LS_RESTRICT out, const uintptr_t offset, const size_t size) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_NULL(out, 2);
-	LS_RESULT_CHECK_SIZE(key->size, 1);
-	LS_RESULT_CHECK((size > key->size), LS_RESULT_CODE_SIZE, 2);
-	LS_RESULT_CHECK(((offset + size) > key->size), LS_RESULT_CODE_INDEX, 1);
-
-	memcpy(out, (((char*)key->data) + offset), size);
-
-	return LS_RESULT_SUCCESS;
 }
