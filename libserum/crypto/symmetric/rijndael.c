@@ -125,7 +125,7 @@ ls_rijndael_init(ls_rijndael_t *const LS_RESTRICT ctx, const void *const LS_REST
 		ctx->key_encrypt = ls_key_alloc(240);
 	}
 
-	int i;
+	unsigned int i;
 	const uint32_t *kin32 = key;
 	uint32_t *kout32 = ((uint32_t*)ctx->key_encrypt->data);
 
