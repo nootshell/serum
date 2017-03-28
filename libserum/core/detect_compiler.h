@@ -93,6 +93,9 @@
 #	define LS_COMPILER_VERSION				MACRO_STRINGIFY(_MSC_VER)
 #
 #	define LS_ATTR_THREAD					__declspec(thread)
+#	define LS_ATTR_INLINE					inline
+#
+#	define LS_RESTRICT						__restrict
 #
 #	define LS_COMPILER_MESG(msg)			__pragma(message(msg))
 #elif (LS_LLVM || LS_GCC)
