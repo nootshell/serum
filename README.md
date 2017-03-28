@@ -11,18 +11,19 @@ Features
 ===
 - Crypto
 	- Hashing
-		- [SHA-2](./libserum/crypto/hashing/sha2.h)
+		- [SHA-2](./libserum/crypto/hashing/sha2.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/SHA-2)</sup>
 	- Block ciphers
-		- [XXTEA](https://en.wikipedia.org/wiki/XXTEA)
+		- [Rijndael](./libserum/crypto/symmetric/rijndael.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Rijndael)</sup>
+		- [XXTEA](./libserum/crypto/symmetric/xxtea.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/XXTEA)</sup>
 	- Padding
-		- [ISO 9797-1 methods 1 and 2](https://en.wikipedia.org/wiki/ISO/IEC_9797-1#Padding)
+		- [ISO 9797-1 methods 1 and 2]()  <sup>[Wikipedia](https://en.wikipedia.org/wiki/ISO/IEC_9797-1#Padding)</sup>
 	- Pseudo-random number generation
-		- [Reading from a **/dev**ice (or file)](./libserum/crypto/prng/device.h)
-		- [ISAAC](https://en.wikipedia.org/wiki/ISAAC_(cipher))
+		- [Reading from a **/dev**ice (or file)](./libserum/crypto/prng/device.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki//dev/random)</sup>
+		- [ISAAC](./libserum/crypto/prng/isaac.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/ISAAC_(cipher))</sup>
 - Misc
 	- Time retrieval
-		- RDTSC
-		- Nano, micro, milli, and full seconds
+		- [RDTSC](./libserum/core/time.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Time_Stamp_Counter)</sup>
+		- [Nano, micro, milli, and full seconds](./libserum/core/time.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time))</sup>
 	- Debugging
 		- [Detailed function return values](./libserum/core/result.h)
 		- [Memory dump functions](./libserum/debug/memdump.h)
@@ -44,14 +45,13 @@ TODO
 - Crypto
 	- Key exchange
 		- Curve25519 <sup>priority</sup>
-		- Diffie Hellman
 	- Block ciphers
-		- Rijndael <sup>priority</sup>
+		- *None currently*
 	- Stream ciphers
 		- Rabbit
 	- Hash functions (+ HMACs)
-		- SHA-3
-		- RIPEMD-160
+		- SHA-3 <sup>low priority</sup>
+		- RIPEMD-160 <sup>low priority</sup>
 	- KDF
 		- PBKDF2 <sup>priority</sup>
 		- Argon2
