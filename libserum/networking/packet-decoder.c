@@ -33,6 +33,7 @@
 #define FILE_PATH							"networking/packet-decoder.c"
 
 #include "./packet-decoder.h"
+#include <string.h>
 
 
 ID("packet decoder");
