@@ -74,13 +74,13 @@ ls_packet_clear_ex(ls_packet_t *packet, ls_bool free_headers, ls_bool free_paylo
 			}
 		}
 		free(packet->headers);
-		packet->headers = NULL;
 	}
 
 	if (free_payload && packet->payload) {
 		free(packet->payload);
 	}
 
+	packet->headers = NULL;
 	packet->payload = NULL;
 	packet->payload_size = 0;
 	packet->command = 0;

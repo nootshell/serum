@@ -41,11 +41,16 @@
 
 #include <libserum/crypto/symmetric/rijndael.h>
 #include <libserum/crypto/symmetric/xxtea.h>
+#include <libserum/networking/packet.h>
+#include <libserum/networking/packet-decoder.h>
 
 
+void decoder_callback(ls_packet_decoder_t *decoder, ls_packet_t *packet) {
+	puts("got decoded packet");
+}
 
 int main(int argc, char *argv[], char *env[]) {
-	uint8_t key[32];
+	/*uint8_t key[32];
 	memset(key, 'a', sizeof(key));
 
 	uint32_t data[4];
@@ -81,7 +86,7 @@ int main(int argc, char *argv[], char *env[]) {
 
 	if (!ls_rijndael_clear(&ctx).success) {
 		return 4;
-	}
+	}*/
 
 	/*ls_xxtea_t ctx;
 	memset(&ctx, 0x88, sizeof(ctx));
@@ -110,6 +115,29 @@ int main(int argc, char *argv[], char *env[]) {
 	if (!ls_xxtea_clear(&ctx).success) {
 		return 4;
 	}*/
+
+	char header1[] = "Noot";
+	char header2[] = "Mies";
+	char header3[] = "Loekiseenviezehomo";
+	char header4[] = "Jordeze";
+
+	ls_packet_t pakketje;
+	ls_packet_init(&pakketje, 1, 0);
+	ls_packet_add_header(&pakketje, strlen(header1), header1);
+	ls_packet_add_header(&pakketje, strlen(header2), header2);
+	ls_packet_add_header(&pakketje, strlen(header3), header3);
+	ls_packet_add_header(&pakketje, strlen(header4), header4);
+	size_t packet_size;
+	uint8_t *penc = ls_packet_encode(&pakketje, &packet_size);
+
+	ls_packet_decoder_t decoder;
+	ls_packet_decoder_init_ex(&decoder, decoder_callback, NULL, 0);
+	ls_packet_decode(&decoder, penc, packet_size);
+	ls_packet_decoder_clear(&decoder);
+
+	free(penc);
+
+	ls_packet_clear(&pakketje);
 
 	return 0;
 }
