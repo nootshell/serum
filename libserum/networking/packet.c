@@ -117,7 +117,7 @@ ls_packet_add_header(ls_packet_t *packet, uint8_t size, void *value) {
 	if (packet->header_count >= packet->__h_alloc_sz) {
 		void *ptr = realloc(
 			packet->headers,
-			(packet->__h_alloc_sz = (sizeof(*packet->headers) * ((packet->header_count) + 1)))
+			(sizeof(*packet->headers) * (packet->__h_alloc_sz = ((packet->header_count) + 1)))
 		);
 
 		if (!ptr) {

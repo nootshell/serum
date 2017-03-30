@@ -46,7 +46,10 @@
 
 
 void decoder_callback(ls_packet_decoder_t *decoder, ls_packet_t *packet) {
-	puts("got decoded packet");
+	unsigned int i;
+	for (i = 0; i < packet->header_count; ++i) {
+		printf("%u: %s\n", i, packet->headers[i].value);
+	}
 }
 
 int main(int argc, char *argv[], char *env[]) {
@@ -118,15 +121,15 @@ int main(int argc, char *argv[], char *env[]) {
 
 	char header1[] = "Noot";
 	char header2[] = "Mies";
-	char header3[] = "Loekiseenviezehomo";
+	char header3[] = "Loekje";
 	char header4[] = "Jordeze";
 
 	ls_packet_t pakketje;
 	ls_packet_init(&pakketje, 1, 0);
-	ls_packet_add_header(&pakketje, strlen(header1), header1);
-	ls_packet_add_header(&pakketje, strlen(header2), header2);
-	ls_packet_add_header(&pakketje, strlen(header3), header3);
-	ls_packet_add_header(&pakketje, strlen(header4), header4);
+	ls_packet_add_header(&pakketje, sizeof(header1), header1);
+	ls_packet_add_header(&pakketje, sizeof(header2), header2);
+	ls_packet_add_header(&pakketje, sizeof(header3), header3);
+	ls_packet_add_header(&pakketje, sizeof(header4), header4);
 	size_t packet_size;
 	uint8_t *penc = ls_packet_encode(&pakketje, &packet_size);
 
@@ -138,6 +141,8 @@ int main(int argc, char *argv[], char *env[]) {
 	free(penc);
 
 	ls_packet_clear(&pakketje);
+
+	fgetc(stdin);
 
 	return 0;
 }
