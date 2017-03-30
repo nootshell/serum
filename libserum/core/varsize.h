@@ -48,6 +48,7 @@ extern "C" {
 #endif
 
 	LSAPI ls_result_t ls_varsize_get_bytes(void *const out, size_t *const out_size, ls_vs_value_t value);
+	LSAPI ls_bool ls_varsize_get_value_stateless(ls_vs_value_t *value, uint8_t byte, uint_fast16_t *pos);
 	LSAPI ls_result_t ls_varsize_get_value(ls_vs_value_t *const out, const void *const in, size_t max_size);
 
 #ifdef __cplusplus
