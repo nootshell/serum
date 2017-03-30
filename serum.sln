@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libserum", "libserum\libserum.vcxproj", "{45BFC5A6-3B5F-4AB9-A403-307477D9E780}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{B30AAE13-4F78-4856-BE0D-80C08C8EF093}"
+	ProjectSection(ProjectDependencies) = postProject
+		{45BFC5A6-3B5F-4AB9-A403-307477D9E780} = {45BFC5A6-3B5F-4AB9-A403-307477D9E780}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
