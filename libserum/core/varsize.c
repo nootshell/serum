@@ -66,6 +66,13 @@ ls_varsize_get_bytes(void *const out, size_t *const out_size, ls_vs_value_t valu
 }
 
 
+ls_bool
+ls_varsize_get_value_stateless(ls_vs_value_t *value, uint8_t byte, uint_fast16_t *pos) {
+	*value |= (((ls_vs_value_t)(byte & 0x7F)) << (7 * (*pos)++));
+	return !HAS_FLAG(byte, 0x80);
+}
+
+
 ls_result_t
 ls_varsize_get_value(ls_vs_value_t *const out, const void *const in, size_t max_size) {
 	LS_RESULT_CHECK_NULL(out, 1);
@@ -76,8 +83,7 @@ ls_varsize_get_value(ls_vs_value_t *const out, const void *const in, size_t max_
 	ls_vs_value_t value = 0;
 	const uint8_t *ptr = in;
 	for (; max_size--;) {
-		value |= (((ls_vs_value_t)(*ptr & 0x7F)) << (7 * bpos++));
-		if (!HAS_FLAG(*(ptr++), 0x80)) {
+		if (ls_varsize_get_value_stateless(&value, *(ptr++), &bpos)) {
 			*out = value;
 			return LS_RESULT_SUCCESS;
 		}
