@@ -1,14 +1,12 @@
-Serum
-===
+# Serum #
 
-**Experimental*** C library focused on cryptography and more, licensed under the MIT license.
+**Experimental*** C library focused on cryptography and more, licensed under the MIT license. ***<sup><sup>\*Do not use in a production environment.</sup></sup>***
 
 This project is basically for me to learn stuff, it aims to be the complete toolset one requires to create binary/crypto protocols.
 
-***<sup>\*Do not use in a production environment.</sup>***
 
-Features
-===
+## Features ##
+
 - Crypto
 	- Hashing
 		- [SHA-2](./libserum/crypto/hashing/sha2.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/SHA-2)</sup>
@@ -36,7 +34,7 @@ Features
 		- [Endianness](./libserum/core/detect_endianness.h)
 	- Networking
 		- [Universal socket](./libserum/networking/socket.h)
-		- [Packets](./libserum/networking/packet.h)
+		- [Packets](./libserum/networking/packet.h) <sup></sup>
 	- Misc
 		- [Variable size integer encoding/decoding](./libserum/core/varsize.h)
 
@@ -48,13 +46,13 @@ TODO
 	- Block ciphers
 		- *None currently*
 	- Stream ciphers
-		- Rabbit
+		- Rabbit <sup>[Wikipedia](https://en.wikipedia.org/wiki/Rabbit_(cipher))</sup>
 	- Hash functions (+ HMACs)
-		- SHA-3 <sup>low priority</sup>
-		- RIPEMD-160 <sup>low priority</sup>
+		- SHA-3 <sup>low priority</sup> <sup>[Wikipedia](https://en.wikipedia.org/wiki/SHA-3)</sup>
+		- RIPEMD-160 <sup>low priority</sup> <sup>[Wikipedia](https://en.wikipedia.org/wiki/RIPEMD)</sup>
 	- KDF
-		- PBKDF2 <sup>priority</sup>
-		- Argon2
-		- Lyra2
+		- PBKDF2 <sup>priority</sup> <sup>[Wikipedia](https://en.wikipedia.org/wiki/PBKDF2)</sup>
+		- Argon2 <sup>[Wikipedia](https://en.wikipedia.org/wiki/Argon2)</sup>
+		- Lyra2 <sup>[Wikipedia](https://en.wikipedia.org/wiki/Lyra2)</sup>
 - Optimizations
-	- ```restrict``` pointers where applicable <sup>low priority</sup>
+	- ```restrict``` pointers where applicable <sup>low priority</sup> <sup>[Wikipedia](https://en.wikipedia.org/wiki/Restrict)</sup>
