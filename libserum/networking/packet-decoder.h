@@ -67,8 +67,6 @@ typedef struct ls_packet_decoder {
 
 } ls_packet_decoder_t;
 
-#define piemol sizeof(ls_packet_decoder_t)
-
 
 #ifdef __cplusplus
 extern "C" {

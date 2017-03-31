@@ -124,16 +124,12 @@ int main(int argc, char *argv[], char *env[]) {
 
 	char header1[] = "Noot";
 	char header2[] = "Mies";
-	char header3[] = "Loekje";
-	char header4[] = "Jordeze";
 	char payload[] = "eentextstje";
 
 	ls_packet_t pakketje;
 	ls_packet_init(&pakketje, 1, 0);
 	ls_packet_add_header(&pakketje, sizeof(header1), header1);
 	ls_packet_add_header(&pakketje, sizeof(header2), header2);
-	ls_packet_add_header(&pakketje, sizeof(header3), header3);
-	ls_packet_add_header(&pakketje, sizeof(header4), header4);
 	ls_packet_set_payload(&pakketje, sizeof(payload), payload);
 
 	size_t packet_size;
