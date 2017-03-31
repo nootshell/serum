@@ -30,41 +30,53 @@
 **
 */
 
-#ifndef __LS_NETWORKING_PACKET_H
-#define __LS_NETWORKING_PACKET_H
+#ifndef __LS_NETWORKING_PACKET_DECODER_H
+#define __LS_NETWORKING_PACKET_DECODER_H
 
 
 #include "../core/stdincl.h"
+#include "../core/varsize.h"
+#include "./packet.h"
 
-#define LS_PACKET_PAYLOAD					BIT_1
 
+typedef enum ls_packet_decoder_state {
+	LS_DECODE_STATE_UNKNOWN					= 0U,
+	LS_DECODE_STATE_HEAD					= 1U,
+	LS_DECODE_STATE_FLAGS					= 2U,
+	LS_DECODE_STATE_HEADER_SIZE				= 3U,
+	LS_DECODE_STATE_HEADER_VALUE			= 4U,
+	LS_DECODE_STATE_PAYLOAD_SIZE			= 5U,
+	LS_DECODE_STATE_PAYLOAD_VALUE			= 6U
+} ls_packet_decoder_state_t;
 
-typedef struct ls_packet_header {
-	void *value;
-	uint8_t size;
-} ls_packet_header_t;
+typedef struct ls_packet_decoder {
+	ls_vs_value_t __varsize_buffer;
 
-typedef struct ls_packet {
-	ls_packet_header_t *headers;
-	void *payload;
-	uint32_t payload_size;
-	uint8_t command			: 4;
-	uint8_t header_count	: 4;
-	uint8_t flags;
-	uint8_t __h_alloc_sz;
-} ls_packet_t;
+	void(*callback)(struct ls_packet_decoder *decoder, ls_packet_t *packet);
+	void *tag;
+
+	ls_packet_t packet;
+	ls_packet_header_t *__header;
+
+	size_t __index;
+	uint_fast16_t __sub_index;
+	uint16_t __state;
+
+	uint16_t flags;
+	uint32_t decode_count;
+
+} ls_packet_decoder_t;
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_packet_init(ls_packet_t *packet, uint8_t command, uint8_t flags);
-	LSAPI ls_result_t ls_packet_clear_ex(ls_packet_t *packet, ls_bool free_headers, ls_bool free_payload);
-	LSAPI ls_result_t ls_packet_clear(ls_packet_t *packet);
-	LSAPI ls_result_t ls_packet_add_header(ls_packet_t *packet, uint8_t size, void *value);
-	LSAPI ls_result_t ls_packet_set_payload(ls_packet_t *packet, uint32_t size, void *value);
-	LSAPI void* ls_packet_encode(ls_packet_t *packet, size_t *const out_size);
+	LSAPI ls_result_t ls_packet_decoder_init_ex(ls_packet_decoder_t *decoder, void(*callback)(struct ls_packet_decoder *decoder, ls_packet_t *packet), void *tag, uint32_t flags);
+	LSAPI ls_result_t ls_packet_decoder_init(ls_packet_decoder_t *decoder);
+	LSAPI ls_result_t ls_packet_decoder_clear(ls_packet_decoder_t *decoder);
+
+	LSAPI ls_result_t ls_packet_decode(ls_packet_decoder_t *decoder, void *in, size_t size);
 
 #ifdef __cplusplus
 }

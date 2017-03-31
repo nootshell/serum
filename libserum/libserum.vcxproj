@@ -93,7 +93,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTING;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -106,7 +106,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTING;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -121,7 +121,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -138,7 +138,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -158,6 +158,7 @@
     <ClInclude Include="core\detect_platform.h" />
     <ClInclude Include="core\errstr.h" />
     <ClInclude Include="core\identification.h" />
+    <ClInclude Include="core\info.h" />
     <ClInclude Include="core\integers.h" />
     <ClInclude Include="core\intrinsics.h" />
     <ClInclude Include="core\lsapi.h" />
@@ -168,28 +169,41 @@
     <ClInclude Include="core\result.h" />
     <ClInclude Include="core\stdincl.h" />
     <ClInclude Include="core\time.h" />
+    <ClInclude Include="core\varsize.h" />
+    <ClInclude Include="crypto\cipher.h" />
     <ClInclude Include="crypto\enum.h" />
     <ClInclude Include="crypto\hashing\sha2.h" />
     <ClInclude Include="crypto\padding\iso9797.h" />
     <ClInclude Include="crypto\prng\device.h" />
     <ClInclude Include="crypto\prng\isaac.h" />
-    <ClInclude Include="crypto\xxtea.h" />
+    <ClInclude Include="crypto\storage\key.h" />
+    <ClInclude Include="crypto\symmetric\rijndael.h" />
+    <ClInclude Include="crypto\symmetric\xxtea.h" />
+    <ClInclude Include="crypto\symmetric\__rijndael-tables.h" />
     <ClInclude Include="debug\log.h" />
     <ClInclude Include="debug\memdump.h" />
+    <ClInclude Include="networking\packet-decoder.h" />
     <ClInclude Include="networking\packet.h" />
     <ClInclude Include="networking\socket.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="core\info.c" />
     <ClCompile Include="core\time.c" />
+    <ClCompile Include="core\varsize.c" />
+    <ClCompile Include="crypto\cipher.c" />
     <ClCompile Include="crypto\hashing\sha2-template-update.c" />
     <ClCompile Include="crypto\hashing\sha2-template.c" />
     <ClCompile Include="crypto\hashing\sha2.c" />
     <ClCompile Include="crypto\padding\iso9797.c" />
     <ClCompile Include="crypto\prng\device.c" />
     <ClCompile Include="crypto\prng\isaac.c" />
-    <ClCompile Include="crypto\xxtea.c" />
+    <ClCompile Include="crypto\storage\key.c" />
+    <ClCompile Include="crypto\symmetric\rijndael.c" />
+    <ClCompile Include="crypto\symmetric\xxtea.c" />
     <ClCompile Include="debug\log.c" />
     <ClCompile Include="debug\memdump.c" />
+    <ClCompile Include="libmain.c" />
+    <ClCompile Include="networking\packet-decoder.c" />
     <ClCompile Include="networking\packet.c" />
     <ClCompile Include="networking\socket.c" />
   </ItemGroup>
