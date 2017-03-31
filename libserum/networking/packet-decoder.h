@@ -35,6 +35,7 @@
 
 
 #include "../core/stdincl.h"
+#include "../core/varsize.h"
 #include "./packet.h"
 
 
@@ -49,6 +50,8 @@ typedef enum ls_packet_decoder_state {
 } ls_packet_decoder_state_t;
 
 typedef struct ls_packet_decoder {
+	ls_vs_value_t __varsize_buffer;
+
 	void(*callback)(struct ls_packet_decoder *decoder, ls_packet_t *packet);
 	void *tag;
 
@@ -56,11 +59,12 @@ typedef struct ls_packet_decoder {
 	ls_packet_header_t *__header;
 
 	size_t __index;
+	uint_fast16_t __sub_index;
 	uint16_t __state;
-	uint8_t __header_index;
 
-	uint8_t flags;
+	uint16_t flags;
 	uint32_t decode_count;
+
 } ls_packet_decoder_t;
 
 #define piemol sizeof(ls_packet_decoder_t)

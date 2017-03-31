@@ -72,6 +72,7 @@ ls_packet_decoder_clear(ls_packet_decoder_t *decoder) {
 
 void
 static LS_ATTR_INLINE __dispatch(ls_packet_decoder_t *decoder) {
+	decoder->__state = LS_DECODE_STATE_HEAD;
 	++(decoder->decode_count);
 	if (decoder->callback) {
 		decoder->callback(decoder, &decoder->packet);
@@ -81,9 +82,27 @@ static LS_ATTR_INLINE __dispatch(ls_packet_decoder_t *decoder) {
 
 void
 static LS_ATTR_INLINE __alloc_header(ls_packet_decoder_t *decoder, uint8_t size) {
-	decoder->__header = &decoder->packet.headers[decoder->__header_index];
+	decoder->__header = &decoder->packet.headers[decoder->__sub_index];
 	decoder->__header->size = size;
 	decoder->__header->value = malloc(size);
+}
+
+size_t
+static LS_ATTR_INLINE __valuecpy(ls_packet_decoder_t *decoder, void *out, size_t total_size, void *in, size_t start_index, size_t buffer_size) {
+	size_t req;
+	if ((start_index + (req = (total_size - decoder->__index))) >= buffer_size) {
+		req = (buffer_size - start_index);
+	}
+
+	memcpy(
+		(((uint8_t*)out) + decoder->__index),
+		(((uint8_t*)in) + start_index),
+		req
+	);
+
+	decoder->__index += req;
+
+	return (req - 1);
 }
 
 ls_result_t
@@ -104,11 +123,12 @@ ls_packet_decode(ls_packet_decoder_t *decoder, void *in, size_t size) {
 		} else if (decoder->__state == LS_DECODE_STATE_FLAGS) {
 			decoder->packet.flags = byte;
 			if (decoder->packet.header_count) {
-				decoder->__header_index = 0;
+				decoder->__sub_index = 0;
 				decoder->packet.headers = malloc(sizeof(*decoder->packet.headers) * decoder->packet.header_count);
 				decoder->__state = LS_DECODE_STATE_HEADER_SIZE;
 			} else {
 				if (HAS_FLAG(decoder->packet.flags, LS_PACKET_PAYLOAD)) {
+					decoder->__sub_index = 0;
 					decoder->__state = LS_DECODE_STATE_PAYLOAD_SIZE;
 				} else {
 					__dispatch(decoder);
@@ -119,23 +139,12 @@ ls_packet_decode(ls_packet_decoder_t *decoder, void *in, size_t size) {
 			decoder->__index = 0;
 			decoder->__state = LS_DECODE_STATE_HEADER_VALUE;
 		} else if (decoder->__state == LS_DECODE_STATE_HEADER_VALUE) {
-			uint8_t req;
-			if ((i + (req = (uint8_t)(decoder->__header->size - decoder->__index))) >= size) {
-				req = (uint8_t)(size - i);
-			}
-
-			memcpy(
-				(((uint8_t*)decoder->__header->value) + decoder->__index),
-				(((uint8_t*)in) + i),
-				req
-			);
-
-			i += (req - 1);
-			decoder->__index += req;
+			i += __valuecpy(decoder, decoder->__header->value, decoder->__header->size, in, i, size);
 
 			if (decoder->__index >= decoder->__header->size) {
-				if (++decoder->__header_index >= decoder->packet.header_count) {
+				if (++decoder->__sub_index >= decoder->packet.header_count) {
 					if (HAS_FLAG(decoder->packet.flags, LS_PACKET_PAYLOAD)) {
+						decoder->__sub_index = 0;
 						decoder->__state = LS_DECODE_STATE_PAYLOAD_SIZE;
 					} else {
 						__dispatch(decoder);
@@ -145,9 +154,19 @@ ls_packet_decode(ls_packet_decoder_t *decoder, void *in, size_t size) {
 				}
 			}
 		} else  if (decoder->__state == LS_DECODE_STATE_PAYLOAD_SIZE) {
-
+			if (ls_varsize_get_value_stateless(&decoder->__varsize_buffer, byte, &decoder->__sub_index)) {
+				decoder->__sub_index = 0;
+				decoder->packet.payload_size = ((uint32_t)decoder->__varsize_buffer);
+				decoder->packet.payload = malloc(decoder->packet.payload_size);
+				decoder->__index = 0;
+				decoder->__state = LS_DECODE_STATE_PAYLOAD_VALUE;
+			}
 		} else if (decoder->__state == LS_DECODE_STATE_PAYLOAD_VALUE) {
+			i += __valuecpy(decoder, decoder->packet.payload, decoder->packet.payload_size, in, i, size);
 
+			if (decoder->__index >= decoder->packet.payload_size) {
+				__dispatch(decoder);
+			}
 		}
 	}
 
