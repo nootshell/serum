@@ -50,6 +50,9 @@ void decoder_callback(ls_packet_decoder_t *decoder, ls_packet_t *packet) {
 	for (i = 0; i < packet->header_count; ++i) {
 		printf("%u: %s\n", i, packet->headers[i].value);
 	}
+	if (packet->payload) {
+		ls_vmemdump(packet->payload, packet->payload_size, "payload:");
+	}
 }
 
 int main(int argc, char *argv[], char *env[]) {
@@ -123,6 +126,7 @@ int main(int argc, char *argv[], char *env[]) {
 	char header2[] = "Mies";
 	char header3[] = "Loekje";
 	char header4[] = "Jordeze";
+	char payload[] = "eentextstje";
 
 	ls_packet_t pakketje;
 	ls_packet_init(&pakketje, 1, 0);
@@ -130,8 +134,12 @@ int main(int argc, char *argv[], char *env[]) {
 	ls_packet_add_header(&pakketje, sizeof(header2), header2);
 	ls_packet_add_header(&pakketje, sizeof(header3), header3);
 	ls_packet_add_header(&pakketje, sizeof(header4), header4);
+	ls_packet_set_payload(&pakketje, sizeof(payload), payload);
+
 	size_t packet_size;
 	uint8_t *penc = ls_packet_encode(&pakketje, &packet_size);
+
+	ls_memdump(penc, packet_size); puts("");
 
 	ls_packet_decoder_t decoder;
 	ls_packet_decoder_init_ex(&decoder, decoder_callback, NULL, 0);

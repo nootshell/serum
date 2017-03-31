@@ -145,6 +145,12 @@ ls_packet_set_payload(ls_packet_t *packet, uint32_t size, void *value) {
 	packet->payload_size = size;
 	packet->payload = value;
 
+	if (packet->payload && packet->payload_size) {
+		packet->flags |= LS_PACKET_PAYLOAD;
+	} else {
+		packet->flags &= ~LS_PACKET_PAYLOAD;
+	}
+
 	return LS_RESULT_SUCCESS;
 }
 
@@ -204,7 +210,7 @@ ls_packet_encode(ls_packet_t *packet, size_t *const out_size) {
 	}
 
 	if (HAS_FLAG(packet->flags, LS_PACKET_PAYLOAD)) {
-		memcpy(enc, psz_buffer, psz_size);
+		memcpy(enc + i, psz_buffer, psz_size);
 		i += psz_size;
 
 		memcpy(enc + i, packet->payload, packet->payload_size);
