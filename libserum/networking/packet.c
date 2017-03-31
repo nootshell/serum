@@ -34,6 +34,7 @@
 
 #include "./packet.h"
 #include "../core/memory.h"
+#include "../core/varsize.h"
 #include "../debug/log.h"
 #include <string.h>
 
@@ -58,14 +59,28 @@ ls_packet_init(ls_packet_t *packet, uint8_t command, uint8_t flags) {
 
 
 ls_result_t
-ls_packet_clear(ls_packet_t *packet) {
+ls_packet_clear_ex(ls_packet_t *packet, ls_bool free_headers, ls_bool free_payload) {
 	LS_RESULT_CHECK_NULL(packet, 1);
 
 	if (packet->headers) {
+		if (free_headers) {
+			ls_packet_header_t *header;
+			unsigned int i;
+			for (i = packet->header_count; i--;) {
+				header = &packet->headers[i];
+				if (header->value) {
+					free(header->value);
+				}
+			}
+		}
 		free(packet->headers);
-		packet->headers = NULL;
 	}
 
+	if (free_payload && packet->payload) {
+		free(packet->payload);
+	}
+
+	packet->headers = NULL;
 	packet->payload = NULL;
 	packet->payload_size = 0;
 	packet->command = 0;
@@ -74,6 +89,12 @@ ls_packet_clear(ls_packet_t *packet) {
 	packet->__h_alloc_sz = 0;
 
 	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_packet_clear(ls_packet_t *packet) {
+	return ls_packet_clear_ex(packet, false, false);
 }
 
 
@@ -96,7 +117,7 @@ ls_packet_add_header(ls_packet_t *packet, uint8_t size, void *value) {
 	if (packet->header_count >= packet->__h_alloc_sz) {
 		void *ptr = realloc(
 			packet->headers,
-			(packet->__h_alloc_sz = (sizeof(*packet->headers) * ((packet->header_count) + 1)))
+			(sizeof(*packet->headers) * (packet->__h_alloc_sz = ((packet->header_count) + 1)))
 		);
 
 		if (!ptr) {
@@ -124,23 +145,35 @@ ls_packet_set_payload(ls_packet_t *packet, uint32_t size, void *value) {
 	packet->payload_size = size;
 	packet->payload = value;
 
+	if (packet->payload && packet->payload_size) {
+		packet->flags |= LS_PACKET_PAYLOAD;
+	} else {
+		packet->flags &= ~LS_PACKET_PAYLOAD;
+	}
+
 	return LS_RESULT_SUCCESS;
 }
 
 
 void*
-ls_packet_encode(ls_packet_t *packet) {
+ls_packet_encode(ls_packet_t *packet, size_t *const out_size) {
 	if (!packet) {
 		ls_log_e("packet null");
 		return NULL;
 	}
 
-	size_t size = 2;
+	if (!out_size) {
+		ls_log_e("out_size null");
+		return NULL;
+	}
+
+	size_t size = 2, psz_size = 0;
+	uint8_t psz_buffer[10];
 
 	if (packet->header_count && packet->headers) {
 		ls_packet_header_t *header;
-		int i;
-		for (i = packet->header_count; i--;) {
+		unsigned int i;
+		for (i = 0; i < packet->header_count; ++i) {
 			header = &packet->headers[i];
 			if (header->size && header->value) {
 				size += (1 + header->size);
@@ -149,21 +182,25 @@ ls_packet_encode(ls_packet_t *packet) {
 	}
 
 	if (HAS_FLAG(packet->flags, LS_PACKET_PAYLOAD) && packet->payload_size && packet->payload) {
-		size += (4 + packet->payload_size);
+		if (!ls_varsize_get_bytes(psz_buffer, &psz_size, packet->payload_size).success || !psz_size) {
+			// biem
+			return NULL;
+		}
+		size += (psz_size + packet->payload_size);
 	} else {
 		packet->flags &= ~LS_PACKET_PAYLOAD;
 	}
 
 	size_t i = 0;
-	uint8_t *enc = malloc(size);
+	uint8_t *enc = malloc(*out_size = size);
 	enc[i++] = (((packet->command & 0x0F) << 4) | (packet->header_count & 0x0F));
 	enc[i++] = packet->flags;
 
 	if (packet->header_count && packet->headers) {
 		ls_packet_header_t *header;
-		int i;
-		for (i = packet->header_count; i--;) {
-			header = &packet->headers[i];
+		unsigned int j;
+		for (j = 0; j < packet->header_count; ++j) {
+			header = &packet->headers[j];
 			if (header->size && header->value) {
 				enc[i++] = (header->size);
 				memcpy(enc + i, header->value, header->size);
@@ -173,10 +210,8 @@ ls_packet_encode(ls_packet_t *packet) {
 	}
 
 	if (HAS_FLAG(packet->flags, LS_PACKET_PAYLOAD)) {
-		enc[i++] = ((packet->payload_size >> 24) & 0xFF);
-		enc[i++] = ((packet->payload_size >> 16) & 0xFF);
-		enc[i++] = ((packet->payload_size >>  8) & 0xFF);
-		enc[i++] = ((packet->payload_size      ) & 0xFF);
+		memcpy(enc + i, psz_buffer, psz_size);
+		i += psz_size;
 
 		memcpy(enc + i, packet->payload, packet->payload_size);
 		i += packet->payload_size;
