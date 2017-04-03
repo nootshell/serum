@@ -37,47 +37,47 @@
 #endif
 
 #ifdef SHA2_BITS
-#undef SHA2_BITS
+#	undef SHA2_BITS
 #endif
 
 #ifdef SHA2_NATIVE_TYPE
-#undef SHA2_NATIVE_TYPE
+#	undef SHA2_NATIVE_TYPE
 #endif
 
 #ifdef SHA2_CTX
-#undef SHA2_CTX
+#	undef SHA2_CTX
 #endif
 
 #ifdef SHA2_INIT
-#undef SHA2_INIT
+#	undef SHA2_INIT
 #endif
 
 #ifdef SHA2_CLEAR
-#undef SHA2_CLEAR
+#	undef SHA2_CLEAR
 #endif
 
 #ifdef SHA2_UPDATE
-#undef SHA2_UPDATE
+#	undef SHA2_UPDATE
 #endif
 
 #ifdef SHA2_UPDATE_BLOCK
-#undef SHA2_UPDATE_BLOCK
+#	undef SHA2_UPDATE_BLOCK
 #endif
 
 #ifdef SHA2_FINISH
-#undef SHA2_FINISH
+#	undef SHA2_FINISH
 #endif
 
 #ifdef SHA2_DIGEST_SIZE
-#undef SHA2_DIGEST_SIZE
+#	undef SHA2_DIGEST_SIZE
 #endif
 
 #ifdef SHA2_DIGEST_TYPE
-#undef SHA2_DIGEST_TYPE
+#	undef SHA2_DIGEST_TYPE
 #endif
 
 #ifdef SHA2_BLOCK_SIZE
-#undef SHA2_BLOCK_SIZE
+#	undef SHA2_BLOCK_SIZE
 #endif
 
 #if (defined(LS_SHA2_224))
@@ -90,7 +90,7 @@
 #	define SHA2_UPDATE_BLOCK				ls_sha2_32_update_block
 #	define SHA2_FINISH						ls_sha2_224_finish
 #	define SHA2_DIGEST_SIZE					LS_SHA2_224_DIGEST_SIZE
-#	define SHA2_DIGEST_TYPE					ls_sha2_224_digest
+#	define SHA2_DIGEST_TYPE					ls_sha2_224_digest_t
 #	define SHA2_BLOCK_SIZE					LS_SHA2_224_BLOCK_SIZE
 #elif (defined(LS_SHA2_256))
 #	define SHA2_BITS						32
@@ -102,7 +102,7 @@
 #	define SHA2_UPDATE_BLOCK				ls_sha2_32_update_block
 #	define SHA2_FINISH						ls_sha2_256_finish
 #	define SHA2_DIGEST_SIZE					LS_SHA2_256_DIGEST_SIZE
-#	define SHA2_DIGEST_TYPE					ls_sha2_256_digest
+#	define SHA2_DIGEST_TYPE					ls_sha2_256_digest_t
 #	define SHA2_BLOCK_SIZE					LS_SHA2_256_BLOCK_SIZE
 #elif (defined(LS_SHA2_384))
 #	define SHA2_BITS						64
@@ -114,7 +114,7 @@
 #	define SHA2_UPDATE_BLOCK				ls_sha2_64_update_block
 #	define SHA2_FINISH						ls_sha2_384_finish
 #	define SHA2_DIGEST_SIZE					LS_SHA2_384_DIGEST_SIZE
-#	define SHA2_DIGEST_TYPE					ls_sha2_384_digest
+#	define SHA2_DIGEST_TYPE					ls_sha2_384_digest_t
 #	define SHA2_BLOCK_SIZE					LS_SHA2_384_BLOCK_SIZE
 #elif (defined(LS_SHA2_512))
 #	define SHA2_BITS						64
@@ -126,7 +126,7 @@
 #	define SHA2_UPDATE_BLOCK				ls_sha2_64_update_block
 #	define SHA2_FINISH						ls_sha2_512_finish
 #	define SHA2_DIGEST_SIZE					LS_SHA2_512_DIGEST_SIZE
-#	define SHA2_DIGEST_TYPE					ls_sha2_512_digest
+#	define SHA2_DIGEST_TYPE					ls_sha2_512_digest_t
 #	define SHA2_BLOCK_SIZE					LS_SHA2_512_BLOCK_SIZE
 #endif
 

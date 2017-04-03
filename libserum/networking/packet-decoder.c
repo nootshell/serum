@@ -36,16 +36,16 @@
 #include <string.h>
 
 
-ID("packet decoder");
+ID("decoder for the built-in packet structure");
 
 
 ls_result_t
-ls_packet_decoder_init_ex(ls_packet_decoder_t *decoder, void(*callback)(struct ls_packet_decoder *decoder, ls_packet_t *packet), void *tag, uint32_t flags) {
+ls_packet_decoder_init_ex(ls_packet_decoder_t *const LS_RESTRICT decoder, void(*const callback)(struct ls_packet_decoder *decoder, ls_packet_t *packet), const void *const LS_RESTRICT tag, const uint32_t flags) {
 	LS_RESULT_CHECK_NULL(decoder, 1);
 
 	memset(decoder, 0, sizeof(*decoder));
 	decoder->callback = callback;
-	decoder->tag = tag;
+	decoder->tag = (void*)tag;
 	decoder->flags = flags;
 	decoder->__state = LS_DECODE_STATE_HEAD;
 
@@ -54,13 +54,13 @@ ls_packet_decoder_init_ex(ls_packet_decoder_t *decoder, void(*callback)(struct l
 
 
 ls_result_t
-ls_packet_decoder_init(ls_packet_decoder_t *decoder) {
+ls_packet_decoder_init(ls_packet_decoder_t *const decoder) {
 	return ls_packet_decoder_init_ex(decoder, NULL, NULL, 0);
 }
 
 
 ls_result_t
-ls_packet_decoder_clear(ls_packet_decoder_t *decoder) {
+ls_packet_decoder_clear(ls_packet_decoder_t *const decoder) {
 	LS_RESULT_CHECK_NULL(decoder, 1);
 
 	ls_packet_clear_ex(&decoder->packet, true, true);
@@ -71,7 +71,7 @@ ls_packet_decoder_clear(ls_packet_decoder_t *decoder) {
 
 
 void
-static LS_ATTR_INLINE __dispatch(ls_packet_decoder_t *decoder) {
+static LS_ATTR_INLINE __dispatch(ls_packet_decoder_t *const decoder) {
 	decoder->__state = LS_DECODE_STATE_HEAD;
 	++(decoder->decode_count);
 	if (decoder->callback) {
@@ -81,14 +81,14 @@ static LS_ATTR_INLINE __dispatch(ls_packet_decoder_t *decoder) {
 }
 
 void
-static LS_ATTR_INLINE __alloc_header(ls_packet_decoder_t *decoder, uint8_t size) {
+static LS_ATTR_INLINE __alloc_header(ls_packet_decoder_t *const decoder, const uint8_t size) {
 	decoder->__header = &decoder->packet.headers[decoder->__sub_index];
 	decoder->__header->size = size;
 	decoder->__header->value = malloc(size);
 }
 
 size_t
-static LS_ATTR_INLINE __valuecpy(ls_packet_decoder_t *decoder, void *out, size_t total_size, void *in, size_t start_index, size_t buffer_size) {
+static LS_ATTR_INLINE __valuecpy(ls_packet_decoder_t *const LS_RESTRICT decoder, void *const LS_RESTRICT out, const size_t total_size, const void *const LS_RESTRICT in, const size_t start_index, const size_t buffer_size) {
 	size_t req;
 	if ((start_index + (req = (total_size - decoder->__index))) >= buffer_size) {
 		req = (buffer_size - start_index);
@@ -106,19 +106,20 @@ static LS_ATTR_INLINE __valuecpy(ls_packet_decoder_t *decoder, void *out, size_t
 }
 
 ls_result_t
-ls_packet_decode(ls_packet_decoder_t *decoder, void *in, size_t size) {
+ls_packet_decode(ls_packet_decoder_t *const LS_RESTRICT decoder, const void *const LS_RESTRICT in, const size_t size) {
 	LS_RESULT_CHECK_NULL(decoder, 1);
 	LS_RESULT_CHECK_NULL(in, 2);
+	LS_RESULT_CHECK_NULL(decoder->callback, 3);
 	LS_RESULT_CHECK_SIZE(size, 1);
 
 	uint8_t byte;
 
 	size_t i;
 	for (i = 0; i < size; ++i) {
-		byte = ((uint8_t*)in)[i];
+		byte = ((const uint8_t*)in)[i];
 		if (decoder->__state == LS_DECODE_STATE_HEAD) {
 			decoder->packet.command = ((byte >> 4) & 0x0F);
-			decoder->packet.header_count = ((byte) & 0x0F);
+			decoder->packet.header_count = (byte & 0x0F);
 			decoder->__state = LS_DECODE_STATE_FLAGS;
 		} else if (decoder->__state == LS_DECODE_STATE_FLAGS) {
 			decoder->packet.flags = byte;
