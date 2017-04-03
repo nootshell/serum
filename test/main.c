@@ -43,19 +43,38 @@
 #include <libserum/crypto/symmetric/xxtea.h>
 #include <libserum/networking/packet.h>
 #include <libserum/networking/packet-decoder.h>
+#include <libserum/runtime/thread.h>
 
 
 void decoder_callback(ls_packet_decoder_t *decoder, ls_packet_t *packet) {
 	unsigned int i;
 	for (i = 0; i < packet->header_count; ++i) {
-		printf("%u: %s\n", i, packet->headers[i].value);
+		printf("%u: %s\n", i, (char*)packet->headers[i].value);
 	}
 	if (packet->payload) {
 		ls_vmemdump(packet->payload, packet->payload_size, "payload:");
 	}
 }
 
+ls_bool
+thrfunc(ls_thread_t *thread, void *param) {
+	printf("Thread from %016X with ID %u.\n", (uintptr_t)thread, thread->thread_id);
+	return true;
+}
+
 int main(int argc, char *argv[], char *env[]) {
+	ls_thread_t thread;
+	if (!ls_thread_init(&thread, thrfunc, NULL).success) {
+		return 1;
+	}
+	if (!ls_thread_start(&thread).success) {
+		return 2;
+	}
+	while (!HAS_FLAG(thread.flags, LS_THREAD_FINISHED)) { }
+	puts("done");
+	ls_thread_clear(&thread);
+	fgetc(stdin);
+	return 0;
 	/*uint8_t key[32];
 	memset(key, 'a', sizeof(key));
 
