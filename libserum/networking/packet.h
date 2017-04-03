@@ -59,12 +59,12 @@ typedef struct ls_packet {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_packet_init(ls_packet_t *packet, uint8_t command, uint8_t flags);
-	LSAPI ls_result_t ls_packet_clear_ex(ls_packet_t *packet, ls_bool free_headers, ls_bool free_payload);
-	LSAPI ls_result_t ls_packet_clear(ls_packet_t *packet);
-	LSAPI ls_result_t ls_packet_add_header(ls_packet_t *packet, uint8_t size, void *value);
-	LSAPI ls_result_t ls_packet_set_payload(ls_packet_t *packet, uint32_t size, void *value);
-	LSAPI void* ls_packet_encode(ls_packet_t *packet, size_t *const out_size);
+	LSAPI ls_result_t ls_packet_init(ls_packet_t *const packet, const uint8_t command, const uint8_t flags);
+	LSAPI ls_result_t ls_packet_clear_ex(ls_packet_t *const packet, const ls_bool free_headers, const ls_bool free_payload);
+	LSAPI ls_result_t ls_packet_clear(ls_packet_t *const packet);
+	LSAPI ls_result_t ls_packet_add_header(ls_packet_t *const LS_RESTRICT packet, const uint8_t size, const void *const LS_RESTRICT value);
+	LSAPI ls_result_t ls_packet_set_payload(ls_packet_t *const LS_RESTRICT packet, const uint32_t size, const void *const LS_RESTRICT value);
+	LSAPI void* ls_packet_encode(const ls_packet_t *const LS_RESTRICT packet, size_t *const LS_RESTRICT out_size);
 
 #ifdef __cplusplus
 }
