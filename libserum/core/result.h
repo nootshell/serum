@@ -77,6 +77,7 @@ typedef struct ls_result {		// bitrg
 #define LS_RESULT_CODE_WRITE				0x0010	// Write failure
 #define LS_RESULT_CODE_READ					0x0011	// Read failure
 #define LS_RESULT_CODE_INDEX				0x0012	// Index invalid
+#define LS_RESULT_CODE_ABORTED				0x0013	// Operation was aborted
 
 
 #define LS_RESULT_SA(_system, _critical, _strict, _code, _param, _success)	\
