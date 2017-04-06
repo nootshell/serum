@@ -185,6 +185,7 @@
     <ClInclude Include="networking\packet-decoder.h" />
     <ClInclude Include="networking\packet.h" />
     <ClInclude Include="networking\socket.h" />
+    <ClInclude Include="runtime\mutex.h" />
     <ClInclude Include="runtime\thread.h" />
   </ItemGroup>
   <ItemGroup>
@@ -207,6 +208,7 @@
     <ClCompile Include="networking\packet-decoder.c" />
     <ClCompile Include="networking\packet.c" />
     <ClCompile Include="networking\socket.c" />
+    <ClCompile Include="runtime\mutex.c" />
     <ClCompile Include="runtime\thread.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
