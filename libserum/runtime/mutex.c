@@ -30,52 +30,78 @@
 **
 */
 
-#ifndef __LS_RUNTIME_THREAD_H
-#define __LS_RUNTIME_THREAD_H
+#define FILE_PATH							"runtime/mutex.c"
+
+#include "./mutex.h"
+#include "../debug/log.h"
 
 
-#include "../core/stdincl.h"
+ls_result_t
+ls_mutex_init(ls_mutex_t *mutex) {
+	LS_RESULT_CHECK_NULL(mutex, 1);
 
+	if (!(mutex->obj = CreateMutex(NULL, FALSE, NULL))) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
+	}
 
-#define LS_THREAD_FINISHED					BIT_1
-#define LS_THREAD_STARTED					BIT_2
-#define LS_THREAD_SUSPENDED					BIT_3
-
-
-typedef struct ls_thread ls_thread_t;
-struct ls_thread {
-	void *thread;
-	int(*entrypoint)(ls_thread_t *thread);
-	ls_bool(*stop_handler)(ls_thread_t *thread);
-	void *tag;
-	size_t stacksize;
-	uint32_t flags;
-	uint32_t thread_id;
-};
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	LSAPI ls_result_t ls_thread_init_ex(ls_thread_t *thread, int(*entrypoint)(ls_thread_t *thread), ls_bool(*stop_handler)(ls_thread_t *thread), size_t stacksize);
-	LSAPI ls_result_t ls_thread_init(ls_thread_t *thread, int(*entrypoint)(ls_thread_t *thread), ls_bool(*stop_handler)(ls_thread_t *thread));
-	LSAPI ls_result_t ls_thread_clear(ls_thread_t *thread);
-
-	LSAPI ls_result_t ls_thread_start(ls_thread_t *thread);
-	LSAPI ls_result_t ls_thread_stop(ls_thread_t *thread);
-	LSAPI ls_result_t ls_thread_abort(ls_thread_t *thread);
-
-	LSAPI ls_result_t ls_thread_resume(ls_thread_t *thread);
-	LSAPI ls_result_t ls_thread_suspend(ls_thread_t *thread);
-	LSAPI ls_result_t ls_thread_join(ls_thread_t *thread);
-
-	LSAPI ls_result_t ls_thread_set_priority(ls_thread_t *thread, int priority);
-	LSAPI ls_result_t ls_thread_get_priority(ls_thread_t *thread, int *out_priority);
-
-#ifdef __cplusplus
+	return LS_RESULT_SUCCESS;
 }
-#endif
 
 
-#endif
+ls_result_t
+ls_mutex_clear(ls_mutex_t *mutex) {
+	LS_RESULT_CHECK_NULL(mutex, 1);
+
+	if (mutex->obj) {
+		if (!CloseHandle(mutex->obj)) {
+			return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
+		}
+		mutex->obj = NULL;
+	}
+
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_mutex_lock_ex(ls_mutex_t *mutex, uint32_t timeout) {
+	LS_RESULT_CHECK_NULL(mutex, 1);
+	LS_RESULT_CHECK_NULL(mutex->obj, 2);
+
+	if (!timeout) {
+		timeout = INFINITE;
+	}
+
+	DWORD result = WaitForSingleObject(mutex->obj, timeout);
+	if (result == WAIT_ABANDONED) {
+		ls_log_e("Lock abandoned.");
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 1);
+	} else if (result == WAIT_FAILED) {
+		ls_log_e("Lock failed.");
+		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 2);
+	} else if (result == WAIT_TIMEOUT) {
+		ls_log_e("Lock timed out.");
+		return LS_RESULT_ERROR(LS_RESULT_CODE_TIMEOUT);
+	}
+
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_mutex_lock(ls_mutex_t *mutex) {
+	return ls_mutex_lock_ex(mutex, 0);
+}
+
+
+ls_result_t
+ls_mutex_unlock(ls_mutex_t *mutex) {
+	LS_RESULT_CHECK_NULL(mutex, 1);
+	LS_RESULT_CHECK_NULL(mutex->obj, 2);
+
+	if (!ReleaseMutex(mutex->obj)) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
+	}
+
+	return LS_RESULT_SUCCESS;
+}
