@@ -36,7 +36,6 @@
 #include "../core/time.h"
 #include "../debug/log.h"
 
-
 ls_bool
 static inline resume_thread(void *thread) {
 	return (ResumeThread(thread) != ~0);
@@ -58,11 +57,14 @@ static DWORD WINAPI __ls_thread_entry(void *param) {
 		ls_thread_t *thread = ((ls_thread_t*)param);
 		if (thread->entrypoint && HAS_FLAG(thread->flags, LS_THREAD_STARTED)) {
 			thread->flags &= ~LS_THREAD_FINISHED;
-			DWORD ret = (DWORD)(!thread->entrypoint(thread));
+			int ret = thread->entrypoint(thread);
 			thread->flags |= LS_THREAD_FINISHED;
-			ls_logf("Thread finished with return code %u.", ret);
 			return ret;
+		} else {
+			ls_log_e("Entrypoint or flag missing.");
 		}
+	} else {
+		ls_log_e("Null param.");
 	}
 	return 1;
 }
@@ -79,19 +81,6 @@ ls_thread_init_ex(ls_thread_t *thread, ls_bool(*entrypoint)(ls_thread_t *thread)
 	thread->entrypoint = entrypoint;
 	thread->stop_handler = stop_handler;
 
-	thread->thread = CreateThread(
-		NULL,
-		thread->stacksize,
-		__ls_thread_entry,
-		thread,
-		CREATE_SUSPENDED,
-		&thread->thread_id
-	);
-
-	if (!thread->thread) {
-		// error
-	}
-
 	return LS_RESULT_SUCCESS;
 }
 
@@ -105,11 +94,13 @@ ls_thread_init(ls_thread_t *thread, ls_bool(*entrypoint)(ls_thread_t *thread), l
 ls_result_t
 ls_thread_clear(ls_thread_t *thread) {
 	LS_RESULT_CHECK_NULL(thread, 1);
-	LS_RESULT_CHECK_NULL(thread->thread, 2);
 
-	if (!CloseHandle(thread->thread)) {
-		// error
+	if (thread->thread) {
+		if (!CloseHandle(thread->thread)) {
+			// error
+		}
 	}
+
 	memset(thread, 0, sizeof(*thread));
 
 	return LS_RESULT_SUCCESS;
@@ -119,15 +110,22 @@ ls_thread_clear(ls_thread_t *thread) {
 ls_result_t
 ls_thread_start(ls_thread_t *thread) {
 	LS_RESULT_CHECK_NULL(thread, 1);
-	LS_RESULT_CHECK_NULL(thread->thread, 2);
 	LS_RESULT_CHECK_NULL(thread->entrypoint, 3);
 
-	thread->flags |= LS_THREAD_STARTED;
-	if (!resume_thread(thread->thread)) {
-		thread->flags &= ~LS_THREAD_STARTED;
+	if (thread->thread = CreateThread(
+		NULL,
+		thread->stacksize,
+		__ls_thread_entry,
+		thread,
+		0,
+		&thread->thread_id
+	)) {
+		thread->flags |= LS_THREAD_STARTED;
+		return LS_RESULT_SUCCESS;
 	}
 
-	return LS_RESULT_SUCCESS;
+	thread->flags &= ~LS_THREAD_STARTED;
+	return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 }
 
 
@@ -197,19 +195,35 @@ ls_thread_join(ls_thread_t *thread) {
 	LS_RESULT_CHECK_NULL(thread->thread, 2);
 
 	if (!HAS_FLAG(thread->flags, LS_THREAD_FINISHED)) {
-		HANDLE current_thread = GetCurrentThread();
-
-		if (!suspend_thread(current_thread)) {
-			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 1);
-		}
-
 		while (!HAS_FLAG(thread->flags, LS_THREAD_FINISHED)) {
 			ls_sleep_millis(5);
 		}
+	}
 
-		if (!resume_thread(current_thread)) {
-			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 2);
-		}
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_thread_set_priority(ls_thread_t *thread, int priority) {
+	LS_RESULT_CHECK_NULL(thread, 1);
+	LS_RESULT_CHECK_NULL(thread->thread, 2);
+
+	if (!SetThreadPriority(thread->thread, priority)) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_ALLOCATION);
+	}
+	
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_thread_get_priority(ls_thread_t *thread, int *out_priority) {
+	LS_RESULT_CHECK_NULL(thread, 1);
+	LS_RESULT_CHECK_NULL(thread->thread, 2);
+
+	if (!(*out_priority = GetThreadPriority(GetCurrentThread()))) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 	}
 
 	return LS_RESULT_SUCCESS;
