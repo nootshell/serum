@@ -30,48 +30,28 @@
 **
 */
 
-#ifndef __LS_RUNTIME_THREAD_H
-#define __LS_RUNTIME_THREAD_H
+#ifndef __LS_RUNTIME_MUTEX_H
+#define __LS_RUNTIME_MUTEX_H
 
 
 #include "../core/stdincl.h"
 
 
-#define LS_THREAD_FINISHED					BIT_1
-#define LS_THREAD_STARTED					BIT_2
-#define LS_THREAD_SUSPENDED					BIT_3
-
-
-typedef struct ls_thread ls_thread_t;
-struct ls_thread {
-	void *thread;
-	int(*entrypoint)(ls_thread_t *thread);
-	ls_bool(*stop_handler)(ls_thread_t *thread);
-	void *tag;
-	size_t stacksize;
-	uint32_t flags;
-	uint32_t thread_id;
-};
+typedef struct ls_mutex {
+	void *obj;
+} ls_mutex_t;
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_thread_init_ex(ls_thread_t *thread, int(*entrypoint)(ls_thread_t *thread), ls_bool(*stop_handler)(ls_thread_t *thread), size_t stacksize);
-	LSAPI ls_result_t ls_thread_init(ls_thread_t *thread, int(*entrypoint)(ls_thread_t *thread), ls_bool(*stop_handler)(ls_thread_t *thread));
-	LSAPI ls_result_t ls_thread_clear(ls_thread_t *thread);
+	LSAPI ls_result_t ls_mutex_init(ls_mutex_t *mutex);							// CreateMutex
+	LSAPI ls_result_t ls_mutex_clear(ls_mutex_t *mutex);						// CloseHandle
 
-	LSAPI ls_result_t ls_thread_start(ls_thread_t *thread);
-	LSAPI ls_result_t ls_thread_stop(ls_thread_t *thread);
-	LSAPI ls_result_t ls_thread_abort(ls_thread_t *thread);
-
-	LSAPI ls_result_t ls_thread_resume(ls_thread_t *thread);
-	LSAPI ls_result_t ls_thread_suspend(ls_thread_t *thread);
-	LSAPI ls_result_t ls_thread_join(ls_thread_t *thread);
-
-	LSAPI ls_result_t ls_thread_set_priority(ls_thread_t *thread, int priority);
-	LSAPI ls_result_t ls_thread_get_priority(ls_thread_t *thread, int *out_priority);
+	LSAPI ls_result_t ls_mutex_lock_ex(ls_mutex_t *mutex, uint32_t timeout);	// WaitForSingleObject
+	LSAPI ls_result_t ls_mutex_lock(ls_mutex_t *mutex);							// ls_mutex_lock_ex
+	LSAPI ls_result_t ls_mutex_unlock(ls_mutex_t *mutex);						// ReleaseMutex
 
 #ifdef __cplusplus
 }
