@@ -30,81 +30,114 @@
 **
 */
 
-#define FILE_PATH							"runtime/mutex.c"
-
-#include "./mutex.h"
-#include "../debug/log.h"
+#define FILE_PATH							"crypto/symmetric/modes/cbc.c"
 
 
-ID("universal mutexes");
+#include "./cbc.h"
+#include "../../../core/memory.h"
+
+
+ID("Cipher Block Chaining");
 
 
 ls_result_t
-ls_mutex_init(ls_mutex_t *mutex) {
-	LS_RESULT_CHECK_NULL(mutex, 1);
+ls_cbc_init(ls_cbc_t *cbc, size_t block_size, void *cipher_data, ls_result_t(*cipher_encrypt)(void *data, void *block), ls_result_t(*cipher_decrypt)(void *data, void *block)) {
+	LS_RESULT_CHECK_NULL(cbc, 1);
 
-	if (!(mutex->obj = CreateMutex(NULL, FALSE, NULL))) {
+	memset(cbc->iv, 0xBA, sizeof(cbc->iv));
+	memcpy(cbc->xor, cbc->iv, sizeof(cbc->iv));
+	cbc->block_size = block_size;
+	cbc->cipher_data = cipher_data;
+	cbc->cipher_encrypt = cipher_encrypt;
+	cbc->cipher_decrypt = cipher_decrypt;
+
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_cbc_encrypt(ls_cbc_t *cbc, uint8_t *block) {
+	LS_RESULT_CHECK_NULL(cbc, 1);
+	LS_RESULT_CHECK_NULL(cbc->cipher_data, 2);
+
+	unsigned int i;
+	for (i = cbc->block_size; i--;) {
+		block[i] = (block[i] ^ cbc->xor[i]);
+	}
+
+	if (!(cbc->cipher_encrypt(cbc->cipher_data, block).success)) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 	}
 
-	return LS_RESULT_SUCCESS;
-}
-
-
-ls_result_t
-ls_mutex_clear(ls_mutex_t *mutex) {
-	LS_RESULT_CHECK_NULL(mutex, 1);
-
-	if (mutex->obj) {
-		if (!CloseHandle(mutex->obj)) {
-			return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
-		}
-		mutex->obj = NULL;
-	}
+	memcpy(cbc->xor, block, cbc->block_size);
 
 	return LS_RESULT_SUCCESS;
 }
 
 
 ls_result_t
-ls_mutex_lock_ex(ls_mutex_t *mutex, uint32_t timeout) {
-	LS_RESULT_CHECK_NULL(mutex, 1);
-	LS_RESULT_CHECK_NULL(mutex->obj, 2);
+ls_cbc_decrypt(ls_cbc_t *cbc, uint8_t *block) {
+	LS_RESULT_CHECK_NULL(cbc, 1);
+	LS_RESULT_CHECK_NULL(cbc->cipher_data, 2);
 
-	if (!timeout) {
-		timeout = INFINITE;
-	}
+	uint8_t *ct_old = malloc(cbc->block_size);
+	memcpy(ct_old, block, cbc->block_size);
 
-	DWORD result = WaitForSingleObject(mutex->obj, timeout);
-	if (result == WAIT_ABANDONED) {
-		ls_log_e("Lock abandoned.");
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 1);
-	} else if (result == WAIT_FAILED) {
-		ls_log_e("Lock failed.");
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 2);
-	} else if (result == WAIT_TIMEOUT) {
-		ls_log_e("Lock timed out.");
-		return LS_RESULT_ERROR(LS_RESULT_CODE_TIMEOUT);
-	}
-
-	return LS_RESULT_SUCCESS;
-}
-
-
-ls_result_t
-ls_mutex_lock(ls_mutex_t *mutex) {
-	return ls_mutex_lock_ex(mutex, 0);
-}
-
-
-ls_result_t
-ls_mutex_unlock(ls_mutex_t *mutex) {
-	LS_RESULT_CHECK_NULL(mutex, 1);
-	LS_RESULT_CHECK_NULL(mutex->obj, 2);
-
-	if (!ReleaseMutex(mutex->obj)) {
+	if (!(cbc->cipher_decrypt(cbc->cipher_data, block).success)) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 	}
 
+	unsigned int i;
+	for (i = cbc->block_size; i--;) {
+		block[i] = (block[i] ^ cbc->xor[i]);
+	}
+
+	memcpy(cbc->xor, ct_old, cbc->block_size);
+	free(ct_old);
+
 	return LS_RESULT_SUCCESS;
 }
+
+ls_result_t
+ls_cbc_encrypt2(ls_cbc_t *cbc, uint8_t *block) {
+	LS_RESULT_CHECK_NULL(cbc, 1);
+	LS_RESULT_CHECK_NULL(cbc->cipher_data, 2);
+
+	unsigned int i;
+	for (i = cbc->block_size; i--;) {
+		block[i] = (block[i] ^ cbc->xor[i]);
+	}
+
+	if (!(cbc->cipher_encrypt(cbc->cipher_data, block).success)) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
+	}
+
+	memcpy(cbc->xor, block, cbc->block_size);
+
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_cbc_decrypt2(ls_cbc_t *cbc, uint8_t *block) {
+	LS_RESULT_CHECK_NULL(cbc, 1);
+	LS_RESULT_CHECK_NULL(cbc->cipher_data, 2);
+
+	uint8_t *ct_old = malloc(cbc->block_size);
+	memcpy(ct_old, block, cbc->block_size);
+
+	if (!(cbc->cipher_decrypt(cbc->cipher_data, block).success)) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
+	}
+
+	unsigned int i;
+	for (i = cbc->block_size; i--;) {
+		block[i] = (block[i] ^ cbc->xor[i]);
+	}
+
+	memcpy(cbc->xor, ct_old, cbc->block_size);
+	free(ct_old);
+
+	return LS_RESULT_SUCCESS;
+}
+
