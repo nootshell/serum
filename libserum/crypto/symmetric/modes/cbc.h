@@ -30,72 +30,36 @@
 **
 */
 
-#define FILE_PATH "main.c"
-
-#include <libserum/core/stdincl.h>
-#include <libserum/debug/log.h>
-#include <libserum/debug/memdump.h>
-#include <stdio.h>
-#include <string.h>
-#include <inttypes.h>
-
-#include <libserum/core/time.h>
-#include <libserum/crypto/symmetric/rijndael.h>
-#include <libserum/crypto/symmetric/modes/cbc.h>
+#ifndef __LS_CRYPTO_SYMMETRIC_MODES_CBC_H
+#define __LS_CRYPTO_SYMMETRIC_MODES_CBC_H
 
 
-int main(int argc, char *argv[], char *env[]) {
-	register unsigned int i;
-	for (i = 0; i < 64; ++i) {
-		printf("%02u %02u\n", LS_MATH_ROUND_BLOCK_INCL(16, i), LS_MATH_ROUND_BLOCK_EXCL(16, i));
-	}
-
-	uint8_t key[32];
-	memset(key, 0xF0, sizeof(key));
-
-	ls_rijndael_t rijndael;
-	if (!ls_rijndael_init(&rijndael, key, sizeof(key)).success) {
-		return 1;
-	}
-
-	ls_cbc_t cbc;
-	ls_cbc_init(&cbc, 16, &rijndael, ls_rijndael_encrypt_block, ls_rijndael_decrypt_block);
+#include "../../../core/stdincl.h"
+#include "../../../core/math.h"
+#include "../rijndael.h"
 
 
-	uint8_t block[16];
-	memset(block, 0x69, sizeof(block));
-
+typedef struct ls_cbc {
 	uint8_t iv[16];
-	memset(iv, 0xBA, sizeof(iv));
+	uint8_t xor[16];
+	void *cipher_data;
+	ls_result_t(*cipher_encrypt)(void *data, void *block);
+	ls_result_t(*cipher_decrypt)(void *data, void *block);
+	size_t block_size;
+} ls_cbc_t;
 
-	puts("old:");
-	ls_memdump(block, sizeof(block));
-	for (i = sizeof(iv); i--;) {
-		block[i] = (block[i] ^ iv[i]);
-	}
-	ls_rijndael_encrypt_block(&rijndael, (void*)block);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-	ls_memdump(block, sizeof(block));
+	LSAPI ls_result_t ls_cbc_init(ls_cbc_t *cbc, size_t block_size, void *cipher_data, ls_result_t(*cipher_encrypt)(void *data, void *block), ls_result_t(*cipher_decrypt)(void *data, void *block));
 
-	ls_rijndael_decrypt_block(&rijndael, (void*)block);
-	for (i = sizeof(iv); i--;) {
-		block[i] = (block[i] ^ iv[i]);
-	}
+	LSAPI ls_result_t ls_cbc_encrypt(ls_cbc_t *cbc, uint8_t *block);
+	LSAPI ls_result_t ls_cbc_decrypt(ls_cbc_t *cbc, uint8_t *block);
 
-	ls_memdump(block, sizeof(block));
-
-	puts("\nnew:");
-	ls_memdump(block, sizeof(block));
-	ls_cbc_encrypt(&cbc, block);
-	ls_memdump(block, sizeof(block));
-	memcpy(cbc.xor, cbc.iv, cbc.block_size);
-	ls_cbc_decrypt(&cbc, block);
-	ls_memdump(block, sizeof(block));
-
-	if (!ls_rijndael_clear(&rijndael).success) {
-		return 4;
-	}
-
-	fgetc(stdin);
-	return 0;
+#ifdef __cplusplus
 }
+#endif
+
+
+#endif

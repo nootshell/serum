@@ -36,6 +36,10 @@
 #include "../core/time.h"
 #include "../debug/log.h"
 
+
+ID("universal threading");
+
+
 ls_bool
 static inline resume_thread(void *thread) {
 	return (ResumeThread(thread) != ~0);

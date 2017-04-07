@@ -177,6 +177,7 @@
     <ClInclude Include="crypto\prng\device.h" />
     <ClInclude Include="crypto\prng\isaac.h" />
     <ClInclude Include="crypto\storage\key.h" />
+    <ClInclude Include="crypto\symmetric\modes\cbc.h" />
     <ClInclude Include="crypto\symmetric\rijndael.h" />
     <ClInclude Include="crypto\symmetric\xxtea.h" />
     <ClInclude Include="crypto\symmetric\__rijndael-tables.h" />
@@ -200,6 +201,7 @@
     <ClCompile Include="crypto\prng\device.c" />
     <ClCompile Include="crypto\prng\isaac.c" />
     <ClCompile Include="crypto\storage\key.c" />
+    <ClCompile Include="crypto\symmetric\modes\cbc.c" />
     <ClCompile Include="crypto\symmetric\rijndael.c" />
     <ClCompile Include="crypto\symmetric\xxtea.c" />
     <ClCompile Include="debug\log.c" />
