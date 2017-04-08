@@ -30,96 +30,40 @@
 **
 */
 
-#define FILE_PATH							"core/time.c"
-
-#include "./time.h"
-#include "./detect_os.h"
-#include "./detect_platform.h"
-#include "./intrinsics.h"
-#include <time.h>
+#ifndef __LS_CRYPTO_HASHING_MD5_H
+#define __LS_CRYPTO_HASHING_MD5_H
 
 
-ID("universal time functionality");
+#include "../../core/stdincl.h"
 
 
-uint64_t
-ls_rdtsc() {
-#if (LS_ARM)
-#	if defined(LS_ARM_VERSION)
-# 		if (LS_ARCH_ARM_VERSION == 8)
-	uint64_t r = 0;
-	asm volatile ("mrs %0, cntvct_e10" : "=r"(r));
-	return r;
-#		elif (LS_ARCH_ARM_VERSION >= 6)
-	uint32_t r = 0;
-	asm volatile ("mrc p15, 0, %0, c9, c14, 0" : "=r"(r));
-	if (HAS_FLAG(r, 0x00000001)) {
-		asm volatile ("mrc, p15, 0, %0, c9, c12, 1", "=r"(r));
-		if (HAS_FLAG(r, 0x80000000)) {
-			asm volatile ("mrc p15, 0, %0, c9, c13, 0" : "=r"(r));
-			return (((uint64_t)r) << 6);
-		}
-	}
-#		endif
-#	else
-#		error RDTSC unsupported.
-#	endif
-#else
-#	if (LS_INTRINSICS)
-	return __rdtsc();
-#	else
-	uint32_t hi, lo;
-	asm volatile ("rdtscp\n"
-				  "movl %%edx, %0\n"
-				  "movl %%eax, %1\n"
-				  "cpuid"
-				  : "=r"(hi), "=r"(lo)
-				  :
-				  : "%rax", "%rbx", "%rcx", "%rdx");
-	return ((((uint64_t)hi) << 32) | lo);
-#	endif
+#define LS_MD5_BLOCK_SIZE					64
+#define LS_MD5_DIGEST_SIZE					16
+
+
+typedef struct ls_md5 {
+	uint32_t h[4];
+	uint32_t hi;
+	uint32_t lo;
+	uint32_t __psize;
+	uint8_t __pcache[LS_MD5_BLOCK_SIZE];
+} ls_md5_t;
+
+typedef uint8_t ls_md5_digest_t[LS_MD5_DIGEST_SIZE];
+
+
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-	// Failsafe
-#if (LS_RDTSC_NANOS_FAILSAFE)
-	return ls_nanos();
-#else
-	return 0;
-#endif
+	LSAPI ls_result_t ls_md5_init(ls_md5_t *const ctx);
+	LSAPI ls_result_t ls_md5_clear(ls_md5_t *const ctx);
+	LSAPI ls_result_t ls_md5_update(ls_md5_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT data, size_t size);
+	LSAPI ls_result_t ls_md5_finish(ls_md5_t *const ctx, ls_md5_digest_t digest);
+
+#ifdef __cplusplus
 }
-
-
-uint64_t
-ls_nanos() {
-#if (LS_WINDOWS)
-	FILETIME ft;
-	GetSystemTimeAsFileTime(&ft);
-	return (((((uint64_t)ft.dwHighDateTime << 32) | ft.dwLowDateTime) / 10) - 0x295E9648864000);
-#else
-	struct timespec ts;
-	if (clock_gettime(CLOCK_REALTIME, &ts) == 0) {
-		return (ts.tv_sec * 1000000000) + ts.tv_nsec;
-	}
 #endif
 
-	// Failsafe
-	return 0;
-}
 
-
-void
-ls_sleep_nanos(const uint64_t nanos) {
-#if (LS_WINDOWS)
-	const DWORD s = (DWORD)(nanos / 1000000);
-	Sleep((s ? s : 1));
-#else
-	struct timespec ts = { 0 };
-
-	ts.tv_sec = (nanos / 1000000000);
-	ts.tv_nsec = (nanos - (ts.tv_sec * 1000000000));
-
-	while (nanosleep(&ts, &ts) == -1) {
-		;
-	}
 #endif
-}

@@ -30,96 +30,75 @@
 **
 */
 
-#define FILE_PATH							"core/time.c"
+#define FILE_PATH							"crypto/hmac/hmac-sha2.c"
 
-#include "./time.h"
-#include "./detect_os.h"
-#include "./detect_platform.h"
-#include "./intrinsics.h"
-#include <time.h>
+#include "./hmac-sha2.h"
+#include "./hmac.h"
+#include <string.h>
 
 
-ID("universal time functionality");
+ID("HMAC-SHA2 implementation");
 
 
-uint64_t
-ls_rdtsc() {
-#if (LS_ARM)
-#	if defined(LS_ARM_VERSION)
-# 		if (LS_ARCH_ARM_VERSION == 8)
-	uint64_t r = 0;
-	asm volatile ("mrs %0, cntvct_e10" : "=r"(r));
-	return r;
-#		elif (LS_ARCH_ARM_VERSION >= 6)
-	uint32_t r = 0;
-	asm volatile ("mrc p15, 0, %0, c9, c14, 0" : "=r"(r));
-	if (HAS_FLAG(r, 0x00000001)) {
-		asm volatile ("mrc, p15, 0, %0, c9, c12, 1", "=r"(r));
-		if (HAS_FLAG(r, 0x80000000)) {
-			asm volatile ("mrc p15, 0, %0, c9, c13, 0" : "=r"(r));
-			return (((uint64_t)r) << 6);
-		}
-	}
-#		endif
-#	else
-#		error RDTSC unsupported.
-#	endif
-#else
-#	if (LS_INTRINSICS)
-	return __rdtsc();
-#	else
-	uint32_t hi, lo;
-	asm volatile ("rdtscp\n"
-				  "movl %%edx, %0\n"
-				  "movl %%eax, %1\n"
-				  "cpuid"
-				  : "=r"(hi), "=r"(lo)
-				  :
-				  : "%rax", "%rbx", "%rcx", "%rdx");
-	return ((((uint64_t)hi) << 32) | lo);
-#	endif
-#endif
-
-	// Failsafe
-#if (LS_RDTSC_NANOS_FAILSAFE)
-	return ls_nanos();
-#else
-	return 0;
-#endif
+ls_result_t
+ls_hmac_sha2_224(const void *const LS_RESTRICT data, const size_t data_size, const void *const LS_RESTRICT key, const size_t key_size, ls_sha2_224_digest_t digest) {
+	ls_sha2_224_t sha2;
+	return ls_hmac_universal(
+		data, data_size,
+		key, key_size,
+		digest, LS_SHA2_224_DIGEST_SIZE,
+		LS_SHA2_224_BLOCK_SIZE, &sha2,
+		(ls_hf_init_t)ls_sha2_224_init,
+		(ls_hf_update_t)ls_sha2_224_update,
+		(ls_hf_finish_t)ls_sha2_224_finish,
+		(ls_hf_clear_t)ls_sha2_224_clear
+	);
 }
 
 
-uint64_t
-ls_nanos() {
-#if (LS_WINDOWS)
-	FILETIME ft;
-	GetSystemTimeAsFileTime(&ft);
-	return (((((uint64_t)ft.dwHighDateTime << 32) | ft.dwLowDateTime) / 10) - 0x295E9648864000);
-#else
-	struct timespec ts;
-	if (clock_gettime(CLOCK_REALTIME, &ts) == 0) {
-		return (ts.tv_sec * 1000000000) + ts.tv_nsec;
-	}
-#endif
-
-	// Failsafe
-	return 0;
+ls_result_t
+ls_hmac_sha2_256(const void *const LS_RESTRICT data, const size_t data_size, const void *const LS_RESTRICT key, const size_t key_size, ls_sha2_256_digest_t digest) {
+	ls_sha2_256_t sha2;
+	return ls_hmac_universal(
+		data, data_size,
+		key, key_size,
+		digest, LS_SHA2_256_DIGEST_SIZE,
+		LS_SHA2_256_BLOCK_SIZE, &sha2,
+		(ls_hf_init_t)ls_sha2_256_init,
+		(ls_hf_update_t)ls_sha2_256_update,
+		(ls_hf_finish_t)ls_sha2_256_finish,
+		(ls_hf_clear_t)ls_sha2_256_clear
+	);
 }
 
 
-void
-ls_sleep_nanos(const uint64_t nanos) {
-#if (LS_WINDOWS)
-	const DWORD s = (DWORD)(nanos / 1000000);
-	Sleep((s ? s : 1));
-#else
-	struct timespec ts = { 0 };
+ls_result_t
+ls_hmac_sha2_384(const void *const LS_RESTRICT data, const size_t data_size, const void *const LS_RESTRICT key, const size_t key_size, ls_sha2_384_digest_t digest) {
+	ls_sha2_384_t sha2;
+	return ls_hmac_universal(
+		data, data_size,
+		key, key_size,
+		digest, LS_SHA2_384_DIGEST_SIZE,
+		LS_SHA2_384_BLOCK_SIZE, &sha2,
+		(ls_hf_init_t)ls_sha2_384_init,
+		(ls_hf_update_t)ls_sha2_384_update,
+		(ls_hf_finish_t)ls_sha2_384_finish,
+		(ls_hf_clear_t)ls_sha2_384_clear
+	);
+}
 
-	ts.tv_sec = (nanos / 1000000000);
-	ts.tv_nsec = (nanos - (ts.tv_sec * 1000000000));
 
-	while (nanosleep(&ts, &ts) == -1) {
-		;
-	}
-#endif
+ls_result_t
+ls_hmac_sha2_512(const void *const LS_RESTRICT data, const size_t data_size, const void *const LS_RESTRICT key, const size_t key_size, ls_sha2_512_digest_t digest) {
+	ls_sha2_512_t sha2;
+	return ls_hmac_universal(
+		data, data_size,
+		key, key_size,
+		digest, LS_SHA2_512_DIGEST_SIZE,
+		LS_SHA2_512_BLOCK_SIZE, &sha2,
+		(ls_hf_init_t)ls_sha2_512_init,
+		(ls_hf_update_t)ls_sha2_512_update,
+		(ls_hf_finish_t)ls_sha2_512_finish,
+		(ls_hf_clear_t)ls_sha2_512_clear
+	);
 }

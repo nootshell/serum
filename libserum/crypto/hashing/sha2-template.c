@@ -404,7 +404,6 @@ SHA2_FINISH(SHA2_CTX *const ctx, SHA2_DIGEST_TYPE digest) {
 
 	// Apply the last part of the padding (size). We want the number of bits instead of the number of bytes, so we multiply by 8. (2^3=8)
 	ctx->size <<= 3;
-
 	buffer[sizeof(buffer) - 8] = ((ctx->size >> 56) & 0xFF);
 	buffer[sizeof(buffer) - 7] = ((ctx->size >> 48) & 0xFF);
 	buffer[sizeof(buffer) - 6] = ((ctx->size >> 40) & 0xFF);
@@ -413,8 +412,6 @@ SHA2_FINISH(SHA2_CTX *const ctx, SHA2_DIGEST_TYPE digest) {
 	buffer[sizeof(buffer) - 3] = ((ctx->size >> 16) & 0xFF);
 	buffer[sizeof(buffer) - 2] = ((ctx->size >>  8) & 0xFF);
 	buffer[sizeof(buffer) - 1] = ((ctx->size      ) & 0xFF);
-
-	ctx->size >>= 3;
 
 
 	SHA2_UPDATE_BLOCK(ctx, (void*)buffer);
@@ -435,6 +432,9 @@ SHA2_FINISH(SHA2_CTX *const ctx, SHA2_DIGEST_TYPE digest) {
 		digest[i + (SHA2_BYTES * 7)] = ((ctx->h[7] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  n   y   n   y
 #endif
 	}
+
+
+	memset(ctx, 0, sizeof(*ctx));
 
 
 	return LS_RESULT_SUCCESS;
