@@ -46,6 +46,7 @@
 
 
 #define LS_INVALID_SOCKET					(((uint32_t)0)-1)
+#define LS_RESULT_CHECK_SOCKFD(fd, param)	LS_RESULT_CHECK((fd) == LS_INVALID_SOCKET, LS_RESULT_CODE_DESCRIPTOR, (param))
 
 
 #define LS_SOCKET_EXITED					BIT_1	// Read-only, TODO
@@ -95,8 +96,8 @@ enum ls_socket_option_type {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_socket_init_ex(ls_socket_t *const ctx, const char *node, const uint32_t flags);
-	LSAPI ls_result_t ls_socket_init(ls_socket_t *const ctx, const char *node);
+	LSAPI ls_result_t ls_socket_init_ex(ls_socket_t *const LS_RESTRICT ctx, const char *LS_RESTRICT node, const uint32_t flags);
+	LSAPI ls_result_t ls_socket_init(ls_socket_t *const LS_RESTRICT ctx, const char *LS_RESTRICT node);
 	LSAPI ls_result_t ls_socket_clear(ls_socket_t *const ctx);
 
 	LSAPI ls_result_t ls_socket_start(ls_socket_t *const ctx, const uint16_t port);
@@ -105,13 +106,13 @@ extern "C" {
 
 	LSAPI ls_result_t ls_socket_fromfd(ls_socket_t *const ctx, const ls_sockfd_t fd, const uint32_t flags);
 
-	LSAPI ls_sockfd_t ls_socket_acceptfd(const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen);
-	LSAPI ls_result_t ls_socket_accept(ls_socket_t *const out, const ls_socket_t *const ctx, struct sockaddr *const saddr, socklen_t *const saddrlen);
+	LSAPI ls_sockfd_t ls_socket_acceptfd(const ls_socket_t *const LS_RESTRICT ctx, struct sockaddr *const LS_RESTRICT saddr, socklen_t *const LS_RESTRICT saddrlen);
+	LSAPI ls_result_t ls_socket_accept(ls_socket_t *const LS_RESTRICT out, const ls_socket_t *const LS_RESTRICT ctx, struct sockaddr *const LS_RESTRICT saddr, socklen_t *const LS_RESTRICT saddrlen);
 
-	LSAPI ls_result_t ls_socket_write(size_t *const out_size, const ls_socket_t *const ctx, const void *const in, size_t size);
-	LSAPI ls_result_t ls_socket_write_str(size_t *const out, const ls_socket_t *const ctx, const char *const str);
+	LSAPI ls_result_t ls_socket_write(size_t *const LS_RESTRICT out_size, const ls_socket_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT in, size_t size);
+	LSAPI ls_result_t ls_socket_write_str(size_t *const LS_RESTRICT out, const ls_socket_t *const LS_RESTRICT ctx, const char *const LS_RESTRICT str);
 
-	LSAPI ls_result_t ls_socket_read(size_t *const out_size, const ls_socket_t *const ctx, void *const out, const size_t size);
+	LSAPI ls_result_t ls_socket_read(size_t *const LS_RESTRICT out_size, const ls_socket_t *const LS_RESTRICT ctx, void *const LS_RESTRICT out, const size_t size);
 
 	LSAPI ls_result_t ls_socket_set_option(ls_socket_t *const ctx, const enum ls_socket_option_type type, const uint32_t value);
 

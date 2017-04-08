@@ -110,7 +110,7 @@ ls_memdump(const void *const ptr, const size_t size) {
 
 
 void
-ls_vmemdump_ex(const void *const ptr, const size_t size, int columns, int items_per_column, const char *const str) {
+ls_vmemdump_ex(const void *const LS_RESTRICT ptr, const size_t size, int columns, int items_per_column, const char *const LS_RESTRICT str) {
 	if (!ptr || !size) {
 		return;
 	}
@@ -124,6 +124,6 @@ ls_vmemdump_ex(const void *const ptr, const size_t size, int columns, int items_
 
 
 void
-ls_vmemdump(const void *const ptr, const size_t size, const char *const str) {
+ls_vmemdump(const void *const LS_RESTRICT ptr, const size_t size, const char *const LS_RESTRICT str) {
 	ls_vmemdump_ex(ptr, size, 16, 1, str);
 }

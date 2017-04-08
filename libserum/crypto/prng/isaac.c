@@ -64,7 +64,7 @@ ID("ISAAC implementation");
 	ROUND();
 
 ls_result_t
-ls_isaac_init_ex(ls_isaac_t *const ctx, const void *const seed, const size_t size) {
+ls_isaac_init_ex(ls_isaac_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT seed, const size_t size) {
 	if (!ctx) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
 	}
@@ -116,7 +116,7 @@ ls_isaac_init(ls_isaac_t *const ctx) {
 
 
 ls_result_t
-ls_isaac_init_device(ls_isaac_t *const ctx, const ls_device_t *const device) {
+ls_isaac_init_device(ls_isaac_t *const LS_RESTRICT ctx, const ls_device_t *const LS_RESTRICT device) {
 	if (!device) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);
 	}

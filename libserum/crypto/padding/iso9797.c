@@ -62,7 +62,7 @@ ls_pad_iso9797_zero_block(void *const out, void *const in, const size_t inputsz,
 
 
 ls_result_t
-ls_pad_iso9797_zero_offset(size_t *const out, const void *const in, size_t size) {
+ls_pad_iso9797_zero_offset(size_t *const LS_RESTRICT out, const void *const LS_RESTRICT in, size_t size) {
 	LS_RESULT_CHECK_NULL(out, 1);
 	LS_RESULT_CHECK_NULL(in, 2);
 	LS_RESULT_CHECK_SIZE(size, 1);
@@ -105,7 +105,7 @@ ls_pad_iso9797_block(void *const out, void *const in, const size_t inputsz, cons
 
 
 ls_result_t
-ls_pad_iso9797_offset(size_t *const out, const void *const in, const size_t size) {
+ls_pad_iso9797_offset(size_t *const LS_RESTRICT out, const void *const LS_RESTRICT in, const size_t size) {
 	size_t offset = 0;
 
 	ls_result_t result;

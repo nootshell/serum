@@ -30,96 +30,68 @@
 **
 */
 
-#define FILE_PATH							"core/time.c"
+#define FILE_PATH							"crypto/hmac/hmac.c"
 
-#include "./time.h"
-#include "./detect_os.h"
-#include "./detect_platform.h"
-#include "./intrinsics.h"
-#include <time.h>
+#include "./hmac.h"
+#include <string.h>
 
 
-ID("universal time functionality");
-
-
-uint64_t
-ls_rdtsc() {
-#if (LS_ARM)
-#	if defined(LS_ARM_VERSION)
-# 		if (LS_ARCH_ARM_VERSION == 8)
-	uint64_t r = 0;
-	asm volatile ("mrs %0, cntvct_e10" : "=r"(r));
-	return r;
-#		elif (LS_ARCH_ARM_VERSION >= 6)
-	uint32_t r = 0;
-	asm volatile ("mrc p15, 0, %0, c9, c14, 0" : "=r"(r));
-	if (HAS_FLAG(r, 0x00000001)) {
-		asm volatile ("mrc, p15, 0, %0, c9, c12, 1", "=r"(r));
-		if (HAS_FLAG(r, 0x80000000)) {
-			asm volatile ("mrc p15, 0, %0, c9, c13, 0" : "=r"(r));
-			return (((uint64_t)r) << 6);
-		}
-	}
-#		endif
-#	else
-#		error RDTSC unsupported.
-#	endif
-#else
-#	if (LS_INTRINSICS)
-	return __rdtsc();
-#	else
-	uint32_t hi, lo;
-	asm volatile ("rdtscp\n"
-				  "movl %%edx, %0\n"
-				  "movl %%eax, %1\n"
-				  "cpuid"
-				  : "=r"(hi), "=r"(lo)
-				  :
-				  : "%rax", "%rbx", "%rcx", "%rdx");
-	return ((((uint64_t)hi) << 32) | lo);
-#	endif
-#endif
-
-	// Failsafe
-#if (LS_RDTSC_NANOS_FAILSAFE)
-	return ls_nanos();
-#else
-	return 0;
-#endif
-}
-
-
-uint64_t
-ls_nanos() {
-#if (LS_WINDOWS)
-	FILETIME ft;
-	GetSystemTimeAsFileTime(&ft);
-	return (((((uint64_t)ft.dwHighDateTime << 32) | ft.dwLowDateTime) / 10) - 0x295E9648864000);
-#else
-	struct timespec ts;
-	if (clock_gettime(CLOCK_REALTIME, &ts) == 0) {
-		return (ts.tv_sec * 1000000000) + ts.tv_nsec;
-	}
-#endif
-
-	// Failsafe
-	return 0;
-}
+ID("universal pluggable HMAC implementation");
 
 
 void
-ls_sleep_nanos(const uint64_t nanos) {
-#if (LS_WINDOWS)
-	const DWORD s = (DWORD)(nanos / 1000000);
-	Sleep((s ? s : 1));
-#else
-	struct timespec ts = { 0 };
+static LS_ATTR_INLINE prep_key(uint8_t *const LS_RESTRICT out, const size_t out_size, const uint8_t pad, const void *const LS_RESTRICT key, const size_t key_size) {
+	memset(out, pad, out_size);
 
-	ts.tv_sec = (nanos / 1000000000);
-	ts.tv_nsec = (nanos - (ts.tv_sec * 1000000000));
-
-	while (nanosleep(&ts, &ts) == -1) {
-		;
+	unsigned int i;
+	for (i = key_size; i--;) {
+		out[i] ^= ((uint8_t*)key)[i];
 	}
-#endif
+}
+
+ls_result_t
+ls_hmac_universal(const void *const LS_RESTRICT data, const size_t data_size, const void *LS_RESTRICT key, size_t key_size, void *const LS_RESTRICT digest, const size_t digest_size, const size_t block_size, void *const LS_RESTRICT hf_data, ls_hf_init_t const hf_init, ls_hf_update_t const hf_update, ls_hf_finish_t const hf_finish, ls_hf_clear_t const hf_clear) {
+	LS_RESULT_CHECK_NULL(data, 1);
+	LS_RESULT_CHECK_SIZE(data_size, 1);
+	LS_RESULT_CHECK_NULL(key, 2);
+	LS_RESULT_CHECK_SIZE(key_size, 2);
+	LS_RESULT_CHECK_NULL(digest, 3);
+	LS_RESULT_CHECK_SIZE(digest_size, 3);
+	LS_RESULT_CHECK_SIZE(block_size, 4);
+	LS_RESULT_CHECK_NULL(hf_data, 4);
+	LS_RESULT_CHECK_NULL(hf_init, 5);
+	LS_RESULT_CHECK_NULL(hf_update, 6);
+	LS_RESULT_CHECK_NULL(hf_finish, 7);
+	LS_RESULT_CHECK_NULL(hf_clear, 8);
+
+
+	uint8_t buffer_block[block_size];
+	uint8_t buffer_digest[digest_size];
+
+	if (key_size > 64) {
+		hf_init(hf_data);
+		hf_update(hf_data, key, key_size);
+		hf_finish(hf_data, buffer_digest);
+		hf_clear(hf_data);
+
+		key = buffer_digest;
+		key_size = sizeof(buffer_digest);
+	}
+
+	prep_key(buffer_block, sizeof(buffer_block), 0x36, key, key_size);
+	hf_init(hf_data);
+	hf_update(hf_data, buffer_block, sizeof(buffer_block));
+	hf_update(hf_data, data, data_size);
+	hf_finish(hf_data, buffer_digest);
+	hf_clear(hf_data);
+
+	prep_key(buffer_block, sizeof(buffer_block), 0x5C, key, key_size);
+	hf_init(hf_data);
+	hf_update(hf_data, buffer_block, sizeof(buffer_block));
+	hf_update(hf_data, buffer_digest, sizeof(buffer_digest));
+	hf_finish(hf_data, digest);
+	hf_clear(hf_data);
+
+
+	return LS_RESULT_SUCCESS;
 }
