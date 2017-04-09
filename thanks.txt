@@ -1,8 +1,8 @@
 Special thanks to:
 - My girlfriend for being my girlfriend, and thus making me a cool nerd.    I <3 Her
 - Italians, for making pasta, pizza, and other stuff.               I <3 Pasta/Pizza
-- Everyone who made Arch Linux the way it is.                       I <3 Arch Linux
-- Everyone who made C the way it is.                                         I <3 C
+- Everyone who made Arch Linux the way it is.                        I <3 Arch Linux
+- Everyone who made C the way it is.                                          I <3 C
 - Chuck Norris
 
 
