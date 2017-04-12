@@ -36,11 +36,11 @@ This project is basically for me to learn stuff, it aims to be the complete tool
 - Misc
 	- [Variable size integer encoding/decoding](./libserum/core/varsize.h)
 - Networking
-	- [Universal socket](./libserum/networking/socket.h)
-	- [Packets](./libserum/networking/packet.h) <sup></sup>
+	- [Universal socket](./libserum/networking/socket.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Network_socket)</sup>
+	- [Packets](./libserum/networking/packet.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Network_packet)</sup>
 - Runtime
-	- [Universal mutexes](./libserum/runtime/mutex.h)
-	- [Universal threading](./libserum/runtime/thread.h)
+	- [Universal mutexes](./libserum/runtime/mutex.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Mutual_exclusion)</sup>
+	- [Universal threading](./libserum/runtime/thread.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Thread_(computing))</sup>
 - Time retrieval
 	- [RDTSC](./libserum/core/time.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Time_Stamp_Counter)</sup>
 	- [Nano, micro, milli, and full seconds](./libserum/core/time.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time))</sup>
