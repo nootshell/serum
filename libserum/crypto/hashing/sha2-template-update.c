@@ -30,8 +30,7 @@
 **
 */
 
-#include "../../debug/memdump.h"
-#include <stdio.h>
+//#include <stdio.h>
 
 #ifdef SHA2_UPDATE_BLOCK
 ls_result_t
@@ -48,44 +47,31 @@ static SHA2_UPDATE_BLOCK(SHA2_CTX *const ctx, const SHA2_NATIVE_TYPE block[LS_SH
 		f = ctx->h[5],
 		g = ctx->h[6],
 		h = ctx->h[7],
-		s0, s1, ch, temp1, temp2, maj;
+		t1, t2;
 
 	SHA2_NATIVE_TYPE w[SHA2_WR];
 
-	register uint_fast16_t i;
+	register unsigned int i;
 
 	for (i = 16; i--;) {
 		w[i] = SHA2_SWAP(block[i]);
-		//printf("w[%02u] = %08X\n", i, w[i]);
 	}
-
 	for (i = 16; i < SHA2_WR; ++i) {
-		s0 = (SHA2_ROTR(w[(i - 15)], SHA2_ROTR_1) ^ SHA2_ROTR(w[(i - 15)], SHA2_ROTR_2) ^ (w[(i - 15)] >> SHA2_SHR_1));
-		s1 = (SHA2_ROTR(w[(i -  2)], SHA2_ROTR_3) ^ SHA2_ROTR(w[(i -  2)], SHA2_ROTR_4) ^ (w[(i -  2)] >> SHA2_SHR_2));
-		w[i] = (w[(i - 16)] + s0 + w[(i - 7)] + s1);
-
-		//printf("w[%02u] = %08X\n", i, w[i]);
+		w[i] = (w[(i - 16)] + (SHA2_ROTR(w[(i - 15)], SHA2_ROTR_1) ^ SHA2_ROTR(w[(i - 15)], SHA2_ROTR_2) ^ (w[(i - 15)] >> SHA2_SHR_1)) + w[(i - 7)] + (SHA2_ROTR(w[(i -  2)], SHA2_ROTR_3) ^ SHA2_ROTR(w[(i -  2)], SHA2_ROTR_4) ^ (w[(i -  2)] >> SHA2_SHR_2)));
 	}
 
 	for (i = 0; i < SHA2_WR; ++i) {
-		s1 = (SHA2_ROTR(e, SHA2_ROTR_5) ^ SHA2_ROTR(e, SHA2_ROTR_6) ^ SHA2_ROTR(e, SHA2_ROTR_7));
-		ch = ((e & f) ^ (~e & g));
-		temp1 = (h + s1 + ch + SHA2_CONSTANTS[i] + w[i]);
-
-		s0 = (SHA2_ROTR(a, SHA2_ROTR_8) ^ SHA2_ROTR(a, SHA2_ROTR_9) ^ SHA2_ROTR(a, SHA2_ROTR_10));
-		maj = ((a & b) ^ (a & c) ^ (b & c));
-		temp2 = (s0 + maj);
+		t1 = (h + (SHA2_ROTR(e, SHA2_ROTR_5) ^ SHA2_ROTR(e, SHA2_ROTR_6) ^ SHA2_ROTR(e, SHA2_ROTR_7)) + ((e & f) ^ (~e & g)) + SHA2_CONSTANTS[i] + w[i]);
+		t2 = ((SHA2_ROTR(a, SHA2_ROTR_8) ^ SHA2_ROTR(a, SHA2_ROTR_9) ^ SHA2_ROTR(a, SHA2_ROTR_10)) + ((a & b) ^ (a & c) ^ (b & c)));
 
 		h = g;
 		g = f;
 		f = e;
-		e = (d + temp1);
+		e = (d + t1);
 		d = c;
 		c = b;
 		b = a;
-		a = (temp1 + temp2);
-
-		//printf("t=%02u: %08X %08X %08X %08X %08X %08X %08X %08X\n", i, a, b, c, d, e, f, g, h);
+		a = (t1 + t2);
 	}
 
 	ctx->h[0] += a;
@@ -96,8 +82,6 @@ static SHA2_UPDATE_BLOCK(SHA2_CTX *const ctx, const SHA2_NATIVE_TYPE block[LS_SH
 	ctx->h[5] += f;
 	ctx->h[6] += g;
 	ctx->h[7] += h;
-
-	//printf("%08X %08X %08X %08X %08X %08X %08X %08X\n", ctx->h[0], ctx->h[1], ctx->h[2], ctx->h[3], ctx->h[4], ctx->h[5], ctx->h[6], ctx->h[7]);
 
 	return LS_RESULT_SUCCESS;
 }

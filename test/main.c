@@ -69,7 +69,7 @@ ls_bool stpfunc(ls_thread_t *thread) {
 }
 
 int main(int argc, char *argv[], char *env[]) {
-	/*if (argc > 2) {
+	if (argc > 2) {
 		char *key = argv[1];
 		size_t keylen = strlen(key);
 		char *data = argv[2];
@@ -104,11 +104,7 @@ int main(int argc, char *argv[], char *env[]) {
 		ls_vmemdump(sha2_512, sizeof(sha2_512), "\nHMAC-SHA2-512:");
 
 		return 0;
-	} else {
-		puts("HMAC test utility for HMAC-MD5 and HMAC-SHA2 (224, 256, 384, 512).");
-		printf("Usage: %s <key> <data>\n", argv[0]);
 	}
-	return 64;*/
 
 	ls_thread_t thread;
 	if (!ls_thread_init(&thread, thrfunc).success) {

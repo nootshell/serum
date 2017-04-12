@@ -395,7 +395,7 @@ SHA2_FINISH(SHA2_CTX *const ctx, SHA2_DIGEST_TYPE digest) {
 	memset(buffer + offset, 0, diff);
 	buffer[offset] = ctx->pad;
 
-	// If we don't have enough bytes left to append proper padding, use the current buffer and clear it.
+	// If we don't have enough bytes left to append the rest of the padding, update using the current buffer and reset it.
 	if (diff < 9) {
 		SHA2_UPDATE_BLOCK(ctx, (void*)buffer);
 		memset(buffer, 0, sizeof(buffer));
@@ -413,14 +413,13 @@ SHA2_FINISH(SHA2_CTX *const ctx, SHA2_DIGEST_TYPE digest) {
 	buffer[sizeof(buffer) - 2] = ((ctx->size >>  8) & 0xFF);
 	buffer[sizeof(buffer) - 1] = ((ctx->size      ) & 0xFF);
 
-
 	SHA2_UPDATE_BLOCK(ctx, (void*)buffer);
 
 
 	uint_fast8_t i;
 	for (i = SHA2_BYTES; i--;) {                                                           	// 224 256 384 512
 		digest[i                   ] = ((ctx->h[0] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
-		digest[i + (SHA2_BYTES * 1)] = ((ctx->h[1] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
+		digest[i + (SHA2_BYTES    )] = ((ctx->h[1] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
 		digest[i + (SHA2_BYTES * 2)] = ((ctx->h[2] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
 		digest[i + (SHA2_BYTES * 3)] = ((ctx->h[3] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
 		digest[i + (SHA2_BYTES * 4)] = ((ctx->h[4] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
