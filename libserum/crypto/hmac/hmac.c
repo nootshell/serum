@@ -68,7 +68,7 @@ ls_hmac_universal(const void *const LS_RESTRICT data, const size_t data_size, co
 	uint8_t buffer_block[block_size];
 	uint8_t buffer_digest[digest_size];
 
-	if (key_size > 64) {
+	if (key_size > block_size) {
 		hf_init(hf_data);
 		hf_update(hf_data, key, key_size);
 		hf_finish(hf_data, buffer_digest);
