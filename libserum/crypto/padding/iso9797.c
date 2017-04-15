@@ -45,7 +45,7 @@ ls_pad_iso9797_zero_ex(void *const out, void *const in, const size_t inputsz, co
 	LS_RESULT_CHECK_NULL(in, 1);
 	LS_RESULT_CHECK_SIZE(outputsz, 1);
 	LS_RESULT_CHECK_SIZE((outputsz > inputsz), 2);
-#if (!defined(LS_ALLOW_PAD_INPUTSZ_ZERO) || !LS_ALLOW_PAD_INPUTSZ_ZERO)
+#if (LS_ISO9797_DENY_SIZE_ZERO)
 	LS_RESULT_CHECK_SIZE(inputsz, 3);
 #endif
 
@@ -76,7 +76,7 @@ ls_pad_iso9797_zero_offset(size_t *const LS_RESTRICT out, const void *const LS_R
 		}
 	} while (size);
 
-#if (LS_ISO9797M1_ALLOW_ALL_ZERO)
+#if (LS_ISO9797_ALLOW_ALL_ZERO)
 	*out = 0;
 	return LS_RESULT_SUCCESS;
 #else
@@ -89,7 +89,7 @@ ls_result_t
 ls_pad_iso9797_ex(void *const out, void *const in, const size_t inputsz, const size_t outputsz) {
 	ls_result_t result = ls_pad_iso9797_zero_ex(out, in, inputsz, outputsz);
 	if (!result.success) {
-		return result;
+		return LS_RESULT_INHERITED(result, false);
 	}
 
 	((uint8_t*)LS_SELECT_IO_PTR(out, in))[inputsz] = 0x80;

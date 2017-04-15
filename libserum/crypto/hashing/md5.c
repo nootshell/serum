@@ -170,7 +170,13 @@ ls_result_t
 ls_md5_update(ls_md5_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT data, size_t size) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
 	LS_RESULT_CHECK_NULL(data, 2);
+#if (LS_MD5_DENY_SIZE_ZERO)
 	LS_RESULT_CHECK_SIZE(size, 1);
+#else
+	if (!size) {
+		return LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_SIZE);
+	}
+#endif
 
 
 	uint32_t lo_old = ctx->lo;

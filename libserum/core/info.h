@@ -42,6 +42,7 @@ extern "C" {
 #endif
 
 	LSAPI const char* ls_info_compilation_environment();
+	LSAPI const char* ls_info_compilation_options();
 
 #ifdef __cplusplus
 }

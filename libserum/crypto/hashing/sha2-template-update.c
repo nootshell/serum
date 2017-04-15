@@ -30,9 +30,8 @@
 **
 */
 
-//#include <stdio.h>
+#if (defined(SHA2_UPDATE_BLOCK))
 
-#ifdef SHA2_UPDATE_BLOCK
 ls_result_t
 static SHA2_UPDATE_BLOCK(SHA2_CTX *const ctx, const SHA2_NATIVE_TYPE block[LS_SHA2_BLOCK_NUM]) {
 	LS_RESULT_CHECK_NULL(ctx, 1);

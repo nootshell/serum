@@ -93,7 +93,7 @@ ls_rijndael_init(ls_rijndael_t *const LS_RESTRICT ctx, const void *const LS_REST
 	LS_RESULT_CHECK_NULL(key, 2);
 	LS_RESULT_CHECK_SIZE(key_size, 1);
 
-#if (defined(RIJNDAEL_STRICT) && RIJNDAEL_STRICT)
+#if (LS_RIJNDAEL_STRICT)
 	// Strict key sizes - only 16 (128-bits), 24 (192-bits), and 32 (256-bits) allowed.
 
 	//if (((key_size & ~56) != 0) || (key_size == 56)) {

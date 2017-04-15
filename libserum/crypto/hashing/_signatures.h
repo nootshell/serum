@@ -30,20 +30,17 @@
 **
 */
 
-#ifndef __LS_TEST_CASE_H
-#define __LS_TEST_CASE_H
+#ifndef __LS_CRYPTO_HASHING__SIGNATURES_H
+#define __LS_CRYPTO_HASHING__SIGNATURES_H
 
 
-#include <stdint.h>
-#include <stddef.h>
+#include "../../core/stdincl.h"
 
 
-typedef struct ls_testcase {
-	void *d_data;
-	int(*f_init)(void *data);
-	int(*f_perform)(void *data, void *input, size_t input_size);
-	int(*f_clear)(void *data);
-} ls_testcase_t;
+typedef ls_result_t(*ls_hf_init_t)(void *const hf_data);
+typedef ls_result_t(*ls_hf_update_t)(void *const hf_data, const void *const data, size_t size);
+typedef ls_result_t(*ls_hf_finish_t)(void *const hf_data, void *const digest);
+typedef ls_result_t(*ls_hf_clear_t)(void *const hf_data);
 
 
 #endif

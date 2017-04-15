@@ -242,7 +242,7 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 		}
 
 		if (HAS_FLAG(ctx->flags, LS_SOCKET_SERVER)) {
-#ifdef SO_REUSEADDR
+#if (defined(SO_REUSEADDR))
 			if (HAS_FLAG(ctx->flags, LS_SOCKET_REUSEADDR)) {
 				if (setsockopt(ctx->fd, SOL_SOCKET, SO_REUSEADDR, (void*)&enable, sizeof(enable)) == -1) {
 					ls_log_w(LS_ERRSTR_OPTION_UNAVAILABLE": REUSEADDR");
@@ -251,7 +251,7 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 #else
 			LS_COMPILER_WARN("LS_SOCKET_REUSEADDR unavailable: SO_REUSEADDR undefined")
 #endif
-#ifdef SO_REUSEPORT
+#if (defined(SO_REUSEPORT))
 				if (HAS_FLAG(ctx->flags, LS_SOCKET_REUSEPORT)) {
 					if (setsockopt(ctx->fd, SOL_SOCKET, SO_REUSEPORT, (void*)&enable, sizeof(enable)) == -1) {
 						ls_log_w(LS_ERRSTR_OPTION_UNAVAILABLE": REUSEPORT");
@@ -338,7 +338,7 @@ ls_socket_stop_ex(ls_socket_t *const ctx, const ls_bool force, const uint_fast16
 	}
 #undef CHECK
 
-#if(LS_WINDOWS)
+#if (LS_WINDOWS)
 #	define SHUTDOWN_FLAGS					SD_BOTH
 #else
 #	define SHUTDOWN_FLAGS					SHUT_RDWR
@@ -510,7 +510,7 @@ ls_socket_set_option(ls_socket_t *const ctx, const enum ls_socket_option_type ty
 
 	if (HAS_FLAG(type, LS_SO_ASYNC)) {
 #if (LS_WINDOWS)
-#	ifdef FIONBIO
+#	if (defined(FIONBIO))
 		if ((ioctlsocket(ctx->fd, FIONBIO, (void*)&value)) == -1) {
 			ls_log_w(LS_ERRSTR_OPERATION_FAILURE": ctx invalid");
 			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 1);
@@ -520,7 +520,7 @@ ls_socket_set_option(ls_socket_t *const ctx, const enum ls_socket_option_type ty
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_UNSUPPORTED, 1);
 #	endif
 #else
-#	ifdef O_NONBLOCK
+#	if (defined(O_NONBLOCK))
 		uint32_t flags = fcntl(ctx->fd, F_GETFL, 0);
 
 		if (value) {
