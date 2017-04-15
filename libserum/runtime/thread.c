@@ -41,7 +41,6 @@
 ID("universal threading");
 
 
-
 ls_bool
 static inline resume_thread(ls_thread_t *thread) {
 #if (LS_USING_PTHREADS)

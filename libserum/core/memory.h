@@ -34,6 +34,9 @@
 #define __LS_CORE_MEMORY_H
 
 
+// FIXME
+
+
 #include "./macro.h"
 #include "./detect_compiler.h"
 

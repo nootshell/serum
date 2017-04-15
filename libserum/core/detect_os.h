@@ -50,7 +50,7 @@
 #		else
 #			define LS_OS					LS_OS_ID_LINUX
 #			if (defined(DISTRO))
-#				define LS_OS_STRING			"Linux ("DISTRO")"
+#				define LS_OS_STRING			"Linux (" DISTRO ")"
 #			else
 #				define LS_OS_STRING			"Linux"
 #			endif

@@ -30,23 +30,60 @@
 **
 */
 
-#ifndef __LS_CRYPTO_HMAC_H
-#define __LS_CRYPTO_HMAC_H
+#define FILE_PATH							"self-test.c"
+
+#include "./self-test.h"
+#include "./debug/log.h"
+
+#include "./crypto/hashing/self-test.h"
 
 
-#include "../../core/stdincl.h"
-#include "../hashing/_signatures.h"
+struct ls_selftest {
+	ls_bool(*func)();
+	char description[32];
+};
 
-
-#ifdef __cplusplus
-extern "C" {
+struct ls_selftest tests[] = {
+#if (LS_SELFTEST_CRYPTO_HASHING)
+	{ ls_selftest_crypto_hashing, "cryptographic hash functions" },
 #endif
+	{ 0 }
+};
 
-	LSAPI ls_result_t ls_hmac_universal(const void *const LS_RESTRICT data, const size_t data_size, const void *LS_RESTRICT key, size_t key_size, void *const LS_RESTRICT digest, const size_t digest_size, const size_t block_size, void *const LS_RESTRICT hf_data, ls_hf_init_t const hf_init, ls_hf_update_t const hf_update, ls_hf_finish_t const hf_finish, ls_hf_clear_t const hf_clear);
 
-#ifdef __cplusplus
+ls_bool
+ls_selftest_all() {
+	const size_t max = ((sizeof(tests) / sizeof(*tests)) - 1);
+	unsigned int failures = 0;
+	struct ls_selftest *current_test, *failed_entries[max];
+
+	unsigned int i;
+	for (i = 0; i < max; ++i) {
+		current_test = &tests[i];
+		failed_entries[i] = NULL;
+		if (current_test->func) {
+			if (!current_test->func()) {
+				failed_entries[i] = current_test;
+				++failures;
+			}
+		}
+	}
+
+	if (!failures) {
+		ls_log("All tests passed.");
+		return true;
+	} else {
+		if (failures == max) {
+			ls_log("All tests failed:");
+		} else {
+			ls_logf("Out of %u test%s, %u test%s failed:", max, ((max == 1) ? "" : "s"), failures, ((failures == 1) ? "" : "s"));
+		}
+		for (i = 0; i < max; ++i) {
+			if (failed_entries[i] != NULL) {
+				ls_logf("  %s", failed_entries[i]->description);
+			}
+		}
+	}
+
+	return false;
 }
-#endif
-
-
-#endif

@@ -45,7 +45,7 @@
 #define LS_COMPILER_ID_LLVM					4
 
 
-#if (defined(MAKEFILE) && MAKEFILE)
+#if (MAKEFILE)
 #	define LS_MAKEFILE_STRING				"Makefile"
 #else
 #	define LS_MAKEFILE_STRING				"Custom build system"

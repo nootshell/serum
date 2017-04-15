@@ -34,18 +34,22 @@
 
 #include "./core/detect_compiler.h"
 #include "./core/detect_endianness.h"
+#include "./core/info.h"
 #include "./debug/log.h"
 #include <stdint.h>
 #include <stdlib.h>
 
-#if (defined(DEBUG) && DEBUG)
+#if (DEBUG)
 #include "./core/intrinsics.h"
 #include "./core/detect.h"
 #include "./core/info.h"
 #endif
 
 
-#if ((defined(DEBUG) && DEBUG) && defined(__has_include))
+/*
+**  Hooks for mcheck, if supported.
+*/
+#if (DEBUG && defined(__has_include))
 #	if (__has_include(<mcheck.h>))
 #		include <mcheck.h>
 
@@ -73,7 +77,7 @@ static ls_hook_mcheck() {
 
 #	else
 #		define ls_hook_mcheck()				-1
-LS_COMPILER_WARN("Unable to include mcheck.h");
+LS_COMPILER_WARN("mcheck.h not found");
 #	endif
 #else
 #	define ls_hook_mcheck()					-1
@@ -82,32 +86,31 @@ LS_COMPILER_WARN("Unable to include mcheck.h");
 
 int
 static LS_ATTR_CONSTRUCTOR libmain() {
-#if (defined(DEBUG) && DEBUG)
-	ls_log_d("Compilation environment: " LS_COMPILATION_ENVIRONMENT);
+	ls_logf_d("Compilation environment: %s", ls_info_compilation_environment());
 	if (ls_hook_mcheck() == 0) {
 		ls_log_d("Successfully installed mcheck hooks.");
 	} else {
 		ls_log_e("Failed to install mcheck hooks (not linked with -lmcheck?).");
 	}
-#endif
 
 	/* Check endianness. */ {
 		uint16_t e_val = 0x6927;
-		uint8_t e_val_f = ((uint8_t*)&e_val)[0];
 
 #if (LS_BIG_ENDIAN)
-#	define E_VAL_F_VALID					0x69
+#	define E_VAL_VALID						0x69
 #else
-#	define E_VAL_F_VALID					0x27
+#	define E_VAL_VALID						0x27
 #endif
 
-		if (e_val_f != E_VAL_F_VALID) {
+		if (((uint8_t*)&e_val)[0] != E_VAL_VALID) {
 			ls_log_e("Compile-time/run-time endianness mismatch - aborting.");
 			abort();
 		} else {
 			ls_log_d("Compile-time/run-time endianness match.");
 		}
 	}
+
+	// TODO: conditionally (preprocessor) add self testing
 
 	ls_lognull();
 	return 0;

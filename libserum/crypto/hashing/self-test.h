@@ -30,19 +30,18 @@
 **
 */
 
-#ifndef __LS_CRYPTO_HMAC_H
-#define __LS_CRYPTO_HMAC_H
+#ifndef __LS_CRYPTO_HASHING_SELFTEST_H
+#define __LS_CRYPTO_HASHING_SELFTEST_H
 
 
 #include "../../core/stdincl.h"
-#include "../hashing/_signatures.h"
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_hmac_universal(const void *const LS_RESTRICT data, const size_t data_size, const void *LS_RESTRICT key, size_t key_size, void *const LS_RESTRICT digest, const size_t digest_size, const size_t block_size, void *const LS_RESTRICT hf_data, ls_hf_init_t const hf_init, ls_hf_update_t const hf_update, ls_hf_finish_t const hf_finish, ls_hf_clear_t const hf_clear);
+	LSAPI ls_bool ls_selftest_crypto_hashing();
 
 #ifdef __cplusplus
 }

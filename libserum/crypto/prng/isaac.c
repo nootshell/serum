@@ -218,7 +218,7 @@ ls_isaac(ls_isaac_t *const ctx) {
 
 #if DEBUG
 ls_result_t
-ls_isaac_test() {
+ls_isaac_test() { // FIXME: move to selftest
 	ls_result_t result = LS_RESULT_SUCCESS;
 
 	ls_isaac_t ctx;

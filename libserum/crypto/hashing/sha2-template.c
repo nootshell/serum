@@ -319,7 +319,13 @@ ls_result_t
 SHA2_UPDATE(SHA2_CTX *const LS_RESTRICT ctx, const void *const LS_RESTRICT in, size_t size) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
 	LS_RESULT_CHECK_NULL(in, 2);
+#if (LS_SHA2_DENY_SIZE_ZERO)
 	LS_RESULT_CHECK_SIZE(size, 1);
+#else
+	if (!size) {
+		return LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_SIZE);
+	}
+#endif
 
 
 	ctx->size += size;
