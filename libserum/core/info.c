@@ -122,6 +122,13 @@ ls_info_compilation_options() {
 		OPTION_NOT_DEFINED
 #endif
 
+		"\nLS_SELFTEST                     "
+#if (defined(LS_SELFTEST))
+		MACRO_STRINGIFY(LS_SELFTEST)
+#else
+		OPTION_NOT_DEFINED
+#endif
+
 		"\nLS_SELFTEST_CRYPTO_HASHING      "
 #if (defined(LS_SELFTEST_CRYPTO_HASHING))
 		MACRO_STRINGIFY(LS_SELFTEST_CRYPTO_HASHING)
