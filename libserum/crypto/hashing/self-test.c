@@ -30,7 +30,7 @@
 **
 */
 
-#if (LS_SELFTEST_CRYPTO_HASHING)
+#if (LS_SELFTEST && LS_SELFTEST_CRYPTO_HASHING)
 
 #define FILE_PATH							"crypto/hashing/self-test.c"
 

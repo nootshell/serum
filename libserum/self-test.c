@@ -30,6 +30,8 @@
 **
 */
 
+#if (LS_SELFTEST)
+
 #define FILE_PATH							"self-test.c"
 
 #include "./self-test.h"
@@ -56,6 +58,11 @@ ls_selftest_all() {
 	const size_t max = ((sizeof(tests) / sizeof(*tests)) - 1);
 	unsigned int failures = 0;
 	struct ls_selftest *current_test, *failed_entries[max];
+
+	if (max == 0) {
+		ls_log_e("No self-tests to perform.");
+		return false;
+	}
 
 	unsigned int i;
 	for (i = 0; i < max; ++i) {
@@ -87,3 +94,5 @@ ls_selftest_all() {
 
 	return false;
 }
+
+#endif
