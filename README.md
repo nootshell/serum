@@ -7,6 +7,15 @@ This project is basically for me to learn stuff, it aims to be the complete tool
 
 ## Features ##
 
+- Compile-time detection of:
+	- [Operating system](./libserum/core/detect_os.h)
+	- [Compiler](./libserum/core/detect_compiler.h)
+	- [Platform](./libserum/core/detect_platform.h)
+	- [Endianness](./libserum/core/detect_endianness.h)
+- Core
+	- Built-in self tests <sup>[Wikipedia](https://en.wikipedia.org/wiki/Built-in_self-test)</sup>
+		- [Complete check-up](./libserum/self-test.h)
+		- [Cryptographic hash functions](./libserum/crypto/hashing/self-test.h)
 - Crypto
 	- Hashing
 		- [MD5](./libserum/crypto/hashing/md5.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/MD5)</sup>
@@ -23,11 +32,6 @@ This project is basically for me to learn stuff, it aims to be the complete tool
 	- Pseudo-random number generation
 		- [Reading from a **/dev**ice (or file)](./libserum/crypto/prng/device.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki//dev/random)</sup>
 		- [ISAAC](./libserum/crypto/prng/isaac.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/ISAAC_(cipher))</sup>
-- Compile-time detection of:
-	- [Operating system](./libserum/core/detect_os.h)
-	- [Compiler](./libserum/core/detect_compiler.h)
-	- [Platform](./libserum/core/detect_platform.h)
-	- [Endianness](./libserum/core/detect_endianness.h)
 - Debugging
 	- [Detailed function return values](./libserum/core/result.h)
 	- [Memory dump functions](./libserum/debug/memdump.h)
@@ -54,6 +58,7 @@ TODO
 		- *None currently*
 	- Stream ciphers
 		- Rabbit <sup>[Wikipedia](https://en.wikipedia.org/wiki/Rabbit_(cipher))</sup>
+		- Salsa20 <sup>[Wikipedia](https://en.wikipedia.org/wiki/Salsa20)</sup>
 	- Hash functions (+ HMACs)
 		- SHA-3 <sup>low priority</sup> <sup>[Wikipedia](https://en.wikipedia.org/wiki/SHA-3)</sup>
 		- RIPEMD-160 <sup>low priority</sup> <sup>[Wikipedia](https://en.wikipedia.org/wiki/RIPEMD)</sup>
