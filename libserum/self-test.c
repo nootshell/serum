@@ -30,45 +30,69 @@
 **
 */
 
-#ifndef __LS_NETWORKING_PACKET_H
-#define __LS_NETWORKING_PACKET_H
+#if (LS_SELFTEST)
+
+#define FILE_PATH							"self-test.c"
+
+#include "./self-test.h"
+#include "./debug/log.h"
+
+#include "./crypto/hashing/self-test.h"
 
 
-#include "../core/stdincl.h"
+struct ls_selftest {
+	ls_bool(*func)();
+	char description[32];
+};
 
-#define LS_PACKET_PAYLOAD					BIT_1
-
-
-typedef struct ls_packet_header {
-	void *value;
-	uint8_t size;
-} ls_packet_header_t;
-
-typedef struct ls_packet {
-	ls_packet_header_t *headers;
-	void *payload;
-	uint32_t payload_size;
-	uint8_t command			: 4;
-	uint8_t header_count	: 4;
-	uint8_t flags;
-	uint8_t __h_alloc_sz;
-} ls_packet_t;
-
-
-#ifdef __cplusplus
-extern "C" {
+struct ls_selftest tests[] = {
+#if (LS_SELFTEST_CRYPTO_HASHING)
+	{ ls_selftest_crypto_hashing, "cryptographic hash functions" },
 #endif
+	{ 0 }
+};
 
-	LSAPI ls_result_t ls_packet_init(ls_packet_t *const packet, const uint8_t command, const uint8_t flags);
-	LSAPI ls_result_t ls_packet_clear_ex(ls_packet_t *const packet, const ls_bool free_headers, const ls_bool free_payload);
-	LSAPI ls_result_t ls_packet_clear(ls_packet_t *const packet);
-	LSAPI ls_result_t ls_packet_add_header(ls_packet_t *const LS_RESTRICT packet, const uint8_t size, const void *const LS_RESTRICT value);
-	LSAPI ls_result_t ls_packet_set_payload(ls_packet_t *const LS_RESTRICT packet, const uint32_t size, const void *const LS_RESTRICT value);
-	LSAPI void* ls_packet_encode(const ls_packet_t *const LS_RESTRICT packet, size_t *const LS_RESTRICT out_size);
 
-#ifdef __cplusplus
+ls_bool
+ls_selftest_all() {
+	const size_t max = ((sizeof(tests) / sizeof(*tests)) - 1);
+	unsigned int failures = 0;
+	struct ls_selftest *current_test, *failed_entries[max];
+
+	if (max == 0) {
+		ls_log_e("No self-tests to perform.");
+		return false;
+	}
+
+	unsigned int i;
+	for (i = 0; i < max; ++i) {
+		current_test = &tests[i];
+		failed_entries[i] = NULL;
+		if (current_test->func) {
+			if (!current_test->func()) {
+				failed_entries[i] = current_test;
+				++failures;
+			}
+		}
+	}
+
+	if (!failures) {
+		ls_log("All tests passed.");
+		return true;
+	} else {
+		if (failures == max) {
+			ls_log("All tests failed:");
+		} else {
+			ls_logf("Out of %u test%s, %u test%s failed:", max, ((max == 1) ? "" : "s"), failures, ((failures == 1) ? "" : "s"));
+		}
+		for (i = 0; i < max; ++i) {
+			if (failed_entries[i] != NULL) {
+				ls_logf("  %s", failed_entries[i]->description);
+			}
+		}
+	}
+
+	return false;
 }
-#endif
-
 
 #endif

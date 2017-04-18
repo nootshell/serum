@@ -33,7 +33,10 @@
 #define FILE_PATH							"runtime/mutex.c"
 
 #include "./mutex.h"
-#include "../debug/log.h"
+#include <string.h>
+
+
+ID("universal mutexes");
 
 
 ID("universal mutexes");
@@ -43,9 +46,18 @@ ls_result_t
 ls_mutex_init(ls_mutex_t *mutex) {
 	LS_RESULT_CHECK_NULL(mutex, 1);
 
+#if (LS_USING_PMUTEX)
+	if (pthread_mutex_init(&mutex->lock, NULL) != 0) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
+	}
+#elif (LS_USING_WNMUTEX)
 	if (!(mutex->obj = CreateMutex(NULL, FALSE, NULL))) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 	}
+#else
+	LS_COMPILER_WARN(__NO_MUTEX_API_STR);
+	return LS_RESULT_UNSUPPORTED;
+#endif
 
 	return LS_RESULT_SUCCESS;
 }
@@ -55,12 +67,21 @@ ls_result_t
 ls_mutex_clear(ls_mutex_t *mutex) {
 	LS_RESULT_CHECK_NULL(mutex, 1);
 
-	if (mutex->obj) {
-		if (!CloseHandle(mutex->obj)) {
+#if (LS_USING_PMUTEX)
+	if (pthread_mutex_destroy(&mutex->lock) != 0) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
+	}
+#elif (LS_USING_WNMUTEX)
+	if (mutex->lock) {
+		if (!CloseHandle(mutex->lock)) {
 			return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 		}
-		mutex->obj = NULL;
+		mutex->lock = NULL;
 	}
+#else
+	LS_COMPILER_WARN(__NO_MUTEX_API_STR);
+	return LS_RESULT_UNSUPPORTED;
+#endif
 
 	return LS_RESULT_SUCCESS;
 }
@@ -69,7 +90,14 @@ ls_mutex_clear(ls_mutex_t *mutex) {
 ls_result_t
 ls_mutex_lock_ex(ls_mutex_t *mutex, uint32_t timeout) {
 	LS_RESULT_CHECK_NULL(mutex, 1);
-	LS_RESULT_CHECK_NULL(mutex->obj, 2);
+
+#if (LS_USING_PMUTEX)
+	// TODO: timeout
+	if (pthread_mutex_lock(&mutex->lock) != 0) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
+	}
+#elif (LS_USING_WNMUTEX)
+	LS_RESULT_CHECK_NULL(mutex->lock, 2);
 
 	if (!timeout) {
 		timeout = INFINITE;
@@ -86,6 +114,10 @@ ls_mutex_lock_ex(ls_mutex_t *mutex, uint32_t timeout) {
 		ls_log_e("Lock timed out.");
 		return LS_RESULT_ERROR(LS_RESULT_CODE_TIMEOUT);
 	}
+#else
+	LS_COMPILER_WARN(__NO_MUTEX_API_STR);
+	return LS_RESULT_UNSUPPORTED;
+#endif
 
 	return LS_RESULT_SUCCESS;
 }
@@ -100,11 +132,21 @@ ls_mutex_lock(ls_mutex_t *mutex) {
 ls_result_t
 ls_mutex_unlock(ls_mutex_t *mutex) {
 	LS_RESULT_CHECK_NULL(mutex, 1);
-	LS_RESULT_CHECK_NULL(mutex->obj, 2);
 
-	if (!ReleaseMutex(mutex->obj)) {
+#if (LS_USING_PMUTEX)
+	if (pthread_mutex_unlock(&mutex->lock) != 0) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 	}
+#elif (LS_USING_WNMUTEX)
+	LS_RESULT_CHECK_NULL(mutex->lock, 2);
+
+	if (!ReleaseMutex(mutex->lock)) {
+		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
+	}
+#else
+	LS_COMPILER_WARN(__NO_MUTEX_API_STR);
+	return LS_RESULT_UNSUPPORTED;
+#endif
 
 	return LS_RESULT_SUCCESS;
 }

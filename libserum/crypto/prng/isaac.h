@@ -54,9 +54,9 @@ typedef struct ls_isaac {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_isaac_init_ex(ls_isaac_t *const ctx, const void *const seed, const size_t size);
+	LSAPI ls_result_t ls_isaac_init_ex(ls_isaac_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT seed, const size_t size);
 	LSAPI ls_result_t ls_isaac_init(ls_isaac_t *const ctx);
-	LSAPI ls_result_t ls_isaac_init_device(ls_isaac_t *const ctx, const ls_device_t *const device);
+	LSAPI ls_result_t ls_isaac_init_device(ls_isaac_t *const LS_RESTRICT ctx, const ls_device_t *const LS_RESTRICT device);
 	LSAPI ls_result_t ls_isaac_clear(ls_isaac_t *const ctx);
 
 	LSAPI ls_result_t ls_isaac_update(ls_isaac_t *const ctx);

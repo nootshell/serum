@@ -30,65 +30,27 @@
 **
 */
 
-#include <libserum/crypto/hashing/sha2.h>
+#ifndef __LS_DEBUG___SELFTEST_H
+#define __LS_DEBUG___SELFTEST_H
 
-struct ls_tc_sha2 {
-	int type;
-	union {
-		ls_sha2_224_t s224;
-		ls_sha2_256_t s256;
-		ls_sha2_384_t s384;
-		ls_sha2_512_t s512;
-	} data;
-};
 
-int ls_tc_sha2_init(void *data) {
-	struct ls_tc_sha2 *ctx = data;
+#if (LS_SELFTEST_VERBOSE)
+#	include "./log.h"
 
-	switch (ctx->type) {
-		case 224:
-			if (!ls_sha2_224_init(&ctx->data.s224).success) {
-				return -2;
-			}
-			break;
-		case 256:
-			if (!ls_sha2_256_init(&ctx->data.s256).success) {
-				return -3;
-			}
-			break;
-		case 384:
-			if (!ls_sha2_384_init(&ctx->data.s384).success) {
-				return -4;
-			}
-			break;
-		case 512:
-			if (!ls_sha2_512_init(&ctx->data.s512).success) {
-				return -5;
-			}
-			break;
-		default:
-			return -1;
-	}
+#	define START_TEST(desc)					ls_log("\033[37;1mSelf-testing " desc "...\033[0m")
+#	define END_TEST(desc, result)			ls_log("\033[37;1mSelf-test ended for " desc ": " result "\033[0m\n")
+#	define START_VECTOR(iter, str)			ls_logf("  \033[36mVector %u\033[0m: \033[35;1m\"%s\"\033[0m", ((iter) + 1), (str))
+#	define TEST_SUB_RESULT(desc, result)	ls_log("    \033[36m" desc "\033[0m: " result)
+#	define TEST_SUB_PASSED(desc)			TEST_SUB_RESULT(desc, "\033[32;1mpassed\033[0m")
+#	define TEST_SUB_FAILED(desc)			TEST_SUB_RESULT(desc, "\033[31;1mfailed \033[37;1m<----- [ \033[36;1m>:c\033[37;1m ]\033[0m")
+#else
+#	define START_TEST(x)
+#	define END_TEST(x, y)
+#	define START_VECTOR(x, y)
+#	define TEST_SUB_RESULT(x, y)
+#	define TEST_SUB_PASSED(x)
+#	define TEST_SUB_FAILED(x)
+#endif
 
-	return 0;
-}
 
-int ls_tc_sha2_perform(void *data, void *input, size_t size) {
-	struct ls_tc_sha2 *ctx = data;
-
-	switch (ctx->type) {
-		case 224:
-
-			break;
-		case 256:
-			break;
-		case 384:
-			break;
-		case 512:
-			break;
-		default:
-			return -1;
-	}
-
-	return 0;
-}
+#endif

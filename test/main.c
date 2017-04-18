@@ -30,72 +30,16 @@
 **
 */
 
-#define FILE_PATH "main.c"
+#define FILE_PATH							"main.c"
+#define DEBUG								1
 
-#include <libserum/core/stdincl.h>
-#include <libserum/debug/log.h>
-#include <libserum/debug/memdump.h>
+#include <libserum/core/info.h>
+#include <libserum/self-test.h>
 #include <stdio.h>
-#include <string.h>
-#include <inttypes.h>
-
-#include <libserum/core/time.h>
-#include <libserum/crypto/symmetric/rijndael.h>
-#include <libserum/crypto/symmetric/modes/cbc.h>
-
 
 int main(int argc, char *argv[], char *env[]) {
-	register unsigned int i;
-	for (i = 0; i < 64; ++i) {
-		printf("%02u %02u\n", LS_MATH_ROUND_BLOCK_INCL(16, i), LS_MATH_ROUND_BLOCK_EXCL(16, i));
-	}
-
-	uint8_t key[32];
-	memset(key, 0xF0, sizeof(key));
-
-	ls_rijndael_t rijndael;
-	if (!ls_rijndael_init(&rijndael, key, sizeof(key)).success) {
-		return 1;
-	}
-
-	ls_cbc_t cbc;
-	ls_cbc_init(&cbc, 16, &rijndael, ls_rijndael_encrypt_block, ls_rijndael_decrypt_block);
-
-
-	uint8_t block[16];
-	memset(block, 0x69, sizeof(block));
-
-	uint8_t iv[16];
-	memset(iv, 0xBA, sizeof(iv));
-
-	puts("old:");
-	ls_memdump(block, sizeof(block));
-	for (i = sizeof(iv); i--;) {
-		block[i] = (block[i] ^ iv[i]);
-	}
-	ls_rijndael_encrypt_block(&rijndael, (void*)block);
-
-	ls_memdump(block, sizeof(block));
-
-	ls_rijndael_decrypt_block(&rijndael, (void*)block);
-	for (i = sizeof(iv); i--;) {
-		block[i] = (block[i] ^ iv[i]);
-	}
-
-	ls_memdump(block, sizeof(block));
-
-	puts("\nnew:");
-	ls_memdump(block, sizeof(block));
-	ls_cbc_encrypt(&cbc, block);
-	ls_memdump(block, sizeof(block));
-	memcpy(cbc.xor, cbc.iv, cbc.block_size);
-	ls_cbc_decrypt(&cbc, block);
-	ls_memdump(block, sizeof(block));
-
-	if (!ls_rijndael_clear(&rijndael).success) {
-		return 4;
-	}
-
-	fgetc(stdin);
-	return 0;
+	puts("Compilation options:");
+	puts(ls_info_compilation_options());
+	puts("");
+	return (!ls_selftest_all());
 }

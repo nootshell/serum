@@ -37,47 +37,47 @@
 #endif
 
 #ifdef SHA2_BITS
-#undef SHA2_BITS
+#	undef SHA2_BITS
 #endif
 
 #ifdef SHA2_NATIVE_TYPE
-#undef SHA2_NATIVE_TYPE
+#	undef SHA2_NATIVE_TYPE
 #endif
 
 #ifdef SHA2_CTX
-#undef SHA2_CTX
+#	undef SHA2_CTX
 #endif
 
 #ifdef SHA2_INIT
-#undef SHA2_INIT
+#	undef SHA2_INIT
 #endif
 
 #ifdef SHA2_CLEAR
-#undef SHA2_CLEAR
+#	undef SHA2_CLEAR
 #endif
 
 #ifdef SHA2_UPDATE
-#undef SHA2_UPDATE
+#	undef SHA2_UPDATE
 #endif
 
 #ifdef SHA2_UPDATE_BLOCK
-#undef SHA2_UPDATE_BLOCK
+#	undef SHA2_UPDATE_BLOCK
 #endif
 
 #ifdef SHA2_FINISH
-#undef SHA2_FINISH
+#	undef SHA2_FINISH
 #endif
 
 #ifdef SHA2_DIGEST_SIZE
-#undef SHA2_DIGEST_SIZE
+#	undef SHA2_DIGEST_SIZE
 #endif
 
 #ifdef SHA2_DIGEST_TYPE
-#undef SHA2_DIGEST_TYPE
+#	undef SHA2_DIGEST_TYPE
 #endif
 
 #ifdef SHA2_BLOCK_SIZE
-#undef SHA2_BLOCK_SIZE
+#	undef SHA2_BLOCK_SIZE
 #endif
 
 #if (defined(LS_SHA2_224))
@@ -90,7 +90,7 @@
 #	define SHA2_UPDATE_BLOCK				ls_sha2_32_update_block
 #	define SHA2_FINISH						ls_sha2_224_finish
 #	define SHA2_DIGEST_SIZE					LS_SHA2_224_DIGEST_SIZE
-#	define SHA2_DIGEST_TYPE					ls_sha2_224_digest
+#	define SHA2_DIGEST_TYPE					ls_sha2_224_digest_t
 #	define SHA2_BLOCK_SIZE					LS_SHA2_224_BLOCK_SIZE
 #elif (defined(LS_SHA2_256))
 #	define SHA2_BITS						32
@@ -102,7 +102,7 @@
 #	define SHA2_UPDATE_BLOCK				ls_sha2_32_update_block
 #	define SHA2_FINISH						ls_sha2_256_finish
 #	define SHA2_DIGEST_SIZE					LS_SHA2_256_DIGEST_SIZE
-#	define SHA2_DIGEST_TYPE					ls_sha2_256_digest
+#	define SHA2_DIGEST_TYPE					ls_sha2_256_digest_t
 #	define SHA2_BLOCK_SIZE					LS_SHA2_256_BLOCK_SIZE
 #elif (defined(LS_SHA2_384))
 #	define SHA2_BITS						64
@@ -114,7 +114,7 @@
 #	define SHA2_UPDATE_BLOCK				ls_sha2_64_update_block
 #	define SHA2_FINISH						ls_sha2_384_finish
 #	define SHA2_DIGEST_SIZE					LS_SHA2_384_DIGEST_SIZE
-#	define SHA2_DIGEST_TYPE					ls_sha2_384_digest
+#	define SHA2_DIGEST_TYPE					ls_sha2_384_digest_t
 #	define SHA2_BLOCK_SIZE					LS_SHA2_384_BLOCK_SIZE
 #elif (defined(LS_SHA2_512))
 #	define SHA2_BITS						64
@@ -126,7 +126,7 @@
 #	define SHA2_UPDATE_BLOCK				ls_sha2_64_update_block
 #	define SHA2_FINISH						ls_sha2_512_finish
 #	define SHA2_DIGEST_SIZE					LS_SHA2_512_DIGEST_SIZE
-#	define SHA2_DIGEST_TYPE					ls_sha2_512_digest
+#	define SHA2_DIGEST_TYPE					ls_sha2_512_digest_t
 #	define SHA2_BLOCK_SIZE					LS_SHA2_512_BLOCK_SIZE
 #endif
 
@@ -319,7 +319,13 @@ ls_result_t
 SHA2_UPDATE(SHA2_CTX *const LS_RESTRICT ctx, const void *const LS_RESTRICT in, size_t size) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
 	LS_RESULT_CHECK_NULL(in, 2);
+#if (LS_SHA2_DENY_SIZE_ZERO)
 	LS_RESULT_CHECK_SIZE(size, 1);
+#else
+	if (!size) {
+		return LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_SIZE);
+	}
+#endif
 
 
 	ctx->size += size;
@@ -395,7 +401,7 @@ SHA2_FINISH(SHA2_CTX *const ctx, SHA2_DIGEST_TYPE digest) {
 	memset(buffer + offset, 0, diff);
 	buffer[offset] = ctx->pad;
 
-	// If we don't have enough bytes left to append proper padding, use the current buffer and clear it.
+	// If we don't have enough bytes left to append the rest of the padding, update using the current buffer and reset it.
 	if (diff < 9) {
 		SHA2_UPDATE_BLOCK(ctx, (void*)buffer);
 		memset(buffer, 0, sizeof(buffer));
@@ -404,7 +410,6 @@ SHA2_FINISH(SHA2_CTX *const ctx, SHA2_DIGEST_TYPE digest) {
 
 	// Apply the last part of the padding (size). We want the number of bits instead of the number of bytes, so we multiply by 8. (2^3=8)
 	ctx->size <<= 3;
-
 	buffer[sizeof(buffer) - 8] = ((ctx->size >> 56) & 0xFF);
 	buffer[sizeof(buffer) - 7] = ((ctx->size >> 48) & 0xFF);
 	buffer[sizeof(buffer) - 6] = ((ctx->size >> 40) & 0xFF);
@@ -414,16 +419,13 @@ SHA2_FINISH(SHA2_CTX *const ctx, SHA2_DIGEST_TYPE digest) {
 	buffer[sizeof(buffer) - 2] = ((ctx->size >>  8) & 0xFF);
 	buffer[sizeof(buffer) - 1] = ((ctx->size      ) & 0xFF);
 
-	ctx->size >>= 3;
-
-
 	SHA2_UPDATE_BLOCK(ctx, (void*)buffer);
 
 
 	uint_fast8_t i;
 	for (i = SHA2_BYTES; i--;) {                                                           	// 224 256 384 512
 		digest[i                   ] = ((ctx->h[0] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
-		digest[i + (SHA2_BYTES * 1)] = ((ctx->h[1] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
+		digest[i + (SHA2_BYTES    )] = ((ctx->h[1] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
 		digest[i + (SHA2_BYTES * 2)] = ((ctx->h[2] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
 		digest[i + (SHA2_BYTES * 3)] = ((ctx->h[3] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
 		digest[i + (SHA2_BYTES * 4)] = ((ctx->h[4] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  y   y   y   y
@@ -435,6 +437,9 @@ SHA2_FINISH(SHA2_CTX *const ctx, SHA2_DIGEST_TYPE digest) {
 		digest[i + (SHA2_BYTES * 7)] = ((ctx->h[7] >> ((SHA2_BITS - 8) - (8 * i))) & 0xFF); //  n   y   n   y
 #endif
 	}
+
+
+	memset(ctx, 0, sizeof(*ctx));
 
 
 	return LS_RESULT_SUCCESS;

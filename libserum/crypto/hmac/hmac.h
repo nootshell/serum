@@ -30,45 +30,23 @@
 **
 */
 
-#include "./case.h"
+#ifndef __LS_CRYPTO_HMAC_H
+#define __LS_CRYPTO_HMAC_H
 
 
-int ls_testcase_init(ls_testcase_t *ctx, void *data, int(*f_init)(void *data), int(*f_perform)(void *data, void *input, size_t input_size), int(*f_clear)(void *data)) {
-	if (!ctx || !f_init || !f_perform || !f_clear) {
-		return -1;
-	}
+#include "../../core/stdincl.h"
+#include "../hashing/_signatures.h"
 
-	ctx->d_data = data;
-	ctx->f_init = f_init;
-	ctx->f_perform = f_perform;
-	ctx->f_clear = f_clear;
 
-	return 0;
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_result_t ls_hmac_universal(const void *const LS_RESTRICT data, const size_t data_size, const void *LS_RESTRICT key, size_t key_size, void *const LS_RESTRICT digest, const size_t digest_size, const size_t block_size, void *const LS_RESTRICT hf_data, ls_hf_init_t const hf_init, ls_hf_update_t const hf_update, ls_hf_finish_t const hf_finish, ls_hf_clear_t const hf_clear);
+
+#ifdef __cplusplus
 }
+#endif
 
-int ls_testcase_clear(ls_testcase_t *ctx) {
-	if (!ctx) {
-		return -1;
-	}
 
-	ctx->d_data = NULL;
-	ctx->f_init = NULL;
-	ctx->f_perform = NULL;
-	ctx->f_clear = NULL;
-
-	return 0;
-}
-
-int ls_testcase_run(ls_testcase_t *ctx, void *input, size_t input_size) {
-	if (!ctx || !ctx->d_data || !ctx->f_init || !ctx->f_perform || !ctx->f_clear) {
-		return -1;
-	}
-
-	int result;
-
-	result = ctx->f_init(ctx->d_data);
-	result = ctx->f_perform(ctx->d_data, input, input_size);
-	result = ctx->f_clear(ctx->d_data);
-
-	return result;
-}
+#endif

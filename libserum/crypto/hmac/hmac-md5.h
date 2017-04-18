@@ -30,41 +30,19 @@
 **
 */
 
-#ifndef __LS_NETWORKING_PACKET_H
-#define __LS_NETWORKING_PACKET_H
+#ifndef __LS_CRYPTO_HMAC_MD5_H
+#define __LS_CRYPTO_HMAC_MD5_H
 
 
-#include "../core/stdincl.h"
-
-#define LS_PACKET_PAYLOAD					BIT_1
-
-
-typedef struct ls_packet_header {
-	void *value;
-	uint8_t size;
-} ls_packet_header_t;
-
-typedef struct ls_packet {
-	ls_packet_header_t *headers;
-	void *payload;
-	uint32_t payload_size;
-	uint8_t command			: 4;
-	uint8_t header_count	: 4;
-	uint8_t flags;
-	uint8_t __h_alloc_sz;
-} ls_packet_t;
+#include "../../core/stdincl.h"
+#include "../hashing/md5.h"
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_packet_init(ls_packet_t *const packet, const uint8_t command, const uint8_t flags);
-	LSAPI ls_result_t ls_packet_clear_ex(ls_packet_t *const packet, const ls_bool free_headers, const ls_bool free_payload);
-	LSAPI ls_result_t ls_packet_clear(ls_packet_t *const packet);
-	LSAPI ls_result_t ls_packet_add_header(ls_packet_t *const LS_RESTRICT packet, const uint8_t size, const void *const LS_RESTRICT value);
-	LSAPI ls_result_t ls_packet_set_payload(ls_packet_t *const LS_RESTRICT packet, const uint32_t size, const void *const LS_RESTRICT value);
-	LSAPI void* ls_packet_encode(const ls_packet_t *const LS_RESTRICT packet, size_t *const LS_RESTRICT out_size);
+	LSAPI ls_result_t ls_hmac_md5(const void *const LS_RESTRICT data, const size_t data_size, const void *const LS_RESTRICT key, const size_t key_size, ls_md5_digest_t digest);
 
 #ifdef __cplusplus
 }

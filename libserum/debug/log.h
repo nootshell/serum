@@ -57,10 +57,12 @@
 #define ls_log_i(s)							ls_log("[inf] " s)
 #define ls_log_v(s)							ls_log("[ver] " s)
 
-#if DEBUG
+#if (DEBUG)
 #	define ls_log_d(s)						ls_log("[dbg] " s)
+#	define ls_logf_d(fmt, ...)				ls_logf("[dbg] " fmt, __VA_ARGS__)
 #else
 #	define ls_log_d(s)
+#	define ls_logf_d(fmt, ...)
 #endif
 
 #define ls_lognull()						_ls_log(NULL, NULL, 0, NULL);

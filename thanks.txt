@@ -1,17 +1,12 @@
 Special thanks to:
+- My girlfriend for being my girlfriend, and thus making me a cool nerd.    I <3 Her
+- Italians, for making pasta, pizza, and other stuff.               I <3 Pasta/Pizza
+- Everyone who made Arch Linux the way it is.                        I <3 Arch Linux
+- Everyone who made C the way it is.                                          I <3 C
+- Chuck Norris
 
-- My parents for making and maintaining me, and especially my dad because he's
-  also my taxi driver.
 
-- My girlfriend for being my girlfriend, and thus making me a cool nerd.
 
-- Dennis Ritchie, for C (and Unix). Most amazing language ever.
-
-- Developers, maintainers, and donators of Arch Linux (my all-time favorite
-  distro, I'd slap a sticker saying Arch-Powered on this project if I could).
-
-- Italians, for making pasta, pizza, and other stuff.
-
-- My college, for making me realize that I could be off worse (by e.g. becoming
-  a programming teacher). (Note that my school has been ripping me and other
-  students off by making us pay money to learn... NOTHING.)
+Special not thanks to:
+- Everyone who made Java.
+- Everyone who does Java.

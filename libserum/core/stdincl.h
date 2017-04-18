@@ -34,14 +34,8 @@
 #define __LS_CORE_STDINCL_H
 
 
-#if AUTOTOOLS
-#	include <config.h>
-#else
-#	include <stdlib.h>
-#endif
-
+#include <stdlib.h>
 #include "./integers.h"
-
 #include "./lsapi.h"
 #include "./bits.h"
 #include "./identification.h"

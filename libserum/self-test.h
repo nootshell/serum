@@ -30,20 +30,22 @@
 **
 */
 
-#ifndef __LS_TEST_CASE_H
-#define __LS_TEST_CASE_H
+#ifndef __LS_SELF_TEST_H
+#define __LS_SELF_TEST_H
 
 
-#include <stdint.h>
-#include <stddef.h>
+#include "./core/stdincl.h"
 
 
-typedef struct ls_testcase {
-	void *d_data;
-	int(*f_init)(void *data);
-	int(*f_perform)(void *data, void *input, size_t input_size);
-	int(*f_clear)(void *data);
-} ls_testcase_t;
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_bool ls_selftest_all();
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

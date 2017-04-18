@@ -43,7 +43,7 @@ ID("built-in packet structure");
 
 
 ls_result_t
-ls_packet_init(ls_packet_t *packet, uint8_t command, uint8_t flags) {
+ls_packet_init(ls_packet_t *const packet, const uint8_t command, const uint8_t flags) {
 	LS_RESULT_CHECK_NULL(packet, 1);
 
 	packet->headers = NULL;
@@ -59,7 +59,7 @@ ls_packet_init(ls_packet_t *packet, uint8_t command, uint8_t flags) {
 
 
 ls_result_t
-ls_packet_clear_ex(ls_packet_t *packet, ls_bool free_headers, ls_bool free_payload) {
+ls_packet_clear_ex(ls_packet_t *const packet, const ls_bool free_headers, const ls_bool free_payload) {
 	LS_RESULT_CHECK_NULL(packet, 1);
 
 	if (packet->headers) {
@@ -93,13 +93,13 @@ ls_packet_clear_ex(ls_packet_t *packet, ls_bool free_headers, ls_bool free_paylo
 
 
 ls_result_t
-ls_packet_clear(ls_packet_t *packet) {
+ls_packet_clear(ls_packet_t *const packet) {
 	return ls_packet_clear_ex(packet, false, false);
 }
 
 
 ls_result_t
-ls_packet_add_header(ls_packet_t *packet, uint8_t size, void *value) {
+ls_packet_add_header(ls_packet_t *const LS_RESTRICT packet, const uint8_t size, const void *const LS_RESTRICT value) {
 	LS_RESULT_CHECK_NULL(packet, 1);
 	LS_RESULT_CHECK_SIZE(size, 1);
 	LS_RESULT_CHECK_NULL(value, 2);
@@ -130,20 +130,20 @@ ls_packet_add_header(ls_packet_t *packet, uint8_t size, void *value) {
 
 	ls_packet_header_t *header = &packet->headers[packet->header_count++];
 	header->size = size;
-	header->value = value;
+	header->value = (void*)value;
 
 	return LS_RESULT_SUCCESS;
 }
 
 
 ls_result_t
-ls_packet_set_payload(ls_packet_t *packet, uint32_t size, void *value) {
+ls_packet_set_payload(ls_packet_t *const LS_RESTRICT packet, const uint32_t size, const void *const LS_RESTRICT value) {
 	LS_RESULT_CHECK_NULL(packet, 1);
 	LS_RESULT_CHECK_SIZE(size, 1);
 	LS_RESULT_CHECK_NULL(value, 2);
 
 	packet->payload_size = size;
-	packet->payload = value;
+	packet->payload = (void*)value;
 
 	if (packet->payload && packet->payload_size) {
 		packet->flags |= LS_PACKET_PAYLOAD;
@@ -156,7 +156,7 @@ ls_packet_set_payload(ls_packet_t *packet, uint32_t size, void *value) {
 
 
 void*
-ls_packet_encode(ls_packet_t *packet, size_t *const out_size) {
+ls_packet_encode(const ls_packet_t *const LS_RESTRICT packet, size_t *const LS_RESTRICT out_size) {
 	if (!packet) {
 		ls_log_e("packet null");
 		return NULL;
@@ -187,8 +187,6 @@ ls_packet_encode(ls_packet_t *packet, size_t *const out_size) {
 			return NULL;
 		}
 		size += (psz_size + packet->payload_size);
-	} else {
-		packet->flags &= ~LS_PACKET_PAYLOAD;
 	}
 
 	size_t i = 0;
