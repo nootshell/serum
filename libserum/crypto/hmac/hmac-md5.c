@@ -30,45 +30,27 @@
 **
 */
 
-#ifndef __LS_NETWORKING_PACKET_H
-#define __LS_NETWORKING_PACKET_H
+#define FILE_PATH							"crypto/hmac/hmac-md5.c"
+
+#include "./hmac-md5.h"
+#include "./hmac.h"
+#include <string.h>
 
 
-#include "../core/stdincl.h"
-
-#define LS_PACKET_PAYLOAD					BIT_1
+ID("HMAC-MD5 implementation");
 
 
-typedef struct ls_packet_header {
-	void *value;
-	uint8_t size;
-} ls_packet_header_t;
-
-typedef struct ls_packet {
-	ls_packet_header_t *headers;
-	void *payload;
-	uint32_t payload_size;
-	uint8_t command			: 4;
-	uint8_t header_count	: 4;
-	uint8_t flags;
-	uint8_t __h_alloc_sz;
-} ls_packet_t;
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	LSAPI ls_result_t ls_packet_init(ls_packet_t *const packet, const uint8_t command, const uint8_t flags);
-	LSAPI ls_result_t ls_packet_clear_ex(ls_packet_t *const packet, const ls_bool free_headers, const ls_bool free_payload);
-	LSAPI ls_result_t ls_packet_clear(ls_packet_t *const packet);
-	LSAPI ls_result_t ls_packet_add_header(ls_packet_t *const LS_RESTRICT packet, const uint8_t size, const void *const LS_RESTRICT value);
-	LSAPI ls_result_t ls_packet_set_payload(ls_packet_t *const LS_RESTRICT packet, const uint32_t size, const void *const LS_RESTRICT value);
-	LSAPI void* ls_packet_encode(const ls_packet_t *const LS_RESTRICT packet, size_t *const LS_RESTRICT out_size);
-
-#ifdef __cplusplus
+ls_result_t
+ls_hmac_md5(const void *const LS_RESTRICT data, const size_t data_size, const void *const LS_RESTRICT key, const size_t key_size, ls_md5_digest_t digest) {
+	ls_md5_t md5;
+	return ls_hmac_universal(
+		data, data_size,
+		key, key_size,
+		digest, LS_MD5_DIGEST_SIZE,
+		LS_MD5_BLOCK_SIZE, &md5,
+		(ls_hf_init_t)ls_md5_init,
+		(ls_hf_update_t)ls_md5_update,
+		(ls_hf_finish_t)ls_md5_finish,
+		(ls_hf_clear_t)ls_md5_clear
+	);
 }
-#endif
-
-
-#endif

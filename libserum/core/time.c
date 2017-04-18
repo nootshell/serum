@@ -39,7 +39,7 @@
 #include <time.h>
 
 
-ID("time related functionality");
+ID("universal time functionality");
 
 
 uint64_t

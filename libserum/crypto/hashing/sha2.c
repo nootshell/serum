@@ -39,7 +39,7 @@
 #include <string.h>
 
 
-ID("SHA-2-224, SHA-2-256, SHA-2-384, and SHA-2-512 implementations");
+ID("SHA-2 implementation");
 
 
 #define LS_SHA2_224

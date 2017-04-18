@@ -30,45 +30,68 @@
 **
 */
 
-#ifndef __LS_NETWORKING_PACKET_H
-#define __LS_NETWORKING_PACKET_H
+#define FILE_PATH							"crypto/hmac/hmac.c"
+
+#include "./hmac.h"
+#include <string.h>
 
 
-#include "../core/stdincl.h"
-
-#define LS_PACKET_PAYLOAD					BIT_1
+ID("universal pluggable HMAC implementation");
 
 
-typedef struct ls_packet_header {
-	void *value;
-	uint8_t size;
-} ls_packet_header_t;
+void
+static LS_ATTR_INLINE prep_key(uint8_t *const LS_RESTRICT out, const size_t out_size, const uint8_t pad, const void *const LS_RESTRICT key, const size_t key_size) {
+	memset(out, pad, out_size);
 
-typedef struct ls_packet {
-	ls_packet_header_t *headers;
-	void *payload;
-	uint32_t payload_size;
-	uint8_t command			: 4;
-	uint8_t header_count	: 4;
-	uint8_t flags;
-	uint8_t __h_alloc_sz;
-} ls_packet_t;
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	LSAPI ls_result_t ls_packet_init(ls_packet_t *const packet, const uint8_t command, const uint8_t flags);
-	LSAPI ls_result_t ls_packet_clear_ex(ls_packet_t *const packet, const ls_bool free_headers, const ls_bool free_payload);
-	LSAPI ls_result_t ls_packet_clear(ls_packet_t *const packet);
-	LSAPI ls_result_t ls_packet_add_header(ls_packet_t *const LS_RESTRICT packet, const uint8_t size, const void *const LS_RESTRICT value);
-	LSAPI ls_result_t ls_packet_set_payload(ls_packet_t *const LS_RESTRICT packet, const uint32_t size, const void *const LS_RESTRICT value);
-	LSAPI void* ls_packet_encode(const ls_packet_t *const LS_RESTRICT packet, size_t *const LS_RESTRICT out_size);
-
-#ifdef __cplusplus
+	unsigned int i;
+	for (i = key_size; i--;) {
+		out[i] ^= ((uint8_t*)key)[i];
+	}
 }
-#endif
+
+ls_result_t
+ls_hmac_universal(const void *const LS_RESTRICT data, const size_t data_size, const void *LS_RESTRICT key, size_t key_size, void *const LS_RESTRICT digest, const size_t digest_size, const size_t block_size, void *const LS_RESTRICT hf_data, ls_hf_init_t const hf_init, ls_hf_update_t const hf_update, ls_hf_finish_t const hf_finish, ls_hf_clear_t const hf_clear) {
+	LS_RESULT_CHECK_NULL(data, 1);
+	LS_RESULT_CHECK_SIZE(data_size, 1);
+	LS_RESULT_CHECK_NULL(key, 2);
+	LS_RESULT_CHECK_SIZE(key_size, 2);
+	LS_RESULT_CHECK_NULL(digest, 3);
+	LS_RESULT_CHECK_SIZE(digest_size, 3);
+	LS_RESULT_CHECK_SIZE(block_size, 4);
+	LS_RESULT_CHECK_NULL(hf_data, 4);
+	LS_RESULT_CHECK_NULL(hf_init, 5);
+	LS_RESULT_CHECK_NULL(hf_update, 6);
+	LS_RESULT_CHECK_NULL(hf_finish, 7);
+	LS_RESULT_CHECK_NULL(hf_clear, 8);
 
 
-#endif
+	uint8_t buffer_block[block_size];
+	uint8_t buffer_digest[digest_size];
+
+	if (key_size > block_size) {
+		hf_init(hf_data);
+		hf_update(hf_data, key, key_size);
+		hf_finish(hf_data, buffer_digest);
+		hf_clear(hf_data);
+
+		key = buffer_digest;
+		key_size = sizeof(buffer_digest);
+	}
+
+	prep_key(buffer_block, sizeof(buffer_block), 0x36, key, key_size);
+	hf_init(hf_data);
+	hf_update(hf_data, buffer_block, sizeof(buffer_block));
+	hf_update(hf_data, data, data_size);
+	hf_finish(hf_data, buffer_digest);
+	hf_clear(hf_data);
+
+	prep_key(buffer_block, sizeof(buffer_block), 0x5C, key, key_size);
+	hf_init(hf_data);
+	hf_update(hf_data, buffer_block, sizeof(buffer_block));
+	hf_update(hf_data, buffer_digest, sizeof(buffer_digest));
+	hf_finish(hf_data, digest);
+	hf_clear(hf_data);
+
+
+	return LS_RESULT_SUCCESS;
+}

@@ -30,93 +30,75 @@
 **
 */
 
-#define FILE_PATH							"crypto/padding/iso9797.c"
+#define FILE_PATH							"crypto/hmac/hmac-sha2.c"
 
+#include "./hmac-sha2.h"
+#include "./hmac.h"
 #include <string.h>
-#include "./iso9797.h"
-#include "../../core/ptrarithmetic.h"
 
 
-ID("ISO 9797-1 padding methods 1 and 2");
+ID("HMAC-SHA2 implementation");
 
 
 ls_result_t
-ls_pad_iso9797_zero_ex(void *const out, void *const in, const size_t inputsz, const size_t outputsz) {
-	LS_RESULT_CHECK_NULL(in, 1);
-	LS_RESULT_CHECK_SIZE(outputsz, 1);
-	LS_RESULT_CHECK_SIZE((outputsz > inputsz), 2);
-#if (LS_ISO9797_DENY_SIZE_ZERO)
-	LS_RESULT_CHECK_SIZE(inputsz, 3);
-#endif
-
-	memset((((char *const)LS_SELECT_IO_PTR_WCPY(out, in, inputsz)) + inputsz), 0, (outputsz - inputsz));
-
-	return LS_RESULT_SUCCESS;
+ls_hmac_sha2_224(const void *const LS_RESTRICT data, const size_t data_size, const void *const LS_RESTRICT key, const size_t key_size, ls_sha2_224_digest_t digest) {
+	ls_sha2_224_t sha2;
+	return ls_hmac_universal(
+		data, data_size,
+		key, key_size,
+		digest, LS_SHA2_224_DIGEST_SIZE,
+		LS_SHA2_224_BLOCK_SIZE, &sha2,
+		(ls_hf_init_t)ls_sha2_224_init,
+		(ls_hf_update_t)ls_sha2_224_update,
+		(ls_hf_finish_t)ls_sha2_224_finish,
+		(ls_hf_clear_t)ls_sha2_224_clear
+	);
 }
 
 
 ls_result_t
-ls_pad_iso9797_zero_block(void *const out, void *const in, const size_t inputsz, const int blocksz) {
-	return ls_pad_iso9797_zero_ex(out, in, inputsz, ls_pad_iso9797_zero_size(blocksz, inputsz));
+ls_hmac_sha2_256(const void *const LS_RESTRICT data, const size_t data_size, const void *const LS_RESTRICT key, const size_t key_size, ls_sha2_256_digest_t digest) {
+	ls_sha2_256_t sha2;
+	return ls_hmac_universal(
+		data, data_size,
+		key, key_size,
+		digest, LS_SHA2_256_DIGEST_SIZE,
+		LS_SHA2_256_BLOCK_SIZE, &sha2,
+		(ls_hf_init_t)ls_sha2_256_init,
+		(ls_hf_update_t)ls_sha2_256_update,
+		(ls_hf_finish_t)ls_sha2_256_finish,
+		(ls_hf_clear_t)ls_sha2_256_clear
+	);
 }
 
 
 ls_result_t
-ls_pad_iso9797_zero_offset(size_t *const LS_RESTRICT out, const void *const LS_RESTRICT in, size_t size) {
-	LS_RESULT_CHECK_NULL(out, 1);
-	LS_RESULT_CHECK_NULL(in, 2);
-	LS_RESULT_CHECK_SIZE(size, 1);
-
-	const uint8_t *ptr = in;
-
-	do {
-		if (ptr[--size]) {
-			*out = (size + 1);
-			return LS_RESULT_SUCCESS;
-		}
-	} while (size);
-
-#if (LS_ISO9797_ALLOW_ALL_ZERO)
-	*out = 0;
-	return LS_RESULT_SUCCESS;
-#else
-	return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
-#endif
+ls_hmac_sha2_384(const void *const LS_RESTRICT data, const size_t data_size, const void *const LS_RESTRICT key, const size_t key_size, ls_sha2_384_digest_t digest) {
+	ls_sha2_384_t sha2;
+	return ls_hmac_universal(
+		data, data_size,
+		key, key_size,
+		digest, LS_SHA2_384_DIGEST_SIZE,
+		LS_SHA2_384_BLOCK_SIZE, &sha2,
+		(ls_hf_init_t)ls_sha2_384_init,
+		(ls_hf_update_t)ls_sha2_384_update,
+		(ls_hf_finish_t)ls_sha2_384_finish,
+		(ls_hf_clear_t)ls_sha2_384_clear
+	);
 }
 
 
 ls_result_t
-ls_pad_iso9797_ex(void *const out, void *const in, const size_t inputsz, const size_t outputsz) {
-	ls_result_t result = ls_pad_iso9797_zero_ex(out, in, inputsz, outputsz);
-	if (!result.success) {
-		return LS_RESULT_INHERITED(result, false);
-	}
-
-	((uint8_t*)LS_SELECT_IO_PTR(out, in))[inputsz] = 0x80;
-
-	return LS_RESULT_SUCCESS;
-}
-
-
-ls_result_t
-ls_pad_iso9797_block(void *const out, void *const in, const size_t inputsz, const int blocksz) {
-	return ls_pad_iso9797_ex(out, in, inputsz, ls_pad_iso9797_size(blocksz, inputsz));
-}
-
-
-ls_result_t
-ls_pad_iso9797_offset(size_t *const LS_RESTRICT out, const void *const LS_RESTRICT in, const size_t size) {
-	size_t offset = 0;
-
-	ls_result_t result;
-	if (!(result = ls_pad_iso9797_zero_offset(&offset, in, size)).success) {
-		return result;
-	}
-
-	if (((uint8_t*)in)[offset - 1] == 0x80) {
-		*out = (offset - 1);
-		return LS_RESULT_SUCCESS;
-	} else {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
-	}
+ls_hmac_sha2_512(const void *const LS_RESTRICT data, const size_t data_size, const void *const LS_RESTRICT key, const size_t key_size, ls_sha2_512_digest_t digest) {
+	ls_sha2_512_t sha2;
+	return ls_hmac_universal(
+		data, data_size,
+		key, key_size,
+		digest, LS_SHA2_512_DIGEST_SIZE,
+		LS_SHA2_512_BLOCK_SIZE, &sha2,
+		(ls_hf_init_t)ls_sha2_512_init,
+		(ls_hf_update_t)ls_sha2_512_update,
+		(ls_hf_finish_t)ls_sha2_512_finish,
+		(ls_hf_clear_t)ls_sha2_512_clear
+	);
 }

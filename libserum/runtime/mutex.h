@@ -34,11 +34,35 @@
 #define __LS_RUNTIME_MUTEX_H
 
 
+#define __NO_MUTEX_API_STR					"No mutex API selected."
+
+
 #include "../core/stdincl.h"
+
+#if (!LS_WINDOWS)
+#	include <pthread.h>
+#	define LS_USING_PMUTEX					1
+#else
+#	define LS_USING_WNMUTEX					1
+#endif
+
+#ifndef LS_USING_PMUTEX
+#define LS_USING_PMUTEX						0
+#endif
+
+#ifndef LS_USING_WNMUTEX
+#define LS_USING_WNMUTEX					0
+#endif
 
 
 typedef struct ls_mutex {
-	void *obj;
+#if (LS_USING_PMUTEX)
+	pthread_mutex_t lock;
+#elif (LS_USING_WNMUTEX)
+	void *lock;
+#else
+	LS_COMPILER_WARN(__NO_MUTEX_API_STR);
+#endif
 } ls_mutex_t;
 
 
@@ -46,12 +70,12 @@ typedef struct ls_mutex {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_mutex_init(ls_mutex_t *mutex);							// CreateMutex
-	LSAPI ls_result_t ls_mutex_clear(ls_mutex_t *mutex);						// CloseHandle
+	LSAPI ls_result_t ls_mutex_init(ls_mutex_t *mutex);
+	LSAPI ls_result_t ls_mutex_clear(ls_mutex_t *mutex);
 
-	LSAPI ls_result_t ls_mutex_lock_ex(ls_mutex_t *mutex, uint32_t timeout);	// WaitForSingleObject
-	LSAPI ls_result_t ls_mutex_lock(ls_mutex_t *mutex);							// ls_mutex_lock_ex
-	LSAPI ls_result_t ls_mutex_unlock(ls_mutex_t *mutex);						// ReleaseMutex
+	LSAPI ls_result_t ls_mutex_lock_ex(ls_mutex_t *mutex, uint32_t timeout);
+	LSAPI ls_result_t ls_mutex_lock(ls_mutex_t *mutex);
+	LSAPI ls_result_t ls_mutex_unlock(ls_mutex_t *mutex);
 
 #ifdef __cplusplus
 }
