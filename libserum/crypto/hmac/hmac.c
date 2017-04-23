@@ -33,6 +33,7 @@
 #define FILE_PATH							"crypto/hmac/hmac.c"
 
 #include "./hmac.h"
+#include "../../core/memory.h"
 #include <string.h>
 
 
@@ -65,8 +66,8 @@ ls_hmac_universal(const void *const LS_RESTRICT data, const size_t data_size, co
 	LS_RESULT_CHECK_NULL(hf_clear, 8);
 
 
-	uint8_t buffer_block[block_size];
-	uint8_t buffer_digest[digest_size];
+	uint8_t stackalloc(buffer_block, block_size);
+	uint8_t stackalloc(buffer_digest, digest_size);
 
 	if (key_size > block_size) {
 		hf_init(hf_data);

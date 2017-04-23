@@ -35,22 +35,25 @@
 
 
 #include <stdint.h>
+#include <stdlib.h>
 
+#include "./lsapi.h"
+#include "./identification.h"
 #include "./bool.h"
 
 
-typedef struct ls_result {		// bitrg
-	uint32_t system		: 1;	// 00-01
-	uint32_t critical	: 1;	// 01-02
-	uint32_t strict		: 1;	// 02-03
-	uint32_t inherited	: 1;	// 03-04
-	uint32_t inh_depth	: 4;	// 04-08
+typedef struct ls_result {		// bit range   max val
+	uint32_t system		: 1;	//  00 - 01          1
+	uint32_t critical	: 1;	//  01 - 02          1
+	uint32_t strict		: 1;	//  02 - 03          1
+	uint32_t inherited	: 1;	//  03 - 04          1
+	uint32_t inh_depth	: 4;	//  04 - 08         15
 
-	uint32_t code		: 16;	// 08-24
+	uint32_t code		: 16;	//  08 - 24      65535
 
-	uint32_t param		: 4;	// 24-28
-	uint32_t _reserved	: 3;	// 28-31
-	uint32_t success	: 1;	// 31-32
+	uint32_t param		: 4;	//  24 - 28         15
+	uint32_t _reserved	: 3;	//  28 - 31          7
+	uint32_t success	: 1;	//  31 - 32          1
 } ls_result_t;
 
 
@@ -66,7 +69,7 @@ typedef struct ls_result {		// bitrg
 #define LS_RESULT_CODE_ACCESS				0x0004	// Access denied
 #define LS_RESULT_CODE_DESCRIPTOR			0x0005	// File/socket descriptor invalid
 #define LS_RESULT_CODE_ALLOCATION			0x0006	// Allocation failure
-#define LS_RESULT_CODE_EARLY_EXIT			0x0007	// Early exit (e.g. of a read operation)
+#define LS_RESULT_CODE_EARLY_EXIT			0x0007	// Early exit
 #define LS_RESULT_CODE_LOCK					0x0008	// Lock failure
 #define LS_RESULT_CODE_UNSUPPORTED			0x0009	// Unsupported operation
 #define LS_RESULT_CODE_DATA					0x000A	// Data invalid
@@ -81,6 +84,7 @@ typedef struct ls_result {		// bitrg
 #define LS_RESULT_CODE_ABORTED				0x0013	// Operation was aborted
 #define LS_RESULT_CODE_TYPE					0x0014	// Invalid type specified
 #define LS_RESULT_CODE_STATE				0x0015	// Invalid state encountered
+#define LS_RESULT_CODE_NOT_FOUND			0x0016	// Object not found
 
 
 #define LS_RESULT_SA(_system, _critical, _strict, _inherited, _inh_depth, _code, _param, _success)	\
@@ -98,10 +102,6 @@ typedef struct ls_result {		// bitrg
 
 #if (LS_LOG_RESULTS)
 #	include "../debug/log.h"
-static ls_result_t LS_ATTR_USED __LS_RESULT_PRINT(ls_result_t ret, char const *const func, char const *const file, uint32_t const line) {
-	_ls_logf(func, file, line, "%08X (" LS_RESULT_PRINTF_FORMAT ")", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret));
-	return ret;
-}
 #	define LS_RESULT(_system, _critical, _strict, _inherited, _inh_depth, _code, _param, _success)	\
 	__LS_RESULT_PRINT(LS_RESULT_SA((_system), (_critical), (_strict), (_inherited), (_inh_depth), (_code), (_param), (_success)), __func__, FILE_PATH, __LINE__)
 #else
@@ -133,6 +133,18 @@ static ls_result_t LS_ATTR_USED __LS_RESULT_PRINT(ls_result_t ret, char const *c
 
 #define LS_RESULT_CHECK_INDEX(var, param, lti, gti)	\
 											LS_RESULT_CHECK((((var) < (lti)) || ((var) > (gti))), LS_RESULT_CODE_INDEX, (param))
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_result_t __LS_RESULT_PRINT(ls_result_t ret, char const *const func, char const *const file, uint32_t const line);
+	LSAPI const char* ls_result_get_code_string(uint16_t code);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

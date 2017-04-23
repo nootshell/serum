@@ -2,12 +2,17 @@ CC = gcc
 LD = gcc
 
 DISTRO_DEF = $(shell sh ./get-distro.sh)
+GIT_INFO = $(shell sh ./get-git-info.sh)
+ELF_INTERP = $(shell sh ./get-elf-interpreter.sh)
 LS_MCHECK =
 LS_PTHREADS = $(shell sh ./get-pthreads.sh)
 
 CFLAGS = \
 	-fPIC -fstack-protector-strong -I. \
 	-DMAKEFILE=1 -DDISTRO=\"$(DISTRO_DEF)\" \
+	-DLS_ANSI_ESCAPE_SUPPORT=1 \
+	$(GIT_INFO) \
+	$(ELF_INTERP) \
 	-DLS_LOG_ORIGIN=0 \
 	-DLS_LOG_RESULTS=0 \
 	\
@@ -16,12 +21,14 @@ CFLAGS = \
 	\
 	-DLS_SELFTEST=1 \
 	-DLS_SELFTEST_CRYPTO_HASHING=1 \
+	-DLS_SELFTEST_STARTUP=0 \
 	\
 	-DLS_ISO9797_ALLOW_ALL_ZERO=1 \
 	-DLS_ISO9797_DENY_SIZE_ZERO=0 \
 	-DLS_MD5_DENY_SIZE_ZERO=0 \
 	-DLS_RIJNDAEL_STRICT=1 \
-	-DLS_SHA2_DENY_SIZE_ZERO=0
+	-DLS_SHA2_DENY_SIZE_ZERO=0 \
+	-DLS_VERBOSE_STARTUP=0
 
 
 all: release test
@@ -72,7 +79,7 @@ bin/libserum.so: CFLAGS += -DLIBSERUM_EXPORTS=1
 bin/libserum.so: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find libserum -type f -name '*.c')))
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
-	@$(LD) -o $@ -shared $(LS_MCHECK) $(LS_PTHREADS) $^
+	@$(LD) -o $@ -shared $(LS_MCHECK) $(LS_PTHREADS) -Wl,-e,interp_entry $^
 	@echo " (done)"
 	@echo
 

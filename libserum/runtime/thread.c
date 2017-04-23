@@ -117,17 +117,17 @@ ls_result_t
 static ls_thread_exec(ls_thread_t *thread) {
 	LS_RESULT_CHECK_NULL(thread, 1);
 
-		if (thread->entrypoint && HAS_FLAG(thread->flags, LS_THREAD_STARTED)) {
-			thread->flags &= ~LS_THREAD_FINISHED;
-			uint32_t ret = thread->entrypoint(thread);
-			thread->flags |= LS_THREAD_FINISHED;
+	if (thread->entrypoint && HAS_FLAG(thread->flags, LS_THREAD_STARTED)) {
+		thread->flags &= ~LS_THREAD_FINISHED;
+		uint32_t ret = thread->entrypoint(thread);
+		thread->flags |= LS_THREAD_FINISHED;
 
-			ls_result_t result = ((ret == LS_RESULT_CODE_SUCCESS) ? LS_RESULT_SUCCESS : LS_RESULT_ERROR(ret));
-			return LS_RESULT_INHERITED(result, LS_RESULT_INHERIT_SUCCESS);
-		} else {
-			ls_log_e("Entrypoint or flag missing.");
-			return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
-		}
+		ls_result_t result = ((ret == LS_RESULT_CODE_SUCCESS) ? LS_RESULT_SUCCESS : LS_RESULT_ERROR(ret));
+		return LS_RESULT_INHERITED(result, LS_RESULT_INHERIT_SUCCESS);
+	} else {
+		ls_log_e("Entrypoint or flag missing.");
+		return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
+	}
 
 	return LS_RESULT_ERROR(LS_RESULT_CODE_EARLY_EXIT);
 }

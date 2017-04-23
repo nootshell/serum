@@ -30,69 +30,63 @@
 **
 */
 
-#if (LS_SELFTEST)
+#define FILE_PATH							"core/result.c"
 
-#define FILE_PATH							"self-test.c"
-
-#include "./self-test.h"
-#include "./debug/log.h"
-
-#include "./crypto/hashing/self-test.h"
+#include "./result.h"
+#include "../debug/log.h"
 
 
-struct ls_selftest {
-	ls_bool(*func)();
-	char description[32];
+ID("function result value related code");
+
+
+static const char *strings[] = {
+	/* 0x0000 */ "Success, no error",
+	/* 0x0001 */ "Null pointer",
+	/* 0x0002 */ "Misc. error",
+	/* 0x0003 */ "Size invalid",
+	/* 0x0004 */ "Access denied",
+	/* 0x0005 */ "File/socket descriptor invalid",
+	/* 0x0006 */ "Allocation failure",
+	/* 0x0007 */ "Early exit",
+	/* 0x0008 */ "Lock failure",
+	/* 0x0009 */ "Unsupported operation",
+	/* 0x000A */ "Data invalid",
+	/* 0x000B */ "Function execution within function failed",
+	/* 0x000C */ "Close failure",
+	/* 0x000D */ "Initialization failure",
+	/* 0x000E */ "Operation timed-out",
+	/* 0x000F */ "Check failure",
+	/* 0x0010 */ "Write failure",
+	/* 0x0011 */ "Read failure",
+	/* 0x0012 */ "Index invalid",
+	/* 0x0013 */ "Operation was aborted",
+	/* 0x0014 */ "Invalid type specified",
+	/* 0x0015 */ "Invalid state encountered",
+	/* 0x0016 */ "Object not found",
+	NULL
 };
-
-struct ls_selftest tests[] = {
-#if (LS_SELFTEST_CRYPTO_HASHING)
-	{ ls_selftest_crypto_hashing, "cryptographic hash functions" },
-#endif
-	{ 0 }
-};
+static size_t num_strings = 0;
 
 
-ls_bool
-ls_selftest_all() {
-	const size_t max = ((sizeof(tests) / sizeof(*tests)) - 1);
-	unsigned int failures = 0;
-	struct ls_selftest *current_test, *failed_entries[max];
-
-	if (max == 0) {
-		ls_log_e("No self-tests to perform.");
-		return false;
-	}
-
-	unsigned int i;
-	for (i = 0; i < max; ++i) {
-		current_test = &tests[i];
-		failed_entries[i] = NULL;
-		if (current_test->func) {
-			if (!current_test->func()) {
-				failed_entries[i] = current_test;
-				++failures;
-			}
-		}
-	}
-
-	if (!failures) {
-		ls_log("All tests passed.");
-		return true;
-	} else {
-		if (failures == max) {
-			ls_log("All tests failed:");
-		} else {
-			ls_logf("Out of %u test%s, %u test%s failed:", max, ((max == 1) ? "" : "s"), failures, ((failures == 1) ? "" : "s"));
-		}
-		for (i = 0; i < max; ++i) {
-			if (failed_entries[i] != NULL) {
-				ls_logf("  %s", failed_entries[i]->description);
-			}
-		}
-	}
-
-	return false;
+ls_result_t
+__LS_RESULT_PRINT(ls_result_t ret, char const *const func, char const *const file, uint32_t const line) {
+	_ls_logf(func, file, line, "%08X (" LS_RESULT_PRINTF_FORMAT ") %s", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret), (ret.code ? ls_result_get_code_string(ret.code) : ""));
+	return ret;
 }
 
-#endif
+
+const char*
+ls_result_get_code_string(uint16_t code) {
+	if (!num_strings) {
+		for (num_strings = 0; strings[num_strings++];) {
+			; // NOP until we encounter NULL
+		}
+	}
+
+	if (code > num_strings) {
+		// > used here instead of >=, strings[code = num_strings] returns NULL anyways.
+		return NULL;
+	}
+
+	return strings[code];
+}

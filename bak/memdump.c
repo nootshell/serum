@@ -36,9 +36,17 @@
 #include "./log.h"
 
 #include <stdio.h>
+#include <inttypes.h>
 
 
 ID("memory dumping");
+
+
+#if (LS_ARCH_BITS == 32)
+#	define PTRFMT								"0x%08"PRIXPTR
+#else
+#	define PTRFMT								"0x%016"PRIXPTR
+#endif
 
 
 void
@@ -57,7 +65,7 @@ ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_p
 
 
 	const uint8_t *p8 = ptr;
-	printf("0x%" LS_PRIPTR ": ", ((uintptr_t)p8));
+	printf(PTRFMT": ", ((uintptr_t)p8));
 
 	int c = 0, ic = 0;
 	size_t i;
@@ -67,7 +75,7 @@ ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_p
 			if (++c >= columns) {
 				c = 0;
 				if (i != (size - 1)) {
-					printf("\n0x%" LS_PRIPTR ": ", ((uintptr_t)p8));
+					printf("\n"PTRFMT": ", ((uintptr_t)p8));
 				} else {
 					puts("");
 				}
@@ -81,7 +89,7 @@ ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_p
 				if (++c >= columns) {
 					c = 0;
 					if (i != (size - 1)) {
-						printf("\n0x%" LS_PRIPTR ": ", ((uintptr_t)p8));
+						printf("\n"PTRFMT": ", ((uintptr_t)p8));
 					} else {
 						puts("");
 					}
@@ -127,10 +135,10 @@ ls_vmemdump(const void *const LS_RESTRICT ptr, const size_t size, const char *co
 }
 
 
-size_t
+void
 ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size, int columns) {
 	if (!cmp1 || !cmp2 || !size) {
-		return ~((size_t)0);
+		return;
 	}
 
 	if (columns < 1) {
@@ -144,9 +152,8 @@ ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT 
 		*p8_m = cmp1,
 		*p8_s = cmp2;
 	uint8_t m8, s8;
-	size_t diff = 0;
 
-	printf("0x%" LS_PRIPTR "/0x%" LS_PRIPTR ": ", ((uintptr_t)p8_m), ((uintptr_t)p8_s));
+	printf(PTRFMT"/"PTRFMT": ", ((uintptr_t)p8_m), ((uintptr_t)p8_s));
 
 	unsigned int c = 0;
 	size_t i;
@@ -155,12 +162,11 @@ ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT 
 			printf(" %02X  ", m8);
 		} else {
 			printf(DIFF_LEFT "%02X" DIFF_RIGHT "%02X" LS_ANSI_RESET " ", m8, s8);
-			++diff;
 		}
 		if (++c >= columns) {
 			c = 0;
 			if (i != (size - 1)) {
-				printf("\n0x%" LS_PRIPTR "/0x%" LS_PRIPTR ": ", ((uintptr_t)p8_m), ((uintptr_t)p8_s));
+				printf("\n"PTRFMT"/"PTRFMT": ", ((uintptr_t)p8_m), ((uintptr_t)p8_s));
 			} else {
 				puts("");
 			}
@@ -169,12 +175,10 @@ ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT 
 	if (c > 0) {
 		puts("");
 	}
-
-	return diff;
 }
 
 
-size_t
+void
 ls_memdiff(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size) {
-	return ls_memdiff_ex(cmp1, cmp2, size, 16);
+	ls_memdiff_ex(cmp1, cmp2, size, 16);
 }
