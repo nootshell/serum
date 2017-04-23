@@ -30,103 +30,65 @@
 **
 */
 
-#define FILE_PATH							"crypto/storage/key.c"
+#define FILE_PATH							"core/entry/main.c"
 
-#include "./key.h"
-#include "../../core/memory.h"
-#include <string.h>
+#include "./main.h"
+#include "./debug.h"
+#include "../info.h"
+#include "../../debug/log.h"
+
+#if (defined(LS_SELFTEST_STARTUP))
+#	include "../self-test.h"
+#endif
 
 
-ID("key storage");
+ID("entry/exit routines");
 
 
-ls_result_t
-ls_key_init(ls_key_t *const key, const size_t size) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_SIZE(size, 1);
+unsigned int
+lib_main_entry() {
+	int result = 0;
 
-	key->size = size;
+#if (LS_VERBOSE_STARTUP)
+	ls_logf_d("Git: from branch %s, commit %s", ls_info_git_branch(), ls_info_git_commit());
+	ls_logf_d("Compilation environment: %s", ls_info_compilation_environment());
+	ls_logf_d("Compilation options:\n%s", ls_info_compilation_options());
+#endif
 
-	memset(key->data, 0, key->size);
-
-	if (!LS_MEMLOCK(key, (sizeof(*key) + key->size))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
+	if (ls_hook_mcheck() != 0) {
+		result |= 1;
 	}
 
-	return LS_RESULT_SUCCESS;
-}
+	/* Check endianness. */ {
+		uint16_t e_val = 0x6927;
 
+		#if (LS_BIG_ENDIAN)
+		#	define E_VAL_VALID						0x69
+		#else
+		#	define E_VAL_VALID						0x27
+		#endif
 
-ls_result_t
-ls_key_clear(ls_key_t *const key) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_SIZE(key->size, 1);
-
-	// First we clear...
-	memset(key->data, 0, key->size);
-
-	// ... then we unlock.
-	if (!LS_MEMUNLOCK(key, (sizeof(*key) + key->size))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
-	}
-
-	return LS_RESULT_SUCCESS;
-}
-
-
-ls_key_t*
-ls_key_alloc(const size_t size) {
-	if (!size) {
-		return NULL;
-	}
-
-	ls_key_t *key = malloc(sizeof(*key) + size);
-	if (ls_key_init(key, size).success) {
-		return key;
-	} else {
-		if (key) {
-			free(key);
+		if (((uint8_t*)&e_val)[0] != E_VAL_VALID) {
+			ls_log_e("Compile-time/run-time endianness mismatch - aborting.");
+			abort();
+		} else {
+#if (LS_VERBOSE_STARTUP)
+			ls_log_d("Compile-time/run-time endianness match.");
+#endif
 		}
 	}
 
-	return NULL;
+#if (LS_SELFTEST_STARTUP)
+	if (!ls_selftest_all()) {
+		result |= 2;
+	}
+#endif
+
+	return result;
 }
 
 
-ls_key_t*
-ls_key_alloc_from(const void *const in, const size_t size) {
-	if (!in || !size) {
-		return NULL;
-	}
-
-	ls_key_t *key = ls_key_alloc(size);
-	if (key) {
-		memcpy(key->data, in, size);
-	}
-	return key;
-}
-
-
-ls_key_t*
-ls_key_clone(const ls_key_t *const src) {
-	if (!src) {
-		return NULL;
-	}
-
-	if (!src->size) {
-		return NULL;
-	}
-
-	return ls_key_alloc_from(src->data, src->size);
-}
-
-
-ls_key_t*
-ls_key_free(ls_key_t *const key) {
-	if (key) {
-		memset(key->data, 0, key->size);
-		LS_MEMUNLOCK(key, (sizeof(*key) + key->size));
-		free(key);
-	}
-	return NULL;
+unsigned int
+lib_main_exit() {
+	return 0;
 }

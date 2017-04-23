@@ -38,6 +38,9 @@
 #include "./identification.h"
 
 
+#define OPTION_NOT_DEFINED					"[not defined]"
+
+
 ID("compile-time build information");
 
 
@@ -49,7 +52,6 @@ ls_info_compilation_environment() {
 
 const char*
 ls_info_compilation_options() {
-#define OPTION_NOT_DEFINED					"[not defined]"
 	return
 
 		"DEBUG                           "
@@ -66,9 +68,44 @@ ls_info_compilation_options() {
 		OPTION_NOT_DEFINED
 #endif
 
+		"\nELF_INTERP                      "
+#if (defined(ELF_INTERP))
+		MACRO_STRINGIFY(ELF_INTERP)
+#else
+		OPTION_NOT_DEFINED
+#endif
+
+		"\nGIT_BRANCH                      "
+#if (defined(GIT_BRANCH))
+		MACRO_STRINGIFY(GIT_BRANCH)
+#else
+		OPTION_NOT_DEFINED
+#endif
+
+		"\nGIT_COMMIT                      "
+#if (defined(GIT_COMMIT))
+		MACRO_STRINGIFY(GIT_COMMIT)
+#else
+		OPTION_NOT_DEFINED
+#endif
+
 		"\nLIBSERUM_EXPORTS                "
 #if (defined(LIBSERUM_EXPORTS))
 		MACRO_STRINGIFY(LIBSERUM_EXPORTS)
+#else
+		OPTION_NOT_DEFINED
+#endif
+
+		"\nLS_ANSI_ESCAPE_SUPPORT          "
+#if (defined(LS_ANSI_ESCAPE_SUPPORT))
+		MACRO_STRINGIFY(LS_ANSI_ESCAPE_SUPPORT)
+#else
+		OPTION_NOT_DEFINED
+#endif
+
+		"\nLS_DEVICE_BUFFER_BLOCK          "
+#if (defined(LS_DEVICE_BUFFER_BLOCK))
+		MACRO_STRINGIFY(LS_DEVICE_BUFFER_BLOCK)
 #else
 		OPTION_NOT_DEFINED
 #endif
@@ -136,6 +173,13 @@ ls_info_compilation_options() {
 		OPTION_NOT_DEFINED
 #endif
 
+		"\nLS_SELFTEST_STARTUP             "
+#if (defined(LS_SELFTEST_STARTUP))
+		MACRO_STRINGIFY(LS_SELFTEST_STARTUP)
+#else
+		OPTION_NOT_DEFINED
+#endif
+
 		"\nLS_SELFTEST_VERBOSE             "
 #if (defined(LS_SELFTEST_VERBOSE))
 		MACRO_STRINGIFY(LS_SELFTEST_VERBOSE)
@@ -158,6 +202,13 @@ ls_info_compilation_options() {
 		OPTION_NOT_DEFINED
 #endif
 
+		"\nLS_VERBOSE_STARTUP              "
+#if (defined(LS_VERBOSE_STARTUP))
+		MACRO_STRINGIFY(LS_VERBOSE_STARTUP)
+#else
+		OPTION_NOT_DEFINED
+#endif
+
 		"\nMAKEFILE                        "
 #if (defined(MAKEFILE))
 		MACRO_STRINGIFY(MAKEFILE)
@@ -173,4 +224,24 @@ ls_info_compilation_options() {
 #endif
 
 		;
+}
+
+
+const char*
+ls_info_git_branch() {
+#if (defined(GIT_BRANCH))
+	return GIT_BRANCH;
+#else
+	return OPTION_NOT_DEFINED;
+#endif
+}
+
+
+const char*
+ls_info_git_commit() {
+#if (defined(GIT_COMMIT))
+	return GIT_COMMIT;
+#else
+	return OPTION_NOT_DEFINED;
+#endif
 }

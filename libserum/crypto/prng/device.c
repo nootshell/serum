@@ -35,7 +35,12 @@
 #include "./device.h"
 #include "../../core/math.h"
 #include "../../core/memory.h"
+#include "../../debug/log.h"
 #include <string.h>
+
+#if (!defined(LS_DEVICE_BUFFER_BLOCK))
+#	define LS_DEVICE_BUFFER_BLOCK			16
+#endif
 
 #if (LS_WINDOWS)
 #	include <io.h>
@@ -58,14 +63,15 @@ ls_device_init(ls_device_t *const LS_RESTRICT device, const char *const LS_RESTR
 	LS_RESULT_CHECK_NULL(file, 2);
 
 	// First poke the file.
-	if (access(file, (F_OK|R_OK)) != 0) {
+	if (access(file, (F_OK | R_OK)) != 0) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_ACCESS);
 	}
 
 	// Set the buffer size.
-	device->buffer_size = LS_MATH_ROUND_BLOCK_INCL(16, buffer_size);
-	if (device->buffer_size < 16) {
-		device->buffer_size = 16;
+	device->buffer_size = LS_MATH_ROUND_BLOCK_EXCL(LS_DEVICE_BUFFER_BLOCK, buffer_size);
+	if (device->buffer_size < LS_DEVICE_BUFFER_BLOCK) {
+		ls_log_w("buffer size below " MACRO_STRINGIFY(LS_DEVICE_BUFFER_BLOCK) ", corrected");
+		device->buffer_size = LS_DEVICE_BUFFER_BLOCK;
 	}
 
 	uint16_t code = LS_RESULT_CODE_SUCCESS;
@@ -78,12 +84,12 @@ ls_device_init(ls_device_t *const LS_RESTRICT device, const char *const LS_RESTR
 	}
 
 	// Lock the buffer memory.
-	if (LS_MEMLOCK(device->buffer, device->buffer_size)) {
+	if (!LS_MEMLOCK(device->buffer, device->buffer_size)) {
 		code = LS_RESULT_CODE_LOCK;
 		goto __cleanup;
 	}
 
-	// Finally open the device.
+	// Finally open the file.
 	if (!(device->fp = fopen(file, "r"))) {
 		code = LS_RESULT_CODE_DESCRIPTOR;
 		goto __cleanup;
@@ -96,6 +102,7 @@ __cleanup:
 		if (code == LS_RESULT_CODE_DESCRIPTOR) {
 			LS_MEMUNLOCK(device->buffer, device->buffer_size);
 		}
+
 		free(device->buffer);
 		device->buffer = NULL;
 	}
@@ -107,9 +114,7 @@ __cleanup:
 
 ls_result_t
 ls_device_clear(ls_device_t *const device) {
-	if (!device) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
-	}
+	LS_RESULT_CHECK_NULL(device, 1);
 
 	if (device->fp) {
 		if (fclose(device->fp) != 0) {
@@ -133,51 +138,13 @@ ls_device_clear(ls_device_t *const device) {
 
 
 ls_result_t
-ls_device_generate(const ls_device_t *const LS_RESTRICT device, void *const LS_RESTRICT out, const size_t size) {
-	if (!device) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
-	}
-
-	if (!device->fp) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);
-	}
-
-	if (!device->buffer) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 3);
-	}
-
-	if (!out) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 4);
-	}
-
-	if (!size) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_SIZE, 1);
-	}
-
-	// FIXME: read as much as needed, not the entire buffer.
-	size_t read_total = 0, read;
-	while (((read = fread(device->buffer, 1, device->buffer_size, device->fp)) > 0) && (read_total < size)) {
-		if ((read_total + read) > size) {
-			read = (size - read_total);
-		}
-		memcpy((((char*)out) + read_total), device->buffer, read);
-		read_total += read;
-	}
-
-	return ((read_total == size) ? LS_RESULT_SUCCESS : LS_RESULT_ERROR(LS_RESULT_CODE_EARLY_EXIT));
-}
-
-
-ls_result_t
 ls_device_sys(ls_device_t *const device, const size_t buffer_size, const ls_prng_device_type_t type) {
-	if (!device) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
-	}
+	LS_RESULT_CHECK_NULL(device, 1);
 
 #if (LS_LINUX || LS_MAC)
 #	define TRY_DEVICE(path) { if (ls_device_init(device, (path), buffer_size).success) { return LS_RESULT_SUCCESS; } }
 
-	if (HAS_FLAG(type, DEV_PRIORITIZE_URANDOM)) {
+	if (HAS_FLAG(type, DEV_URANDOM)) {
 		TRY_DEVICE("/dev/urandom");
 	}
 
@@ -187,12 +154,54 @@ ls_device_sys(ls_device_t *const device, const size_t buffer_size, const ls_prng
 
 	TRY_DEVICE("/dev/random");
 
-	if (HAS_FLAG(type, DEV_URANDOM)) {
+	if (HAS_FLAG(type, DEV_URANDOM_FALLBACK)) {
 		TRY_DEVICE("/dev/urandom");
 	}
 
-#	undef TRY_DEVICE
-#endif
+	return LS_RESULT_ERROR(LS_RESULT_CODE_NOT_FOUND);
 
+#	undef TRY_DEVICE
+#else
 	return LS_RESULT_ERROR(LS_RESULT_CODE_UNSUPPORTED);
+#endif
+}
+
+
+ls_result_t
+ls_device_generate(const ls_device_t *const LS_RESTRICT device, void *const LS_RESTRICT out, size_t size) {
+	LS_RESULT_CHECK_NULL(device, 1);
+	LS_RESULT_CHECK_NULL(out, 2);
+	LS_RESULT_CHECK_NULL(device->buffer, 3);
+	LS_RESULT_CHECK(!device->fp, LS_RESULT_CODE_DESCRIPTOR, 1);
+	LS_RESULT_CHECK_SIZE(size, 1);
+
+	size_t
+		read,
+		read_total = 0,
+		rsz = sizeof(int),
+		rsz_num = (device->buffer_size / rsz);
+
+	for (;;) {
+		if (size < rsz) {
+			rsz = 1;
+			rsz_num = size;
+		} else if (size < device->buffer_size) {
+			rsz_num = (size / rsz);
+		}
+
+		if ((read = (fread(device->buffer, rsz, rsz_num, device->fp) * rsz)) > 0) {
+			memcpy((((char*)out) + read_total), device->buffer, read);
+
+			size -= read;
+			read_total += read;
+
+			if (!size) {
+				break;
+			}
+		} else {
+			return LS_RESULT_ERROR(LS_RESULT_CODE_READ);
+		}
+	}
+
+	return (size ? LS_RESULT_ERROR(LS_RESULT_CODE_EARLY_EXIT) : LS_RESULT_SUCCESS);
 }

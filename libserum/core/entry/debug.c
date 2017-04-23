@@ -30,103 +30,60 @@
 **
 */
 
-#define FILE_PATH							"crypto/storage/key.c"
+#define FILE_PATH							"core/entry/debug.c"
 
-#include "./key.h"
-#include "../../core/memory.h"
-#include <string.h>
-
-
-ID("key storage");
+#include "./debug.h"
+#include "../../debug/log.h"
+#include <inttypes.h>
 
 
-ls_result_t
-ls_key_init(ls_key_t *const key, const size_t size) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_SIZE(size, 1);
+ID("debug hooking");
 
-	key->size = size;
 
-	memset(key->data, 0, key->size);
+#if (DEBUG && defined(__has_include))
+#	if (__has_include(<mcheck.h>))
+#		define WE_HAVE_MCHECK
+#		include <mcheck.h>
 
-	if (!LS_MEMLOCK(key, (sizeof(*key) + key->size))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
+void
+ls_mcheck_abort(enum mcheck_status status) {
+	switch (status) {
+		case MCHECK_OK:
+			return;
+		case MCHECK_FREE:
+			ls_log_e("Block freed twice.");
+			return;
+		case MCHECK_HEAD:
+			ls_log_e("Memory before the block was clobbered.");
+			return;
+		case MCHECK_TAIL:
+			ls_log_e("Memory after the block was clobbered.");
+			return;
+		default:
+			ls_log_e("Mcheck invoked abort, but an unknown status was passed to the abort function.");
+			return;
 	}
-
-	return LS_RESULT_SUCCESS;
 }
 
+#	else
+LS_COMPILER_WARN("mcheck.h not found");
+#	endif
+#endif
 
-ls_result_t
-ls_key_clear(ls_key_t *const key) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_SIZE(key->size, 1);
+int
+ls_hook_mcheck() {
+#if (defined(WE_HAVE_MCHECK))
+	ls_log("Trying to install mcheck hooks..."); // FIXME: weird ass segfault if we don't log before we hook mcheck
+	int result = mcheck(ls_mcheck_abort);
 
-	// First we clear...
-	memset(key->data, 0, key->size);
-
-	// ... then we unlock.
-	if (!LS_MEMUNLOCK(key, (sizeof(*key) + key->size))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
-	}
-
-	return LS_RESULT_SUCCESS;
-}
-
-
-ls_key_t*
-ls_key_alloc(const size_t size) {
-	if (!size) {
-		return NULL;
-	}
-
-	ls_key_t *key = malloc(sizeof(*key) + size);
-	if (ls_key_init(key, size).success) {
-		return key;
+	if (result == 0) {
+		ls_logf("Installed successfully, abort function is located at address 0x%" LS_PRIPTR ".", (uintptr_t)ls_mcheck_abort);
 	} else {
-		if (key) {
-			free(key);
-		}
+		ls_log_e("Failed to install hooks.");
 	}
 
-	return NULL;
-}
-
-
-ls_key_t*
-ls_key_alloc_from(const void *const in, const size_t size) {
-	if (!in || !size) {
-		return NULL;
-	}
-
-	ls_key_t *key = ls_key_alloc(size);
-	if (key) {
-		memcpy(key->data, in, size);
-	}
-	return key;
-}
-
-
-ls_key_t*
-ls_key_clone(const ls_key_t *const src) {
-	if (!src) {
-		return NULL;
-	}
-
-	if (!src->size) {
-		return NULL;
-	}
-
-	return ls_key_alloc_from(src->data, src->size);
-}
-
-
-ls_key_t*
-ls_key_free(ls_key_t *const key) {
-	if (key) {
-		memset(key->data, 0, key->size);
-		LS_MEMUNLOCK(key, (sizeof(*key) + key->size));
-		free(key);
-	}
-	return NULL;
+	return result;
+#else
+	return -1;
+#endif
 }

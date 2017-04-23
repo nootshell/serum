@@ -109,8 +109,7 @@ ls_packet_add_header(ls_packet_t *const LS_RESTRICT packet, const uint8_t size, 
 		packet->__h_alloc_sz = 1;
 
 		if (!packet->headers) {
-			ls_log_e("out of memory");
-			return LS_RESULT_ERROR(LS_RESULT_CODE_ALLOCATION);
+			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_ALLOCATION, 1);
 		}
 	}
 
@@ -121,8 +120,7 @@ ls_packet_add_header(ls_packet_t *const LS_RESTRICT packet, const uint8_t size, 
 		);
 
 		if (!ptr) {
-			ls_log_e("unable to reallocate memory");
-			return LS_RESULT_ERROR(LS_RESULT_CODE_ALLOCATION);
+			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_ALLOCATION, 2);
 		} else {
 			packet->headers = ptr;
 		}
@@ -183,7 +181,7 @@ ls_packet_encode(const ls_packet_t *const LS_RESTRICT packet, size_t *const LS_R
 
 	if (HAS_FLAG(packet->flags, LS_PACKET_PAYLOAD) && packet->payload_size && packet->payload) {
 		if (!ls_varsize_get_bytes(psz_buffer, &psz_size, packet->payload_size).success || !psz_size) {
-			// biem
+			ls_log_fail("variable-size integer");
 			return NULL;
 		}
 		size += (psz_size + packet->payload_size);

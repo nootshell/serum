@@ -43,6 +43,8 @@ extern "C" {
 
 	LSAPI const char* ls_info_compilation_environment();
 	LSAPI const char* ls_info_compilation_options();
+	LSAPI const char* ls_info_git_branch();
+	LSAPI const char* ls_info_git_commit();
 
 #ifdef __cplusplus
 }

@@ -73,10 +73,13 @@ ls_packet_decoder_clear(ls_packet_decoder_t *const decoder) {
 void
 static LS_ATTR_INLINE __dispatch(ls_packet_decoder_t *const decoder) {
 	decoder->__state = LS_DECODE_STATE_HEAD;
+
 	++(decoder->decode_count);
+
 	if (decoder->callback) {
 		decoder->callback(decoder, &decoder->packet);
 	}
+
 	ls_packet_clear_ex(&decoder->packet, true, true);
 }
 

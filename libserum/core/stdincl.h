@@ -40,6 +40,7 @@
 #include "./bits.h"
 #include "./identification.h"
 #include "./result.h"
+#include "../debug/log.h"
 
 
 #endif

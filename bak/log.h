@@ -41,14 +41,6 @@
 #include "../core/errstr.h"
 
 #include <stdarg.h>
-#include <inttypes.h>
-
-
-#if (LS_ARCH_BITS == 32)
-#	define LS_PRIPTR						"08" PRIXPTR
-#else
-#	define LS_PRIPTR						"016" PRIXPTR
-#endif
 
 
 #if (LS_ANSI_ESCAPE_SUPPORT && !LS_WINDOWS) // XXX: Not enough support for Windows.
