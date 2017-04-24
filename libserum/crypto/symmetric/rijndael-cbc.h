@@ -56,9 +56,6 @@ extern "C" {
 	LSAPI ls_result_t ls_rijndael_cbc_encrypt_block(const ls_rijndael_cbc_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block);
 	LSAPI ls_result_t ls_rijndael_cbc_decrypt_block(const ls_rijndael_cbc_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block);
 
-	
-
-
 #ifdef __cplusplus
 }
 #endif
