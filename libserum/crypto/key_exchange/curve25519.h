@@ -30,103 +30,44 @@
 **
 */
 
-#define FILE_PATH							"crypto/storage/key.c"
-
-#include "./key.h"
-#include "../../core/memory.h"
-#include <string.h>
+#ifndef __LS_CRYPTO_KEX_CURVE25519_H
+#define __LS_CRYPTO_KEX_CURVE25519_H
 
 
-ID("key storage");
+#include "../../core/stdincl.h"
+#include "../storage/key.h"
 
 
-ls_result_t
-ls_key_init(ls_key_t *const key, const size_t size) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_SIZE(size, 1);
+#define LS_CURVE25519_KEY_SIZE				32
 
-	key->size = size;
 
-	memset(key->data, 0, key->size);
+typedef uint8_t ls_curve25519_key_t[LS_CURVE25519_KEY_SIZE];
 
-	if (!LS_MEMLOCK(key, (sizeof(*key) + key->size))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
-	}
+typedef struct ls_curve25519 {
+	ls_key_t *private_key;
+	ls_key_t *shared_key;
+	ls_curve25519_key_t public_key;
+	ls_curve25519_key_t basepoint;
+} ls_curve25519_t;
 
-	return LS_RESULT_SUCCESS;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_result_t ls_curve25519_init_ex(ls_curve25519_t *const ctx, const ls_curve25519_key_t private_key, const ls_curve25519_key_t basepoint);
+	LSAPI ls_result_t ls_curve25519_init(ls_curve25519_t *const ctx, const ls_curve25519_key_t private_key);
+	LSAPI ls_result_t ls_curve25519_clear(ls_curve25519_t *const ctx);
+
+	LSAPI ls_result_t ls_curve25519_generate_shared(const ls_curve25519_t *const ctx, const ls_curve25519_key_t public_key);
+
+	LSAPI const void* ls_curve25519_get_public(const ls_curve25519_t *const ctx);
+	LSAPI const void* ls_curve25519_get_private(const ls_curve25519_t *const ctx);
+	LSAPI const void* ls_curve25519_get_shared(const ls_curve25519_t *const ctx);
+
+#ifdef __cplusplus
 }
+#endif
 
 
-ls_result_t
-ls_key_clear(ls_key_t *const key) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_SIZE(key->size, 1);
-
-	// First we clear...
-	memset(key->data, 0, key->size);
-
-	// ... then we unlock.
-	if (!LS_MEMUNLOCK(key, (sizeof(*key) + key->size))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
-	}
-
-	return LS_RESULT_SUCCESS;
-}
-
-
-ls_key_t*
-ls_key_alloc(const size_t size) {
-	if (!size) {
-		return NULL;
-	}
-
-	ls_key_t *key = malloc(sizeof(*key) + size);
-	if (ls_key_init(key, size).success) {
-		return key;
-	} else {
-		if (key) {
-			free(key);
-		}
-	}
-
-	return NULL;
-}
-
-
-ls_key_t*
-ls_key_alloc_from(const void *const in, const size_t size) {
-	if (!in || !size) {
-		return NULL;
-	}
-
-	ls_key_t *key = ls_key_alloc(size);
-	if (key) {
-		memcpy(key->data, in, size);
-	}
-	return key;
-}
-
-
-ls_key_t*
-ls_key_clone(const ls_key_t *const src) {
-	if (!src) {
-		return NULL;
-	}
-
-	if (!src->size) {
-		return NULL;
-	}
-
-	return ls_key_alloc_from(src->data, src->size);
-}
-
-
-ls_key_t*
-ls_key_free(ls_key_t *const key) {
-	if (key) {
-		memset(key->data, 0, key->size);
-		LS_MEMUNLOCK(key, (sizeof(*key) + key->size));
-		free(key);
-	}
-	return NULL;
-}
+#endif

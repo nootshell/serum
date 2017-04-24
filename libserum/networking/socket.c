@@ -98,9 +98,7 @@ static LS_ATTR_INLINE accept_socket(ls_sockfd_t *const LS_RESTRICT fd, const ls_
 	);
 
 	if (!valid) {
-		ls_log_e("accept failed");
-	} else {
-		ls_logf("%"PRIu64, (uint64_t)*fd);
+		ls_log_fail("invalid fd");
 	}
 
 	return valid;
@@ -134,29 +132,11 @@ ls_socket_init_ex(ls_socket_t *const LS_RESTRICT ctx, const char *LS_RESTRICT no
 		node = "0.0.0.0";
 	}
 
-
-	uint32_t err;
-
-
-#if (LS_WINDOWS)
-	if (!wsaStartup) {
-		if (!(err = WSAStartup(MAKEWORD(2, 2), &wsaData))) {
-			wsaStartup = true;
-		} else {
-			ls_log_w(LS_ERRSTR_OPERATION_FAILURE": startup failure");
-			return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
-		}
-	}
-	++num_init_sockets;
-#endif
-
-
 	ctx->addrinfo = NULL;
 	ctx->selected = NULL;
 	ctx->fd = LS_INVALID_SOCKET;
 	ctx->flags = flags;
 	ctx->mtu = get_mtu();
-
 
 	struct addrinfo hints;
 	memset(&hints, 0, sizeof(hints));
@@ -166,12 +146,22 @@ ls_socket_init_ex(ls_socket_t *const LS_RESTRICT ctx, const char *LS_RESTRICT no
 	hints.ai_flags = (HAS_FLAG(ctx->flags, LS_SOCKET_SERVER) ? AI_PASSIVE : 0);
 	hints.ai_protocol = 0;
 
+	uint32_t err;
 
 	if ((err = getaddrinfo(node, NULL, &hints, &ctx->addrinfo))) {
-		ls_log_w(LS_ERRSTR_OPERATION_FAILURE": unable to obtain address info");
-		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
+		return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
 	}
 
+#if (LS_WINDOWS)
+	if (!wsaStartup) {
+		if (!(err = WSAStartup(MAKEWORD(2, 2), &wsaData))) {
+			wsaStartup = true;
+		} else {
+			return LS_RESULT_ERROR(LS_RESULT_CODE_INITIALIZATION);
+		}
+	}
+	++num_init_sockets;
+#endif
 
 	return LS_RESULT_SUCCESS;
 }
@@ -188,7 +178,6 @@ ls_socket_clear(ls_socket_t *const ctx) {
 
 	if (ctx->fd != LS_INVALID_SOCKET) {
 		if (!close_socket(ctx)) {
-			ls_log_w(LS_ERRSTR_OPERATION_FAILURE": unable to close socket");
 			return LS_RESULT_ERROR(LS_RESULT_CODE_CLOSE);
 		}
 	}
@@ -202,19 +191,15 @@ ls_socket_clear(ls_socket_t *const ctx) {
 
 #if (LS_WINDOWS)
 	if (!num_init_sockets) {
-		ls_log_w(LS_ERRSTR_CHECK_FAILURE": too many clear calls");
-		return LS_RESULT_ERROR(LS_RESULT_CODE_UNSUPPORTED);
+		return LS_RESULT_ERROR(LS_RESULT_CODE_NOT_FOUND);
 	} else if (num_init_sockets == 1) {
 		if (wsaStartup) {
-			ls_log_d("ws2 cleanup");
 			if (WSACleanup() == 0) {
 				wsaStartup = false;
 			} else {
-				ls_log_w(LS_ERRSTR_OPERATION_FAILURE": cleanup failed");
 				return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 			}
 		} else {
-			ls_log_w(LS_ERRSTR_OPERATION_FAILURE": data failure");
 			return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
 		}
 	}
@@ -245,20 +230,20 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 #if (defined(SO_REUSEADDR))
 			if (HAS_FLAG(ctx->flags, LS_SOCKET_REUSEADDR)) {
 				if (setsockopt(ctx->fd, SOL_SOCKET, SO_REUSEADDR, (void*)&enable, sizeof(enable)) == -1) {
-					ls_log_w(LS_ERRSTR_OPTION_UNAVAILABLE": REUSEADDR");
+					ls_log_fail("LS_SOCKET_REUSEADDR");
 				}
 			}
 #else
-			LS_COMPILER_WARN("LS_SOCKET_REUSEADDR unavailable: SO_REUSEADDR undefined")
+			LS_COMPILER_WARN("LS_SOCKET_REUSEADDR unavailable: SO_REUSEADDR not defined")
 #endif
 #if (defined(SO_REUSEPORT))
 				if (HAS_FLAG(ctx->flags, LS_SOCKET_REUSEPORT)) {
 					if (setsockopt(ctx->fd, SOL_SOCKET, SO_REUSEPORT, (void*)&enable, sizeof(enable)) == -1) {
-						ls_log_w(LS_ERRSTR_OPTION_UNAVAILABLE": REUSEPORT");
+						ls_log_fail("LS_SOCKET_REUSEPORT");
 					}
 				}
 #else
-				LS_COMPILER_WARN("LS_SOCKET_REUSEPORT unavailable: SO_REUSEPORT undefined");
+				LS_COMPILER_WARN("LS_SOCKET_REUSEPORT unavailable: SO_REUSEPORT not defined");
 #endif
 			if (bind(ctx->fd, ptr->ai_addr,
 #if (LS_WINDOWS) // Thanks.
@@ -268,10 +253,10 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 				if (listen(ctx->fd, SOMAXCONN) == 0) {
 					break;
 				} else {
-					ls_log_w(LS_ERRSTR_OPERATION_FAILURE": unable to listen");
+					ls_log_fail("listen()");
 				}
 			} else {
-				ls_log_w(LS_ERRSTR_OPERATION_FAILURE": unable to bind");
+				ls_log_fail("bind()");
 			}
 		} else {
 			if (connect(ctx->fd, ptr->ai_addr,
@@ -281,7 +266,7 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 						ptr->ai_addrlen) == 0) {
 				break;
 			} else {
-				ls_log_w(LS_ERRSTR_OPERATION_FAILURE": unable to connect");
+				ls_log_fail("connect()");
 			}
 		}
 
@@ -292,7 +277,6 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 
 	if (!ctx->selected) {
 		ctx->fd = LS_INVALID_SOCKET;
-		ls_log_w(LS_ERRSTR_CHECK_FAILURE": ctx->selected null");
 		return LS_RESULT_ERROR(LS_RESULT_CODE_INITIALIZATION);
 	}
 
@@ -321,18 +305,16 @@ ls_socket_stop_ex(ls_socket_t *const ctx, const ls_bool force, const uint_fast16
 
 			if (!CHECK) {
 				if (!force) {
-					ls_log_w(LS_ERRSTR_CHECK_FAILURE": timed out");
 					return LS_RESULT_ERROR(LS_RESULT_CODE_TIMEOUT);
 				} else {
-					ls_log_w(LS_ERRSTR_OPERATION_FAILURE": timed out, forcing shutdown");
+					ls_log_w("timed out, forcing shutdown");
 				}
 			}
 		} else {
 			if (!force) {
-				ls_log_w(LS_ERRSTR_CHECK_FAILURE": timed out");
 				return LS_RESULT_ERROR(LS_RESULT_CODE_CHECK);
 			} else {
-				ls_log_w(LS_ERRSTR_OPERATION_FAILURE": check failed, forcing shutdown");
+				ls_log_w("check failed, forcing shutdown");
 			}
 		}
 	}
@@ -343,13 +325,11 @@ ls_socket_stop_ex(ls_socket_t *const ctx, const ls_bool force, const uint_fast16
 #else
 #	define SHUTDOWN_FLAGS					SHUT_RDWR
 #endif
-	ls_log_d("shutdown");
 	if (shutdown(ctx->fd, SHUTDOWN_FLAGS) != 0) {
 		if (!force) {
-			ls_log_w(LS_ERRSTR_CHECK_FAILURE": shutdown error");
 			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_CLOSE, 1);
 		} else {
-			ls_log_w(LS_ERRSTR_OPERATION_FAILURE": shutdown failed, forcing close");
+			ls_log_w("shutdown failed, forcing close");
 		}
 	}
 #undef SHUTDOWN_FLAGS
@@ -386,7 +366,7 @@ ls_socket_acceptfd(const ls_socket_t *const LS_RESTRICT ctx, struct sockaddr *co
 	ls_sockfd_t fd;
 
 	if (!accept_socket(&fd, ctx, saddr, saddrlen)) {
-		ls_log_w(LS_ERRSTR_OPERATION_FAILURE": unable to accept socket");
+		ls_log_w("unable to accept socket");
 		return LS_INVALID_SOCKET;
 	}
 
@@ -401,8 +381,7 @@ ls_socket_accept(ls_socket_t *const LS_RESTRICT out, const ls_socket_t *const LS
 
 	ls_result_t res;
 	if (!(res = ls_socket_fromfd(out, ls_socket_acceptfd(ctx, saddr, saddrlen), LS_SOCKET_ACCEPTED)).success) {
-		ls_log_w(LS_ERRSTR_OPERATION_FAILURE": ls_socket_fromfd failed");
-		return res;
+		return LS_RESULT_INHERITED(res, false);
 	}
 
 #if (LS_WINDOWS)
@@ -457,7 +436,6 @@ __send_remaining:
 		if ((sent = safe_send(ctx, ptr, (uint32_t)size)) > 0) {
 			ptr += sent;
 		} else {
-			ls_log_w(LS_ERRSTR_OPERATION_FAILURE": writing failure");
 			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_WRITE, 2);
 		}
 	}
@@ -512,7 +490,6 @@ ls_socket_set_option(ls_socket_t *const ctx, const enum ls_socket_option_type ty
 #if (LS_WINDOWS)
 #	if (defined(FIONBIO))
 		if ((ioctlsocket(ctx->fd, FIONBIO, (void*)&value)) == -1) {
-			ls_log_w(LS_ERRSTR_OPERATION_FAILURE": ctx invalid");
 			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 1);
 		}
 #	else
@@ -567,7 +544,6 @@ ls_socket_set_option(ls_socket_t *const ctx, const enum ls_socket_option_type ty
 
 		if (HAS_FLAG(type, LS_SO_TIMEOUT_R)) {
 			if (setsockopt(ctx->fd, SOL_SOCKET, SO_RCVTIMEO, optptr, optsz) != 0) {
-				ls_log_w(LS_ERRSTR_OPERATION_FAILURE": unable to set socket option for SO_RCVTIMEO");
 				return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 3);
 			}
 
@@ -580,7 +556,6 @@ ls_socket_set_option(ls_socket_t *const ctx, const enum ls_socket_option_type ty
 
 		if (HAS_FLAG(type, LS_SO_TIMEOUT_W)) {
 			if (setsockopt(ctx->fd, SOL_SOCKET, SO_SNDTIMEO, optptr, optsz) != 0) {
-				ls_log_w(LS_ERRSTR_OPERATION_FAILURE": unable to set socket option for SO_SNDTIMEO");
 				return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 4);
 			}
 

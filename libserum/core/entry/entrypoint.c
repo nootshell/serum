@@ -30,103 +30,32 @@
 **
 */
 
-#define FILE_PATH							"crypto/storage/key.c"
+#define FILE_PATH							"core/entry/entrypoint.c"
 
-#include "./key.h"
-#include "../../core/memory.h"
-#include <string.h>
-
-
-ID("key storage");
+#include "./main.h"
+#include "../detect.h"
 
 
-ls_result_t
-ls_key_init(ls_key_t *const key, const size_t size) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_SIZE(size, 1);
-
-	key->size = size;
-
-	memset(key->data, 0, key->size);
-
-	if (!LS_MEMLOCK(key, (sizeof(*key) + key->size))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
+#if (LS_MSC)
+int
+WINAPI DllMain(HINSTANCE handle, DWORD reason, LPVOID reserved) {
+	if (reason == DLL_PROCESS_ATTACH) {
+		return (lib_main_entry() == 0);
 	}
-
-	return LS_RESULT_SUCCESS;
+	if (reason == DLL_PROCESS_DETACH) {
+		return (lib_main_exit() == 0);
+	}
+}
+#elif (!defined(LS_NO_ATTR_CONSTRUCTOR) && !defined(LS_NO_ATTR_DESTRUCTOR))
+void
+static LS_ATTR_CONSTRUCTOR lib_constructor() {
+	lib_main_entry();
 }
 
-
-ls_result_t
-ls_key_clear(ls_key_t *const key) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_SIZE(key->size, 1);
-
-	// First we clear...
-	memset(key->data, 0, key->size);
-
-	// ... then we unlock.
-	if (!LS_MEMUNLOCK(key, (sizeof(*key) + key->size))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
-	}
-
-	return LS_RESULT_SUCCESS;
+void
+static LS_ATTR_DESTRUCTOR lib_destructor() {
+	lib_main_exit();
 }
-
-
-ls_key_t*
-ls_key_alloc(const size_t size) {
-	if (!size) {
-		return NULL;
-	}
-
-	ls_key_t *key = malloc(sizeof(*key) + size);
-	if (ls_key_init(key, size).success) {
-		return key;
-	} else {
-		if (key) {
-			free(key);
-		}
-	}
-
-	return NULL;
-}
-
-
-ls_key_t*
-ls_key_alloc_from(const void *const in, const size_t size) {
-	if (!in || !size) {
-		return NULL;
-	}
-
-	ls_key_t *key = ls_key_alloc(size);
-	if (key) {
-		memcpy(key->data, in, size);
-	}
-	return key;
-}
-
-
-ls_key_t*
-ls_key_clone(const ls_key_t *const src) {
-	if (!src) {
-		return NULL;
-	}
-
-	if (!src->size) {
-		return NULL;
-	}
-
-	return ls_key_alloc_from(src->data, src->size);
-}
-
-
-ls_key_t*
-ls_key_free(ls_key_t *const key) {
-	if (key) {
-		memset(key->data, 0, key->size);
-		LS_MEMUNLOCK(key, (sizeof(*key) + key->size));
-		free(key);
-	}
-	return NULL;
-}
+#else
+LS_COMPILER_WARN("Unable to determine library entrypoint: library will be unable to perform any startup code.");
+#endif

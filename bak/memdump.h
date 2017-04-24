@@ -30,113 +30,27 @@
 **
 */
 
-#define FILE_PATH							"entrypoint.c"
+#ifndef __LS_CORE_MEMDUMP_H
+#define __LS_CORE_MEMDUMP_H
 
-#include "./core/detect_compiler.h"
-#include "./core/detect_endianness.h"
-#include "./core/info.h"
-#include "./debug/log.h"
-#include <stdint.h>
-#include <stdlib.h>
 
-#if (DEBUG)
-#include "./core/intrinsics.h"
-#include "./core/detect.h"
-#include "./core/info.h"
+#include "../core/stdincl.h"
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI void ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_per_column);
+	LSAPI void ls_memdump(const void *const ptr, const size_t size);
+	LSAPI void ls_vmemdump_ex(const void *const LS_RESTRICT ptr, const size_t size, int columns, int items_per_column, const char *const LS_RESTRICT str);
+	LSAPI void ls_vmemdump(const void *const LS_RESTRICT ptr, const size_t size, const char *const LS_RESTRICT str);
+	LSAPI void ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size, int columns);
+	LSAPI void ls_memdiff(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size);
+
+#ifdef __cplusplus
+}
 #endif
 
 
-/*
-**  Hooks for mcheck, if supported.
-*/
-#if (DEBUG && defined(__has_include))
-#	if (__has_include(<mcheck.h>))
-#		include <mcheck.h>
-
-void
-static ls_mcheck_abort(enum mcheck_status status) {
-	switch (status) {
-		case MCHECK_OK:
-			return;
-		case MCHECK_FREE:
-			ls_log_e("Block freed twice.");
-			return;
-		case MCHECK_HEAD:
-			ls_log_e("Memory before the block was clobbered.");
-			return;
-		case MCHECK_TAIL:
-			ls_log_e("Memory after the block was clobbered.");
-			return;
-	}
-}
-
-int
-static ls_hook_mcheck() {
-	return mcheck(ls_mcheck_abort);
-}
-
-#	else
-#		define ls_hook_mcheck()				-1
-LS_COMPILER_WARN("mcheck.h not found");
-#	endif
-#else
-#	define ls_hook_mcheck()					-1
-#endif
-
-
-int
-static LS_ATTR_CONSTRUCTOR libmain() {
-	ls_logf_d("Compilation environment: %s", ls_info_compilation_environment());
-	if (ls_hook_mcheck() == 0) {
-		ls_log_d("Successfully installed mcheck hooks.");
-	} else {
-		ls_log_e("Failed to install mcheck hooks (not linked with -lmcheck?).");
-	}
-
-	/* Check endianness. */ {
-		uint16_t e_val = 0x6927;
-
-#if (LS_BIG_ENDIAN)
-#	define E_VAL_VALID						0x69
-#else
-#	define E_VAL_VALID						0x27
-#endif
-
-		if (((uint8_t*)&e_val)[0] != E_VAL_VALID) {
-			ls_log_e("Compile-time/run-time endianness mismatch - aborting.");
-			abort();
-		} else {
-			ls_log_d("Compile-time/run-time endianness match.");
-		}
-	}
-
-	// TODO: conditionally (preprocessor) add self testing
-
-	ls_lognull();
-	return 0;
-}
-
-int
-static LS_ATTR_DESTRUCTOR libniam() {
-	return 0;
-}
-
-
-/*
-** Special treatment section.
-*/
-
-// Guess who's in here.
-#if (LS_MSC)
-#	include <Windows.h>
-
-int
-WINAPI DllMain(HINSTANCE handle, DWORD reason, LPVOID reserved) {
-	if (reason == DLL_PROCESS_ATTACH) {
-		return (libmain() == 0);
-	}
-	if (reason == DLL_PROCESS_DETACH) {
-		return (libniam() == 0);
-	}
-}
 #endif

@@ -65,9 +65,7 @@ ID("ISAAC implementation");
 
 ls_result_t
 ls_isaac_init_ex(ls_isaac_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT seed, const size_t size) {
-	if (!ctx) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
-	}
+	LS_RESULT_CHECK_NULL(ctx, 1);
 
 	memset(ctx, 0, sizeof(*ctx));
 
@@ -117,9 +115,8 @@ ls_isaac_init(ls_isaac_t *const ctx) {
 
 ls_result_t
 ls_isaac_init_device(ls_isaac_t *const LS_RESTRICT ctx, const ls_device_t *const LS_RESTRICT device) {
-	if (!device) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 2);
-	}
+	LS_RESULT_CHECK_NULL(ctx, 1);
+	LS_RESULT_CHECK_NULL(device, 2);
 
 	ls_result_t result;
 
@@ -141,9 +138,7 @@ ls_isaac_init_device(ls_isaac_t *const LS_RESTRICT ctx, const ls_device_t *const
 
 ls_result_t
 ls_isaac_clear(ls_isaac_t *const ctx) {
-	if (!ctx) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
-	}
+	LS_RESULT_CHECK_NULL(ctx, 1);
 
 	memset(ctx, 0, sizeof(*ctx));
 
@@ -165,9 +160,7 @@ ls_isaac_clear(ls_isaac_t *const ctx) {
 
 ls_result_t
 ls_isaac_update(ls_isaac_t *const ctx) {
-	if (!ctx) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_NULL, 1);
-	}
+	LS_RESULT_CHECK_NULL(ctx, 1);
 
 	uint32_t x, y, *m, *m2, *mend,
 		a = ctx->a,
@@ -312,6 +305,7 @@ __cleanup:
 	if (!ls_isaac_clear(&ctx).success) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 3);
 	}
+
 	return result;
 }
 #endif

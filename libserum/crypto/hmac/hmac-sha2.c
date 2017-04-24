@@ -37,7 +37,7 @@
 #include <string.h>
 
 
-ID("HMAC-SHA2 implementation");
+ID("HMAC-SHA-2 implementation");
 
 
 ls_result_t

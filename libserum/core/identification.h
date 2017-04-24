@@ -37,8 +37,21 @@
 #include "./detect_compiler.h"
 
 
+#if (defined(GIT_COMMIT))
+#	if (defined(GIT_BRANCH))
+#		define GIT_INFO						" [" GIT_COMMIT ":" GIT_BRANCH "]"
+#	else
+#		define GIT_INFO						" [" GIT_COMMIT "]"
+#	endif
+#endif
+
+#if (!defined(GIT_INFO))
+#	define GIT_INFO							""
+#endif
+
+
 #define ID_CODENAME							"Scatola Vichingo"
-#define ID(desc)							static LS_ATTR_USED char __id__[] = "$Id: {" ID_CODENAME "} [" __DATE__ ", " __TIME__ "] " FILE_PATH ": " desc " $"
+#define ID(desc)							static LS_ATTR_USED char __id__[] = "$Id: (" ID_CODENAME ") [" __DATE__ ", " __TIME__ "]" GIT_INFO " " FILE_PATH ": " desc " $"
 
 
 #endif
