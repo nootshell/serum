@@ -1,6 +1,6 @@
 # Serum #
 
-**Experimental*** C library focused on cryptography and more, licensed under the MIT license. ***<sup>\*Any use in a production environment is discouraged.</sup>***
+**Experimental*** C library focused on cryptography and more, licensed under the MIT license. ***<sup>\*Use in a production environment is discouraged.</sup>***
 
 This project is basically for me to learn stuff, it aims to be the complete toolset one requires to create binary/crypto protocols.
 
