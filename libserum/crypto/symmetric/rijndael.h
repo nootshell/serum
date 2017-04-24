@@ -45,6 +45,8 @@ typedef struct ls_rijndael {
 	uint16_t rounds;
 } ls_rijndael_t;
 
+#define LS_RIJNDAEL_BLOCK_SIZE				16
+
 #define LS_RIJNDAEL_128						BIT_1	// Read-only
 #define LS_RIJNDAEL_192						BIT_2	// Read-only
 #define LS_RIJNDAEL_256						BIT_3	// Read-only

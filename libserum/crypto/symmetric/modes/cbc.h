@@ -35,27 +35,32 @@
 
 
 #include "../../../core/stdincl.h"
-#include "../../../core/math.h"
-#include "../rijndael.h"
+
+
+#define LS_CBC_PROPAGATE					BIT_1
 
 
 typedef struct ls_cbc {
-	uint8_t iv[16];
-	uint8_t xor[16];
+	uint8_t *iv;
+	uint8_t *cv;
 	void *cipher_data;
 	ls_result_t(*cipher_encrypt)(void *data, void *block);
 	ls_result_t(*cipher_decrypt)(void *data, void *block);
-	size_t block_size;
+	uint16_t block_size;
+	uint16_t flags;
 } ls_cbc_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_cbc_init(ls_cbc_t *cbc, size_t block_size, void *cipher_data, ls_result_t(*cipher_encrypt)(void *data, void *block), ls_result_t(*cipher_decrypt)(void *data, void *block));
+	LSAPI ls_result_t ls_cbc_init(ls_cbc_t *const cbc, const uint8_t *const iv, const uint16_t block_size, const uint16_t flags, void *const cipher_data, ls_result_t(*cipher_encrypt)(void *const data, void *const block), ls_result_t(*cipher_decrypt)(void *const data, void *const block));
+	LSAPI ls_result_t ls_cbc_clear(ls_cbc_t *cbc);
 
-	LSAPI ls_result_t ls_cbc_encrypt(ls_cbc_t *cbc, uint8_t *block);
-	LSAPI ls_result_t ls_cbc_decrypt(ls_cbc_t *cbc, uint8_t *block);
+	LSAPI ls_result_t ls_cbc_reset(const ls_cbc_t *const cbc);
+
+	LSAPI ls_result_t ls_cbc_encrypt(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer);
+	LSAPI ls_result_t ls_cbc_decrypt(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer);
 
 #ifdef __cplusplus
 }

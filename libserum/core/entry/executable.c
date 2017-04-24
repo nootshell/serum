@@ -32,10 +32,11 @@
 
 #define FILE_PATH							"core/entry/executable.c"
 
+#include "../stdincl.h"
+
 #if (defined(ELF_INTERP))
 
 #include "./main.h"
-#include "../stdincl.h"
 #include "../../debug/log.h"
 #include <stdlib.h>
 

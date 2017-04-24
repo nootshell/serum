@@ -42,7 +42,7 @@ ID("memory dumping");
 
 
 void
-ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_per_column) {
+ls_memdump_ex(const void *const ptr, const size_t size, unsigned int columns, unsigned int items_per_column) {
 	if (!ptr || !size) {
 		return;
 	}
@@ -59,7 +59,7 @@ ls_memdump_ex(const void *const ptr, const size_t size, int columns, int items_p
 	const uint8_t *p8 = ptr;
 	printf("0x%" LS_PRIPTR ": ", ((uintptr_t)p8));
 
-	int c = 0, ic = 0;
+	unsigned int c = 0, ic = 0;
 	size_t i;
 	if (items_per_column == 1) {
 		for (i = 0; i < size; ++i) {
@@ -104,7 +104,7 @@ ls_memdump(const void *const ptr, const size_t size) {
 
 
 void
-ls_vmemdump_ex(const void *const LS_RESTRICT ptr, const size_t size, int columns, int items_per_column, const char *const LS_RESTRICT str) {
+ls_vmemdump_ex(const void *const LS_RESTRICT ptr, const size_t size, unsigned int columns, unsigned int items_per_column, const char *const LS_RESTRICT str) {
 	if (!ptr || !size) {
 		return;
 	}
@@ -128,7 +128,7 @@ ls_vmemdump(const void *const LS_RESTRICT ptr, const size_t size, const char *co
 
 
 size_t
-ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size, int columns) {
+ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size, unsigned int columns) {
 	if (!cmp1 || !cmp2 || !size) {
 		return ~((size_t)0);
 	}

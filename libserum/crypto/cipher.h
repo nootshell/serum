@@ -38,14 +38,16 @@
 
 
 
-typedef struct ls_cipher ls_cipher_t;
+typedef struct ls_cipher {
+	uint32_t rs_buff;
+} ls_cipher_t;
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-
+	LSAPI ls_result_t cipher_init(ls_cipher_t *ctx);
 
 #ifdef __cplusplus
 }
