@@ -35,6 +35,7 @@
 
 
 #include "../../../core/stdincl.h"
+#include "../_signatures.h"
 
 
 #define LS_CBC_PROPAGATE					BIT_1
@@ -44,8 +45,8 @@ typedef struct ls_cbc {
 	uint8_t *iv;
 	uint8_t *cv;
 	void *cipher_data;
-	ls_result_t(*cipher_encrypt)(void *data, void *block);
-	ls_result_t(*cipher_decrypt)(void *data, void *block);
+	ls_sf_encrypt_block cipher_encrypt;
+	ls_sf_decrypt_block cipher_decrypt;
 	uint16_t block_size;
 	uint16_t flags;
 } ls_cbc_t;
@@ -54,7 +55,7 @@ typedef struct ls_cbc {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_cbc_init(ls_cbc_t *const cbc, const uint8_t *const iv, const uint16_t block_size, const uint16_t flags, void *const cipher_data, ls_result_t(*cipher_encrypt)(void *const data, void *const block), ls_result_t(*cipher_decrypt)(void *const data, void *const block));
+	LSAPI ls_result_t ls_cbc_init(ls_cbc_t *const cbc, const uint8_t *const iv, const uint16_t block_size, const uint16_t flags, void *const cipher_data, ls_sf_encrypt_block cipher_encrypt, ls_sf_decrypt_block cipher_decrypt);
 	LSAPI ls_result_t ls_cbc_clear(ls_cbc_t *cbc);
 
 	LSAPI ls_result_t ls_cbc_reset(const ls_cbc_t *const cbc);

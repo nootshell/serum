@@ -34,13 +34,14 @@
 
 #include "./cbc.h"
 #include "../../../core/memory.h"
+#include <string.h>
 
 
 ID("Cipher Block Chaining");
 
 
 ls_result_t
-ls_cbc_init(ls_cbc_t *const cbc, const uint8_t *const iv, const uint16_t block_size, const uint16_t flags, void *const cipher_data, ls_result_t(*cipher_encrypt)(void *const data, void *const block), ls_result_t(*cipher_decrypt)(void *const data, void *const block)) {
+ls_cbc_init(ls_cbc_t *const cbc, const uint8_t *const iv, const uint16_t block_size, const uint16_t flags, void *const cipher_data, ls_sf_encrypt_block cipher_encrypt, ls_sf_decrypt_block cipher_decrypt) {
 	LS_RESULT_CHECK_NULL(cbc, 1);
 	LS_RESULT_CHECK_NULL(iv, 2);
 	LS_RESULT_CHECK_NULL(cipher_data, 3);

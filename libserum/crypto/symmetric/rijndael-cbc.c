@@ -48,15 +48,7 @@ ls_rijndael_cbc_init(ls_rijndael_cbc_t *const LS_RESTRICT ctx, const void *const
 		return LS_RESULT_INHERITED(result, false);
 	}
 
-	if (!(result = ls_cbc_init(
-		&ctx->cbc,
-		iv,
-		LS_RIJNDAEL_BLOCK_SIZE,
-		flags,
-		&ctx->rijndael,
-		ls_rijndael_encrypt_block,
-		ls_rijndael_decrypt_block
-	)).success) {
+	if (!(result = ls_cbc_init(&ctx->cbc, iv, LS_RIJNDAEL_BLOCK_SIZE, flags, &ctx->rijndael, ((ls_sf_encrypt_block)ls_rijndael_encrypt_block), ((ls_sf_decrypt_block)ls_rijndael_decrypt_block))).success) {
 		return LS_RESULT_INHERITED(result, false);
 	}
 
@@ -67,9 +59,9 @@ ls_rijndael_cbc_init(ls_rijndael_cbc_t *const LS_RESTRICT ctx, const void *const
 ls_result_t
 ls_rijndael_cbc_clear(ls_rijndael_cbc_t *const ctx) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
-	
+
 	ls_result_t result;
-	
+
 	if (!(result = ls_rijndael_clear(&ctx->rijndael)).success) {
 		return LS_RESULT_INHERITED(result, false);
 	}
@@ -77,7 +69,7 @@ ls_rijndael_cbc_clear(ls_rijndael_cbc_t *const ctx) {
 	if (!(result = ls_cbc_clear(&ctx->cbc)).success) {
 		return LS_RESULT_INHERITED(result, false);
 	}
-	
+
 	return LS_RESULT_SUCCESS;
 }
 
@@ -93,7 +85,7 @@ ls_rijndael_cbc_reset(const ls_rijndael_cbc_t *const LS_RESTRICT ctx) {
 ls_result_t
 ls_rijndael_cbc_encrypt_block(const ls_rijndael_cbc_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
-	
+
 	return ls_cbc_encrypt(&ctx->cbc, (uint8_t *const)block);
 }
 
