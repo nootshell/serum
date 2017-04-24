@@ -26,25 +26,13 @@
 ********************************************************************************
 **
 **  Notes:
-**    TODO
+**    -
 **
 */
 
 #define FILE_PATH							"crypto/cipher.c"
 
 #include "./cipher.h"
-#include "./prng/isaac.h"
-
-
-struct ls_cipher {
-	uint32_t(*f_prng)(void*);				// PRNG function
-	void *d_prng;							// PRNG data
-
-	void *sym_data;							// Symmetric cipher data.
-	ls_result_t(*sym_init)(void*);
-
-	uint32_t rs_buff;						// Round selection buffer
-};
 
 
 ID("generalized cipher functionality");
@@ -56,8 +44,13 @@ static inline ls_sym_rounds(ls_cipher_t *const ctx) {
 		ctx->rs_buff = ctx->f_prng(ctx->d_prng);
 	}
 
-	uint32_t value = (((ctx->rs_buff & 0xFF) << 4) | 0x0F);
+	uint32_t value = (((ctx->rs_buff & 0xFF) << 2) | 0x03);
 	ctx->rs_buff >>= 8;
 	return value;
 }
 
+
+ls_result_t
+doe_iets(ls_cipher_t *ctx) {
+	
+}
