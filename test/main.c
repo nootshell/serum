@@ -43,7 +43,7 @@
 #include <libserum/crypto/prng/device.h>
 
 
-#define STATIC								0
+#define STATIC								1
 
 
 void
@@ -57,7 +57,9 @@ killyourself(int code) {
 int main(int argc, char *argv[], char *env[]) {
 #if (!STATIC)
 	ls_device_t device;
-	ls_device_sys(&device, 16, DEV_URANDOM);
+	if (!ls_device_sys(&device, 16, DEV_URANDOM).success) {
+		killyourself(21);
+	}
 #endif
 
 	ls_curve25519_key_t basepoint;
