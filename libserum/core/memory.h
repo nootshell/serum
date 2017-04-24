@@ -56,7 +56,7 @@
 #	define dstacksizeof(name)				__ ## name ## __sizeof
 #	define dstackalloc(name, size)			*name = alloca((size)); size_t dstacksizeof(name) = ((size))
 #	define dstackfree(name)					name = NULL
-#	define stacksizeof(name)				sizeof((name))
+#	define stacksizeof(name)				sizeof(name)
 #	define stackalloc(name, size)			name[(size)]
 #	define stackfree(name)
 
