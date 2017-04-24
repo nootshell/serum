@@ -40,7 +40,7 @@
 int
 WINAPI DllMain(HINSTANCE handle, DWORD reason, LPVOID reserved) {
 	if (reason == DLL_PROCESS_ATTACH) {
-		return (lib_main_entry() == 0);
+		return ((lib_main_entry() & ~1) == 0);
 	}
 	if (reason == DLL_PROCESS_DETACH) {
 		return (lib_main_exit() == 0);

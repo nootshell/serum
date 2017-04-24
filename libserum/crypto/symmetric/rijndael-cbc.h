@@ -30,27 +30,37 @@
 **
 */
 
-#ifndef __LS_CORE_MEMDUMP_H
-#define __LS_CORE_MEMDUMP_H
+#ifndef __LS_CRYPTO_SYMMETRIC_RIJNDAEL_CBC_H
+#define __LS_CRYPTO_SYMMETRIC_RIJNDAEL_CBC_H
 
 
-#include "../core/stdincl.h"
+#include "../../core/stdincl.h"
+#include "./rijndael.h"
+#include "./modes/cbc.h"
+
+
+typedef struct ls_rijndael_cbc {
+	ls_rijndael_t rijndael;
+	ls_cbc_t cbc;
+} ls_rijndael_cbc_t;
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI void ls_memdump_ex(const void *const ptr, const size_t size, unsigned int columns, unsigned int items_per_column);
-	LSAPI void ls_memdump(const void *const ptr, const size_t size);
-	LSAPI void ls_vmemdump_ex(const void *const LS_RESTRICT ptr, const size_t size, unsigned int columns, unsigned int items_per_column, const char *const LS_RESTRICT str);
-	LSAPI void ls_vmemdump(const void *const LS_RESTRICT ptr, const size_t size, const char *const LS_RESTRICT str);
-	LSAPI size_t ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size, unsigned int columns);
-	LSAPI size_t ls_memdiff(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size);
+	LSAPI ls_result_t ls_rijndael_cbc_init(ls_rijndael_cbc_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size, const void *const LS_RESTRICT iv, const uint16_t flags);
+	LSAPI ls_result_t ls_rijndael_cbc_clear(ls_rijndael_cbc_t *const ctx);
+	LSAPI ls_result_t ls_rijndael_cbc_reset(const ls_rijndael_cbc_t *const LS_RESTRICT ctx);
+
+	LSAPI ls_result_t ls_rijndael_cbc_encrypt_block(const ls_rijndael_cbc_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block);
+	LSAPI ls_result_t ls_rijndael_cbc_decrypt_block(const ls_rijndael_cbc_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block);
+
+	
+
 
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif

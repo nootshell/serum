@@ -30,23 +30,37 @@
 **
 */
 
-#ifndef __LS_CORE_MEMDUMP_H
-#define __LS_CORE_MEMDUMP_H
+#ifndef __LS_CRYPTO_SYMMETRIC_MODES_CBC_H
+#define __LS_CRYPTO_SYMMETRIC_MODES_CBC_H
 
 
-#include "../core/stdincl.h"
+#include "../../../core/stdincl.h"
 
+
+#define LS_CBC_PROPAGATE					BIT_1
+
+
+typedef struct ls_cbc {
+	uint8_t *iv;
+	uint8_t *cv;
+	void *cipher_data;
+	ls_result_t(*cipher_encrypt)(void *data, void *block);
+	ls_result_t(*cipher_decrypt)(void *data, void *block);
+	uint16_t block_size;
+	uint16_t flags;
+} ls_cbc_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI void ls_memdump_ex(const void *const ptr, const size_t size, unsigned int columns, unsigned int items_per_column);
-	LSAPI void ls_memdump(const void *const ptr, const size_t size);
-	LSAPI void ls_vmemdump_ex(const void *const LS_RESTRICT ptr, const size_t size, unsigned int columns, unsigned int items_per_column, const char *const LS_RESTRICT str);
-	LSAPI void ls_vmemdump(const void *const LS_RESTRICT ptr, const size_t size, const char *const LS_RESTRICT str);
-	LSAPI size_t ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size, unsigned int columns);
-	LSAPI size_t ls_memdiff(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size);
+	LSAPI ls_result_t ls_cbc_init(ls_cbc_t *const cbc, const uint8_t *const iv, const uint16_t block_size, const uint16_t flags, void *const cipher_data, ls_result_t(*cipher_encrypt)(void *const data, void *const block), ls_result_t(*cipher_decrypt)(void *const data, void *const block));
+	LSAPI ls_result_t ls_cbc_clear(ls_cbc_t *cbc);
+
+	LSAPI ls_result_t ls_cbc_reset(const ls_cbc_t *const cbc);
+
+	LSAPI ls_result_t ls_cbc_encrypt(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer);
+	LSAPI ls_result_t ls_cbc_decrypt(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer);
 
 #ifdef __cplusplus
 }

@@ -60,7 +60,7 @@ extern "C" {
 	LSAPI ls_result_t ls_device_clear(ls_device_t *const device);
 	LSAPI ls_result_t ls_device_sys(ls_device_t *const device, const size_t buffer_size, const ls_prng_device_type_t type);
 
-	LSAPI ls_result_t ls_device_generate(const ls_device_t *const LS_RESTRICT device, void *const LS_RESTRICT out, const size_t size);
+	LSAPI ls_result_t ls_device_generate(const ls_device_t *const LS_RESTRICT device, void *const LS_RESTRICT out, size_t size);
 
 #ifdef __cplusplus
 }
