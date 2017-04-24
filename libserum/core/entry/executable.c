@@ -30,103 +30,53 @@
 **
 */
 
-#define FILE_PATH							"crypto/storage/key.c"
+#define FILE_PATH							"core/entry/executable.c"
 
-#include "./key.h"
-#include "../../core/memory.h"
-#include <string.h>
+#if (defined(ELF_INTERP))
+
+#include "./main.h"
+#include "../stdincl.h"
+#include "../../debug/log.h"
+#include <stdlib.h>
+
+#if (!LS_SELFTEST_STARTUP)
+#	include "../self-test.h"
+#endif
 
 
-ID("key storage");
+ID("entrypoint for executable library");
 
 
-ls_result_t
-ls_key_init(ls_key_t *const key, const size_t size) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_SIZE(size, 1);
+const char LS_ATTR_USED __attribute__((section(".interp"))) interp[] = ELF_INTERP;
 
-	key->size = size;
 
-	memset(key->data, 0, key->size);
+void
+interp_entry() {
+	ls_log("Startup from executable library.");
 
-	if (!LS_MEMLOCK(key, (sizeof(*key) + key->size))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
+	unsigned int result = 0, sub_result;
+
+	if ((sub_result = lib_main_entry()) != 0) {
+		result |= ((sub_result << 3) | 1);
 	}
 
-	return LS_RESULT_SUCCESS;
+#if (!LS_SELFTEST_STARTUP)
+	if (ls_selftest_all() != true) {
+		result |= 2;
+	}
+#endif
+
+	if ((sub_result = lib_main_exit()) != 0) {
+		result |= ((sub_result << 6) | 4);
+	}
+
+	if (result) {
+		ls_logf("Errors along the way, true exit code: %08X", result);
+	}
+
+	exit(!!result);
 }
 
-
-ls_result_t
-ls_key_clear(ls_key_t *const key) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_SIZE(key->size, 1);
-
-	// First we clear...
-	memset(key->data, 0, key->size);
-
-	// ... then we unlock.
-	if (!LS_MEMUNLOCK(key, (sizeof(*key) + key->size))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
-	}
-
-	return LS_RESULT_SUCCESS;
-}
-
-
-ls_key_t*
-ls_key_alloc(const size_t size) {
-	if (!size) {
-		return NULL;
-	}
-
-	ls_key_t *key = malloc(sizeof(*key) + size);
-	if (ls_key_init(key, size).success) {
-		return key;
-	} else {
-		if (key) {
-			free(key);
-		}
-	}
-
-	return NULL;
-}
-
-
-ls_key_t*
-ls_key_alloc_from(const void *const in, const size_t size) {
-	if (!in || !size) {
-		return NULL;
-	}
-
-	ls_key_t *key = ls_key_alloc(size);
-	if (key) {
-		memcpy(key->data, in, size);
-	}
-	return key;
-}
-
-
-ls_key_t*
-ls_key_clone(const ls_key_t *const src) {
-	if (!src) {
-		return NULL;
-	}
-
-	if (!src->size) {
-		return NULL;
-	}
-
-	return ls_key_alloc_from(src->data, src->size);
-}
-
-
-ls_key_t*
-ls_key_free(ls_key_t *const key) {
-	if (key) {
-		memset(key->data, 0, key->size);
-		LS_MEMUNLOCK(key, (sizeof(*key) + key->size));
-		free(key);
-	}
-	return NULL;
-}
+#else
+LS_COMPILER_WARN("Library not executable: ELF interpreter unspecified.");
+#endif

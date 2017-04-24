@@ -30,103 +30,73 @@
 **
 */
 
-#define FILE_PATH							"crypto/storage/key.c"
+#if (LS_SELFTEST)
 
-#include "./key.h"
-#include "../../core/memory.h"
-#include <string.h>
+#define FILE_PATH							"core/self-test.c"
+
+#include "./self-test.h"
+#include "../debug/log.h"
+
+#include "../crypto/hashing/self-test.h"
 
 
-ID("key storage");
+struct ls_selftest {
+	ls_bool(*func)();
+	char description[32];
+};
+
+struct ls_selftest tests[] = {
+#if (LS_SELFTEST_CRYPTO_HASHING)
+	{ ls_selftest_crypto_hashing, "cryptographic hash functions" },
+#endif
+	{ 0 }
+};
 
 
-ls_result_t
-ls_key_init(ls_key_t *const key, const size_t size) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_SIZE(size, 1);
+ls_bool
+ls_selftest_all() {
+	const size_t max = ((sizeof(tests) / sizeof(*tests)) - 1);
+	unsigned int failures = 0;
+	struct ls_selftest *current_test, *failed_entries[max];
 
-	key->size = size;
-
-	memset(key->data, 0, key->size);
-
-	if (!LS_MEMLOCK(key, (sizeof(*key) + key->size))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
+	if (max == 0) {
+#if (LS_SELFTEST_VERBOSE)
+		ls_log_e("No self-tests to perform.");
+#endif
+		return false;
 	}
 
-	return LS_RESULT_SUCCESS;
-}
-
-
-ls_result_t
-ls_key_clear(ls_key_t *const key) {
-	LS_RESULT_CHECK_NULL(key, 1);
-	LS_RESULT_CHECK_SIZE(key->size, 1);
-
-	// First we clear...
-	memset(key->data, 0, key->size);
-
-	// ... then we unlock.
-	if (!LS_MEMUNLOCK(key, (sizeof(*key) + key->size))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
-	}
-
-	return LS_RESULT_SUCCESS;
-}
-
-
-ls_key_t*
-ls_key_alloc(const size_t size) {
-	if (!size) {
-		return NULL;
-	}
-
-	ls_key_t *key = malloc(sizeof(*key) + size);
-	if (ls_key_init(key, size).success) {
-		return key;
-	} else {
-		if (key) {
-			free(key);
+	unsigned int i;
+	for (i = 0; i < max; ++i) {
+		current_test = &tests[i];
+		failed_entries[i] = NULL;
+		if (current_test->func) {
+			if (!current_test->func()) {
+				failed_entries[i] = current_test;
+				++failures;
+			}
 		}
 	}
 
-	return NULL;
+	if (!failures) {
+#if (LS_SELFTEST_VERBOSE)
+		ls_log("All tests passed.");
+#endif
+		return true;
+	} else {
+		if (failures == max) {
+			ls_log("All tests failed:");
+		} else {
+			ls_logf("Out of %u test%s, %u test%s failed:", max, ((max == 1) ? "" : "s"), failures, ((failures == 1) ? "" : "s"));
+		}
+		for (i = 0; i < max; ++i) {
+			if (failed_entries[i] != NULL) {
+				ls_logf("  %s", failed_entries[i]->description);
+			}
+		}
+	}
+
+	return false;
 }
 
-
-ls_key_t*
-ls_key_alloc_from(const void *const in, const size_t size) {
-	if (!in || !size) {
-		return NULL;
-	}
-
-	ls_key_t *key = ls_key_alloc(size);
-	if (key) {
-		memcpy(key->data, in, size);
-	}
-	return key;
-}
-
-
-ls_key_t*
-ls_key_clone(const ls_key_t *const src) {
-	if (!src) {
-		return NULL;
-	}
-
-	if (!src->size) {
-		return NULL;
-	}
-
-	return ls_key_alloc_from(src->data, src->size);
-}
-
-
-ls_key_t*
-ls_key_free(ls_key_t *const key) {
-	if (key) {
-		memset(key->data, 0, key->size);
-		LS_MEMUNLOCK(key, (sizeof(*key) + key->size));
-		free(key);
-	}
-	return NULL;
-}
+#endif

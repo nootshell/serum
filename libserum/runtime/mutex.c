@@ -105,13 +105,10 @@ ls_mutex_lock_ex(ls_mutex_t *mutex, uint32_t timeout) {
 
 	DWORD result = WaitForSingleObject(mutex->obj, timeout);
 	if (result == WAIT_ABANDONED) {
-		ls_log_e("Lock abandoned.");
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 1);
 	} else if (result == WAIT_FAILED) {
-		ls_log_e("Lock failed.");
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 2);
 	} else if (result == WAIT_TIMEOUT) {
-		ls_log_e("Lock timed out.");
 		return LS_RESULT_ERROR(LS_RESULT_CODE_TIMEOUT);
 	}
 #else

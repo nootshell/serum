@@ -34,10 +34,10 @@
 #define __LS_CORE_BOOL_H
 
 
-typedef int ls_bool;
+typedef unsigned int ls_bool;
 
-#define true								1
-#define false								0
+#define true								1U
+#define false								0U
 
 
 #endif

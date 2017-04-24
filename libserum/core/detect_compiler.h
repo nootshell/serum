@@ -154,32 +154,38 @@
 
 #ifndef LS_ATTR_THREAD
 #define LS_ATTR_THREAD
+#define LS_NO_ATTR_THREAD
 LS_COMPILER_WARN("Compiler doesn't seem to have the thread-local storage attribute.");
 #endif
 
 #ifndef LS_ATTR_USED
 #define LS_ATTR_USED
+#define LS_NO_ATTR_USED
 LS_COMPILER_WARN("Compiler doesn't seem to have the used attribute.");
 #endif
 
 #ifndef LS_ATTR_CONSTRUCTOR
 #define LS_ATTR_CONSTRUCTOR
+#define LS_NO_ATTR_CONSTRUCTOR
 LS_COMPILER_WARN("Compiler doesn't seem to have the constructor attribute.");
 #endif
 
 #ifndef LS_ATTR_DESTRUCTOR
 #define LS_ATTR_DESTRUCTOR
+#define LS_NO_ATTR_DESTRUCTOR
 LS_COMPILER_WARN("Compiler doesn't seem to have the destructor attribute.");
 #endif
 
 #ifndef LS_ATTR_INLINE
 #define LS_ATTR_INLINE
+#define LS_NO_ATTR_INLINE
 LS_COMPILER_WARN("Compiler doesn't seem to have the inline attribute.");
 #endif
 
 
 #ifndef LS_RESTRICT
 #define LS_RESTRICT
+#define LS_NO_RESTRICT
 LS_COMPILER_WARN("Compiler doesn't seem to have the restrict keyword.");
 #endif
 

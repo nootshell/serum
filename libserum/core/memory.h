@@ -34,7 +34,7 @@
 #define __LS_CORE_MEMORY_H
 
 
-// FIXME
+// FIXME: fixed on *nix, pending windows test
 
 
 #include "./macro.h"
@@ -42,19 +42,19 @@
 
 #if (LS_MSC)
 #	include <malloc.h>
-#	define dstacksizeof(name)				MACRO_CONCAT(_, name)##_sizeof
-#	define dstackalloc(name, size)			*name = _malloca((size)); size_t stacksizeof(name) = ((size))
+#	define dstacksizeof(name)				__ ## name ## __sizeof
+#	define dstackalloc(name, size)			*name = _malloca((size)); size_t dstacksizeof(name) = ((size))
 #	define dstackfree(name)					_freea(name); name = NULL
-#	define stacksizeof(name)				dstacksizeof((name))
-#	define stackalloc(name, size)			dstackalloc((name), (size))
-#	define stackfree(name)					dstackfree((name))
+#	define stacksizeof(name)				dstacksizeof(name)
+#	define stackalloc(name, size)			dstackalloc(name, (size))
+#	define stackfree(name)					dstackfree(name)
 
 #	define LS_MEMLOCK(ptr, size)			(VirtualLock((ptr), (size)) != 0)
 #	define LS_MEMUNLOCK(ptr, size)			(VirtualUnlock((ptr), (size)) != 0)
 #else
 #	include <alloca.h>
-#	define dstacksizeof(name)				MACRO_CONCAT(_, name)##_sizeof
-#	define dstackalloc(name, size)			*name = alloca((size)); size_t stacksizeof(name) = ((size))
+#	define dstacksizeof(name)				__ ## name ## __sizeof
+#	define dstackalloc(name, size)			*name = alloca((size)); size_t dstacksizeof(name) = ((size))
 #	define dstackfree(name)					name = NULL
 #	define stacksizeof(name)				sizeof((name))
 #	define stackalloc(name, size)			name[(size)]

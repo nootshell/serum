@@ -37,15 +37,28 @@
 #if (LS_SELFTEST_VERBOSE)
 #	include "./log.h"
 
-#	define START_TEST(desc)					ls_log("\033[37;1mSelf-testing " desc "...\033[0m")
-#	define END_TEST(desc, result)			ls_log("\033[37;1mSelf-test ended for " desc ": " result "\033[0m\n")
-#	define START_VECTOR(iter, str)			ls_logf("  \033[36mVector %u\033[0m: \033[35;1m\"%s\"\033[0m", ((iter) + 1), (str))
-#	define TEST_SUB_RESULT(desc, result)	ls_log("    \033[36m" desc "\033[0m: " result)
-#	define TEST_SUB_PASSED(desc)			TEST_SUB_RESULT(desc, "\033[32;1mpassed\033[0m")
-#	define TEST_SUB_FAILED(desc)			TEST_SUB_RESULT(desc, "\033[31;1mfailed \033[37;1m<----- [ \033[36;1m>:c\033[37;1m ]\033[0m")
+#	define COLOR_TEST_PASSED				LS_ANSI_ESCAPE LS_ANSI_FG_GREEN LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_TERMINATE
+#	define COLOR_TEST_FAILED				LS_ANSI_ESCAPE LS_ANSI_FG_RED LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_TERMINATE
+#	define COLOR_TEST_TEXT_GENERIC			LS_ANSI_ESCAPE LS_ANSI_FG_WHITE LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_TERMINATE
+#	define COLOR_TEST_TEXT_DATA				LS_ANSI_ESCAPE LS_ANSI_FG_MAGENTA LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_TERMINATE
+#	define COLOR_TEST_TEXT_VECTOR			LS_ANSI_ESCAPE LS_ANSI_FG_CYAN LS_ANSI_TERMINATE
+#	define COLOR_TEST_TEXT_SUB				COLOR_TEST_TEXT_VECTOR
+#	define COLOR_TEST_ARROW					COLOR_TEST_TEXT_GENERIC
+#	define COLOR_TEST_ARROW_BODY			LS_ANSI_ESCAPE LS_ANSI_FG_CYAN LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_TERMINATE
+
+#	define START_TEST(desc)					ls_log(COLOR_TEST_TEXT_GENERIC "Self-testing " desc "..." LS_ANSI_RESET)
+#	define END_TEST(desc, result)			ls_log(COLOR_TEST_TEXT_GENERIC "Self-test ended for " desc ": " result LS_ANSI_RESET)
+#	define END_TEST_PASSED(desc)			END_TEST(desc, COLOR_TEST_PASSED "passed" LS_ANSI_RESET)
+#	define END_TEST_FAILED(desc)			END_TEST(desc, COLOR_TEST_FAILED "failed" LS_ANSI_RESET)
+#	define START_VECTOR(iter, str)			ls_logf("  " COLOR_TEST_TEXT_VECTOR "Vector %u" LS_ANSI_RESET ": " COLOR_TEST_TEXT_DATA "\"%s\"" LS_ANSI_RESET, ((iter) + 1), (str))
+#	define TEST_SUB_RESULT(desc, result)	ls_log("    " COLOR_TEST_TEXT_SUB desc LS_ANSI_RESET ": " result)
+#	define TEST_SUB_PASSED(desc)			TEST_SUB_RESULT(desc, COLOR_TEST_PASSED "passed" LS_ANSI_RESET)
+#	define TEST_SUB_FAILED(desc)			TEST_SUB_RESULT(desc, COLOR_TEST_FAILED "failed " COLOR_TEST_ARROW "<----- [ " COLOR_TEST_ARROW_BODY ">:c" COLOR_TEST_ARROW" ]" LS_ANSI_RESET)
 #else
 #	define START_TEST(x)
 #	define END_TEST(x, y)
+#	define END_TEST_PASSED(desc)
+#	define END_TEST_FAILED(desc)
 #	define START_VECTOR(x, y)
 #	define TEST_SUB_RESULT(x, y)
 #	define TEST_SUB_PASSED(x)

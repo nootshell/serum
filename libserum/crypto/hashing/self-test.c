@@ -197,9 +197,9 @@ ls_selftest_crypto_hashing() {
 	}
 
 	if (passed) {
-		END_TEST("cryptographic hash functions", "\033[32;1mpassed\033[0m");
+		END_TEST_PASSED("cryptographic hash functions");
 	} else {
-		END_TEST("cryptographic hash functions", "\033[31;1mfailed\033[0m");
+		END_TEST_FAILED("cryptographic hash functions");
 	}
 
 	return passed;
