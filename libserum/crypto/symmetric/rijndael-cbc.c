@@ -30,27 +30,77 @@
 **
 */
 
-#ifndef __LS_CORE_MEMDUMP_H
-#define __LS_CORE_MEMDUMP_H
+#define FILE_PATH							"crypto/symmetric/rijndael-cbc.c"
+
+#include "./rijndael-cbc.h"
 
 
-#include "../core/stdincl.h"
+ID("Rijndael-CBC");
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+ls_result_t
+ls_rijndael_cbc_init(ls_rijndael_cbc_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size, const void *const LS_RESTRICT iv, const uint16_t flags) {
+	LS_RESULT_CHECK_NULL(ctx, 1);
 
-	LSAPI void ls_memdump_ex(const void *const ptr, const size_t size, unsigned int columns, unsigned int items_per_column);
-	LSAPI void ls_memdump(const void *const ptr, const size_t size);
-	LSAPI void ls_vmemdump_ex(const void *const LS_RESTRICT ptr, const size_t size, unsigned int columns, unsigned int items_per_column, const char *const LS_RESTRICT str);
-	LSAPI void ls_vmemdump(const void *const LS_RESTRICT ptr, const size_t size, const char *const LS_RESTRICT str);
-	LSAPI size_t ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size, unsigned int columns);
-	LSAPI size_t ls_memdiff(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size);
+	ls_result_t result;
 
-#ifdef __cplusplus
+	if (!(result = ls_rijndael_init(&ctx->rijndael, key, key_size)).success) {
+		return LS_RESULT_INHERITED(result, false);
+	}
+
+	if (!(result = ls_cbc_init(
+		&ctx->cbc,
+		iv,
+		LS_RIJNDAEL_BLOCK_SIZE,
+		flags,
+		&ctx->rijndael,
+		ls_rijndael_encrypt_block,
+		ls_rijndael_decrypt_block
+	)).success) {
+		return LS_RESULT_INHERITED(result, false);
+	}
+
+	return LS_RESULT_SUCCESS;
 }
-#endif
 
 
-#endif
+ls_result_t
+ls_rijndael_cbc_clear(ls_rijndael_cbc_t *const ctx) {
+	LS_RESULT_CHECK_NULL(ctx, 1);
+	
+	ls_result_t result;
+	
+	if (!(result = ls_rijndael_clear(&ctx->rijndael)).success) {
+		return LS_RESULT_INHERITED(result, false);
+	}
+
+	if (!(result = ls_cbc_clear(&ctx->cbc)).success) {
+		return LS_RESULT_INHERITED(result, false);
+	}
+	
+	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_rijndael_cbc_reset(const ls_rijndael_cbc_t *const LS_RESTRICT ctx) {
+	LS_RESULT_CHECK_NULL(ctx, 1);
+
+	return ls_cbc_reset(&ctx->cbc);
+}
+
+
+ls_result_t
+ls_rijndael_cbc_encrypt_block(const ls_rijndael_cbc_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block) {
+	LS_RESULT_CHECK_NULL(ctx, 1);
+	
+	return ls_cbc_encrypt(&ctx->cbc, (uint8_t *const)block);
+}
+
+
+ls_result_t
+ls_rijndael_cbc_decrypt_block(const ls_rijndael_cbc_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block) {
+	LS_RESULT_CHECK_NULL(ctx, 1);
+
+	return ls_cbc_decrypt(&ctx->cbc, (uint8_t*)block);
+}

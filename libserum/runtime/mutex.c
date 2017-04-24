@@ -39,9 +39,6 @@
 ID("universal mutexes");
 
 
-ID("universal mutexes");
-
-
 ls_result_t
 ls_mutex_init(ls_mutex_t *mutex) {
 	LS_RESULT_CHECK_NULL(mutex, 1);
@@ -51,7 +48,7 @@ ls_mutex_init(ls_mutex_t *mutex) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 	}
 #elif (LS_USING_WNMUTEX)
-	if (!(mutex->obj = CreateMutex(NULL, FALSE, NULL))) {
+	if (!(mutex->lock = CreateMutex(NULL, FALSE, NULL))) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 	}
 #else
@@ -103,7 +100,7 @@ ls_mutex_lock_ex(ls_mutex_t *mutex, uint32_t timeout) {
 		timeout = INFINITE;
 	}
 
-	DWORD result = WaitForSingleObject(mutex->obj, timeout);
+	DWORD result = WaitForSingleObject(mutex->lock, timeout);
 	if (result == WAIT_ABANDONED) {
 		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 1);
 	} else if (result == WAIT_FAILED) {

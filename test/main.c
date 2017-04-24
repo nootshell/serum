@@ -45,6 +45,15 @@
 
 #define STATIC								0
 
+
+void
+killyourself(int code) {
+	printf("return %i\n", code);
+	fgetc(stdin);
+	exit(code);
+}
+
+
 int main(int argc, char *argv[], char *env[]) {
 #if (!STATIC)
 	ls_device_t device;
@@ -71,17 +80,17 @@ int main(int argc, char *argv[], char *env[]) {
 	ls_curve25519_t curve_alice, curve_bob;
 
 	if (!ls_curve25519_init_ex(&curve_alice, private_key_alice, basepoint).success) {
-		return 1;
+		killyourself(1);
 	}
 	if (!ls_curve25519_init_ex(&curve_bob, private_key_bob, basepoint).success) {
-		return 2;
+		killyourself(2);
 	}
 
 	if (!ls_curve25519_generate_shared(&curve_alice, ls_curve25519_get_public(&curve_bob)).success) {
-		return 3;
+		killyourself(3);
 	}
 	if (!ls_curve25519_generate_shared(&curve_bob, ls_curve25519_get_public(&curve_alice)).success) {
-		return 4;
+		killyourself(4);
 	}
 
 	if (!ls_memdiff(ls_curve25519_get_shared(&curve_alice), ls_curve25519_get_shared(&curve_bob), sizeof(ls_curve25519_key_t))) {
@@ -91,10 +100,10 @@ int main(int argc, char *argv[], char *env[]) {
 	}
 
 	if (!ls_curve25519_clear(&curve_alice).success) {
-		return 5;
+		killyourself(5);
 	}
 	if (!ls_curve25519_clear(&curve_bob).success) {
-		return 6;
+		killyourself(6);
 	}
 
 	return 0;
