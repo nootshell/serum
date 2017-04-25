@@ -39,6 +39,9 @@
 #include "./packet.h"
 
 
+#define LS_PACKET_DECODER_SINGLE			BIT_1
+
+
 enum ls_packet_decoder_state {
 	LS_DECODE_STATE_UNKNOWN					= 0U,
 	LS_DECODE_STATE_HEAD					= 1U,
@@ -72,11 +75,12 @@ typedef struct ls_packet_decoder {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_packet_decoder_init_ex(ls_packet_decoder_t *const LS_RESTRICT decoder, void(*const callback)(struct ls_packet_decoder *decoder, ls_packet_t *packet), const void *const LS_RESTRICT tag, const uint32_t flags);
-	LSAPI ls_result_t ls_packet_decoder_init(ls_packet_decoder_t *const decoder);
+	LSAPI ls_result_t ls_packet_decoder_init_ex(ls_packet_decoder_t *const LS_RESTRICT decoder, void(*const callback)(struct ls_packet_decoder *decoder, ls_packet_t *packet), const void *const LS_RESTRICT tag, const uint16_t flags);
+	LSAPI ls_result_t ls_packet_decoder_init(ls_packet_decoder_t *const decoder, const uint16_t flags);
 	LSAPI ls_result_t ls_packet_decoder_clear(ls_packet_decoder_t *const decoder);
 
 	LSAPI ls_result_t ls_packet_decode(ls_packet_decoder_t *const LS_RESTRICT decoder, const void *const LS_RESTRICT in, const size_t size);
+	LSAPI ls_result_t ls_packet_decode_single(ls_packet_decoder_t *const LS_RESTRICT decoder, const void *const LS_RESTRICT in, const size_t size, ls_packet_t **const LS_RESTRICT out_packet);
 
 #ifdef __cplusplus
 }

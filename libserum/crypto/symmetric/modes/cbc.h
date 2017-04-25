@@ -60,8 +60,8 @@ extern "C" {
 
 	LSAPI ls_result_t ls_cbc_reset(const ls_cbc_t *const cbc);
 
-	LSAPI ls_result_t ls_cbc_encrypt(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer);
-	LSAPI ls_result_t ls_cbc_decrypt(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer);
+	LSAPI ls_result_t ls_cbc_encrypt_block(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer);
+	LSAPI ls_result_t ls_cbc_decrypt_block(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer);
 
 #ifdef __cplusplus
 }
