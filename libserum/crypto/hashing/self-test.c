@@ -30,11 +30,13 @@
 **
 */
 
-#if (LS_SELFTEST && LS_SELFTEST_CRYPTO_HASHING)
-
 #define FILE_PATH							"crypto/hashing/self-test.c"
 
 #include "./self-test.h"
+
+#if (LS_SELFTEST && LS_SELFTEST_CRYPTO_HASHING)
+
+#include "../../core/memory.h"
 #include "../../debug/__self-test_logging.h"
 #include "./_signatures.h"
 #include "./sha2.h"
@@ -122,7 +124,7 @@ static ls_test_crypto_hash(void *const hf_data, ls_hf_init_t const hf_init, ls_h
 		return LS_RESULT_INHERITED(result, false);
 	}
 
-	uint8_t sample_buffer[sample_size];
+	uint8_t stackalloc(sample_buffer, sample_size);
 	if (!(result = hf_finish(hf_data, sample_buffer)).success) {
 		return LS_RESULT_INHERITED(result, false);
 	}

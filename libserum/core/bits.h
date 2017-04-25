@@ -34,6 +34,9 @@
 #define __LS_CORE_BITS_H
 
 
+#include "./macro.h"
+
+
 #define HAS_FLAG(flags, flag)				(((flags) & (flag)) == (flag))
 
 
@@ -124,6 +127,7 @@
 #define BIT_64								MKBIT(64)
 
 
+#define LS_SWAP_USE_INTRINSICS 1
 #if (LS_SWAP_USE_INTRINSICS)
 #	include "./intrinsics.h"
 #endif
@@ -133,6 +137,10 @@
 #	define LS_SWAP_16(x)					__builtin_bswap16(x)
 #	define LS_SWAP_32(x)					__builtin_bswap32(x)
 #	define LS_SWAP_64(x)					__builtin_bswap64(x)
+#elif (LS_MSC && LS_INTRINSICS)
+#	define LS_SWAP_16(x)					_byteswap_ushort(x)
+#	define LS_SWAP_32(x)					_byteswap_ulong(x)
+#	define LS_SWAP_64(x)					_byteswap_uint64(x)
 #else
 #	define LS_SWAP_16(x) (					 \
 		(((x) & 0xFF00            ) >>  8) | \

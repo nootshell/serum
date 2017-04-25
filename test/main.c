@@ -36,18 +36,13 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <libserum/core/memory.h>
+#include <libserum/core/info.h>
 #include <libserum/debug/memdump.h>
-
-#include <libserum/crypto/key_exchange/curve25519.h>
-#include <libserum/crypto/prng/device.h>
-
-
-#define STATIC								1
+#include <libserum/crypto/symmetric/salsa20.h>
 
 
 void
-killyourself(int code) {
+static __exit(int code) {
 	printf("return %i\n", code);
 	fgetc(stdin);
 	exit(code);
@@ -55,58 +50,59 @@ killyourself(int code) {
 
 
 int main(int argc, char *argv[], char *env[]) {
-#if (!STATIC)
-	ls_device_t device;
-	if (!ls_device_sys(&device, 16, DEV_URANDOM).success) {
-		killyourself(21);
+	puts(ls_info_compilation_environment());
+	puts(ls_info_compilation_options());
+	puts("");
+
+	uint8_t key[16];
+	memset(key, 0xBA, sizeof(key));
+
+
+	uint8_t data[130];
+	memset(data, 0x69, sizeof(data));
+
+	uint8_t encrypted[176], *ct = encrypted + 16;
+	memset(encrypted, 0x55, sizeof(encrypted));
+
+	uint8_t decrypted[sizeof(encrypted)], *pt = decrypted + 16;
+	memset(decrypted, 0x55, sizeof(decrypted));
+
+
+	ls_vmemdump(key, sizeof(key), "key:");
+	ls_vmemdump(data, sizeof(data), "data:");
+	ls_vmemdump(encrypted, sizeof(encrypted), "encrypt buffer:");
+	ls_vmemdump(decrypted, sizeof(decrypted), "decrypt buffer:");
+
+
+	ls_salsa20_t salsa_encrypt, salsa_decrypt;
+	
+	if (!ls_salsa20_init(&salsa_encrypt, key, sizeof(key)).success) {
+		__exit(1);
 	}
-#endif
-
-	ls_curve25519_key_t basepoint;
-	memset(basepoint, 0xCA, sizeof(basepoint));
-
-	ls_curve25519_key_t private_key_alice;
-#if (STATIC)
-	memset(private_key_alice, 0xBA, sizeof(private_key_alice));
-#else
-	ls_device_generate(&device, private_key_alice, sizeof(private_key_alice));
-#endif
-
-	ls_curve25519_key_t private_key_bob;
-#if (STATIC)
-	memset(private_key_bob, 0x69, sizeof(private_key_bob));
-#else
-	ls_device_generate(&device, private_key_bob, sizeof(private_key_bob));
-#endif
-
-	ls_curve25519_t curve_alice, curve_bob;
-
-	if (!ls_curve25519_init_ex(&curve_alice, private_key_alice, basepoint).success) {
-		killyourself(1);
-	}
-	if (!ls_curve25519_init_ex(&curve_bob, private_key_bob, basepoint).success) {
-		killyourself(2);
-	}
-
-	if (!ls_curve25519_generate_shared(&curve_alice, ls_curve25519_get_public(&curve_bob)).success) {
-		killyourself(3);
-	}
-	if (!ls_curve25519_generate_shared(&curve_bob, ls_curve25519_get_public(&curve_alice)).success) {
-		killyourself(4);
+	if (!ls_salsa20_init(&salsa_decrypt, key, sizeof(key)).success) {
+		__exit(2);
 	}
 
-	if (!ls_memdiff(ls_curve25519_get_shared(&curve_alice), ls_curve25519_get_shared(&curve_bob), sizeof(ls_curve25519_key_t))) {
-		puts(LS_ANSI_ESCAPE LS_ANSI_FG_GREEN LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_TERMINATE "passed" LS_ANSI_RESET);
-	} else {
-		puts(LS_ANSI_ESCAPE LS_ANSI_FG_RED LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_TERMINATE "failed" LS_ANSI_RESET);
+	memcpy(ct, data, sizeof(data));
+	ls_vmemdump(encrypted, sizeof(encrypted), "encrypt:");
+	if (!ls_salsa20_encrypt(&salsa_encrypt, ct, sizeof(data)).success) {
+		__exit(3);
+	}
+	ls_vmemdump(encrypted, sizeof(encrypted), "encrypted:");
+
+	memcpy(pt, ct, sizeof(data));
+	ls_vmemdump(decrypted, sizeof(decrypted), "decrypt:");
+	if (!ls_salsa20_decrypt(&salsa_decrypt, pt, sizeof(data)).success) {
+		__exit(4);
+	}
+	ls_vmemdump(decrypted, sizeof(decrypted), "decrypted:");
+
+	if (!ls_salsa20_clear(&salsa_encrypt).success) {
+		__exit(5);
+	}
+	if (!ls_salsa20_clear(&salsa_decrypt).success) {
+		__exit(6);
 	}
 
-	if (!ls_curve25519_clear(&curve_alice).success) {
-		killyourself(5);
-	}
-	if (!ls_curve25519_clear(&curve_bob).success) {
-		killyourself(6);
-	}
-
-	return 0;
+	__exit(0);
 }

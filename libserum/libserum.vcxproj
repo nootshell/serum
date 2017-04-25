@@ -93,8 +93,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;LS_LOG_RESULTS=0;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STORE_COMPILATION_OPTIONS=1;_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;LS_LOG_RESULTS=0;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -106,8 +107,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;LS_LOG_RESULTS=0;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STORE_COMPILATION_OPTIONS=1;_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;LS_LOG_RESULTS=0;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -123,6 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;LS_LOG_RESULTS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -140,6 +143,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;LS_LOG_RESULTS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -151,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="core\bits.h" />
     <ClInclude Include="core\bool.h" />
+    <ClInclude Include="core\defaults.h" />
     <ClInclude Include="core\detect.h" />
     <ClInclude Include="core\detect_compiler.h" />
     <ClInclude Include="core\detect_endianness.h" />
@@ -190,7 +195,9 @@
     <ClInclude Include="crypto\symmetric\modes\cbc.h" />
     <ClInclude Include="crypto\symmetric\rijndael-cbc.h" />
     <ClInclude Include="crypto\symmetric\rijndael.h" />
+    <ClInclude Include="crypto\symmetric\salsa20.h" />
     <ClInclude Include="crypto\symmetric\xxtea.h" />
+    <ClInclude Include="crypto\symmetric\_signatures.h" />
     <ClInclude Include="crypto\symmetric\__rijndael-tables.h" />
     <ClInclude Include="debug\log.h" />
     <ClInclude Include="debug\memdump.h" />
@@ -227,6 +234,7 @@
     <ClCompile Include="crypto\symmetric\modes\cbc.c" />
     <ClCompile Include="crypto\symmetric\rijndael-cbc.c" />
     <ClCompile Include="crypto\symmetric\rijndael.c" />
+    <ClCompile Include="crypto\symmetric\salsa20.c" />
     <ClCompile Include="crypto\symmetric\xxtea.c" />
     <ClCompile Include="debug\log.c" />
     <ClCompile Include="debug\memdump.c" />

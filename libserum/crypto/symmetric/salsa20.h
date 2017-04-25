@@ -30,70 +30,57 @@
 **
 */
 
-#ifndef __LS_CORE_INTRINSICS_H
-#define __LS_CORE_INTRINSICS_H
+#ifndef __LS_CRYPTO_SYMMETRIC_SALSA_20_H
+#define __LS_CRYPTO_SYMMETRIC_SALSA_20_H
 
 
-#if (!defined(LS_INTRINSICS_DISABLE))
+#include "../../core/stdincl.h"
 
 
-#include "./defaults.h"
+#define LS_SALSA20_BLOCK_SIZE				64
 
 
-#ifdef _exit_
-#undef _exit_
+struct ls_salsa20_layout {
+	uint32_t c1;
+	uint32_t k1[4];
+	uint32_t c2;
+	uint64_t nonce;
+	uint64_t counter;
+	uint32_t c3;
+	uint32_t k2[4];
+	uint32_t c4;
+};
+
+union ls_salsa20_data {
+	uint32_t data[16];
+	struct ls_salsa20_layout layout;
+};
+
+typedef struct ls_salsa20 {
+	union ls_salsa20_data data;
+	uint8_t cache[LS_SALSA20_BLOCK_SIZE];
+	unsigned int cache_offset;
+} ls_salsa20_t;
+
+
+#ifdef __cplusplus
+extern "C" {
 #endif
 
+	LSAPI ls_result_t ls_salsa20_init(ls_salsa20_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size);
+	LSAPI ls_result_t ls_salsa20_clear(ls_salsa20_t *ctx);
 
-#ifdef LS_INTRINSICS_STRING
-#undef LS_INTRINSICS_STRING
+	LSAPI ls_result_t ls_salsa20_process_block(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_RESTRICT data);
+	LSAPI ls_result_t ls_salsa20_encrypt_block(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_RESTRICT data);
+	LSAPI ls_result_t ls_salsa20_decrypt_block(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_RESTRICT data);
+
+	LSAPI ls_result_t ls_salsa20_process_data(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_RESTRICT data, size_t size);
+	LSAPI ls_result_t ls_salsa20_encrypt(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_RESTRICT data, size_t size);
+	LSAPI ls_result_t ls_salsa20_decrypt(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_RESTRICT data, size_t size);
+
+#ifdef __cplusplus
+}
 #endif
-
-
-#if (!defined(LS_INTRINSICS))
-#	if (LS_HAVE_CHECK_INCLUDE)
-#		if (LS_CHECK_INCLUDE(x86intrin.h))
-#			include <x86intrin.h>
-#			define LS_INTRINSICS			1
-#			if (!defined(LS_INTRINSICS_CONTINUE))
-#				define _exit_
-#			endif
-#		endif
-#		if (!defined(_exit_) && LS_CHECK_INCLUDE(intrin.h))
-#			include <intrin.h>
-#			define LS_INTRINSICS			1
-#		endif
-#	else
-#		include "./detect_compiler.h"
-#		if (LS_GCC || LS_LLVM)
-#			include <x86intrin.h>
-#			define LS_INTRINSICS			1
-#		elif (LS_MSC)
-#			include <intrin.h>
-#			define LS_INTRINSICS			1
-#		endif
-#	endif
-#endif
-
-#if (!defined(LS_INTRINSICS))
-#	define LS_INTRINSICS					0
-#endif
-
-#if (!defined(LS_INTRINSICS_STRING))
-#	if (LS_INTRINSICS)
-#		define LS_INTRINSICS_STRING			"+"
-#	else
-#		define LS_INTRINSICS_STRING			"-"
-#	endif
-#endif
-
-
-#if (defined(_exit_))
-#	undef _exit_
-#endif
-
-
-#endif // LS_INTRINSICS_DISABLE
 
 
 #endif

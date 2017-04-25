@@ -42,5 +42,9 @@
 #include "./result.h"
 #include "../debug/log.h"
 
+#if (LIBSERUM_EXPORTS)
+#	include "./defaults.h"
+#endif
+
 
 #endif

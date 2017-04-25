@@ -46,7 +46,7 @@
 #		if (defined(__ANDROID__) || defined(__ANDROID_API__))
 #			define LS_ANDROID				1
 #			define LS_OS					LS_OS_ID_ANDROID
-#			define LS_OS_STRING				"Android"
+#			define LS_OS_STRING				"Linux (Android)"
 #		else
 #			define LS_OS					LS_OS_ID_LINUX
 #			if (defined(DISTRO))

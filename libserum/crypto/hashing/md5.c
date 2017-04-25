@@ -189,7 +189,7 @@ ls_md5_update(ls_md5_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT dat
 	// Check if we have enough data to make a full block, if not append the input to the cache and return.
 	if ((ctx->__psize + size) < sizeof(ctx->__pcache)) {
 		memcpy(ctx->__pcache + ctx->__psize, data, size);
-		ctx->__psize += size;
+		ctx->__psize += (uint32_t)size;
 		return LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_EARLY_EXIT);
 	}
 
