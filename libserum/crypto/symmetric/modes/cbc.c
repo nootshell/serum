@@ -93,7 +93,7 @@ ls_cbc_reset(const ls_cbc_t *const cbc) {
 
 
 ls_result_t
-ls_cbc_encrypt(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer) {
+ls_cbc_encrypt_block(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer) {
 	LS_RESULT_CHECK_NULL(cbc, 1);
 	LS_RESULT_CHECK_NULL(cbc->cipher_data, 2);
 
@@ -126,7 +126,7 @@ ls_cbc_encrypt(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT
 
 
 ls_result_t
-ls_cbc_decrypt(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer) {
+ls_cbc_decrypt_block(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer) {
 	LS_RESULT_CHECK_NULL(cbc, 1);
 	LS_RESULT_CHECK_NULL(cbc->cipher_data, 2);
 
@@ -141,7 +141,7 @@ ls_cbc_decrypt(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT
 	if (HAS_FLAG(cbc->flags, LS_CBC_PROPAGATE)) {
 		for (i = cbc->block_size; i--;) {
 			buffer[i] = (buffer[i] ^ cbc->cv[i]);
-			ct_old[i] = (buffer[i] ^ ct_old[i]); // if !normal, try move up
+			ct_old[i] = (buffer[i] ^ ct_old[i]);
 		}
 	} else {
 		for (i = cbc->block_size; i--;) {
