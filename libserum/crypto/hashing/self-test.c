@@ -44,7 +44,7 @@
 #include <string.h>
 
 
-ID("BIST for cryptographic hash functions");
+ID("BIST: cryptographic hash functions");
 
 
 static const char *vectors[] = {

@@ -35,7 +35,7 @@
 
 #include "./salsa20.h"
 #include "../../core/memory.h"
-#include "../../debug/memdump.h"
+#include <string.h>
 
 
 ID("Salsa20 implementation");
@@ -93,7 +93,7 @@ static ls_salsa20_get_block(ls_salsa20_t *ctx) {
 
 	if (!++(ctx->data.data[8])) {
 		if (!++(ctx->data.data[9])) {
-			
+
 		}
 	}
 
@@ -168,7 +168,7 @@ ls_salsa20_clear(ls_salsa20_t *ctx) {
 	if (!LS_MEMUNLOCK(&ctx->data, sizeof(ctx->data))) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
 	}
-	
+
 	memset(ctx, 0, sizeof(*ctx));
 
 	return LS_RESULT_SUCCESS;

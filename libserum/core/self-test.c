@@ -42,6 +42,9 @@
 #include "../crypto/hashing/self-test.h"
 
 
+ID("BIST: global");
+
+
 struct ls_selftest {
 	ls_bool(*func)();
 	char description[32];

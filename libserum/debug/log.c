@@ -35,7 +35,6 @@
 #include "./log.h"
 #include "../core/time.h"
 #include <stdio.h>
-#include <inttypes.h>
 
 
 ID("centralized logging");

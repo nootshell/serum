@@ -54,7 +54,7 @@ int main(int argc, char *argv[], char *env[]) {
 	puts(ls_info_compilation_options());
 	puts("");
 
-	uint8_t key[16];
+	uint8_t key[32];
 	memset(key, 0xBA, sizeof(key));
 
 
@@ -75,7 +75,7 @@ int main(int argc, char *argv[], char *env[]) {
 
 
 	ls_salsa20_t salsa_encrypt, salsa_decrypt;
-	
+
 	if (!ls_salsa20_init(&salsa_encrypt, key, sizeof(key)).success) {
 		__exit(1);
 	}
