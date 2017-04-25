@@ -148,10 +148,6 @@ ls_socket_init_ex(ls_socket_t *const LS_RESTRICT ctx, const char *LS_RESTRICT no
 
 	uint32_t err;
 
-	if ((err = getaddrinfo(node, NULL, &hints, &ctx->addrinfo))) {
-		return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
-	}
-
 #if (LS_WINDOWS)
 	if (!wsaStartup) {
 		if (!(err = WSAStartup(MAKEWORD(2, 2), &wsaData))) {
@@ -162,6 +158,11 @@ ls_socket_init_ex(ls_socket_t *const LS_RESTRICT ctx, const char *LS_RESTRICT no
 	}
 	++num_init_sockets;
 #endif
+
+	if ((err = getaddrinfo(node, NULL, &hints, &ctx->addrinfo))) {
+		ls_logf_e("getaddrinfo() = %u", err);
+		return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
+	}
 
 	return LS_RESULT_SUCCESS;
 }

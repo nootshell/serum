@@ -86,7 +86,7 @@ ls_result_t
 ls_rijndael_cbc_encrypt_block(const ls_rijndael_cbc_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
 
-	return ls_cbc_encrypt(&ctx->cbc, (uint8_t *const)block);
+	return ls_cbc_encrypt_block(&ctx->cbc, (uint8_t *const)block);
 }
 
 
@@ -94,5 +94,5 @@ ls_result_t
 ls_rijndael_cbc_decrypt_block(const ls_rijndael_cbc_t *const LS_RESTRICT ctx, uint32_t *const LS_RESTRICT block) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
 
-	return ls_cbc_decrypt(&ctx->cbc, (uint8_t*)block);
+	return ls_cbc_decrypt_block(&ctx->cbc, (uint8_t*)block);
 }

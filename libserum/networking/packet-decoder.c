@@ -40,7 +40,7 @@ ID("decoder for the built-in packet structure");
 
 
 ls_result_t
-ls_packet_decoder_init_ex(ls_packet_decoder_t *const LS_RESTRICT decoder, void(*const callback)(struct ls_packet_decoder *decoder, ls_packet_t *packet), const void *const LS_RESTRICT tag, const uint32_t flags) {
+ls_packet_decoder_init_ex(ls_packet_decoder_t *const LS_RESTRICT decoder, void(*const callback)(struct ls_packet_decoder *decoder, ls_packet_t *packet), const void *const LS_RESTRICT tag, const uint16_t flags) {
 	LS_RESULT_CHECK_NULL(decoder, 1);
 
 	memset(decoder, 0, sizeof(*decoder));
@@ -54,8 +54,8 @@ ls_packet_decoder_init_ex(ls_packet_decoder_t *const LS_RESTRICT decoder, void(*
 
 
 ls_result_t
-ls_packet_decoder_init(ls_packet_decoder_t *const decoder) {
-	return ls_packet_decoder_init_ex(decoder, NULL, NULL, 0);
+ls_packet_decoder_init(ls_packet_decoder_t *const decoder, const uint16_t flags) {
+	return ls_packet_decoder_init_ex(decoder, NULL, NULL, flags);
 }
 
 
@@ -70,7 +70,7 @@ ls_packet_decoder_clear(ls_packet_decoder_t *const decoder) {
 }
 
 
-void
+uint16_t
 static LS_ATTR_INLINE __dispatch(ls_packet_decoder_t *const decoder) {
 	decoder->__state = LS_DECODE_STATE_HEAD;
 
@@ -80,7 +80,13 @@ static LS_ATTR_INLINE __dispatch(ls_packet_decoder_t *const decoder) {
 		decoder->callback(decoder, &decoder->packet);
 	}
 
+	if (HAS_FLAG(decoder->flags, LS_PACKET_DECODER_SINGLE)) {
+		return LS_RESULT_CODE_EARLY_EXIT;
+	}
+
 	ls_packet_clear_ex(&decoder->packet, true, true);
+
+	return LS_RESULT_CODE_SUCCESS;
 }
 
 void
@@ -108,14 +114,26 @@ static LS_ATTR_INLINE __valuecpy(ls_packet_decoder_t *const LS_RESTRICT decoder,
 	return (req - 1);
 }
 
+#define HANDLE_DISPATCH(dec)											\
+if ((dispatch_code = __dispatch((dec))) != LS_RESULT_CODE_SUCCESS) {	\
+	if (HAS_FLAG(dispatch_code, BIT_16)) {								\
+		return LS_RESULT_ERROR(dispatch_code & ~BIT_16);				\
+	} else {															\
+		return LS_RESULT_SUCCESS_CODE(dispatch_code & ~BIT_16);			\
+	}																	\
+}
+
 ls_result_t
 ls_packet_decode(ls_packet_decoder_t *const LS_RESTRICT decoder, const void *const LS_RESTRICT in, const size_t size) {
 	LS_RESULT_CHECK_NULL(decoder, 1);
 	LS_RESULT_CHECK_NULL(in, 2);
-	LS_RESULT_CHECK_NULL(decoder->callback, 3);
+	if (!HAS_FLAG(decoder->flags, LS_PACKET_DECODER_SINGLE)) {
+		LS_RESULT_CHECK_NULL(decoder->callback, 3);
+	}
 	LS_RESULT_CHECK_SIZE(size, 1);
 
 	uint8_t byte;
+	uint32_t dispatch_code = 0;
 
 	size_t i;
 	for (i = 0; i < size; ++i) {
@@ -135,7 +153,7 @@ ls_packet_decode(ls_packet_decoder_t *const LS_RESTRICT decoder, const void *con
 					decoder->__sub_index = 0;
 					decoder->__state = LS_DECODE_STATE_PAYLOAD_SIZE;
 				} else {
-					__dispatch(decoder);
+					HANDLE_DISPATCH(decoder);
 				}
 			}
 		} else  if (decoder->__state == LS_DECODE_STATE_HEADER_SIZE) {
@@ -151,7 +169,7 @@ ls_packet_decode(ls_packet_decoder_t *const LS_RESTRICT decoder, const void *con
 						decoder->__sub_index = 0;
 						decoder->__state = LS_DECODE_STATE_PAYLOAD_SIZE;
 					} else {
-						__dispatch(decoder);
+						HANDLE_DISPATCH(decoder);
 					}
 				} else {
 					decoder->__state = LS_DECODE_STATE_HEADER_SIZE;
@@ -169,10 +187,29 @@ ls_packet_decode(ls_packet_decoder_t *const LS_RESTRICT decoder, const void *con
 			i += __valuecpy(decoder, decoder->packet.payload, decoder->packet.payload_size, in, i, size);
 
 			if (decoder->__index >= decoder->packet.payload_size) {
-				__dispatch(decoder);
+				HANDLE_DISPATCH(decoder);
 			}
 		}
 	}
 
 	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_packet_decode_single(ls_packet_decoder_t *const LS_RESTRICT decoder, const void *const LS_RESTRICT in, const size_t size, ls_packet_t **const LS_RESTRICT out_packet) {
+	LS_RESULT_CHECK_NULL(out_packet, 1);
+	LS_RESULT_CHECK_STATE(decoder->flags, LS_PACKET_DECODER_SINGLE, 1);
+	
+	ls_result_t result = ls_packet_decode(decoder, in, size);
+	if (!result.success) {
+		return LS_RESULT_INHERITED(result, false);
+	}
+
+	if (result.code == LS_RESULT_CODE_EARLY_EXIT) {
+		*out_packet = &decoder->packet;
+		return LS_RESULT_SUCCESS;
+	}
+
+	return LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_DATA);
 }
