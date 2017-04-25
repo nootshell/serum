@@ -130,6 +130,8 @@ typedef struct ls_result {		// bit range   max val
 
 #define LS_RESULT_CHECK_NULL(var, param)	LS_RESULT_CHECK(!(var), LS_RESULT_CODE_NULL, (param))
 #define LS_RESULT_CHECK_SIZE(var, param)	LS_RESULT_CHECK(!(var), LS_RESULT_CODE_SIZE, (param))
+#define LS_RESULT_CHECK_STATE(flags, flag, param) \
+											LS_RESULT_CHECK(!HAS_FLAG((flags), (flag)), LS_RESULT_CODE_STATE, (param))
 
 #define LS_RESULT_CHECK_INDEX(var, param, lti, gti)	\
 											LS_RESULT_CHECK((((var) < (lti)) || ((var) > (gti))), LS_RESULT_CODE_INDEX, (param))
