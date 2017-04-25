@@ -127,7 +127,6 @@
 #define BIT_64								MKBIT(64)
 
 
-#define LS_SWAP_USE_INTRINSICS 1
 #if (LS_SWAP_USE_INTRINSICS)
 #	include "./intrinsics.h"
 #endif

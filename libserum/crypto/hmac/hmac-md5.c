@@ -34,7 +34,6 @@
 
 #include "./hmac-md5.h"
 #include "./hmac.h"
-#include <string.h>
 
 
 ID("HMAC-MD5 implementation");

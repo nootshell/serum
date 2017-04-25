@@ -36,6 +36,9 @@
 #include "../detect.h"
 
 
+ID("library entry points");
+
+
 #if (LS_MSC)
 int
 WINAPI DllMain(HINSTANCE handle, DWORD reason, LPVOID reserved) {

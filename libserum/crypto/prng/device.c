@@ -35,7 +35,6 @@
 #include "./device.h"
 #include "../../core/math.h"
 #include "../../core/memory.h"
-#include "../../debug/log.h"
 #include <string.h>
 
 

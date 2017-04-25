@@ -32,9 +32,9 @@
 
 #define FILE_PATH							"crypto/padding/iso9797.c"
 
-#include <string.h>
 #include "./iso9797.h"
 #include "../../core/ptrarithmetic.h"
+#include <string.h>
 
 
 ID("ISO 9797-1 padding methods 1 and 2");

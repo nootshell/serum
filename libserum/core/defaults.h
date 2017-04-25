@@ -80,5 +80,13 @@
 #	define LS_VERBOSE_STARTUP				0
 #endif
 
+#if (!defined(STORE_COMPILATION_OPTIONS))
+#	if (DEBUG)
+#		define STORE_COMPILATION_OPTIONS	1
+#	else
+#		define STORE_COMPILATION_OPTIONS	0
+#	endif
+#endif
+
 
 #endif

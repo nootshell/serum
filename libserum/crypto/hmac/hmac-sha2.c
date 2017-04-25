@@ -34,7 +34,6 @@
 
 #include "./hmac-sha2.h"
 #include "./hmac.h"
-#include <string.h>
 
 
 ID("HMAC-SHA-2 implementation");

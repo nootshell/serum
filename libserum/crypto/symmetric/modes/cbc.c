@@ -41,19 +41,19 @@ ID("Cipher Block Chaining");
 
 
 ls_result_t
-ls_cbc_init(ls_cbc_t *const cbc, const uint8_t *const iv, const uint16_t block_size, const uint16_t flags, void *const cipher_data, ls_sf_encrypt_block cipher_encrypt, ls_sf_decrypt_block cipher_decrypt) {
+ls_cbc_init(ls_cbc_t *const cbc, const uint8_t *const iv, const uint16_t block_size, const uint16_t flags, void *const data, ls_sf_encrypt_block encrypt, ls_sf_decrypt_block decrypt) {
 	LS_RESULT_CHECK_NULL(cbc, 1);
 	LS_RESULT_CHECK_NULL(iv, 2);
-	LS_RESULT_CHECK_NULL(cipher_data, 3);
-	LS_RESULT_CHECK_NULL(cipher_encrypt, 4);
-	LS_RESULT_CHECK_NULL(cipher_decrypt, 5);
+	LS_RESULT_CHECK_NULL(data, 3);
+	LS_RESULT_CHECK_NULL(encrypt, 4);
+	LS_RESULT_CHECK_NULL(decrypt, 5);
 
 	cbc->block_size = block_size;
 	cbc->iv = malloc(cbc->block_size);
 	cbc->cv = malloc(cbc->block_size);
-	cbc->cipher_data = cipher_data;
-	cbc->cipher_encrypt = cipher_encrypt;
-	cbc->cipher_decrypt = cipher_decrypt;
+	cbc->data = data;
+	cbc->encrypt = encrypt;
+	cbc->decrypt = decrypt;
 
 	cbc->flags = flags;
 
@@ -95,7 +95,7 @@ ls_cbc_reset(const ls_cbc_t *const cbc) {
 ls_result_t
 ls_cbc_encrypt_block(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer) {
 	LS_RESULT_CHECK_NULL(cbc, 1);
-	LS_RESULT_CHECK_NULL(cbc->cipher_data, 2);
+	LS_RESULT_CHECK_NULL(cbc->data, 2);
 
 	uint8_t *pt_old = NULL;
 	if (HAS_FLAG(cbc->flags, LS_CBC_PROPAGATE)) {
@@ -108,7 +108,7 @@ ls_cbc_encrypt_block(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RE
 		buffer[i] = (buffer[i] ^ cbc->cv[i]);
 	}
 
-	if (!(cbc->cipher_encrypt(cbc->cipher_data, buffer).success)) {
+	if (!(cbc->encrypt(cbc->data, buffer).success)) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 	}
 
@@ -128,12 +128,12 @@ ls_cbc_encrypt_block(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RE
 ls_result_t
 ls_cbc_decrypt_block(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RESTRICT buffer) {
 	LS_RESULT_CHECK_NULL(cbc, 1);
-	LS_RESULT_CHECK_NULL(cbc->cipher_data, 2);
+	LS_RESULT_CHECK_NULL(cbc->data, 2);
 
 	uint8_t *ct_old = malloc(cbc->block_size);
 	memcpy(ct_old, buffer, cbc->block_size);
 
-	if (!(cbc->cipher_decrypt(cbc->cipher_data, buffer).success)) {
+	if (!(cbc->decrypt(cbc->data, buffer).success)) {
 		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 	}
 

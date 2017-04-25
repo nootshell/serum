@@ -41,19 +41,25 @@
 #define MACRO_STRINGIFY(x)					_MACRO_STRINGIFY(x)
 
 
-#if (LS_USE_CHECK_BUILTIN && defined(__has_builtin))
-#	define LS_CHECK_BUILTIN(x)				__has_builtin(x)
-#	define LS_HAVE_CHECK_BUILTIN			1
+#if (LS_USE_CHECK_BUILTIN)
+#	if (defined(__has_builtin))
+#		define LS_CHECK_BUILTIN(x)			__has_builtin(x)
+#		define LS_HAVE_CHECK_BUILTIN		1
+#	else
+		LS_COMPILER_WARN_FEATURE("macro definition to check for builtins");
+#	endif
 #else
-	LS_COMPILER_WARN_FEATURE("macro definition to check for builtins");
 #	define LS_CHECK_BUILTIN(x)				0
 #endif
 
-#if (LS_USE_CHECK_INCLUDE && defined(__has_include))
-#	define LS_CHECK_INCLUDE(x)				__has_include(<x>)
-#	define LS_HAVE_CHECK_INCLUDE			1
+#if (LS_USE_CHECK_INCLUDE)
+#	if (defined(__has_include))
+#		define LS_CHECK_INCLUDE(x)			__has_include(<x>)
+#		define LS_HAVE_CHECK_INCLUDE		1
+#	else
+		LS_COMPILER_WARN_FEATURE("macro definition to check for includes");
+#	endif
 #else
-	LS_COMPILER_WARN_FEATURE("macro definition to check for includes");
 #	if (LS_NO_CHECK_INCLUDE_ASSUME_EXISTS)
 #		define LS_CHECK_INCLUDE(x)			1
 #	else
