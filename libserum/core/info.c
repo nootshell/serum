@@ -53,176 +53,206 @@ ls_info_compilation_environment() {
 const char*
 ls_info_compilation_options() {
 	return
-
-		"DEBUG                           "
-#if (defined(DEBUG))
+#if (STORE_COMPILATION_OPTIONS)
+		"DEBUG                             "
+#	if (defined(DEBUG))
 		MACRO_STRINGIFY(DEBUG)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nDISTRO                          "
-#if (defined(DISTRO))
+		"\nDISTRO                            "
+#	if (defined(DISTRO))
 		MACRO_STRINGIFY(DISTRO)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nELF_INTERP                      "
-#if (defined(ELF_INTERP))
+		"\nELF_INTERP                        "
+#	if (defined(ELF_INTERP))
 		MACRO_STRINGIFY(ELF_INTERP)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nGIT_BRANCH                      "
-#if (defined(GIT_BRANCH))
+		"\nGIT_BRANCH                        "
+#	if (defined(GIT_BRANCH))
 		MACRO_STRINGIFY(GIT_BRANCH)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nGIT_COMMIT                      "
-#if (defined(GIT_COMMIT))
+		"\nGIT_COMMIT                        "
+#	if (defined(GIT_COMMIT))
 		MACRO_STRINGIFY(GIT_COMMIT)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLIBSERUM_EXPORTS                "
-#if (defined(LIBSERUM_EXPORTS))
+		"\nLIBSERUM_EXPORTS                  "
+#	if (defined(LIBSERUM_EXPORTS))
 		MACRO_STRINGIFY(LIBSERUM_EXPORTS)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_ANSI_ESCAPE_SUPPORT          "
-#if (defined(LS_ANSI_ESCAPE_SUPPORT))
+		"\nLS_ANSI_ESCAPE_SUPPORT            "
+#	if (defined(LS_ANSI_ESCAPE_SUPPORT))
 		MACRO_STRINGIFY(LS_ANSI_ESCAPE_SUPPORT)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_DEVICE_BUFFER_BLOCK          "
-#if (defined(LS_DEVICE_BUFFER_BLOCK))
+		"\nLS_DEVICE_BUFFER_BLOCK            "
+#	if (defined(LS_DEVICE_BUFFER_BLOCK))
 		MACRO_STRINGIFY(LS_DEVICE_BUFFER_BLOCK)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_ISO9797_ALLOW_ALL_ZERO       "
-#if (defined(LS_ISO9797_ALLOW_ALL_ZERO))
+		"\nLS_ISO9797_ALLOW_ALL_ZERO         "
+#	if (defined(LS_ISO9797_ALLOW_ALL_ZERO))
 		MACRO_STRINGIFY(LS_ISO9797_ALLOW_ALL_ZERO)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_ISO9797_DENY_SIZE_ZERO       "
-#if (defined(LS_ISO9797_DENY_SIZE_ZERO))
+		"\nLS_ISO9797_DENY_SIZE_ZERO         "
+#	if (defined(LS_ISO9797_DENY_SIZE_ZERO))
 		MACRO_STRINGIFY(LS_ISO9797_DENY_SIZE_ZERO)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_LOG_ORIGIN                   "
-#if (defined(LS_LOG_ORIGIN))
+		"\nLS_LOG_ORIGIN                     "
+#	if (defined(LS_LOG_ORIGIN))
 		MACRO_STRINGIFY(LS_LOG_ORIGIN)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_LOG_RESULTS                  "
-#if (defined(LS_LOG_RESULTS))
+		"\nLS_LOG_RESULTS                    "
+#	if (defined(LS_LOG_RESULTS))
 		MACRO_STRINGIFY(LS_LOG_RESULTS)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_MD5_DENY_SIZE_ZERO           "
-#if (defined(LS_MD5_DENY_SIZE_ZERO))
+		"\nLS_MD5_DENY_SIZE_ZERO             "
+#	if (defined(LS_MD5_DENY_SIZE_ZERO))
 		MACRO_STRINGIFY(LS_MD5_DENY_SIZE_ZERO)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_RDTSC_NANOS_FAILSAFE         "
-#if (defined(LS_RDTSC_NANOS_FAILSAFE))
+		"\nLS_NO_CHECK_INCLUDE_ASSUME_EXISTS "
+#	if (defined(LS_NO_CHECK_INCLUDE_ASSUME_EXISTS))
+		MACRO_STRINGIFY(LS_NO_CHECK_INCLUDE_ASSUME_EXISTS)
+#	else
+		OPTION_NOT_DEFINED
+#	endif
+
+		"\nLS_RDTSC_NANOS_FAILSAFE           "
+#	if (defined(LS_RDTSC_NANOS_FAILSAFE))
 		MACRO_STRINGIFY(LS_RDTSC_NANOS_FAILSAFE)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_RIJNDAEL_STRICT              "
-#if (defined(LS_RIJNDAEL_STRICT))
+		"\nLS_RIJNDAEL_STRICT                "
+#	if (defined(LS_RIJNDAEL_STRICT))
 		MACRO_STRINGIFY(LS_RIJNDAEL_STRICT)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
+				
+		"\nLS_SALSA20_STRICT                 "
+#	if (defined(LS_SALSA20_STRICT))
+		MACRO_STRINGIFY(LS_SALSA20_STRICT)
+#	else
+		OPTION_NOT_DEFINED
+#	endif
 
-		"\nLS_SELFTEST                     "
-#if (defined(LS_SELFTEST))
+		"\nLS_SELFTEST                       "
+#	if (defined(LS_SELFTEST))
 		MACRO_STRINGIFY(LS_SELFTEST)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_SELFTEST_CRYPTO_HASHING      "
-#if (defined(LS_SELFTEST_CRYPTO_HASHING))
+		"\nLS_SELFTEST_CRYPTO_HASHING        "
+#	if (defined(LS_SELFTEST_CRYPTO_HASHING))
 		MACRO_STRINGIFY(LS_SELFTEST_CRYPTO_HASHING)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_SELFTEST_STARTUP             "
-#if (defined(LS_SELFTEST_STARTUP))
+		"\nLS_SELFTEST_STARTUP               "
+#	if (defined(LS_SELFTEST_STARTUP))
 		MACRO_STRINGIFY(LS_SELFTEST_STARTUP)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_SELFTEST_VERBOSE             "
-#if (defined(LS_SELFTEST_VERBOSE))
+		"\nLS_SELFTEST_VERBOSE               "
+#	if (defined(LS_SELFTEST_VERBOSE))
 		MACRO_STRINGIFY(LS_SELFTEST_VERBOSE)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_SHA2_DENY_SIZE_ZERO          "
-#if (defined(LS_SHA2_DENY_SIZE_ZERO))
+		"\nLS_SHA2_DENY_SIZE_ZERO            "
+#	if (defined(LS_SHA2_DENY_SIZE_ZERO))
 		MACRO_STRINGIFY(LS_SHA2_DENY_SIZE_ZERO)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		// Use compiler intrinsics to do byte swaps?
-		"\nLS_SWAP_USE_INTRINSICS          "
-#if (defined(LS_SWAP_USE_INTRINSICS))
+		"\nLS_SWAP_USE_INTRINSICS            "
+#	if (defined(LS_SWAP_USE_INTRINSICS))
 		MACRO_STRINGIFY(LS_SWAP_USE_INTRINSICS)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nLS_VERBOSE_STARTUP              "
-#if (defined(LS_VERBOSE_STARTUP))
+		"\nLS_USE_CHECK_BUILTIN              "
+#	if (defined(LS_USE_CHECK_BUILTIN))
+		MACRO_STRINGIFY(LS_USE_CHECK_BUILTIN)
+#	else
+		OPTION_NOT_DEFINED
+#	endif
+
+		"\nLS_USE_CHECK_INCLUDE              "
+#	if (defined(LS_USE_CHECK_BUILTIN))
+		MACRO_STRINGIFY(LS_USE_CHECK_BUILTIN)
+#	else
+		OPTION_NOT_DEFINED
+#	endif
+
+		"\nLS_VERBOSE_STARTUP                "
+#	if (defined(LS_VERBOSE_STARTUP))
 		MACRO_STRINGIFY(LS_VERBOSE_STARTUP)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nMAKEFILE                        "
-#if (defined(MAKEFILE))
+		"\nMAKEFILE                          "
+#	if (defined(MAKEFILE))
 		MACRO_STRINGIFY(MAKEFILE)
-#else
+#	else
 		OPTION_NOT_DEFINED
-#endif
+#	endif
 
-		"\nRELEASE                         "
-#if (defined(RELEASE))
+		"\nRELEASE                           "
+#	if (defined(RELEASE))
 		MACRO_STRINGIFY(RELEASE)
-#else
+#	else
 		OPTION_NOT_DEFINED
+#	endif
+#else
+		"Compilation options not stored.\n"
+		"To do so, recompile with: -DSTORE_COMPILATION_OPTIONS=1"
 #endif
-
 		;
 }
 

@@ -34,9 +34,6 @@
 #define __LS_CORE_MEMORY_H
 
 
-// FIXME: fixed on *nix, pending windows test
-
-
 #include "./macro.h"
 #include "./detect_compiler.h"
 
@@ -50,7 +47,7 @@
 #	define stackfree(name)					dstackfree(name)
 
 #	define LS_MEMLOCK(ptr, size)			(VirtualLock((ptr), (size)) != 0)
-#	define LS_MEMUNLOCK(ptr, size)			(VirtualUnlock((ptr), (size)) != 0)
+#	define LS_MEMUNLOCK(ptr, size)			((VirtualUnlock((ptr), (size)) != 0) || (GetLastError() != 153))
 #else
 #	include <alloca.h>
 #	define dstacksizeof(name)				__ ## name ## __sizeof

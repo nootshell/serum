@@ -40,8 +40,8 @@
 ID("debug hooking");
 
 
-#if (DEBUG && defined(__has_include))
-#	if (__has_include(<mcheck.h>))
+#if (DEBUG && LS_HAVE_CHECK_INCLUDE)
+#	if (LS_CHECK_INCLUDE(mcheck.h))
 #		define WE_HAVE_MCHECK
 #		include <mcheck.h>
 

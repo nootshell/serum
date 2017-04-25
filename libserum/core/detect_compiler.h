@@ -35,7 +35,6 @@
 
 
 #include "./detect_os.h"
-#include "./macro.h"
 
 
 #define LS_COMPILER_ID_UNKNOWN				0
@@ -98,6 +97,10 @@
 #	define LS_RESTRICT						__restrict
 #
 #	define LS_COMPILER_MESG(msg)			__pragma(message(msg))
+#
+#	define NO_MIN_MAX
+#	define WIN32_LEAN_AND_MEAN
+#	include <Windows.h>
 #elif (LS_LLVM || LS_GCC)
 #	define LS_COMPILER						LS_COMPILER_ID_GCC
 #
@@ -128,66 +131,64 @@
 #endif
 
 
-// Look who needs special treatment.
-#if (LS_MSC)
-#	define NO_MIN_MAX
-#	define WIN32_LEAN_AND_MEAN
-#	include <Windows.h>
-#endif
+#define LS_COMPILER_FEATURE_MISSING			"Compiler feature missing"
 
-
-#ifndef LS_COMPILER_MESG
-#	ifndef DONT_WANT_COMPILER_LOGGING
-#		error Compiler logging unavailable, to ignore this warning use -DDONT_WANT_COMPILER_LOGGING
+#if (!defined(LS_COMPILER_MESG))
+#	if (!defined(DONT_WANT_COMPILER_LOGGING))
+#		error Compiler logging unavailable. To ignore this warning, use: -DDONT_WANT_COMPILER_LOGGING
 #	endif
 #	define LS_COMPILER_MESG(msg)
 #endif
-#define LS_COMPILER_INFO_PREFIX				"Info"
-#define LS_COMPILER_WARN_PREFIX				"Warn"
-#define LS_COMPILER_INFO(msg)				LS_COMPILER_MESG(" " LS_COMPILER_INFO_PREFIX ": " msg)
-#define LS_COMPILER_WARN(msg)				LS_COMPILER_MESG(" " LS_COMPILER_WARN_PREFIX ": " msg)
+#define LS_COMPILER_INFO_PREFIX				"info"
+#define LS_COMPILER_WARN_PREFIX				"warn"
+#define LS_COMPILER_INFO(msg)				LS_COMPILER_MESG("  " LS_COMPILER_INFO_PREFIX ": " msg)
+#define LS_COMPILER_WARN(msg)				LS_COMPILER_MESG("  " LS_COMPILER_WARN_PREFIX ": " msg)
+#define LS_COMPILER_WARN_FEATURE(desc)		LS_COMPILER_WARN(LS_COMPILER_FEATURE_MISSING ": " desc)
 
 
-#ifndef LS_COMPILER_VERSION
-#define LS_COMPILER_VERSION					"v/unknown"
+#if (!defined(LS_COMPILER_VERSION))
+#	define LS_COMPILER_VERSION				"v/unknown"
 #endif
 
-#ifndef LS_ATTR_THREAD
-#define LS_ATTR_THREAD
-#define LS_NO_ATTR_THREAD
-LS_COMPILER_WARN("Compiler doesn't seem to have the thread-local storage attribute.");
+#if (!defined(LS_ATTR_THREAD))
+#	define LS_ATTR_THREAD
+#	define LS_NO_ATTR_THREAD
+	LS_COMPILER_WARN_FEATURE("attribute for thread-local storage");
 #endif
 
-#ifndef LS_ATTR_USED
-#define LS_ATTR_USED
-#define LS_NO_ATTR_USED
-LS_COMPILER_WARN("Compiler doesn't seem to have the used attribute.");
+#if (!defined(LS_ATTR_USED))
+#	define LS_ATTR_USED
+#	define LS_NO_ATTR_USED
+	LS_COMPILER_WARN_FEATURE("attribute for marking a variable or function as used");
 #endif
 
-#ifndef LS_ATTR_CONSTRUCTOR
-#define LS_ATTR_CONSTRUCTOR
-#define LS_NO_ATTR_CONSTRUCTOR
-LS_COMPILER_WARN("Compiler doesn't seem to have the constructor attribute.");
+#if (!defined(LS_ATTR_CONSTRUCTOR))
+#	define LS_ATTR_CONSTRUCTOR
+#	define LS_NO_ATTR_CONSTRUCTOR
+	LS_COMPILER_WARN_FEATURE("attribute for marking a function as constructor");
 #endif
 
-#ifndef LS_ATTR_DESTRUCTOR
-#define LS_ATTR_DESTRUCTOR
-#define LS_NO_ATTR_DESTRUCTOR
-LS_COMPILER_WARN("Compiler doesn't seem to have the destructor attribute.");
+#if (!defined(LS_ATTR_DESTRUCTOR))
+#	define LS_ATTR_DESTRUCTOR
+#	define LS_NO_ATTR_DESTRUCTOR
+	LS_COMPILER_WARN_FEATURE("attribute for marking a function as destructor");
 #endif
 
-#ifndef LS_ATTR_INLINE
-#define LS_ATTR_INLINE
-#define LS_NO_ATTR_INLINE
-LS_COMPILER_WARN("Compiler doesn't seem to have the inline attribute.");
+#if (!defined(LS_ATTR_INLINE))
+#	define LS_ATTR_INLINE
+#	define LS_NO_ATTR_INLINE
+	LS_COMPILER_WARN_FEATURE("attribute for function inlining");
 #endif
 
 
-#ifndef LS_RESTRICT
-#define LS_RESTRICT
-#define LS_NO_RESTRICT
-LS_COMPILER_WARN("Compiler doesn't seem to have the restrict keyword.");
+#if (!defined(LS_RESTRICT))
+#	define LS_RESTRICT
+#	define LS_NO_RESTRICT
+	LS_COMPILER_WARN_FEATURE("keyword for restricted pointers");
 #endif
+
+
+#include "./macro.h"
 
 
 #endif

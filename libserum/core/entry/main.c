@@ -78,7 +78,7 @@ lib_main_entry() {
 		}
 	}
 
-#if (LS_SELFTEST_STARTUP)
+#if (LS_SELFTEST && LS_SELFTEST_STARTUP)
 	if (!ls_selftest_all()) {
 		result |= 2;
 	}

@@ -334,7 +334,7 @@ SHA2_UPDATE(SHA2_CTX *const LS_RESTRICT ctx, const void *const LS_RESTRICT in, s
 	// Check if we have enough data to make a full block, if not append the input to the cache and return.
 	if ((ctx->__psize + size) <= sizeof(ctx->__pcache)) {
 		memcpy(ctx->__pcache + ctx->__psize, in, size);
-		ctx->__psize += size;
+		ctx->__psize += (uint32_t)size;
 		return LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_EARLY_EXIT);
 	}
 

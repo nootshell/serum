@@ -30,11 +30,13 @@
 **
 */
 
-#if (LS_SELFTEST)
-
 #define FILE_PATH							"core/self-test.c"
 
 #include "./self-test.h"
+
+#if (LS_SELFTEST)
+
+#include "./memory.h"
 #include "../debug/log.h"
 
 #include "../crypto/hashing/self-test.h"
@@ -57,7 +59,8 @@ ls_bool
 ls_selftest_all() {
 	const size_t max = ((sizeof(tests) / sizeof(*tests)) - 1);
 	unsigned int failures = 0;
-	struct ls_selftest *current_test, *failed_entries[max];
+	struct ls_selftest *current_test;
+	struct ls_selftest *stackalloc(failed_entries, max);
 
 	if (max == 0) {
 #if (LS_SELFTEST_VERBOSE)

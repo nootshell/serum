@@ -38,9 +38,20 @@
 #include "../../debug/log.h"
 #include <string.h>
 
+
+ID("filesystem-based PRNG");
+
+
+#if (defined(LS_DEVICE_BUFFER_BLOCK))
+#	if (LS_DEVICE_BUFFER_BLOCK < 0)
+#		undef LS_DEVICE_BUFFER_BLOCK
+#	endif
+#endif
+
 #if (!defined(LS_DEVICE_BUFFER_BLOCK))
 #	define LS_DEVICE_BUFFER_BLOCK			16
 #endif
+
 
 #if (LS_WINDOWS)
 #	include <io.h>
@@ -52,9 +63,6 @@
 #else
 #	include <unistd.h>
 #endif
-
-
-ID("filesystem-based PRNG");
 
 
 ls_result_t
