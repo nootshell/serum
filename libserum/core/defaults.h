@@ -4,7 +4,8 @@
 
 // Defaultless: MAKEFILE, DISTRO, GIT_BRANCH, GIT_COMMIT
 //              ELF_INTERP, LS_LOG_RESULTS,
-//              LS_NO_CHECK_INCLUDE_ASSUME_EXISTS
+//              LS_NO_CHECK_INCLUDE_ASSUME_EXISTS,
+//              LS_SELFTEST_VERBOSE
 
 
 #if (!defined(LS_ANSI_ESCAPE_SUPPORT))

@@ -178,7 +178,6 @@
     <ClInclude Include="core\stdincl.h" />
     <ClInclude Include="core\time.h" />
     <ClInclude Include="core\varsize.h" />
-    <ClInclude Include="crypto\enum.h" />
     <ClInclude Include="crypto\hashing\md5.h" />
     <ClInclude Include="crypto\hashing\self-test.h" />
     <ClInclude Include="crypto\hashing\sha2.h" />
