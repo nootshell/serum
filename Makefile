@@ -76,7 +76,7 @@ bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name
 
 
 
-debug: CFLAGS += -g -DDEBUG -DLS_SELFTEST_VERBOSE=1
+debug: CFLAGS += -g -DDEBUG
 debug: LS_MCHECK += $(shell sh ./get-mcheck.sh)
 debug: lib
 

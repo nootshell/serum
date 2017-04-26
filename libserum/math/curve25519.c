@@ -82,7 +82,7 @@
 #if ((-1 & 3) == 3)			// This code only works on a two's complement system.
 #	if ((-32 >> 1) == -16)	// This code only works when >> does sign-extension on negative numbers.
 
-#define FILE_PATH							"crypto/key_exchange/curve25519.c"
+#define FILE_PATH							"math/curve25519.c"
 
 #include "./curve25519.h"
 #include <string.h>
@@ -753,132 +753,37 @@ static crecip(int64_t *out, const int64_t *z_in) {
 }
 
 
-void
-static curve25519_donna(uint8_t *const LS_RESTRICT out, const uint8_t *const LS_RESTRICT private, const uint8_t *const LS_RESTRICT pob) {
+ls_result_t
+ls_curve25519(uint8_t out[32], const uint8_t x[32], const uint8_t y[32]) {
+	LS_RESULT_CHECK_NULL(out, 1);
+	LS_RESULT_CHECK_NULL(x, 2);
+	LS_RESULT_CHECK_NULL(y, 3);
+
 	int64_t
-		x[10],
+		a[10],
 		z[11];
 
 	{
 		uint8_t e[32];
 		int64_t bp[10];
 
-		memcpy(e, private, 32);
+		memcpy(e, x, 32);
 		e[0] &= 248;
 		e[31] = ((e[31] & 0x7F) | 0x40);
 
-		fexpand(bp, pob);
-		cmult(x, z, e, bp);
+		fexpand(bp, y);
+		cmult(a, z, e, bp);
 	}
 
 	int64_t zmone[10];
 
 	crecip(zmone, z);
-	fmul(z, x, zmone);
+	fmul(z, a, zmone);
 	fcontract(out, z);
-}
-
-
-ls_result_t
-ls_curve25519_init_ex(ls_curve25519_t *const ctx, const ls_curve25519_key_t private_key, const ls_curve25519_key_t basepoint) {
-	LS_RESULT_CHECK_NULL(ctx, 1);
-	LS_RESULT_CHECK_NULL(private_key, 2);
-
-	uint8_t param = 0;
-
-	if (!(ctx->private_key = ls_key_alloc_from(private_key, sizeof(ls_curve25519_key_t)))) {
-		param = 1;
-		goto __cleanup;
-	}
-
-	if (!(ctx->shared_key = ls_key_alloc(sizeof(ls_curve25519_key_t)))) {
-		param = 2;
-		goto __cleanup;
-	}
-
-	if (basepoint) {
-		memcpy(ctx->basepoint, basepoint, sizeof(ls_curve25519_key_t));
-	} else {
-		// ctx->basepoint = { 0x09 };
-		memset(ctx->basepoint, 0, sizeof(ls_curve25519_key_t));
-		ctx->basepoint[0] = 0x09;
-	}
-
-	curve25519_donna(ctx->public_key, ctx->private_key->data, ctx->basepoint);
-
-	return LS_RESULT_SUCCESS;
-
-__cleanup:
-	if (ctx->private_key) {
-		ctx->private_key = ls_key_free(ctx->private_key);
-	}
-
-	if (ctx->shared_key) {
-		ctx->shared_key = ls_key_free(ctx->shared_key);
-	}
-
-	return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_ALLOCATION, param);
-}
-
-
-ls_result_t
-ls_curve25519_init(ls_curve25519_t *const ctx, const ls_curve25519_key_t private_key) {
-	return ls_curve25519_init_ex(ctx, private_key, NULL);
-}
-
-
-ls_result_t
-ls_curve25519_clear(ls_curve25519_t *const ctx) {
-	LS_RESULT_CHECK_NULL(ctx, 1);
-
-	ctx->private_key = ls_key_free(ctx->private_key);
-	ctx->shared_key = ls_key_free(ctx->shared_key);
 
 	return LS_RESULT_SUCCESS;
 }
 
-
-ls_result_t
-ls_curve25519_generate_shared(const ls_curve25519_t *const ctx, const ls_curve25519_key_t public_key) {
-	LS_RESULT_CHECK_NULL(ctx, 1);
-	LS_RESULT_CHECK_NULL(public_key, 2);
-	LS_RESULT_CHECK_NULL(ctx->private_key, 3);
-	LS_RESULT_CHECK_NULL(ctx->shared_key, 4);
-
-	curve25519_donna(ctx->shared_key->data, ctx->private_key->data, public_key);
-
-	return LS_RESULT_SUCCESS;
-}
-
-
-const void*
-ls_curve25519_get_public(const ls_curve25519_t *const ctx) {
-	if (!ctx) {
-		return NULL;
-	}
-
-	return ctx->public_key;
-}
-
-
-const void*
-ls_curve25519_get_private(const ls_curve25519_t *const ctx) {
-	if (!ctx || !ctx->private_key) {
-		return NULL;
-	}
-
-	return ctx->private_key->data;
-}
-
-
-const void*
-ls_curve25519_get_shared(const ls_curve25519_t *const ctx) {
-	if (!ctx || !ctx->shared_key) {
-		return NULL;
-	}
-
-	return ctx->shared_key->data;
-}
 
 #	else
 #		error "This code only works when >> does sign-extension on negative numbers."
