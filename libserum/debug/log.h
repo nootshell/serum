@@ -37,6 +37,7 @@
 #include "../core/integers.h"
 #include "../core/lsapi.h"
 #include "../core/identification.h"
+#include "../core/defaults.h"
 
 #include "../core/errstr.h"
 
@@ -137,8 +138,13 @@
 #endif
 
 
-#define ls_log(s)							_ls_log(__func__, FILE_PATH, __LINE__, (s))
-#define ls_logf(fmt, ...)					_ls_logf(__func__, FILE_PATH, __LINE__, (fmt), __VA_ARGS__)
+#if (!LS_NO_LOGGING)
+#	define ls_log(s)						_ls_log(__func__, FILE_PATH, __LINE__, (s))
+#	define ls_logf(fmt, ...)				_ls_logf(__func__, FILE_PATH, __LINE__, (fmt), __VA_ARGS__)
+#else
+#	define ls_log(s)
+#	define ls_logf(fmt, ...)
+#endif
 
 
 #define ls_log_e(str)						ls_log("[err] " str)

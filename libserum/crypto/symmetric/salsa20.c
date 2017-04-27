@@ -118,7 +118,7 @@ static LS_ATTR_INLINE ls_salsa20_internal_process_sub(ls_salsa20_t *const LS_RES
 
 
 ls_result_t
-ls_salsa20_init(ls_salsa20_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size) {
+ls_salsa20_init_ex(ls_salsa20_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size, const void *const LS_RESTRICT iv) {
 	LS_RESULT_CHECK_NULL(ctx, 1);
 	LS_RESULT_CHECK_NULL(key, 2);
 
@@ -154,10 +154,21 @@ ls_salsa20_init(ls_salsa20_t *const LS_RESTRICT ctx, const void *const LS_RESTRI
 	ctx->data.layout.c3 = LS_SWAP_ENDIAN_LITTLE_32(c[2]);
 	ctx->data.layout.c4 = LS_SWAP_ENDIAN_LITTLE_32(c[3]);
 
-	ctx->data.layout.nonce = 0;
+	if (iv) {
+		memcpy(&ctx->data.layout.nonce, iv, sizeof(ctx->data.layout.nonce));
+	} else {
+		ctx->data.layout.nonce = 0;
+	}
+
 	ctx->cache_offset = LS_SALSA20_BLOCK_SIZE;
 
 	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_salsa20_init(ls_salsa20_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size) {
+	return ls_salsa20_init_ex(ctx, key, key_size, NULL);
 }
 
 

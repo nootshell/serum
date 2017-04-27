@@ -67,6 +67,7 @@ typedef struct ls_salsa20 {
 extern "C" {
 #endif
 
+	LSAPI ls_result_t ls_salsa20_init_ex(ls_salsa20_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size, const void *const LS_RESTRICT iv);
 	LSAPI ls_result_t ls_salsa20_init(ls_salsa20_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size);
 	LSAPI ls_result_t ls_salsa20_clear(ls_salsa20_t *ctx);
 
