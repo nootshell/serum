@@ -41,7 +41,7 @@ ID("Cipher Block Chaining");
 
 
 ls_result_t
-ls_cbc_init(ls_cbc_t *const cbc, const uint8_t *const iv, const uint16_t block_size, const uint16_t flags, void *const data, ls_sf_encrypt_block encrypt, ls_sf_decrypt_block decrypt) {
+ls_cbc_init(ls_cbc_t *const cbc, const uint8_t *const iv, const uint16_t block_size, const uint16_t flags, void *const data, ls_sf_encrypt_block_t encrypt, ls_sf_decrypt_block_t decrypt) {
 	LS_RESULT_CHECK_NULL(cbc, 1);
 	LS_RESULT_CHECK_NULL(iv, 2);
 	LS_RESULT_CHECK_NULL(data, 3);

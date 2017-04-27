@@ -361,7 +361,7 @@ ls_thread_join(ls_thread_t *thread) {		// TODO: timeout, sleep?
 
 	if (!HAS_FLAG(thread->flags, LS_THREAD_FINISHED)) {
 		while (!HAS_FLAG(thread->flags, LS_THREAD_FINISHED)) {
-			;
+			ls_sleep_micros(20);
 		}
 	}
 

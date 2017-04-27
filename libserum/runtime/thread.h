@@ -65,6 +65,9 @@
 #define LS_RESULT_CHECK_THREAD_RUNNING(thread, param) \
 											LS_RESULT_CHECK((!HAS_FLAG((thread)->flags, LS_THREAD_STARTED) || HAS_FLAG((thread)->flags, LS_THREAD_FINISHED)), LS_RESULT_CODE_STATE, (param))
 
+#define LS_THREAD_CHECK_EXIT(thrptr)		if (!ls_thread_check_exit((thrptr)).success) { return LS_RESULT_CODE_SUCCESS; }
+#define LS_THREAD_CHECK_SUSPENDED(thrptr)	if (!ls_thread_check_suspended((thrptr)).success) { return LS_RESULT_CODE_FUNCTION; }
+
 
 typedef struct ls_thread ls_thread_t;
 

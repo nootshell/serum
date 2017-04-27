@@ -38,6 +38,7 @@
 #include "../debug/log.h"
 #include <string.h>
 #include <inttypes.h>
+#include <errno.h>
 
 
 #define STOP_TIMEOUT_INTERVAL				250
@@ -71,7 +72,7 @@ static LS_ATTR_INLINE validate_sockfd(ls_sockfd_t fd, ls_bool *const valid) {
 #if (LS_WINDOWS)
 	return ((*valid = (fd != INVALID_SOCKET)) ? fd : LS_INVALID_SOCKET);
 #else
-	return ((*valid = (fd < 0)) ? fd : LS_INVALID_SOCKET);
+	return ((*valid = (fd != -1)) ? fd : LS_INVALID_SOCKET);
 #endif
 }
 
@@ -224,6 +225,7 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 		((struct sockaddr_in*)ptr->ai_addr)->sin_port = nport;
 
 		if (!create_socket(ctx, ptr)) {
+			ls_log_fail("create_socket()");
 			continue;
 		}
 
@@ -283,6 +285,10 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 
 	ctx->flags &= ~LS_SOCKET_EXITED;
 
+	if (HAS_FLAG(ctx->flags, LS_SOCKET_ASYNC)) {
+		ls_socket_set_option(ctx, LS_SO_ASYNC, 1);
+	}
+
 	return LS_RESULT_SUCCESS;
 }
 
@@ -340,7 +346,7 @@ ls_socket_stop_ex(ls_socket_t *const ctx, const ls_bool force, const uint_fast16
 
 ls_result_t
 ls_socket_stop(ls_socket_t *const ctx, const ls_bool force) {
-	return ls_socket_stop_ex(ctx, force, 5000);
+	return ls_socket_stop_ex(ctx, force, 0);
 }
 
 
@@ -472,6 +478,16 @@ ls_socket_read(size_t *const LS_RESTRICT out_size, const ls_socket_t *const LS_R
 			*out_size = (size_t)received;
 		}
 		return LS_RESULT_SUCCESS;
+	}
+
+	if (out_size) {
+		*out_size = 0;
+	}
+
+	if (HAS_FLAG(ctx->flags, LS_SOCKET_ASYNC)) {
+		if (errno == EAGAIN || errno == EWOULDBLOCK) {
+			return LS_RESULT_SUCCESS_CODE(LS_RESULT_CODE_EARLY_EXIT);
+		}
 	}
 
 	return LS_RESULT_ERROR(LS_RESULT_CODE_READ);

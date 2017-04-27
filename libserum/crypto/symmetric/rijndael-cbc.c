@@ -48,7 +48,7 @@ ls_rijndael_cbc_init(ls_rijndael_cbc_t *const LS_RESTRICT ctx, const void *const
 		return LS_RESULT_INHERITED(result, false);
 	}
 
-	if (!(result = ls_cbc_init(&ctx->cbc, iv, LS_RIJNDAEL_BLOCK_SIZE, flags, &ctx->rijndael, ((ls_sf_encrypt_block)ls_rijndael_encrypt_block), ((ls_sf_decrypt_block)ls_rijndael_decrypt_block))).success) {
+	if (!(result = ls_cbc_init(&ctx->cbc, iv, LS_RIJNDAEL_BLOCK_SIZE, flags, &ctx->rijndael, ((ls_sf_encrypt_block_t)ls_rijndael_encrypt_block), ((ls_sf_decrypt_block_t)ls_rijndael_decrypt_block))).success) {
 		return LS_RESULT_INHERITED(result, false);
 	}
 

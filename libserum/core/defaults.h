@@ -25,6 +25,10 @@
 #	endif
 #endif
 
+#if (!defined(LS_NO_LOGGING))
+#	define LS_NO_LOGGING					1
+#endif
+
 #if (!defined(LS_RDTSC_NANOS_FAILSAFE))
 #	define LS_RDTSC_NANOS_FAILSAFE			0
 #endif
