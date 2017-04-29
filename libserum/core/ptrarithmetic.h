@@ -40,19 +40,6 @@
 #define LS_SELECT_IO_PTR(out, in)			((out) ? (out) : (in))
 
 #define LS_SELECT_IO_PTR_WCPY(out, in, sz)	(((out)) ? (((out) != (in)) ? memcpy((out), (in), sz) : (out)) : (in))
-/*
-**  The code above translates to:
-**	if ((out)) {
-**		if ((out) != (in)) {
-**			return _mcpy((out), (in), (sz));
-**		} else {
-**			return (out);
-**		}
-**	} else {
-**		return (in);
-**	}
-**
-*/
 
 
 #endif

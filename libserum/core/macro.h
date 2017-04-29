@@ -34,9 +34,6 @@
 #define __LS_CORE_MACRO_H
 
 
-#include "./detect_compiler.h"
-
-
 #define _MACRO_STRINGIFY(x)					#x
 #define MACRO_STRINGIFY(x)					_MACRO_STRINGIFY(x)
 
@@ -46,7 +43,9 @@
 #		define LS_CHECK_BUILTIN(x)			__has_builtin(x)
 #		define LS_HAVE_CHECK_BUILTIN		1
 #	else
-		LS_COMPILER_WARN_FEATURE("macro definition to check for builtins");
+#		if (defined(LS_COMPILER_WARN_FEATURE))
+			LS_COMPILER_WARN_FEATURE("macro definition to check for builtins");
+#		endif
 #	endif
 #else
 #	define LS_CHECK_BUILTIN(x)				0
@@ -57,7 +56,9 @@
 #		define LS_CHECK_INCLUDE(x)			__has_include(<x>)
 #		define LS_HAVE_CHECK_INCLUDE		1
 #	else
-		LS_COMPILER_WARN_FEATURE("macro definition to check for includes");
+#		if (defined(LS_COMPILER_WARN_FEATURE))
+			LS_COMPILER_WARN_FEATURE("macro definition to check for includes");
+#		endif
 #	endif
 #else
 #	if (LS_NO_CHECK_INCLUDE_ASSUME_EXISTS)
