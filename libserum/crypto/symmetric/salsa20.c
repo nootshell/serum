@@ -32,7 +32,6 @@
 
 #define FILE_PATH							"crypto/symmetric/salsa20.c"
 
-
 #include "./salsa20.h"
 #include "../../core/memory.h"
 #include <string.h>

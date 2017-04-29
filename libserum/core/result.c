@@ -70,7 +70,15 @@ static size_t num_strings = 0;
 
 ls_result_t
 __LS_RESULT_PRINT(ls_result_t ret, char const *const func, char const *const file, uint32_t const line) {
-	_ls_logf(func, file, line, "%08X (" LS_RESULT_PRINTF_FORMAT ") %s", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret), (ret.code ? ls_result_get_code_string(ret.code) : ""));
+	if (ret.code) {
+		if (ret.param) {
+			_ls_logf(func, file, line, "%08X (" LS_RESULT_PRINTF_FORMAT ") %s (param %u)", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret), ls_result_get_code_string(ret.code), ret.param);
+		} else {
+			_ls_logf(func, file, line, "%08X (" LS_RESULT_PRINTF_FORMAT ") %s", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret), ls_result_get_code_string(ret.code));
+		}
+	} else {
+		_ls_logf(func, file, line, "%08X (" LS_RESULT_PRINTF_FORMAT ")", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret));
+	}
 	return ret;
 }
 
