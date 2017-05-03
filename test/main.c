@@ -43,7 +43,7 @@
 #include <libserum/crypto/prng/device.h>
 
 
-#define STATIC								0
+#define STATIC								1
 
 
 int main(int argc, char *argv[], char *env[]) {

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -27,26 +27,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -185,8 +185,7 @@
     <ClInclude Include="crypto\hmac\hmac-md5.h" />
     <ClInclude Include="crypto\hmac\hmac-sha2.h" />
     <ClInclude Include="crypto\hmac\hmac.h" />
-    <ClInclude Include="crypto\kex\curve25519.h" />
-    <ClInclude Include="crypto\key_exchange\curve25519.h" />
+    <ClInclude Include="crypto\key_exchange\x25519.h" />
     <ClInclude Include="crypto\padding\iso9797.h" />
     <ClInclude Include="crypto\prng\device.h" />
     <ClInclude Include="crypto\prng\isaac.h" />
@@ -201,6 +200,7 @@
     <ClInclude Include="debug\log.h" />
     <ClInclude Include="debug\memdump.h" />
     <ClInclude Include="debug\__self-test_logging.h" />
+    <ClInclude Include="math\curve25519.h" />
     <ClInclude Include="networking\packet-decoder.h" />
     <ClInclude Include="networking\packet.h" />
     <ClInclude Include="networking\socket.h" />
@@ -225,7 +225,7 @@
     <ClCompile Include="crypto\hmac\hmac-md5.c" />
     <ClCompile Include="crypto\hmac\hmac-sha2.c" />
     <ClCompile Include="crypto\hmac\hmac.c" />
-    <ClCompile Include="crypto\key_exchange\curve25519.c" />
+    <ClCompile Include="crypto\key_exchange\x25519.c" />
     <ClCompile Include="crypto\padding\iso9797.c" />
     <ClCompile Include="crypto\prng\device.c" />
     <ClCompile Include="crypto\prng\isaac.c" />
@@ -237,6 +237,7 @@
     <ClCompile Include="crypto\symmetric\xxtea.c" />
     <ClCompile Include="debug\log.c" />
     <ClCompile Include="debug\memdump.c" />
+    <ClCompile Include="math\curve25519.c" />
     <ClCompile Include="networking\packet-decoder.c" />
     <ClCompile Include="networking\packet.c" />
     <ClCompile Include="networking\socket.c" />
