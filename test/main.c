@@ -39,64 +39,35 @@
 #include <libserum/core/memory.h>
 #include <libserum/debug/memdump.h>
 
-#include <libserum/crypto/key_exchange/x25519.h>
-#include <libserum/crypto/prng/device.h>
+#include <libserum/crypto/kdf/pbkdf2.h>
+#include <libserum/crypto/hmac/hmac-sha2.h>
+
+
 
 
 #define STATIC								1
 
 
 int main(int argc, char *argv[], char *env[]) {
-	#if (!STATIC)
-	ls_device_t device;
-	ls_device_sys(&device, 16, DEV_URANDOM);
-	#endif
-
-	ls_x25519_key_t basepoint;
-	memset(basepoint, 0xCA, sizeof(basepoint));
-
-	ls_x25519_key_t private_key_alice;
-	#if (STATIC)
-	memset(private_key_alice, 0xBA, sizeof(private_key_alice));
-	#else
-	ls_device_generate(&device, private_key_alice, sizeof(private_key_alice));
-	#endif
-
-	ls_x25519_key_t private_key_bob;
-	#if (STATIC)
-	memset(private_key_bob, 0x69, sizeof(private_key_bob));
-	#else
-	ls_device_generate(&device, private_key_bob, sizeof(private_key_bob));
-	#endif
-
-	ls_x25519_t curve_alice, curve_bob;
-
-	if (!ls_x25519_init_ex(&curve_alice, private_key_alice, basepoint).success) {
+	if (argc < 4) {
+		printf("Usage: %s <password> <salt> <rounds> <keylen>\n", argv[0]);
 		return 1;
-	}
-	if (!ls_x25519_init_ex(&curve_bob, private_key_bob, basepoint).success) {
-		return 2;
-	}
-
-	if (!ls_x25519_generate_shared(&curve_alice, ls_x25519_get_public(&curve_bob)).success) {
-		return 3;
-	}
-	if (!ls_x25519_generate_shared(&curve_bob, ls_x25519_get_public(&curve_alice)).success) {
-		return 4;
-	}
-
-	if (!ls_memdiff(ls_x25519_get_shared(&curve_alice), ls_x25519_get_shared(&curve_bob), sizeof(ls_x25519_key_t))) {
-		puts(LS_ANSI_ESCAPE LS_ANSI_FG_GREEN LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_TERMINATE "passed" LS_ANSI_RESET);
 	} else {
-		puts(LS_ANSI_ESCAPE LS_ANSI_FG_RED LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_TERMINATE "failed" LS_ANSI_RESET);
+		size_t pwsz = strlen(argv[1]);
+		size_t stsz = strlen(argv[2]);
+		uintmax_t rounds = strtoumax(argv[3], NULL, 10);
+		uintmax_t keysz = strtoumax(argv[4], NULL, 10);
+
+		uint8_t stackalloc(key, keysz);
+		ls_result_t result = ls_pbkdf2(argv[1], pwsz, argv[2], stsz, key, keysz, rounds, LS_SHA2_256_DIGEST_SIZE, (ls_hmac_t)ls_hmac_sha2_256);
+		
+		printf("result: %08X\n", *((uint32_t*)&result));
+		ls_memdump(argv[1], pwsz);
+		ls_memdump(argv[2], stsz);
+		ls_memdump(key, keysz);
+		printf("%" PRIuMAX ", %" PRIuMAX "\n", rounds, keysz);
 	}
 
-	if (!ls_x25519_clear(&curve_alice).success) {
-		return 5;
-	}
-	if (!ls_x25519_clear(&curve_bob).success) {
-		return 6;
-	}
-
+	fgetc(stdin);
 	return 0;
 }
