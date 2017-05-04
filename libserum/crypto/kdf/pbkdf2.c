@@ -34,6 +34,7 @@
 
 #include "./pbkdf2.h"
 #include "../../core/memory.h"
+#include <string.h>
 
 
 ID("PBKDF2 implementation");
