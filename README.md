@@ -28,6 +28,10 @@
 		- [HMAC-\*](./libserum/crypto/hmac/hmac.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Hash-based_message_authentication_code)</sup>
 		- [HMAC-MD5](./libserum/crypto/hmac/hmac-md5.h)
 		- [HMAC-SHA2](./libserum/crypto/hmac/hmac-sha2.h)
+	- KDF
+		- [PBKDF2-\*](./libserum/crypto/kdf/pbkdf2.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/PBKDF2)</sup>
+		- [PBKDF2-MD5](./libserum/crypto/kdf/pbkdf2-md5.h)
+		- [PBKDF2-SHA2](./libserum/crypto/kdf/pbkdf2-sha2.h)
 	- Key exchange
 		- [Curve25519](./libserum/crypto/key_exchange/curve25519.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Curve25519)</sup>
 	- Padding
@@ -67,7 +71,6 @@ TODO
 		- SHA-3 <sup>low priority</sup> <sup>[Wikipedia](https://en.wikipedia.org/wiki/SHA-3)</sup>
 		- RIPEMD-160 <sup>low priority</sup> <sup>[Wikipedia](https://en.wikipedia.org/wiki/RIPEMD)</sup>
 	- KDF
-		- PBKDF2 <sup>priority</sup> <sup>[Wikipedia](https://en.wikipedia.org/wiki/PBKDF2)</sup>
 		- Argon2 <sup>[Wikipedia](https://en.wikipedia.org/wiki/Argon2)</sup>
 		- Lyra2 <sup>[Wikipedia](https://en.wikipedia.org/wiki/Lyra2)</sup>
 - Optimizations
