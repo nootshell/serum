@@ -47,9 +47,9 @@ ls_hmac_md5(const void *const LS_RESTRICT data, const size_t data_size, const vo
 		key, key_size,
 		digest, LS_MD5_DIGEST_SIZE,
 		LS_MD5_BLOCK_SIZE, &md5,
-		(ls_hf_init_t)ls_md5_init,
-		(ls_hf_update_t)ls_md5_update,
-		(ls_hf_finish_t)ls_md5_finish,
-		(ls_hf_clear_t)ls_md5_clear
+		(ls_hash_init_func_t)ls_md5_init,
+		(ls_hash_update_func_t)ls_md5_update,
+		(ls_hash_finish_func_t)ls_md5_finish,
+		(ls_hash_clear_func_t)ls_md5_clear
 	);
 }
