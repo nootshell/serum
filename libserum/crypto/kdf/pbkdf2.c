@@ -41,7 +41,7 @@ ID("PBKDF2 implementation");
 
 
 ls_result_t
-ls_pbkdf2(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const uint32_t rounds, const size_t digest_size, ls_hmac_t hmac) {
+ls_pbkdf2(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const uint32_t rounds, const size_t digest_size, ls_hmac_func_t const hmac) {
 	LS_RESULT_CHECK_NULL(out, 1);
 	LS_RESULT_CHECK_SIZE(out_size, 1);
 	LS_RESULT_CHECK_NULL(pass, 2);
@@ -49,38 +49,50 @@ ls_pbkdf2(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRI
 	LS_RESULT_CHECK_NULL(salt, 3);
 	LS_RESULT_CHECK_SIZE(salt_size, 3);
 
-	uint8_t stackalloc(obuf, digest_size);
 	uint8_t stackalloc(d1, digest_size);
 	uint8_t stackalloc(d2, digest_size);
 
-	uint8_t stackalloc(asalt, (salt_size + 4));
+	uint8_t stackalloc(asalt, (salt_size + sizeof(uint32_t)));
 	memcpy(asalt, salt, salt_size);
 
-	uint32_t i, j;
-	uint32_t count;
-	size_t r;
+	const ls_bool native_word = ((digest_size & (sizeof(unsigned int) - 1)) == 0);
 
-	for (count = 1; out_size > 0; count++) {
-		asalt[salt_size + 0] = (count >> 24) & 0xff;
-		asalt[salt_size + 1] = (count >> 16) & 0xff;
-		asalt[salt_size + 2] = (count >> 8) & 0xff;
-		asalt[salt_size + 3] = count & 0xff;
-		hmac(asalt, salt_size + 4, pass, pass_size, d1);
-		memcpy(obuf, d1, digest_size);
+	unsigned int i;
+	size_t r, j;
+	unsigned int count;
+	for (count = 1; out_size > 0; ++count) {
+		*((uint32_t*)(asalt + salt_size)) = LS_SWAP_ENDIAN_BIG_32(count);
 
-		for (i = 1; i < rounds; i++) {
-			hmac(d1, digest_size, pass, pass_size, d2);
-			memcpy(d1, d2, digest_size);
-			for (j = (uint32_t)digest_size; j--;) {
-				obuf[j] ^= d1[j];
+		hmac(asalt, stacksizeof(asalt), pass, pass_size, d1);
+
+		if (native_word) {
+			for (i = rounds; --i;) {
+				hmac(d1, digest_size, pass, pass_size, d2);
+
+				for (j = (digest_size / sizeof(unsigned int)); j--;) {
+					((unsigned int *)d1)[j] ^= ((unsigned int *)d2)[j];
+				}
+			}
+		} else {
+			for (i = rounds; --i;) {
+				hmac(d1, digest_size, pass, pass_size, d2);
+
+				for (j = digest_size; j--;) {
+					d1[j] ^= d2[j];
+				}
 			}
 		}
 
 		r = ((out_size < digest_size) ? out_size : digest_size);
-		memcpy(out, obuf, r);
+		memcpy(out, d1, r);
+
 		out += r;
 		out_size -= r;
 	};
+
+	stackfree(d1);
+	stackfree(d2);
+	stackfree(asalt);
 
 	return LS_RESULT_SUCCESS;
 }

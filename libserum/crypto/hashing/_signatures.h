@@ -37,10 +37,10 @@
 #include "../../core/stdincl.h"
 
 
-typedef ls_result_t(*ls_hf_init_t)(void *const hf_data);
-typedef ls_result_t(*ls_hf_clear_t)(void *const hf_data);
-typedef ls_result_t(*ls_hf_update_t)(void *const hf_data, const void *const data, size_t size);
-typedef ls_result_t(*ls_hf_finish_t)(void *const hf_data, void *const digest);
+typedef ls_result_t(*ls_hash_init_func_t)(void *const hf_data);
+typedef ls_result_t(*ls_hash_clear_func_t)(void *const hf_data);
+typedef ls_result_t(*ls_hash_update_func_t)(void *const hf_data, const void *const data, size_t size);
+typedef ls_result_t(*ls_hash_finish_func_t)(void *const hf_data, void *const digest);
 
 
 #endif

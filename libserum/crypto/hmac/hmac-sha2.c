@@ -47,10 +47,10 @@ ls_hmac_sha2_224(const void *const LS_RESTRICT data, const size_t data_size, con
 		key, key_size,
 		digest, LS_SHA2_224_DIGEST_SIZE,
 		LS_SHA2_224_BLOCK_SIZE, &sha2,
-		(ls_hf_init_t)ls_sha2_224_init,
-		(ls_hf_update_t)ls_sha2_224_update,
-		(ls_hf_finish_t)ls_sha2_224_finish,
-		(ls_hf_clear_t)ls_sha2_224_clear
+		(ls_hash_init_func_t)ls_sha2_224_init,
+		(ls_hash_update_func_t)ls_sha2_224_update,
+		(ls_hash_finish_func_t)ls_sha2_224_finish,
+		(ls_hash_clear_func_t)ls_sha2_224_clear
 	);
 }
 
@@ -63,10 +63,10 @@ ls_hmac_sha2_256(const void *const LS_RESTRICT data, const size_t data_size, con
 		key, key_size,
 		digest, LS_SHA2_256_DIGEST_SIZE,
 		LS_SHA2_256_BLOCK_SIZE, &sha2,
-		(ls_hf_init_t)ls_sha2_256_init,
-		(ls_hf_update_t)ls_sha2_256_update,
-		(ls_hf_finish_t)ls_sha2_256_finish,
-		(ls_hf_clear_t)ls_sha2_256_clear
+		(ls_hash_init_func_t)ls_sha2_256_init,
+		(ls_hash_update_func_t)ls_sha2_256_update,
+		(ls_hash_finish_func_t)ls_sha2_256_finish,
+		(ls_hash_clear_func_t)ls_sha2_256_clear
 	);
 }
 
@@ -79,10 +79,10 @@ ls_hmac_sha2_384(const void *const LS_RESTRICT data, const size_t data_size, con
 		key, key_size,
 		digest, LS_SHA2_384_DIGEST_SIZE,
 		LS_SHA2_384_BLOCK_SIZE, &sha2,
-		(ls_hf_init_t)ls_sha2_384_init,
-		(ls_hf_update_t)ls_sha2_384_update,
-		(ls_hf_finish_t)ls_sha2_384_finish,
-		(ls_hf_clear_t)ls_sha2_384_clear
+		(ls_hash_init_func_t)ls_sha2_384_init,
+		(ls_hash_update_func_t)ls_sha2_384_update,
+		(ls_hash_finish_func_t)ls_sha2_384_finish,
+		(ls_hash_clear_func_t)ls_sha2_384_clear
 	);
 }
 
@@ -95,9 +95,9 @@ ls_hmac_sha2_512(const void *const LS_RESTRICT data, const size_t data_size, con
 		key, key_size,
 		digest, LS_SHA2_512_DIGEST_SIZE,
 		LS_SHA2_512_BLOCK_SIZE, &sha2,
-		(ls_hf_init_t)ls_sha2_512_init,
-		(ls_hf_update_t)ls_sha2_512_update,
-		(ls_hf_finish_t)ls_sha2_512_finish,
-		(ls_hf_clear_t)ls_sha2_512_clear
+		(ls_hash_init_func_t)ls_sha2_512_init,
+		(ls_hash_update_func_t)ls_sha2_512_update,
+		(ls_hash_finish_func_t)ls_sha2_512_finish,
+		(ls_hash_clear_func_t)ls_sha2_512_clear
 	);
 }

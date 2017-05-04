@@ -44,6 +44,6 @@ ls_result_t ls_pbkdf2_md5(uint8_t *LS_RESTRICT out, size_t out_size, const char 
 		salt, salt_size,
 		rounds,
 		LS_MD5_DIGEST_SIZE,
-		(ls_hmac_t)ls_hmac_md5
+		(ls_hmac_func_t)ls_hmac_md5
 	);
 }

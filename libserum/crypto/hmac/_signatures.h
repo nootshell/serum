@@ -37,7 +37,7 @@
 #include "../../core/stdincl.h"
 
 
-typedef ls_result_t(*ls_hmac_t)(const void *const LS_RESTRICT data, const size_t data_size, const void *const LS_RESTRICT key, const size_t key_size, void *digest);
+typedef ls_result_t(*ls_hmac_func_t)(const void *const LS_RESTRICT data, const size_t data_size, const void *const LS_RESTRICT key, const size_t key_size, void *digest);
 
 
 #endif

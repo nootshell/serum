@@ -93,6 +93,7 @@
 #
 #	define LS_ATTR_THREAD					__declspec(thread)
 #	define LS_ATTR_INLINE					inline
+#	define LS_ATTR_ALIGN(x)					__declspec(align(x))
 #
 #	define LS_RESTRICT						__restrict
 #
@@ -113,6 +114,7 @@
 #	define LS_ATTR_CONSTRUCTOR				__attribute__((constructor))
 #	define LS_ATTR_DESTRUCTOR				__attribute__((destructor))
 #	define LS_ATTR_INLINE					inline
+#	define LS_ATTR_ALIGN(x)					__attribute__((alignment(x)))
 #
 #	define LS_RESTRICT						restrict
 #

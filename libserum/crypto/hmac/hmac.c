@@ -52,7 +52,7 @@ static LS_ATTR_INLINE prep_key(uint8_t *const LS_RESTRICT out, const size_t out_
 }
 
 ls_result_t
-ls_hmac_universal(const void *const LS_RESTRICT data, const size_t data_size, const void *LS_RESTRICT key, size_t key_size, void *const LS_RESTRICT digest, const size_t digest_size, const size_t block_size, void *const LS_RESTRICT hf_data, ls_hf_init_t const hf_init, ls_hf_update_t const hf_update, ls_hf_finish_t const hf_finish, ls_hf_clear_t const hf_clear) {
+ls_hmac_universal(const void *const LS_RESTRICT data, const size_t data_size, const void *LS_RESTRICT key, size_t key_size, void *const LS_RESTRICT digest, const size_t digest_size, const size_t block_size, void *const LS_RESTRICT hf_data, ls_hash_init_func_t const hf_init, ls_hash_update_func_t const hf_update, ls_hash_finish_func_t const hf_finish, ls_hash_clear_func_t const hf_clear) {
 	LS_RESULT_CHECK_NULL(data, 1);
 	LS_RESULT_CHECK_SIZE(data_size, 1);
 	LS_RESULT_CHECK_NULL(key, 2);

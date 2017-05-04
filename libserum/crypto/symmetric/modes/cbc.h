@@ -45,8 +45,8 @@ typedef struct ls_cbc {
 	uint8_t *iv;
 	uint8_t *cv;
 	void *data;
-	   ls_sf_encrypt_block_t encrypt;
-	   ls_sf_decrypt_block_t decrypt;
+	   ls_sym_encrypt_block_func_t encrypt;
+	   ls_sym_decrypt_block_func_t decrypt;
 	uint16_t block_size;
 	uint16_t flags;
 } ls_cbc_t;
@@ -56,7 +56,7 @@ typedef struct ls_cbc {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_cbc_init(ls_cbc_t *const cbc, const uint8_t *const iv, const uint16_t block_size, const uint16_t flags, void *const data, ls_sf_encrypt_block_t encrypt, ls_sf_decrypt_block_t decrypt);
+	LSAPI ls_result_t ls_cbc_init(ls_cbc_t *const cbc, const uint8_t *const iv, const uint16_t block_size, const uint16_t flags, void *const data, ls_sym_encrypt_block_func_t encrypt, ls_sym_decrypt_block_func_t decrypt);
 	LSAPI ls_result_t ls_cbc_clear(ls_cbc_t *cbc);
 
 	LSAPI ls_result_t ls_cbc_reset(const ls_cbc_t *const cbc);

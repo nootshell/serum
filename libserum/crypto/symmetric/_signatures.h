@@ -37,10 +37,10 @@
 #include "../../core/stdincl.h"
 
 
-typedef ls_result_t (*ls_sf_init_t)(void *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size);
-typedef ls_result_t (*ls_sf_clear_t)(void *const ctx);
-typedef ls_result_t (*ls_sf_encrypt_block_t)(const void *const LS_RESTRICT ctx, void *const LS_RESTRICT block);
-typedef ls_sf_encrypt_block_t ls_sf_decrypt_block_t;
+typedef ls_result_t (*ls_sym_init_func_t)(void *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size);
+typedef ls_result_t (*ls_sym_clear_func_t)(void *const ctx);
+typedef ls_result_t (*ls_sym_encrypt_block_func_t)(const void *const LS_RESTRICT ctx, void *const LS_RESTRICT block);
+typedef ls_sym_encrypt_block_func_t ls_sym_decrypt_block_func_t;
 
 
 #endif

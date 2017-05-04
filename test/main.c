@@ -39,7 +39,7 @@
 #include <libserum/core/memory.h>
 #include <libserum/debug/memdump.h>
 
-#include <libserum/crypto/kdf/pbkdf2.h>
+#include <libserum/crypto/kdf/pbkdf2-sha2.h>
 #include <libserum/crypto/hmac/hmac-sha2.h>
 
 
@@ -57,15 +57,12 @@ int main(int argc, char *argv[], char *env[]) {
 		uintmax_t keysz = strtoumax(argv[4], NULL, 10);
 
 		uint8_t stackalloc(key, keysz);
-		ls_result_t result = ls_pbkdf2(argv[1], pwsz, argv[2], stsz, key, keysz, rounds, LS_SHA2_256_DIGEST_SIZE, (ls_hmac_t)ls_hmac_sha2_256);
-		
-		printf("result: %08X\n", *((uint32_t*)&result));
-		ls_memdump(argv[1], pwsz);
-		ls_memdump(argv[2], stsz);
-		ls_memdump(key, keysz);
-		printf("%" PRIuMAX ", %" PRIuMAX "\n", rounds, keysz);
+		ls_pbkdf2_sha2_256(key, keysz, argv[1], pwsz, argv[2], stsz, rounds);
+
+		ls_vmemdump(argv[1], pwsz, "Password:");
+		ls_vmemdump(argv[2], stsz, "Salt:");
+		ls_vmemdump(key, keysz, "Output:");
 	}
 
-	fgetc(stdin);
 	return 0;
 }

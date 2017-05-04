@@ -45,7 +45,7 @@ ls_pbkdf2_sha2_224(uint8_t *LS_RESTRICT out, size_t out_size, const char *const 
 		salt, salt_size,
 		rounds,
 		LS_SHA2_224_DIGEST_SIZE,
-		(ls_hmac_t)ls_hmac_sha2_224
+		(ls_hmac_func_t)ls_hmac_sha2_224
 	);
 }
 
@@ -58,7 +58,7 @@ ls_pbkdf2_sha2_256(uint8_t *LS_RESTRICT out, size_t out_size, const char *const 
 		salt, salt_size,
 		rounds,
 		LS_SHA2_256_DIGEST_SIZE,
-		(ls_hmac_t)ls_hmac_sha2_256
+		(ls_hmac_func_t)ls_hmac_sha2_256
 	);
 }
 
@@ -71,7 +71,7 @@ ls_pbkdf2_sha2_384(uint8_t *LS_RESTRICT out, size_t out_size, const char *const 
 		salt, salt_size,
 		rounds,
 		LS_SHA2_384_DIGEST_SIZE,
-		(ls_hmac_t)ls_hmac_sha2_384
+		(ls_hmac_func_t)ls_hmac_sha2_384
 	);
 }
 
@@ -84,6 +84,6 @@ ls_pbkdf2_sha2_512(uint8_t *LS_RESTRICT out, size_t out_size, const char *const 
 		salt, salt_size,
 		rounds,
 		LS_SHA2_512_DIGEST_SIZE,
-		(ls_hmac_t)ls_hmac_sha2_512
+		(ls_hmac_func_t)ls_hmac_sha2_512
 	);
 }
