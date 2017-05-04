@@ -43,8 +43,6 @@
 #include <libserum/crypto/hmac/hmac-sha2.h>
 
 
-
-
 #define STATIC								1
 
 

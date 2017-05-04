@@ -26,59 +26,84 @@
 ********************************************************************************
 **
 **  Notes:
-**    -
+**    TODO FIXME
 **
 */
 
-#define FILE_PATH							"crypto/kdf/pbkdf2.c"
+#define FILE_PATH							"data/conversion/integers.c"
 
-#include "./pbkdf2.h"
+#include "./integers.h"
 #include "../../core/memory.h"
+#include <string.h>
 
 
-ID("PBKDF2 implementation");
 
-
-ls_result_t
-ls_pbkdf2(const char *pass, size_t pass_len, char *salt, size_t salt_len, uint8_t *key, size_t key_len, uint32_t rounds, size_t digest_size, ls_hmac_t hmac)
-{
-	LS_RESULT_CHECK_SIZE(rounds, 1);
-	LS_RESULT_CHECK_SIZE(key_len, 2);
-	LS_RESULT_CHECK_SIZE(salt_len, 3);
-	LS_RESULT_CHECK_NULL(salt, 1);
-
-	uint8_t stackalloc(obuf, digest_size);
-	uint8_t stackalloc(d1, digest_size);
-	uint8_t stackalloc(d2, digest_size);
-
-	uint8_t stackalloc(asalt, (salt_len + 4));
-	memcpy(asalt, salt, salt_len);
-
-	uint32_t i, j;
-	uint32_t count;
-	size_t r;
-
-	for (count = 1; key_len > 0; count++) {
-		asalt[salt_len + 0] = (count >> 24) & 0xff;
-		asalt[salt_len + 1] = (count >> 16) & 0xff;
-		asalt[salt_len + 2] = (count >> 8) & 0xff;
-		asalt[salt_len + 3] = count & 0xff;
-		hmac(asalt, salt_len + 4, pass, pass_len, d1);
-		memcpy(obuf, d1, digest_size);
-
-		for (i = 1; i < rounds; i++) {
-			hmac(d1, digest_size, pass, pass_len, d2);
-			memcpy(d1, d2, digest_size);
-			for (j = (uint32_t)digest_size; j--;) {
-				obuf[j] ^= d1[j];
-			}
+ls_bool
+ls_strtoumax(uintmax_t *out, const char *in, size_t size) {
+	char *lcp = NULL;
+	if (!size) {
+		if (out) {
+			*out = strtoumax(in, &lcp, 10);
+		} else {
+			uintmax_t ph = strtoumax(in, &lcp, 10);
 		}
+		return (lcp && *lcp == '\0');
+	} else {
+		char stackalloc(buffer, (size + 1));
+		memcpy(buffer, in, size);
+		buffer[size] = 0;
+		return ls_strtoumax(out, buffer, 0);
+	}
+}
 
-		r = ((key_len < digest_size) ? key_len : digest_size);
-		memcpy(key, obuf, r);
-		key += r;
-		key_len -= r;
-	};
 
-	return LS_RESULT_SUCCESS;
+ls_bool
+ls_strtou64(uint64_t *out, const char *in, size_t size) {
+	if (!out) {
+		return ls_strtoumax(NULL, in, size);
+	}
+
+	uintmax_t buffer;
+	ls_bool result = ls_strtoumax(&buffer, in, size);
+	*out = (uint64_t)buffer;
+	return result;
+}
+
+
+ls_bool
+ls_strtou32(uint32_t *out, const char *in, size_t size) {
+	if (!out) {
+		return ls_strtoumax(NULL, in, size);
+	}
+
+	uintmax_t buffer;
+	ls_bool result = ls_strtoumax(&buffer, in, size);
+	*out = (uint32_t)buffer;
+	return result;
+}
+
+
+ls_bool
+ls_strtou16(uint16_t *out, const char *in, size_t size) {
+	if (!out) {
+		return ls_strtoumax(NULL, in, size);
+	}
+
+	uintmax_t buffer;
+	ls_bool result = ls_strtoumax(&buffer, in, size);
+	*out = (uint16_t)buffer;
+	return result;
+}
+
+
+ls_bool
+ls_strtou8(uint8_t *out, const char *in, size_t size) {
+	if (!out) {
+		return ls_strtoumax(NULL, in, size);
+	}
+
+	uintmax_t buffer;
+	ls_bool result = ls_strtoumax(&buffer, in, size);
+	*out = (uint8_t)buffer;
+	return result;
 }
