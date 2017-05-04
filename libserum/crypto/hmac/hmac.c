@@ -35,6 +35,7 @@
 #include "./hmac.h"
 #include "../../core/memory.h"
 #include <string.h>
+#include "../../debug/memdump.h"
 
 
 ID("universal pluggable HMAC implementation");
@@ -76,20 +77,20 @@ ls_hmac_universal(const void *const LS_RESTRICT data, const size_t data_size, co
 		hf_clear(hf_data);
 
 		key = buffer_digest;
-		key_size = sizeof(buffer_digest);
+		key_size = stacksizeof(buffer_digest);
 	}
 
-	prep_key(buffer_block, sizeof(buffer_block), 0x36, key, key_size);
+	prep_key(buffer_block, stacksizeof(buffer_block), 0x36, key, key_size);
 	hf_init(hf_data);
-	hf_update(hf_data, buffer_block, sizeof(buffer_block));
+	hf_update(hf_data, buffer_block, stacksizeof(buffer_block));
 	hf_update(hf_data, data, data_size);
 	hf_finish(hf_data, buffer_digest);
 	hf_clear(hf_data);
 
-	prep_key(buffer_block, sizeof(buffer_block), 0x5C, key, key_size);
+	prep_key(buffer_block, stacksizeof(buffer_block), 0x5C, key, key_size);
 	hf_init(hf_data);
-	hf_update(hf_data, buffer_block, sizeof(buffer_block));
-	hf_update(hf_data, buffer_digest, sizeof(buffer_digest));
+	hf_update(hf_data, buffer_block, stacksizeof(buffer_block));
+	hf_update(hf_data, buffer_digest, stacksizeof(buffer_digest));
 	hf_finish(hf_data, digest);
 	hf_clear(hf_data);
 
