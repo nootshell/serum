@@ -186,6 +186,7 @@
     <ClInclude Include="crypto\hmac\hmac-sha2.h" />
     <ClInclude Include="crypto\hmac\hmac.h" />
     <ClInclude Include="crypto\hmac\_signatures.h" />
+    <ClInclude Include="crypto\kdf\pbkdf2-sha2.h" />
     <ClInclude Include="crypto\kdf\pbkdf2.h" />
     <ClInclude Include="crypto\key_exchange\x25519.h" />
     <ClInclude Include="crypto\padding\iso9797.h" />
