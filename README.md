@@ -1,6 +1,6 @@
 # Serum #
 
-***Experimental*** cryptography/networking multi-tool in a C library, licensed under the [MIT license](./COPYING.md).
+***Experimental*** cryptography/networking multi-tool, licensed under the [MIT license](./COPYING.md).
 
 
 ## Features ##
