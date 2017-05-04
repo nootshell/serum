@@ -52,7 +52,9 @@ ls_strtoumax(uintmax_t *out, const char *in, size_t size) {
 		char stackalloc(buffer, (size + 1));
 		memcpy(buffer, in, size);
 		buffer[size] = 0;
-		return ls_strtoumax(out, buffer, 0);
+		ls_bool result = ls_strtoumax(out, buffer, 0);
+		stackfree(buffer);
+		return result;
 	}
 }
 

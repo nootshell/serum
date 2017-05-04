@@ -94,6 +94,9 @@ ls_hmac_universal(const void *const LS_RESTRICT data, const size_t data_size, co
 	hf_finish(hf_data, digest);
 	hf_clear(hf_data);
 
+	stackfree(buffer_block);
+	stackfree(buffer_digest);
+
 
 	return LS_RESULT_SUCCESS;
 }
