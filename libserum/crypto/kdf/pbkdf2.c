@@ -53,6 +53,7 @@ ls_pbkdf2(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRI
 	uint8_t stackalloc(d2, digest_size);
 
 	uint8_t stackalloc(asalt, (salt_size + sizeof(uint32_t)));
+	uint32_t *asalt32 = (uint32_t*)(asalt + salt_size);
 	memcpy(asalt, salt, salt_size);
 
 	const ls_bool native_word = ((digest_size & (sizeof(unsigned int) - 1)) == 0);
@@ -61,7 +62,7 @@ ls_pbkdf2(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRI
 	size_t r, j;
 	unsigned int count;
 	for (count = 1; out_size > 0; ++count) {
-		*((uint32_t*)(asalt + salt_size)) = LS_SWAP_ENDIAN_BIG_32(count);
+		*asalt32 = LS_SWAP_ENDIAN_BIG_32(count);
 
 		hmac(asalt, stacksizeof(asalt), pass, pass_size, d1);
 

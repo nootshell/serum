@@ -39,8 +39,8 @@
 
 #if (LS_MSC)
 #	include <malloc.h>
-#	define dstacksizeof(name)				__ ## name ## __sizeof
-#	define dstackalloc(name, size)			*name = _malloca((size)); size_t dstacksizeof(name) = ((size))
+#	define dstacksizeof(name)				__sta_ ## name ## _size__
+#	define dstackalloc(name, size)			*name = _malloca((size)); const size_t dstacksizeof(name) = ((size))
 #	define dstackfree(name)					_freea(name); name = NULL
 #	define stacksizeof(name)				dstacksizeof(name)
 #	define stackalloc(name, size)			dstackalloc(name, (size))
@@ -50,8 +50,8 @@
 #	define LS_MEMUNLOCK(ptr, size)			((VirtualUnlock((ptr), (size)) != 0) || (GetLastError() != 153))
 #else
 #	include <alloca.h>
-#	define dstacksizeof(name)				__ ## name ## __sizeof
-#	define dstackalloc(name, size)			*name = alloca((size)); size_t dstacksizeof(name) = ((size))
+#	define dstacksizeof(name)				__sta_ ## name ## _size__
+#	define dstackalloc(name, size)			*name = alloca((size)); const size_t dstacksizeof(name) = ((size))
 #	define dstackfree(name)					name = NULL
 #	define stacksizeof(name)				sizeof(name)
 #	define stackalloc(name, size)			name[(size)]
