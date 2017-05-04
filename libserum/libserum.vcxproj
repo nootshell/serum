@@ -185,6 +185,9 @@
     <ClInclude Include="crypto\hmac\hmac-md5.h" />
     <ClInclude Include="crypto\hmac\hmac-sha2.h" />
     <ClInclude Include="crypto\hmac\hmac.h" />
+    <ClInclude Include="crypto\hmac\_signatures.h" />
+    <ClInclude Include="crypto\kdf\pbkdf2-sha2.h" />
+    <ClInclude Include="crypto\kdf\pbkdf2.h" />
     <ClInclude Include="crypto\key_exchange\x25519.h" />
     <ClInclude Include="crypto\padding\iso9797.h" />
     <ClInclude Include="crypto\prng\device.h" />
@@ -225,6 +228,7 @@
     <ClCompile Include="crypto\hmac\hmac-md5.c" />
     <ClCompile Include="crypto\hmac\hmac-sha2.c" />
     <ClCompile Include="crypto\hmac\hmac.c" />
+    <ClCompile Include="crypto\kdf\pbkdf2.c" />
     <ClCompile Include="crypto\key_exchange\x25519.c" />
     <ClCompile Include="crypto\padding\iso9797.c" />
     <ClCompile Include="crypto\prng\device.c" />

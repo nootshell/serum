@@ -39,27 +39,33 @@
 #include <libserum/core/memory.h>
 #include <libserum/debug/memdump.h>
 
+#include <libserum/crypto/kdf/pbkdf2.h>
 #include <libserum/crypto/hmac/hmac-sha2.h>
 
 
+#define STATIC								1
+
+
 int main(int argc, char *argv[], char *env[]) {
-	char key[] = "Jefe";
-	char data[] = "what do ya want for nothing?";
+	if (argc < 4) {
+		printf("Usage: %s <password> <salt> <rounds> <keylen>\n", argv[0]);
+		return 1;
+	} else {
+		size_t pwsz = strlen(argv[1]);
+		size_t stsz = strlen(argv[2]);
+		uintmax_t rounds = strtoumax(argv[3], NULL, 10);
+		uintmax_t keysz = strtoumax(argv[4], NULL, 10);
 
-	ls_sha2_224_digest_t d224;
-	ls_sha2_256_digest_t d256;
-	ls_sha2_384_digest_t d384;
-	ls_sha2_512_digest_t d512;
+		uint8_t stackalloc(key, keysz);
+		ls_result_t result = ls_pbkdf2(argv[1], pwsz, argv[2], stsz, key, keysz, rounds, LS_SHA2_256_DIGEST_SIZE, (ls_hmac_t)ls_hmac_sha2_256);
+		
+		printf("result: %08X\n", *((uint32_t*)&result));
+		ls_memdump(argv[1], pwsz);
+		ls_memdump(argv[2], stsz);
+		ls_memdump(key, keysz);
+		printf("%" PRIuMAX ", %" PRIuMAX "\n", rounds, keysz);
+	}
 
-	ls_hmac_sha2_224(data, strlen(data), key, strlen(key), d224);
-	ls_hmac_sha2_256(data, strlen(data), key, strlen(key), d256);
-	ls_hmac_sha2_384(data, strlen(data), key, strlen(key), d384);
-	ls_hmac_sha2_512(data, strlen(data), key, strlen(key), d512);
-
-	ls_vmemdump(d224, sizeof(d224), "HMAC-SHA2-224");
-	ls_vmemdump(d256, sizeof(d256), "HMAC-SHA2-256");
-	ls_vmemdump(d384, sizeof(d384), "HMAC-SHA2-384");
-	ls_vmemdump(d512, sizeof(d512), "HMAC-SHA2-512");
-
+	fgetc(stdin);
 	return 0;
 }
