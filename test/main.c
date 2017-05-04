@@ -39,64 +39,27 @@
 #include <libserum/core/memory.h>
 #include <libserum/debug/memdump.h>
 
-#include <libserum/crypto/key_exchange/x25519.h>
-#include <libserum/crypto/prng/device.h>
-
-
-#define STATIC								0
+#include <libserum/crypto/hmac/hmac-sha2.h>
 
 
 int main(int argc, char *argv[], char *env[]) {
-	#if (!STATIC)
-	ls_device_t device;
-	ls_device_sys(&device, 16, DEV_URANDOM);
-	#endif
+	char key[] = "Jefe";
+	char data[] = "what do ya want for nothing?";
 
-	ls_x25519_key_t basepoint;
-	memset(basepoint, 0xCA, sizeof(basepoint));
+	ls_sha2_224_digest_t d224;
+	ls_sha2_256_digest_t d256;
+	ls_sha2_384_digest_t d384;
+	ls_sha2_512_digest_t d512;
 
-	ls_x25519_key_t private_key_alice;
-	#if (STATIC)
-	memset(private_key_alice, 0xBA, sizeof(private_key_alice));
-	#else
-	ls_device_generate(&device, private_key_alice, sizeof(private_key_alice));
-	#endif
+	ls_hmac_sha2_224(data, strlen(data), key, strlen(key), d224);
+	ls_hmac_sha2_256(data, strlen(data), key, strlen(key), d256);
+	ls_hmac_sha2_384(data, strlen(data), key, strlen(key), d384);
+	ls_hmac_sha2_512(data, strlen(data), key, strlen(key), d512);
 
-	ls_x25519_key_t private_key_bob;
-	#if (STATIC)
-	memset(private_key_bob, 0x69, sizeof(private_key_bob));
-	#else
-	ls_device_generate(&device, private_key_bob, sizeof(private_key_bob));
-	#endif
-
-	ls_x25519_t curve_alice, curve_bob;
-
-	if (!ls_x25519_init_ex(&curve_alice, private_key_alice, basepoint).success) {
-		return 1;
-	}
-	if (!ls_x25519_init_ex(&curve_bob, private_key_bob, basepoint).success) {
-		return 2;
-	}
-
-	if (!ls_x25519_generate_shared(&curve_alice, ls_x25519_get_public(&curve_bob)).success) {
-		return 3;
-	}
-	if (!ls_x25519_generate_shared(&curve_bob, ls_x25519_get_public(&curve_alice)).success) {
-		return 4;
-	}
-
-	if (!ls_memdiff(ls_x25519_get_shared(&curve_alice), ls_x25519_get_shared(&curve_bob), sizeof(ls_x25519_key_t))) {
-		puts(LS_ANSI_ESCAPE LS_ANSI_FG_GREEN LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_TERMINATE "passed" LS_ANSI_RESET);
-	} else {
-		puts(LS_ANSI_ESCAPE LS_ANSI_FG_RED LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_TERMINATE "failed" LS_ANSI_RESET);
-	}
-
-	if (!ls_x25519_clear(&curve_alice).success) {
-		return 5;
-	}
-	if (!ls_x25519_clear(&curve_bob).success) {
-		return 6;
-	}
+	ls_vmemdump(d224, sizeof(d224), "HMAC-SHA2-224");
+	ls_vmemdump(d256, sizeof(d256), "HMAC-SHA2-256");
+	ls_vmemdump(d384, sizeof(d384), "HMAC-SHA2-384");
+	ls_vmemdump(d512, sizeof(d512), "HMAC-SHA2-512");
 
 	return 0;
 }

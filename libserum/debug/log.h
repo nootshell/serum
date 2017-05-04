@@ -52,6 +52,20 @@
 #endif
 
 
+#if (!defined(LS_FMT_BINARY_SPACING))
+#	define LS_FMT_BINARY_SPACING			" "
+#endif
+
+#define LS_FMT_U8_TO_BINARY					"%c%c%c%c%c%c%c%c"
+#define LS_FMT_U8_TO_BINARY_ARGS(v)			(((v) & 0x80) ? '1' : '0'), (((v) & 0x40) ? '1' : '0'), (((v) & 0x20) ? '1' : '0'), (((v) & 0x10) ? '1' : '0'), (((v) & 0x08) ? '1' : '0'), (((v) & 0x04) ? '1' : '0'), (((v) & 0x02) ? '1' : '0'), (((v) & 0x01) ? '1' : '0')
+#define LS_FMT_U16_TO_BINARY				LS_FMT_U8_TO_BINARY "" LS_FMT_BINARY_SPACING "" LS_FMT_U8_TO_BINARY
+#define LS_FMT_U16_TO_BINARY_ARGS(v)		LS_FMT_U8_TO_BINARY_ARGS(((v) >> 8)), LS_FMT_U8_TO_BINARY_ARGS((v))
+#define LS_FMT_U32_TO_BINARY				LS_FMT_U16_TO_BINARY "" LS_FMT_BINARY_SPACING "" LS_FMT_U16_TO_BINARY
+#define LS_FMT_U32_TO_BINARY_ARGS(v)		LS_FMT_U16_TO_BINARY_ARGS(((v) >> 16)), LS_FMT_U16_TO_BINARY_ARGS((v))
+#define LS_FMT_U64_TO_BINARY				LS_FMT_U32_TO_BINARY "" LS_FMT_BINARY_SPACING "" LS_FMT_U32_TO_BINARY
+#define LS_FMT_U64_TO_BINARY_ARGS(v)		LS_FMT_U32_TO_BINARY_ARGS(((v) >> 32)), LS_FMT_U32_TO_BINARY_ARGS((v))
+
+
 #if (LS_ANSI_ESCAPE_SUPPORT && !LS_WINDOWS) // XXX: Not enough support for Windows.
 #	define HAVE_ANSI_SUPPORT				1
 #	define LS_ANSI_ESCAPE					"\033["
