@@ -30,23 +30,60 @@
 **
 */
 
-#ifndef __LS_CRYPTO_KDF_PBKDF2_H
-#define __LS_CRYPTO_KDF_PBKDF2_H
+#define FILE_PATH							"crypto/kdf/pbkdf2-sha2.c"
+
+#include "./pbkdf2-sha2.h"
+#include "./pbkdf2.h"
+#include "../hmac/hmac-sha2.h"
 
 
-#include "../../core/stdincl.h"
-#include "../hmac/_signatures.h"
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-	
-	LSAPI ls_result_t ls_pbkdf2(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const uint32_t rounds, const size_t digest_size, ls_hmac_t hmac);
-
-#ifdef __cplusplus
+ls_result_t
+ls_pbkdf2_sha2_224(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const uint32_t rounds) {
+	return ls_pbkdf2(
+		out, out_size,
+		pass, pass_size,
+		salt, salt_size,
+		rounds,
+		LS_SHA2_224_DIGEST_SIZE,
+		(ls_hmac_t)ls_hmac_sha2_224
+	);
 }
-#endif
 
 
-#endif
+ls_result_t
+ls_pbkdf2_sha2_256(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const uint32_t rounds) {
+	return ls_pbkdf2(
+		out, out_size,
+		pass, pass_size,
+		salt, salt_size,
+		rounds,
+		LS_SHA2_256_DIGEST_SIZE,
+		(ls_hmac_t)ls_hmac_sha2_256
+	);
+}
+
+
+ls_result_t
+ls_pbkdf2_sha2_384(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const uint32_t rounds) {
+	return ls_pbkdf2(
+		out, out_size,
+		pass, pass_size,
+		salt, salt_size,
+		rounds,
+		LS_SHA2_384_DIGEST_SIZE,
+		(ls_hmac_t)ls_hmac_sha2_384
+	);
+}
+
+
+ls_result_t
+ls_pbkdf2_sha2_512(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const uint32_t rounds) {
+	return ls_pbkdf2(
+		out, out_size,
+		pass, pass_size,
+		salt, salt_size,
+		rounds,
+		LS_SHA2_512_DIGEST_SIZE,
+		(ls_hmac_t)ls_hmac_sha2_512
+	);
+}
