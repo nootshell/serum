@@ -37,13 +37,14 @@
 
 
 const void *const
-volatile ls_memory_destroy(void *const ptr, const size_t size, ls_nword_t iterations) {
+volatile ls_memory_destroy_ex(void *const ptr, const size_t size, ls_nword_t iterations) {
 	if (!ptr) {
 		return NULL;
 	}
 
 	register size_t i;
-	register uint8_t *const p8 = ptr, v;
+	register volatile uint8_t *const p8 = ptr;
+	register uint8_t v;
 
 	for (; iterations--;) {
 		v = iterations;
@@ -56,15 +57,15 @@ volatile ls_memory_destroy(void *const ptr, const size_t size, ls_nword_t iterat
 }
 
 const void *const
-ls_memory_destroy_indirect(void *const *const pptr, const size_t size, ls_nword_t iterations) {
-	if (pptr) {
-		return ls_memory_destroy(*pptr, size, iterations);
-	}
-	return NULL;
+ls_memory_destroy(void *const ptr, const size_t size) {
+	return ls_memory_destroy_ex(ptr, size, LS_MEMORY_DESTROY_ITERATIONS);
 }
 
 
 void
-ls_memory_free_indirect(void *const *const pptr) {
-
+ls_memory_free_indirect(void **const pptr) {
+	if (pptr && *pptr) {
+		free(*pptr);
+		*pptr = NULL;
+	}
 }

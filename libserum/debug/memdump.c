@@ -110,7 +110,7 @@ ls_vmemdump_ex(const void *const LS_RESTRICT ptr, const size_t size, ls_nword_t 
 	}
 
 	if (str) {
-		printf(LS_ANSI_2(LS_ANSI_FG_WHITE, LS_ANSI_OPT_UNDERLINE_SINGLE) "%*s" LS_ANSI_RESET "\n", ((sizeof(void*) << 1) + 2), str);
+		printf(LS_ANSI_2(LS_ANSI_FG_WHITE, LS_ANSI_OPT_UNDERLINE_SINGLE) "%*s" LS_ANSI_RESET "\n", (ls_nword_t)((sizeof(void*) << 1) + 2), str);
 	}
 
 	ls_memdump_ex(ptr, size, columns, items_per_column);

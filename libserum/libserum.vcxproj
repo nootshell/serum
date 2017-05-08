@@ -164,10 +164,13 @@
     <ClInclude Include="core\entry\debug.h" />
     <ClInclude Include="core\entry\main.h" />
     <ClInclude Include="core\errstr.h" />
+    <ClInclude Include="core\exit.h" />
     <ClInclude Include="core\identification.h" />
     <ClInclude Include="core\info.h" />
     <ClInclude Include="core\integers.h" />
     <ClInclude Include="core\intrinsics.h" />
+    <ClInclude Include="core\logging\ansi.h" />
+    <ClInclude Include="core\logging\log.h" />
     <ClInclude Include="core\lsapi.h" />
     <ClInclude Include="core\macro.h" />
     <ClInclude Include="core\math.h" />
@@ -186,8 +189,10 @@
     <ClInclude Include="crypto\hmac\hmac-sha2.h" />
     <ClInclude Include="crypto\hmac\hmac.h" />
     <ClInclude Include="crypto\hmac\_signatures.h" />
+    <ClInclude Include="crypto\kdf\pbkdf2-md5.h" />
     <ClInclude Include="crypto\kdf\pbkdf2-sha2.h" />
     <ClInclude Include="crypto\kdf\pbkdf2.h" />
+    <ClInclude Include="crypto\kdf\scrypt.h" />
     <ClInclude Include="crypto\key_exchange\x25519.h" />
     <ClInclude Include="crypto\padding\iso9797.h" />
     <ClInclude Include="crypto\prng\device.h" />
@@ -200,7 +205,9 @@
     <ClInclude Include="crypto\symmetric\xxtea.h" />
     <ClInclude Include="crypto\symmetric\_signatures.h" />
     <ClInclude Include="crypto\symmetric\__rijndael-tables.h" />
-    <ClInclude Include="debug\log.h" />
+    <ClInclude Include="data\conversion\floats.h" />
+    <ClInclude Include="data\conversion\integers.h" />
+    <ClInclude Include="data\nativeword.h" />
     <ClInclude Include="debug\memdump.h" />
     <ClInclude Include="debug\__self-test_logging.h" />
     <ClInclude Include="math\curve25519.h" />
@@ -215,7 +222,10 @@
     <ClCompile Include="core\entry\entrypoint.c" />
     <ClCompile Include="core\entry\executable.c" />
     <ClCompile Include="core\entry\main.c" />
+    <ClCompile Include="core\exit.c" />
     <ClCompile Include="core\info.c" />
+    <ClCompile Include="core\logging\log.c" />
+    <ClCompile Include="core\memory.c" />
     <ClCompile Include="core\result.c" />
     <ClCompile Include="core\self-test.c" />
     <ClCompile Include="core\time.c" />
@@ -228,7 +238,10 @@
     <ClCompile Include="crypto\hmac\hmac-md5.c" />
     <ClCompile Include="crypto\hmac\hmac-sha2.c" />
     <ClCompile Include="crypto\hmac\hmac.c" />
+    <ClCompile Include="crypto\kdf\pbkdf2-md5.c" />
+    <ClCompile Include="crypto\kdf\pbkdf2-sha2.c" />
     <ClCompile Include="crypto\kdf\pbkdf2.c" />
+    <ClCompile Include="crypto\kdf\scrypt.c" />
     <ClCompile Include="crypto\key_exchange\x25519.c" />
     <ClCompile Include="crypto\padding\iso9797.c" />
     <ClCompile Include="crypto\prng\device.c" />
@@ -239,7 +252,8 @@
     <ClCompile Include="crypto\symmetric\rijndael.c" />
     <ClCompile Include="crypto\symmetric\salsa20.c" />
     <ClCompile Include="crypto\symmetric\xxtea.c" />
-    <ClCompile Include="debug\log.c" />
+    <ClCompile Include="data\conversion\floats.c" />
+    <ClCompile Include="data\conversion\integers.c" />
     <ClCompile Include="debug\memdump.c" />
     <ClCompile Include="math\curve25519.c" />
     <ClCompile Include="networking\packet-decoder.c" />

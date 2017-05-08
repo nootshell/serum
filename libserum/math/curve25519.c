@@ -572,7 +572,7 @@ static LS_ATTR_INLINE fmonty(int64_t *x2, int64_t *z2, int64_t *x3, int64_t *z3,
 
 
 void
-static LS_ATTR_INLINE swap_conditional(int64_t a[19], int64_t b[19], ls_nword_t iswap) {
+static LS_ATTR_INLINE swap_conditional(int64_t a[19], int64_t b[19], ls_nwords_t iswap) {
 	const int32_t swap = ((int32_t)-iswap);
 
 	ls_nword_t i;
@@ -616,7 +616,7 @@ static LS_ATTR_INLINE cmult(int64_t *resultx, int64_t *resultz, const uint8_t *n
 	{
 		uint8_t byte = n[31 - i];
 		for (j = 8; j--;) {
-			const ls_nword_t bit = (byte >> 7);
+			const ls_nwords_t bit = (byte >> 7);
 
 			swap_conditional(nqx, nqpqx, bit);
 			swap_conditional(nqz, nqpqz, bit);
