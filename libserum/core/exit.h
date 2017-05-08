@@ -30,11 +30,29 @@
 **
 */
 
-#ifndef __LS_CORE_INTEGERS_H
-#define __LS_CORE_INTEGERS_H
+#ifndef __LS_CORE_EXIT_H
+#define __LS_CORE_EXIT_H
 
 
+#include "./stdincl.h"
 
 
+#if (defined(FILE_PATH))
+#	define ls_fatal(exit_code, ...)			ls_fatal_ex(__func__, FILE_PATH, __LINE__, (exit_code), __VA_ARGS__)
+#else
+#	define ls_fatal(exit_code, ...)			ls_fatal_ex(__func__, NULL, __LINE__, (exit_code), __VA_ARGS__)
+#endif
 
-#endif // __LS_CORE_INTEGERS_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI void ls_fatal_ex(const char *func, const char *file, ls_nword_t line, ls_nword_t exit_code, const char *fmt, ...);
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#endif

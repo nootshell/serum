@@ -34,7 +34,7 @@
 
 #include "./thread.h"
 #include "../core/time.h"
-#include "../debug/log.h"
+#include "../core/logging/log.h"
 #include <string.h>
 
 
@@ -125,7 +125,7 @@ static ls_thread_exec(ls_thread_t *thread) {
 		ls_result_t result = ((ret == LS_RESULT_CODE_SUCCESS) ? LS_RESULT_SUCCESS : LS_RESULT_ERROR(ret));
 		return LS_RESULT_INHERITED(result, LS_RESULT_INHERIT_SUCCESS);
 	} else {
-		ls_log_e("Entrypoint or flag missing.");
+		ls_log(LS_LOG_ERROR, "Entrypoint or flag missing.");
 		return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
 	}
 

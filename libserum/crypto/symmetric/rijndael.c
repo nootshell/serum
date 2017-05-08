@@ -125,7 +125,7 @@ ls_rijndael_init(ls_rijndael_t *const LS_RESTRICT ctx, const void *const LS_REST
 		ctx->key_encrypt = ls_key_alloc(240);
 	}
 
-	unsigned int i;
+	ls_nword_t i;
 	const uint32_t *kin32 = key;
 	uint32_t *kout32 = ((uint32_t*)ctx->key_encrypt->data);
 
@@ -264,7 +264,7 @@ ls_rijndael_encrypt_block(const ls_rijndael_t *const LS_RESTRICT ctx, uint32_t *
 	s2 = (LS_SWAP_ENDIAN_BIG_32(block[2]) ^ key[2]);
 	s3 = (LS_SWAP_ENDIAN_BIG_32(block[3]) ^ key[3]);
 
-	int r = (ctx->rounds >> 1);
+	ls_nword_t r = (ctx->rounds >> 1);
 	for (;;) {
 		t0 = RIJNDAEL_ROUND_ENCRYPT(s0, s1, s2, s3, key[4]);
 		t1 = RIJNDAEL_ROUND_ENCRYPT(s1, s2, s3, s0, key[5]);
@@ -313,7 +313,7 @@ ls_rijndael_decrypt_block(const ls_rijndael_t *const LS_RESTRICT ctx, uint32_t *
 	s2 = (LS_SWAP_ENDIAN_BIG_32(block[2]) ^ key[2]);
 	s3 = (LS_SWAP_ENDIAN_BIG_32(block[3]) ^ key[3]);
 
-	int r = (ctx->rounds >> 1);
+	ls_nword_t r = (ctx->rounds >> 1);
 	for (;;) {
 		t0 = RIJNDAEL_ROUND_DECRYPT(s0, s3, s2, s1, key[4]);
 		t1 = RIJNDAEL_ROUND_DECRYPT(s1, s0, s3, s2, key[5]);

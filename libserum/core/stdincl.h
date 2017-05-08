@@ -35,16 +35,21 @@
 
 
 #include <stdlib.h>
-#include "./integers.h"
+#include <stdint.h>
+#include <stddef.h>
+#include "../data/nativeword.h"
 #include "./lsapi.h"
 #include "./bits.h"
 #include "./identification.h"
 #include "./result.h"
-#include "../debug/log.h"
+
 
 #if (LIBSERUM_EXPORTS)
 #	include "./defaults.h"
 #endif
+
+
+#include "./logging/log.h"
 
 
 #endif

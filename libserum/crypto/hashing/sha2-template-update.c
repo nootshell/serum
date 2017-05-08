@@ -50,7 +50,7 @@ static SHA2_UPDATE_BLOCK(SHA2_CTX *const ctx, const SHA2_NATIVE_TYPE block[LS_SH
 
 	SHA2_NATIVE_TYPE w[SHA2_WR];
 
-	register unsigned int i;
+	register ls_nword_t i;
 
 	for (i = 16; i--;) {
 		w[i] = SHA2_SWAP(block[i]);

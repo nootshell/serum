@@ -33,7 +33,6 @@
 #define FILE_PATH								"debug/memdump.c"
 
 #include "./memdump.h"
-#include "./log.h"
 
 #include <stdio.h>
 
@@ -42,7 +41,7 @@ ID("memory dumping");
 
 
 void
-ls_memdump_ex(const void *const ptr, const size_t size, unsigned int columns, unsigned int items_per_column) {
+ls_memdump_ex(const void *const ptr, const size_t size, ls_nword_t columns, ls_nword_t items_per_column) {
 	if (!ptr || !size) {
 		return;
 	}
@@ -55,11 +54,12 @@ ls_memdump_ex(const void *const ptr, const size_t size, unsigned int columns, un
 		items_per_column = 1;
 	}
 
+#define PRINTF_PTR_FMT						LS_ANSI_1(LS_ANSI_FG_CYAN) "0x%" LS_PRIPTR LS_ANSI_RESET ": "
 
 	const uint8_t *p8 = ptr;
-	printf("0x%" LS_PRIPTR ": ", ((uintptr_t)p8));
+	printf(PRINTF_PTR_FMT, ((uintptr_t)p8));
 
-	unsigned int c = 0, ic = 0;
+	ls_nword_t c = 0, ic = 0;
 	size_t i;
 	if (items_per_column == 1) {
 		for (i = 0; i < size; ++i) {
@@ -67,7 +67,7 @@ ls_memdump_ex(const void *const ptr, const size_t size, unsigned int columns, un
 			if (++c >= columns) {
 				c = 0;
 				if (i != (size - 1)) {
-					printf("\n0x%" LS_PRIPTR ": ", ((uintptr_t)p8));
+					printf("\n" PRINTF_PTR_FMT, ((uintptr_t)p8));
 				} else {
 					puts("");
 				}
@@ -81,7 +81,7 @@ ls_memdump_ex(const void *const ptr, const size_t size, unsigned int columns, un
 				if (++c >= columns) {
 					c = 0;
 					if (i != (size - 1)) {
-						printf("\n0x%" LS_PRIPTR ": ", ((uintptr_t)p8));
+						printf("\n" PRINTF_PTR_FMT, ((uintptr_t)p8));
 					} else {
 						puts("");
 					}
@@ -104,13 +104,13 @@ ls_memdump(const void *const ptr, const size_t size) {
 
 
 void
-ls_vmemdump_ex(const void *const LS_RESTRICT ptr, const size_t size, unsigned int columns, unsigned int items_per_column, const char *const LS_RESTRICT str) {
+ls_vmemdump_ex(const void *const LS_RESTRICT ptr, const size_t size, ls_nword_t columns, ls_nword_t items_per_column, const char *const LS_RESTRICT str) {
 	if (!ptr || !size) {
 		return;
 	}
 
 	if (str) {
-		puts(str);
+		printf(LS_ANSI_2(LS_ANSI_FG_WHITE, LS_ANSI_OPT_UNDERLINE_SINGLE) "%*s" LS_ANSI_RESET "\n", ((sizeof(void*) << 1) + 2), str);
 	}
 
 	ls_memdump_ex(ptr, size, columns, items_per_column);
@@ -128,7 +128,7 @@ ls_vmemdump(const void *const LS_RESTRICT ptr, const size_t size, const char *co
 
 
 size_t
-ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size, unsigned int columns) {
+ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size, ls_nword_t columns) {
 	if (!cmp1 || !cmp2 || !size) {
 		return ~((size_t)0);
 	}
@@ -137,8 +137,8 @@ ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT 
 		columns = 1;
 	}
 
-#define DIFF_LEFT							LS_ANSI_ESCAPE LS_ANSI_FG_BLACK LS_ANSI_OPT LS_ANSI_BG_GREEN LS_ANSI_OPT LS_ANSI_UNDERLINE LS_ANSI_OPT LS_ANSI_BLINK LS_ANSI_TERMINATE
-#define DIFF_RIGHT							LS_ANSI_ESCAPE LS_ANSI_FG_WHITE LS_ANSI_OPT LS_ANSI_BG_RED LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_OPT LS_ANSI_UNDERLINE LS_ANSI_OPT LS_ANSI_BLINK LS_ANSI_TERMINATE
+#define DIFF_LEFT							LS_ANSI_4(LS_ANSI_FG_BLACK, LS_ANSI_BG_GREEN, LS_ANSI_OPT_UNDERLINE_SINGLE, LS_ANSI_OPT_BLINK_SLOW)
+#define DIFF_RIGHT							LS_ANSI_4(LS_ANSI_FG_WHITE, LS_ANSI_BG_RED, LS_ANSI_OPT_UNDERLINE_SINGLE, LS_ANSI_OPT_BLINK_SLOW)
 
 	const uint8_t
 		*p8_m = cmp1,
@@ -148,7 +148,7 @@ ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT 
 
 	printf("0x%" LS_PRIPTR "/0x%" LS_PRIPTR ": ", ((uintptr_t)p8_m), ((uintptr_t)p8_s));
 
-	unsigned int c = 0;
+	ls_nword_t c = 0;
 	size_t i;
 	for (i = 0; i < size; ++i) {
 		if ((m8 = *(p8_m++)) == (s8 = *(p8_s++))) {

@@ -49,7 +49,7 @@ static ls_salsa20_get_block(ls_salsa20_t *ctx) {
 	uint32_t d[16];
 	memcpy(d, ctx, sizeof(d));
 
-	unsigned int i;
+	ls_nword_t i;
 
 	for (i = 10; i--;) {
 		d[ 4] ^= LS_ROTL32((d[ 0] + d[12]), 0x07);
@@ -102,7 +102,7 @@ static ls_salsa20_get_block(ls_salsa20_t *ctx) {
 
 void
 static LS_ATTR_INLINE ls_salsa20_internal_process_sub(ls_salsa20_t *const LS_RESTRICT ctx, uint8_t *const LS_RESTRICT data, const size_t size) {
-	unsigned int i = 0;
+	ls_nword_t i = 0;
 
 	for (; ctx->cache_offset < LS_SALSA20_BLOCK_SIZE;) {
 		data[i++] ^= ctx->cache[ctx->cache_offset++];
@@ -225,7 +225,7 @@ ls_salsa20_process_data(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_REST
 	if (size) {
 
 		if ((LS_SALSA20_BLOCK_SIZE - ctx->cache_offset) >= size) {
-		unsigned int i = 0;
+		ls_nword_t i = 0;
 			for (; i < size;) {
 				data8[i++] ^= ctx->cache[ctx->cache_offset++];
 			}

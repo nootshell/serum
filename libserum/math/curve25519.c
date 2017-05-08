@@ -96,7 +96,7 @@ ID("Curve25519 implementation");
 
 void
 static LS_ATTR_INLINE fsum(int64_t *const LS_RESTRICT output, const int64_t *const LS_RESTRICT in) {
-	unsigned int i;
+	ls_nword_t i;
 	for (i = 10; i--;) {
 		output[i] += in[i];
 	}
@@ -105,7 +105,7 @@ static LS_ATTR_INLINE fsum(int64_t *const LS_RESTRICT output, const int64_t *con
 
 void
 static LS_ATTR_INLINE fdifference(int64_t *const LS_RESTRICT output, const int64_t *const LS_RESTRICT in) {
-	unsigned int i;
+	ls_nword_t i;
 	for (i = 10; i--;) {
 		output[i] = (in[i] - output[i]);
 	}
@@ -271,7 +271,7 @@ static LS_ATTR_INLINE div_by_2_25(const int64_t v) {
 
 void
 static freduce_coefficients(int64_t *const output) {
-	unsigned int i;
+	ls_nword_t i;
 	register int64_t over;
 
 	output[10] = 0;
@@ -407,7 +407,7 @@ static LS_ATTR_INLINE fcontract(uint8_t *output, int64_t *input_limbs) {
 	int32_t input[10];
 	int32_t mask;
 
-	unsigned int i, j;
+	ls_nword_t i, j;
 
 	for (i = 10; i--;) {
 		input[i] = (int32_t)input_limbs[i];
@@ -558,7 +558,7 @@ static LS_ATTR_INLINE fmonty(int64_t *x2, int64_t *z2, int64_t *x3, int64_t *z3,
 
 	memset(zzz + 10, 0, INTARR_SIZE - sizeof(int64_t));
 
-	unsigned int i;
+	ls_nword_t i;
 	for (i = 10; i--;) {
 		zzz[i] = (zz[i] * 0x0001DB41);
 	}
@@ -572,10 +572,10 @@ static LS_ATTR_INLINE fmonty(int64_t *x2, int64_t *z2, int64_t *x3, int64_t *z3,
 
 
 void
-static LS_ATTR_INLINE swap_conditional(int64_t a[19], int64_t b[19], int iswap) {
+static LS_ATTR_INLINE swap_conditional(int64_t a[19], int64_t b[19], ls_nword_t iswap) {
 	const int32_t swap = ((int32_t)-iswap);
 
-	unsigned int i;
+	ls_nword_t i;
 	for (i = 10; i--;) {
 		const int32_t x = (swap & (((int32_t)a[i]) ^ ((int32_t)b[i])));
 		a[i] = (((int32_t)a[i]) ^ x);
@@ -607,7 +607,7 @@ static LS_ATTR_INLINE cmult(int64_t *resultx, int64_t *resultz, const uint8_t *n
 
 	memcpy(nqpqx, q, INTARR_SIZE);
 
-	unsigned int i, j;
+	ls_nword_t i, j;
 #if (LS_CURVE25519_REVERSE)
 	for (i = 32; i--;)
 #else
@@ -616,7 +616,7 @@ static LS_ATTR_INLINE cmult(int64_t *resultx, int64_t *resultz, const uint8_t *n
 	{
 		uint8_t byte = n[31 - i];
 		for (j = 8; j--;) {
-			const int bit = (byte >> 7);
+			const ls_nword_t bit = (byte >> 7);
 
 			swap_conditional(nqx, nqpqx, bit);
 			swap_conditional(nqz, nqpqz, bit);
@@ -648,7 +648,7 @@ static LS_ATTR_INLINE cmult(int64_t *resultx, int64_t *resultz, const uint8_t *n
 
 void
 static crecip(int64_t *out, const int64_t *z_in) {
-	unsigned int i;
+	ls_nword_t i;
 
 	int64_t
 		buffer_a[10],

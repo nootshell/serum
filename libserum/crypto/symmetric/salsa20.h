@@ -59,7 +59,7 @@ union ls_salsa20_data {
 typedef struct ls_salsa20 {
 	union ls_salsa20_data data;
 	uint8_t cache[LS_SALSA20_BLOCK_SIZE];
-	unsigned int cache_offset;
+	ls_nword_t cache_offset;
 } ls_salsa20_t;
 
 

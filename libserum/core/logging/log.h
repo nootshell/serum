@@ -30,11 +30,42 @@
 **
 */
 
-#ifndef __LS_CORE_INTEGERS_H
-#define __LS_CORE_INTEGERS_H
+#ifndef __LS_CORE_LOGGING_LOG_H
+#define __LS_CORE_LOGGING_LOG_H
 
 
+#include "../stdincl.h"
+#include "./ansi.h"
+#include "../detect_platform.h"
+#include <inttypes.h>
 
 
+#if (LS_ARCH_BITS == 32)
+#	define LS_PRIPTR						"08" PRIXPTR
+#else
+#	define LS_PRIPTR						"016" PRIXPTR
+#endif
 
-#endif // __LS_CORE_INTEGERS_H
+
+typedef enum ls_log_level {
+	LS_LOG_SILENT = 0,
+	LS_LOG_ERROR = 1,
+	LS_LOG_WARNING = 2,
+	LS_LOG_INFO = 3,
+	LS_LOG_VERBOSE = 4,
+	LS_LOG_DEBUG = 5
+} ls_log_level_t;
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI void ls_log(ls_log_level_t level, const char *fmt, ...);
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#endif

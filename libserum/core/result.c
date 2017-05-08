@@ -33,7 +33,7 @@
 #define FILE_PATH							"core/result.c"
 
 #include "./result.h"
-#include "../debug/log.h"
+#include "./logging/log.h"
 
 
 ID("function result value related code");
@@ -72,12 +72,12 @@ ls_result_t
 __LS_RESULT_PRINT(ls_result_t ret, char const *const func, char const *const file, uint32_t const line) {
 	if (ret.code) {
 		if (ret.param) {
-			_ls_logf(func, file, line, "%08X (" LS_RESULT_PRINTF_FORMAT ") %s (param %u)", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret), ls_result_get_code_string(ret.code), ret.param);
+			ls_log(LS_LOG_INFO, "%08X (" LS_RESULT_PRINTF_FORMAT ") %s (param %u)", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret), ls_result_get_code_string(ret.code), ret.param);
 		} else {
-			_ls_logf(func, file, line, "%08X (" LS_RESULT_PRINTF_FORMAT ") %s", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret), ls_result_get_code_string(ret.code));
+			ls_log(LS_LOG_INFO, "%08X (" LS_RESULT_PRINTF_FORMAT ") %s", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret), ls_result_get_code_string(ret.code));
 		}
 	} else {
-		_ls_logf(func, file, line, "%08X (" LS_RESULT_PRINTF_FORMAT ")", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret));
+		ls_log(LS_LOG_INFO, "%08X (" LS_RESULT_PRINTF_FORMAT ")", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret));
 	}
 	return ret;
 }

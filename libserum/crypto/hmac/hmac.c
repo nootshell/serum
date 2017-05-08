@@ -45,8 +45,8 @@ void
 static LS_ATTR_INLINE prep_key(uint8_t *const LS_RESTRICT out, const size_t out_size, const uint8_t pad, const void *const LS_RESTRICT key, const size_t key_size) {
 	memset(out, pad, out_size);
 
-	unsigned int i;
-	for (i = ((unsigned int)key_size); i--;) {
+	ls_nword_t i;
+	for (i = ((ls_nword_t)key_size); i--;) {
 		out[i] ^= ((uint8_t*)key)[i];
 	}
 }

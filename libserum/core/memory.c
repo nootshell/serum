@@ -30,11 +30,41 @@
 **
 */
 
-#ifndef __LS_CORE_INTEGERS_H
-#define __LS_CORE_INTEGERS_H
+#define FILE_PATH							"core/memory.c"
+
+#include "./memory.h"
+#include "./stdincl.h"
 
 
+const void *const
+volatile ls_memory_destroy(void *const ptr, const size_t size, ls_nword_t iterations) {
+	if (!ptr) {
+		return NULL;
+	}
+
+	register size_t i;
+	register uint8_t *const p8 = ptr, v;
+
+	for (; iterations--;) {
+		v = iterations;
+		for (i = size; i--;) {
+			p8[i] = v;
+		}
+	}
+
+	return NULL;
+}
+
+const void *const
+ls_memory_destroy_indirect(void *const *const pptr, const size_t size, ls_nword_t iterations) {
+	if (pptr) {
+		return ls_memory_destroy(*pptr, size, iterations);
+	}
+	return NULL;
+}
 
 
+void
+ls_memory_free_indirect(void *const *const pptr) {
 
-#endif // __LS_CORE_INTEGERS_H
+}

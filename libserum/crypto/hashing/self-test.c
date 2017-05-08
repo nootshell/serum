@@ -151,7 +151,7 @@ ls_selftest_crypto_hashing() {
 	struct ls_sha2_64 sha2_64;
 	ls_md5_t md5;
 
-	unsigned int i;
+	ls_nword_t i;
 	const char *input = NULL;
 	size_t input_size = 0;
 	ls_bool passed = true;

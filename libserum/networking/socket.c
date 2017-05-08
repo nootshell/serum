@@ -35,7 +35,7 @@
 #include "./socket.h"
 #include "../core/ptrarithmetic.h"
 #include "../core/time.h"
-#include "../debug/log.h"
+#include "../core/logging/log.h"
 #include <string.h>
 #include <inttypes.h>
 #include <errno.h>
@@ -99,7 +99,7 @@ static LS_ATTR_INLINE accept_socket(ls_sockfd_t *const LS_RESTRICT fd, const ls_
 	);
 
 	if (!valid) {
-		ls_log_fail("invalid fd");
+		ls_log(LS_LOG_ERROR, "Invalid file descriptor.");
 	}
 
 	return valid;
@@ -161,7 +161,7 @@ ls_socket_init_ex(ls_socket_t *const LS_RESTRICT ctx, const char *LS_RESTRICT no
 #endif
 
 	if ((err = getaddrinfo(node, NULL, &hints, &ctx->addrinfo))) {
-		ls_logf_e("getaddrinfo() = %u", err);
+		ls_log(LS_LOG_ERROR, "getaddrinfo() failed with error code: %u", err);
 		return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
 	}
 
@@ -225,7 +225,7 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 		((struct sockaddr_in*)ptr->ai_addr)->sin_port = nport;
 
 		if (!create_socket(ctx, ptr)) {
-			ls_log_fail("create_socket()");
+			ls_log(LS_LOG_ERROR, "Failed to create socket.");
 			continue;
 		}
 
@@ -233,7 +233,7 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 #if (defined(SO_REUSEADDR))
 			if (HAS_FLAG(ctx->flags, LS_SOCKET_REUSEADDR)) {
 				if (setsockopt(ctx->fd, SOL_SOCKET, SO_REUSEADDR, (void*)&enable, sizeof(enable)) == -1) {
-					ls_log_fail("LS_SOCKET_REUSEADDR");
+					ls_log(LS_LOG_WARNING, "Failed to enable LS_SOCKET_REUSEADDR.");
 				}
 			}
 #else
@@ -242,7 +242,7 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 #if (defined(SO_REUSEPORT))
 				if (HAS_FLAG(ctx->flags, LS_SOCKET_REUSEPORT)) {
 					if (setsockopt(ctx->fd, SOL_SOCKET, SO_REUSEPORT, (void*)&enable, sizeof(enable)) == -1) {
-						ls_log_fail("LS_SOCKET_REUSEPORT");
+						ls_log(LS_LOG_WARNING, "Failed to enable LS_SOCKET_REUSEPORT.");
 					}
 				}
 #else
@@ -256,10 +256,10 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 				if (listen(ctx->fd, SOMAXCONN) == 0) {
 					break;
 				} else {
-					ls_log_fail("listen()");
+					ls_log(LS_LOG_WARNING, "listen()");
 				}
 			} else {
-				ls_log_fail("bind()");
+				ls_log(LS_LOG_WARNING, "bind()");
 			}
 		} else {
 			if (connect(ctx->fd, ptr->ai_addr,
@@ -269,7 +269,7 @@ ls_socket_start(ls_socket_t *const ctx, const uint16_t port) {
 						ptr->ai_addrlen) == 0) {
 				break;
 			} else {
-				ls_log_fail("connect()");
+				ls_log(LS_LOG_WARNING, "connect()");
 			}
 		}
 
@@ -314,14 +314,14 @@ ls_socket_stop_ex(ls_socket_t *const ctx, const ls_bool force, const uint_fast16
 				if (!force) {
 					return LS_RESULT_ERROR(LS_RESULT_CODE_TIMEOUT);
 				} else {
-					ls_log_w("timed out, forcing shutdown");
+					ls_log(LS_LOG_WARNING, "timed out, forcing shutdown");
 				}
 			}
 		} else {
 			if (!force) {
 				return LS_RESULT_ERROR(LS_RESULT_CODE_CHECK);
 			} else {
-				ls_log_w("check failed, forcing shutdown");
+				ls_log(LS_LOG_WARNING, "check failed, forcing shutdown");
 			}
 		}
 	}
@@ -336,7 +336,7 @@ ls_socket_stop_ex(ls_socket_t *const ctx, const ls_bool force, const uint_fast16
 		if (!force) {
 			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_CLOSE, 1);
 		} else {
-			ls_log_w("shutdown failed, forcing close");
+			ls_log(LS_LOG_WARNING, "shutdown failed, forcing close");
 		}
 	}
 #undef SHUTDOWN_FLAGS
@@ -373,7 +373,7 @@ ls_socket_acceptfd(const ls_socket_t *const LS_RESTRICT ctx, struct sockaddr *co
 	ls_sockfd_t fd;
 
 	if (!accept_socket(&fd, ctx, saddr, saddrlen)) {
-		ls_log_w("unable to accept socket");
+		ls_log(LS_LOG_WARNING, "unable to accept socket");
 		return LS_INVALID_SOCKET;
 	}
 

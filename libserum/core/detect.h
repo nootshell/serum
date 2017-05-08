@@ -39,11 +39,5 @@
 #include "./detect_platform.h"
 #include "./detect_endianness.h"
 
-#ifndef LS_INTRINSICS_STRING
-#define LS_INTRINSICS_STRING				"?"
-#endif
-
-#define LS_COMPILATION_ENVIRONMENT			"[" __DATE__ ", " __TIME__ "] (" LS_MAKEFILE_STRING ") " LS_COMPILER_STRING LS_INTRINSICS_STRING " " LS_COMPILER_VERSION " @ " LS_OS_STRING " (" LS_ARCH_STRING ", " LS_ENDIANNESS_STRING ")"
-
 
 #endif

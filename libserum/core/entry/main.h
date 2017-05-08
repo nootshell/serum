@@ -41,8 +41,8 @@
 extern "C" {
 #endif
 
-	LSAPI unsigned int lib_main_entry();
-	LSAPI unsigned int lib_main_exit();
+	LSAPI ls_nword_t lib_main_entry();
+	LSAPI ls_nword_t lib_main_exit();
 
 #ifdef __cplusplus
 }

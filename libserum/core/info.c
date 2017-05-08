@@ -46,7 +46,7 @@ ID("compile-time build information");
 
 const char*
 ls_info_compilation_environment() {
-	return LS_COMPILATION_ENVIRONMENT;
+	return "[" __DATE__ ", " __TIME__ "] (" LS_MAKEFILE_STRING ") " LS_COMPILER_STRING LS_INTRINSICS_STRING " " LS_COMPILER_VERSION " @ " LS_OS_STRING " (" LS_ARCH_STRING ", " LS_ENDIANNESS_STRING ")";
 }
 
 
@@ -165,7 +165,7 @@ ls_info_compilation_options() {
 #	else
 		OPTION_NOT_DEFINED
 #	endif
-				
+
 		"\nLS_SALSA20_STRICT                 "
 #	if (defined(LS_SALSA20_STRICT))
 		MACRO_STRINGIFY(LS_SALSA20_STRICT)
