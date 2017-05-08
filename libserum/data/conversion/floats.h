@@ -30,11 +30,24 @@
 **
 */
 
-#ifndef __LS_CORE_INTEGERS_H
-#define __LS_CORE_INTEGERS_H
+#ifndef __LS_DATA_CONVERSION_FLOATS_H
+#define __LS_DATA_CONVERSION_FLOATS_H
 
 
+#include "../../core/stdincl.h"
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#endif // __LS_CORE_INTEGERS_H
+	LSAPI ls_bool ls_strtold(long double *out, const char *in, size_t size);
+	LSAPI ls_bool ls_strtod(double *out, const char *in, size_t size);
+	LSAPI ls_bool ls_strtof(float *out, const char *in, size_t size);
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#endif

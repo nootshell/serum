@@ -26,15 +26,60 @@
 ********************************************************************************
 **
 **  Notes:
-**    -
+**    TODO FIXME
 **
 */
 
-#ifndef __LS_CORE_INTEGERS_H
-#define __LS_CORE_INTEGERS_H
+#define FILE_PATH							"data/conversion/floats.c"
+
+#include "./floats.h"
+#include "../../core/memory.h"
+#include <string.h>
 
 
 
+ls_bool
+ls_strtold(long double *out, const char *in, size_t size) {
+	char *lcp = NULL;
+	if (!size) {
+		if (out) {
+			*out = strtold(in, &lcp);
+		} else {
+			uintmax_t ph = strtold(in, &lcp);
+		}
+		return (lcp && *lcp == '\0');
+	} else {
+		char stackalloc(buffer, (size + 1));
+		memcpy(buffer, in, size);
+		buffer[size] = 0;
+		ls_bool result = ls_strtold(out, buffer, 0);
+		stackfree(buffer);
+		return result;
+	}
+}
 
 
-#endif // __LS_CORE_INTEGERS_H
+ls_bool
+ls_strtod(double *out, const char *in, size_t size) {
+	if (!out) {
+		return ls_strtold(NULL, in, size);
+	}
+
+	long double buffer;
+	ls_bool result = ls_strtold(&buffer, in, size);
+	*out = (double)buffer;
+	return result;
+}
+
+
+ls_bool
+ls_strtof(float *out, const char *in, size_t size) {
+	if (!out) {
+		return ls_strtold(NULL, in, size);
+	}
+
+	long double buffer;
+	ls_bool result = ls_strtold(&buffer, in, size);
+	*out = (float)buffer;
+	return result;
+}

@@ -56,11 +56,10 @@ ls_pbkdf2(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRI
 	uint32_t *asalt32 = (uint32_t*)(asalt + salt_size);
 	memcpy(asalt, salt, salt_size);
 
-	const ls_bool native_word = ((digest_size & (sizeof(unsigned int) - 1)) == 0);
+	const ls_bool native_word = ((digest_size & (sizeof(ls_nword_t) - 1)) == 0);
 
-	unsigned int i;
 	size_t r, j;
-	unsigned int count;
+	ls_nword_t i, count;
 	for (count = 1; out_size > 0; ++count) {
 		*asalt32 = LS_SWAP_ENDIAN_BIG_32(count);
 
@@ -70,8 +69,8 @@ ls_pbkdf2(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRI
 			for (i = rounds; --i;) {
 				hmac(d1, digest_size, pass, pass_size, d2);
 
-				for (j = (digest_size / sizeof(unsigned int)); j--;) {
-					((unsigned int *)d1)[j] ^= ((unsigned int *)d2)[j];
+				for (j = (digest_size / sizeof(ls_nword_t)); j--;) {
+					((ls_nword_t *)d1)[j] ^= ((ls_nword_t *)d2)[j];
 				}
 			}
 		} else {

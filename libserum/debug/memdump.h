@@ -41,11 +41,11 @@
 extern "C" {
 #endif
 
-	LSAPI void ls_memdump_ex(const void *const ptr, const size_t size, unsigned int columns, unsigned int items_per_column);
+	LSAPI void ls_memdump_ex(const void *const ptr, const size_t size, ls_nword_t columns, ls_nword_t items_per_column);
 	LSAPI void ls_memdump(const void *const ptr, const size_t size);
-	LSAPI void ls_vmemdump_ex(const void *const LS_RESTRICT ptr, const size_t size, unsigned int columns, unsigned int items_per_column, const char *const LS_RESTRICT str);
+	LSAPI void ls_vmemdump_ex(const void *const LS_RESTRICT ptr, const size_t size, ls_nword_t columns, ls_nword_t items_per_column, const char *const LS_RESTRICT str);
 	LSAPI void ls_vmemdump(const void *const LS_RESTRICT ptr, const size_t size, const char *const LS_RESTRICT str);
-	LSAPI size_t ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size, unsigned int columns);
+	LSAPI size_t ls_memdiff_ex(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size, ls_nword_t columns);
 	LSAPI size_t ls_memdiff(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, const size_t size);
 
 #ifdef __cplusplus

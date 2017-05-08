@@ -56,7 +56,7 @@ ls_pad_iso9797_zero_ex(void *const out, void *const in, const size_t inputsz, co
 
 
 ls_result_t
-ls_pad_iso9797_zero_block(void *const out, void *const in, const size_t inputsz, const int blocksz) {
+ls_pad_iso9797_zero_block(void *const out, void *const in, const size_t inputsz, const ls_nword_t blocksz) {
 	return ls_pad_iso9797_zero_ex(out, in, inputsz, ls_pad_iso9797_zero_size(blocksz, inputsz));
 }
 
@@ -99,7 +99,7 @@ ls_pad_iso9797_ex(void *const out, void *const in, const size_t inputsz, const s
 
 
 ls_result_t
-ls_pad_iso9797_block(void *const out, void *const in, const size_t inputsz, const int blocksz) {
+ls_pad_iso9797_block(void *const out, void *const in, const size_t inputsz, const ls_nword_t blocksz) {
 	return ls_pad_iso9797_ex(out, in, inputsz, ls_pad_iso9797_size(blocksz, inputsz));
 }
 

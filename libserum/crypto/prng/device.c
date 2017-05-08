@@ -77,7 +77,7 @@ ls_device_init(ls_device_t *const LS_RESTRICT device, const char *const LS_RESTR
 	// Set the buffer size.
 	device->buffer_size = LS_MATH_ROUND_BLOCK_EXCL(LS_DEVICE_BUFFER_BLOCK, buffer_size);
 	if (device->buffer_size < LS_DEVICE_BUFFER_BLOCK) {
-		ls_log_w("buffer size below " MACRO_STRINGIFY(LS_DEVICE_BUFFER_BLOCK) ", corrected");
+		ls_log(LS_LOG_WARNING, "buffer size below " MACRO_STRINGIFY(LS_DEVICE_BUFFER_BLOCK) ", corrected");
 		device->buffer_size = LS_DEVICE_BUFFER_BLOCK;
 	}
 

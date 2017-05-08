@@ -283,7 +283,7 @@ ls_isaac_test() { // FIXME: move to selftest
 			0x9D8D1908, 0x86BA527F, 0xF943F672, 0xEF73FBF0, 0x46D95CA5, 0xC54CD95B, 0x9D855E89, 0x4BB5AF29
 		};
 
-		int i, j;
+		ls_nword_t i, j;
 		uint_fast16_t vi;
 		for (i = vi = 0; i < 2; ++i) {
 			for (j = 0; j < LS_CRYPTO_PRNG_ISAAC_SIZE; ++j) {

@@ -30,11 +30,15 @@
 **
 */
 
-#ifndef __LS_CORE_INTEGERS_H
-#define __LS_CORE_INTEGERS_H
+#ifndef __LS_DATA_NATIVEWORD_H
+#define __LS_DATA_NATIVEWORD_H
 
 
+#include "../core/stdincl.h"
 
 
+typedef unsigned int ls_nword_t;
+typedef signed int ls_nwords_t;
 
-#endif // __LS_CORE_INTEGERS_H
+
+#endif

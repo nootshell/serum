@@ -34,8 +34,9 @@
 
 #include "./main.h"
 #include "./debug.h"
+#include "../exit.h"
 #include "../info.h"
-#include "../../debug/log.h"
+#include "../logging/log.h"
 
 #if (defined(LS_SELFTEST_STARTUP))
 #	include "../self-test.h"
@@ -45,14 +46,14 @@
 ID("entry/exit routines");
 
 
-unsigned int
+ls_nword_t
 lib_main_entry() {
-	int result = 0;
+	ls_nword_t result = 0;
 
 #if (LS_VERBOSE_STARTUP)
-	ls_logf_d("Git: from branch %s, commit %s", ls_info_git_branch(), ls_info_git_commit());
-	ls_logf_d("Compilation environment: %s", ls_info_compilation_environment());
-	ls_logf_d("Compilation options:\n%s", ls_info_compilation_options());
+	ls_log(LS_LOG_DEBUG, "Git: from branch %s, commit %s", ls_info_git_branch(), ls_info_git_commit());
+	ls_log(LS_LOG_DEBUG, "Compilation environment: %s", ls_info_compilation_environment());
+	ls_log(LS_LOG_DEBUG, "Compilation options:\n%s", ls_info_compilation_options());
 #endif
 
 	if (ls_hook_mcheck() != 0) {
@@ -69,11 +70,10 @@ lib_main_entry() {
 		#endif
 
 		if (((uint8_t*)&e_val)[0] != E_VAL_VALID) {
-			ls_log_e("Compile-time/run-time endianness mismatch - aborting.");
-			abort();
+			ls_fatal(LS_LOG_ERROR, "Compile-time/run-time endianness mismatch - aborting.");
 		} else {
 #if (LS_VERBOSE_STARTUP)
-			ls_log_d("Compile-time/run-time endianness match.");
+			ls_log(LS_LOG_DEBUG, "Compile-time/run-time endianness match.");
 #endif
 		}
 	}
@@ -88,7 +88,7 @@ lib_main_entry() {
 }
 
 
-unsigned int
+ls_nword_t
 lib_main_exit() {
 	return 0;
 }

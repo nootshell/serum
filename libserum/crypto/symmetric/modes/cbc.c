@@ -103,7 +103,7 @@ ls_cbc_encrypt_block(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RE
 		memcpy(pt_old, buffer, cbc->block_size);
 	}
 
-	unsigned int i;
+	ls_nword_t i;
 	for (i = cbc->block_size; i--;) {
 		buffer[i] = (buffer[i] ^ cbc->cv[i]);
 	}
@@ -137,7 +137,7 @@ ls_cbc_decrypt_block(const ls_cbc_t *const LS_RESTRICT cbc, uint8_t *const LS_RE
 		return LS_RESULT_ERROR(LS_RESULT_CODE_FUNCTION);
 	}
 
-	unsigned int i;
+	ls_nword_t i;
 	if (HAS_FLAG(cbc->flags, LS_CBC_PROPAGATE)) {
 		for (i = cbc->block_size; i--;) {
 			buffer[i] = (buffer[i] ^ cbc->cv[i]);

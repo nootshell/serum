@@ -34,7 +34,10 @@
 #define __LS_CORE_BOOL_H
 
 
-typedef unsigned int ls_bool;
+#include "../data/nativeword.h"
+
+
+typedef ls_nword_t ls_bool;
 
 #define true								1U
 #define false								0U

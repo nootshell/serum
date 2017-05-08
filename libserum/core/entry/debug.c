@@ -33,7 +33,7 @@
 #define FILE_PATH							"core/entry/debug.c"
 
 #include "./debug.h"
-#include "../../debug/log.h"
+#include "../logging/log.h"
 #include <inttypes.h>
 
 
@@ -51,16 +51,16 @@ ls_mcheck_abort(enum mcheck_status status) {
 		case MCHECK_OK:
 			return;
 		case MCHECK_FREE:
-			ls_log_e("Block freed twice.");
+			ls_log(LOG_LEVEL_ERR, "Block freed twice.");
 			return;
 		case MCHECK_HEAD:
-			ls_log_e("Memory before the block was clobbered.");
+			ls_log(LOG_LEVEL_ERR, "Memory before the block was clobbered.");
 			return;
 		case MCHECK_TAIL:
-			ls_log_e("Memory after the block was clobbered.");
+			ls_log(LOG_LEVEL_ERR, "Memory after the block was clobbered.");
 			return;
 		default:
-			ls_log_e("Mcheck invoked abort, but an unknown status was passed to the abort function.");
+			ls_log(LOG_LEVEL_ERR, "Mcheck invoked abort, but an unknown status was passed to the abort function.");
 			return;
 	}
 }
@@ -77,9 +77,9 @@ ls_hook_mcheck() {
 	int result = mcheck(ls_mcheck_abort);
 
 	if (result == 0) {
-		ls_logf("Installed successfully, abort function is located at address 0x%" LS_PRIPTR ".", (uintptr_t)ls_mcheck_abort);
+		ls_log(LOG_LEVEL_DBG, "Installed successfully, abort function is located at address 0x%" LS_PRIPTR ".", (uintptr_t)ls_mcheck_abort);
 	} else {
-		ls_log_e("Failed to install hooks.");
+		ls_log(LOG_LEVEL_ERR, "Failed to install hooks.");
 	}
 
 	return result;

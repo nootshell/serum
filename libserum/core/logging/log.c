@@ -30,60 +30,78 @@
 **
 */
 
-#define FILE_PATH							"debug/log.c"
+#define FILE_PATH							"core/logging/log.c"
 
 #include "./log.h"
-#include "../core/time.h"
+#include "../exit.h"
+#include "../time.h"
+#include "../../runtime/mutex.h"
 #include <stdio.h>
+#include <stdarg.h>
+#include <inttypes.h>
 
 
 ID("centralized logging");
 
 
-#define STYLE_TIMESTAMP						LS_ANSI_ESCAPE LS_ANSI_FG_WHITE LS_ANSI_OPT LS_ANSI_DARK LS_ANSI_TERMINATE
-#define STYLE_FUNCTION						LS_ANSI_ESCAPE LS_ANSI_FG_WHITE LS_ANSI_OPT LS_ANSI_BRIGHT LS_ANSI_OPT LS_ANSI_ITALIC LS_ANSI_TERMINATE
-#define STYLE_FILENAME						STYLE_TIMESTAMP
-#define STYLE_SEPARATOR						STYLE_FILENAME
-#define STYLE_LINENUMBER					LS_ANSI_ESCAPE LS_ANSI_FG_WHITE LS_ANSI_OPT LS_ANSI_DARK LS_ANSI_TERMINATE
-#define STYLE_TERMINATOR					LS_ANSI_ESCAPE LS_ANSI_FG_WHITE LS_ANSI_OPT LS_ANSI_DARK LS_ANSI_TERMINATE
-#define STYLE_TEXT							LS_ANSI_RESET
+static ls_log_level_t global_log_level = LS_LOG_DEBUG;
+static const char *log_level_tags[] = {
+	"SIL",
+	"ERR",
+	"WRN",
+	"INF",
+	"VER",
+	"DBG",
+	NULL
+};
+static size_t log_level_tag_count = 0;
 
-static void print_origin(const char *func, const char *file, const uint32_t line) {
-#if (LS_LOG_ORIGIN)
-	printf(STYLE_TIMESTAMP "%" PRIu64 " " STYLE_FUNCTION "%- 28s" LS_ANSI_RESET " " STYLE_FILENAME "% 32s" STYLE_SEPARATOR ":" STYLE_LINENUMBER "%- 4" PRIu32 LS_ANSI_RESET " " STYLE_TERMINATOR ">" LS_ANSI_RESET " " STYLE_TEXT, ls_nanos(), func, file, line);
-#else
-	printf(STYLE_TIMESTAMP "%" PRIu64 " " STYLE_FUNCTION "%- 28s " STYLE_TERMINATOR ">" LS_ANSI_RESET " " STYLE_TEXT, ls_nanos(), func);
-#endif
-}
+static ls_mutex_t log_lock;
+static ls_bool done_init = false;
 
 
-// TODO
 void
-_ls_log(const char *func, const char *file, const uint32_t line, const char *const str) {
-	if (!func || !file || !line || !str) {
-		puts("");
-	} else {
-		print_origin(func, file, line);
-#if (HAVE_ANSI_SUPPORT)
-		printf("%s" LS_ANSI_RESET "\n", str);
-#else
-		puts(str);
-#endif
+ls_log(ls_log_level_t level, const char *fmt, ...) {
+	if (level > global_log_level) {
+		return;
+	}
+
+	if (!done_init) {
+		if (!ls_mutex_init(&log_lock).success) {
+			ls_fatal(1, "Failed to initialize logging mutex.");
+		}
+
+		for (; log_level_tags[++log_level_tag_count];) {
+			;
+		}
+
+		done_init = true;
+	}
+
+	if (level < 0 || level >= log_level_tag_count) {
+		return;
+	}
+
+	if (!ls_mutex_lock(&log_lock).success) {
+		ls_fatal(1, "Failed to lock logging mutex.");
+	}
+
+	printf("%" PRIu64 " [%s] > ", ls_nanos(), log_level_tags[level]);
+
+	va_list vl;
+	va_start(vl, fmt);
+	vprintf(fmt, vl);
+	va_end(vl);
+
+	puts("");
+
+	if (!ls_mutex_unlock(&log_lock).success) {
+		ls_fatal(1, "Failed to unlock logging mutex.");
 	}
 }
 
 
-// TODO
 void
-_ls_logf(const char *func, const char *file, const uint32_t line, const char *const fmt, ...) {
-	if (!func || !file || !line || !fmt) {
-		puts("");
-	} else {
-		va_list vl;
-		va_start(vl, fmt);
-		print_origin(func, file, line);
-		vprintf(fmt, vl);
-		puts("" LS_ANSI_RESET);
-		va_end(vl);
-	}
+ls_set_log_level(ls_log_level_t level) {
+	global_log_level = level;
 }

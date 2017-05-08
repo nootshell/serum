@@ -59,9 +59,9 @@ int main(int argc, char *argv[], char *env[]) {
 		uint8_t stackalloc(key, keysz);
 		ls_pbkdf2_sha2_256(key, keysz, argv[1], pwsz, argv[2], stsz, rounds);
 
-		ls_vmemdump(argv[1], pwsz, "Password:");
-		ls_vmemdump(argv[2], stsz, "Salt:");
-		ls_vmemdump(key, keysz, "Output:");
+		ls_vmemdump(argv[1], pwsz, "Password");
+		ls_vmemdump(argv[2], stsz, "Salt");
+		ls_vmemdump(key, keysz, "Output");
 	}
 
 	return 0;

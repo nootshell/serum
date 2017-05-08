@@ -35,7 +35,7 @@
 #include "./packet.h"
 #include "../core/memory.h"
 #include "../core/varsize.h"
-#include "../debug/log.h"
+#include "../core/logging/log.h"
 #include <string.h>
 
 
@@ -65,7 +65,7 @@ ls_packet_clear_ex(ls_packet_t *const packet, const ls_bool free_headers, const 
 	if (packet->headers) {
 		if (free_headers) {
 			ls_packet_header_t *header;
-			unsigned int i;
+			ls_nword_t i;
 			for (i = packet->header_count; i--;) {
 				header = &packet->headers[i];
 				if (header->value) {
@@ -156,12 +156,12 @@ ls_packet_set_payload(ls_packet_t *const LS_RESTRICT packet, const uint32_t size
 void*
 ls_packet_encode(const ls_packet_t *const LS_RESTRICT packet, size_t *const LS_RESTRICT out_size) {
 	if (!packet) {
-		ls_log_e("packet null");
+		ls_log(LS_LOG_ERROR, "packet null");
 		return NULL;
 	}
 
 	if (!out_size) {
-		ls_log_e("out_size null");
+		ls_log(LS_LOG_ERROR, "out_size null");
 		return NULL;
 	}
 
@@ -170,7 +170,7 @@ ls_packet_encode(const ls_packet_t *const LS_RESTRICT packet, size_t *const LS_R
 
 	if (packet->header_count && packet->headers) {
 		ls_packet_header_t *header;
-		unsigned int i;
+		ls_nword_t i;
 		for (i = 0; i < packet->header_count; ++i) {
 			header = &packet->headers[i];
 			if (header->size && header->value) {
@@ -181,7 +181,7 @@ ls_packet_encode(const ls_packet_t *const LS_RESTRICT packet, size_t *const LS_R
 
 	if (HAS_FLAG(packet->flags, LS_PACKET_PAYLOAD) && packet->payload_size && packet->payload) {
 		if (!ls_varsize_get_bytes(psz_buffer, &psz_size, packet->payload_size).success || !psz_size) {
-			ls_log_fail("variable-size integer");
+			ls_log(LS_LOG_ERROR, "variable-size integer");
 			return NULL;
 		}
 		size += (psz_size + packet->payload_size);
@@ -194,7 +194,7 @@ ls_packet_encode(const ls_packet_t *const LS_RESTRICT packet, size_t *const LS_R
 
 	if (packet->header_count && packet->headers) {
 		ls_packet_header_t *header;
-		unsigned int j;
+		ls_nword_t j;
 		for (j = 0; j < packet->header_count; ++j) {
 			header = &packet->headers[j];
 			if (header->size && header->value) {

@@ -37,7 +37,7 @@
 #if (LS_SELFTEST)
 
 #include "./memory.h"
-#include "../debug/log.h"
+#include "./logging/log.h"
 
 #include "../crypto/hashing/self-test.h"
 
@@ -61,18 +61,18 @@ struct ls_selftest tests[] = {
 ls_bool
 ls_selftest_all() {
 	const size_t max = ((sizeof(tests) / sizeof(*tests)) - 1);
-	unsigned int failures = 0;
+	ls_nword_t failures = 0;
 	struct ls_selftest *current_test;
 	struct ls_selftest *stackalloc(failed_entries, max);
 
 	if (max == 0) {
 #if (LS_SELFTEST_VERBOSE)
-		ls_log_e("No self-tests to perform.");
+		ls_log(LS_LOG_ERROR, "No self-tests to perform.");
 #endif
 		return false;
 	}
 
-	unsigned int i;
+	ls_nword_t i;
 	for (i = 0; i < max; ++i) {
 		current_test = &tests[i];
 		failed_entries[i] = NULL;
@@ -86,18 +86,18 @@ ls_selftest_all() {
 
 	if (!failures) {
 #if (LS_SELFTEST_VERBOSE)
-		ls_log("All tests passed.");
+		ls_log(LS_LOG_VERBOSE, "All tests passed.");
 #endif
 		return true;
 	} else {
 		if (failures == max) {
-			ls_log("All tests failed:");
+			ls_log(LS_LOG_ERROR, "All tests failed:");
 		} else {
-			ls_logf("Out of %u test%s, %u test%s failed:", max, ((max == 1) ? "" : "s"), failures, ((failures == 1) ? "" : "s"));
+			ls_log(LS_LOG_ERROR, "Out of %u test%s, %u test%s failed:", max, ((max == 1) ? "" : "s"), failures, ((failures == 1) ? "" : "s"));
 		}
 		for (i = 0; i < max; ++i) {
 			if (failed_entries[i] != NULL) {
-				ls_logf("  %s", failed_entries[i]->description);
+				ls_log(LS_LOG_ERROR, "  %s", failed_entries[i]->description);
 			}
 		}
 	}

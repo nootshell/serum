@@ -102,6 +102,8 @@
 #	define NO_MIN_MAX
 #	define WIN32_LEAN_AND_MEAN
 #	include <Windows.h>
+
+	typedef intptr_t ssize_t;
 #elif (LS_LLVM || LS_GCC)
 #	define LS_COMPILER						LS_COMPILER_ID_GCC
 #

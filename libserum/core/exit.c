@@ -30,11 +30,39 @@
 **
 */
 
-#ifndef __LS_CORE_INTEGERS_H
-#define __LS_CORE_INTEGERS_H
+#define FILE_PATH							"core/exit.c"
+
+#include "./exit.h"
+#include <stdio.h>
+#include <stdarg.h>
 
 
+void
+ls_fatal_ex(const char *func, const char *file, ls_nword_t line, ls_nword_t exit_code, const char *fmt, ...) {
+	va_list vl;
+	va_start(vl, fmt);
 
+	fputs(
+		"A fatal error occured in libserum. This usually means a\n"
+		"critical condition was met and the most sensible option\n"
+		"was to terminate completely.\n\n", stderr
+	);
 
+	if (func || file || line) {
+		fprintf(stderr,
+			"    Function: %s\n"
+			"    File: %s\n"
+			"    Line: %u\n\n",
+			(func ? func : "unspecified"),
+			(file ? file : "unspecified"),
+			line
+		);
+	}
 
-#endif // __LS_CORE_INTEGERS_H
+	if (fmt) {
+		fputs("Message:\n    ", stderr);
+		vfprintf(stderr, fmt, vl);
+	}
+
+	exit(64 | (exit_code & 0x3F));
+}

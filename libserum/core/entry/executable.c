@@ -37,7 +37,7 @@
 #if (defined(ELF_INTERP))
 
 #include "./main.h"
-#include "../../debug/log.h"
+#include "../logging/log.h"
 #include <stdlib.h>
 
 #if (!LS_SELFTEST_STARTUP)
@@ -53,9 +53,9 @@ const char LS_ATTR_USED __attribute__((section(".interp"))) interp[] = ELF_INTER
 
 void
 interp_entry() {
-	ls_log("Startup from executable library.");
+	ls_log(LS_LOG_INFO, "Startup from executable library.");
 
-	unsigned int result = 0, sub_result;
+	ls_nword_t result = 0, sub_result;
 
 	if ((sub_result = lib_main_entry()) != 0) {
 		result |= ((sub_result << 3) | 1);
@@ -72,7 +72,7 @@ interp_entry() {
 	}
 
 	if (result) {
-		ls_logf("Errors along the way, true exit code: %08X", result);
+		ls_log(LS_LOG_WARNING, "Errors along the way, true exit code: %08X", result);
 	}
 
 	exit(!!result);
