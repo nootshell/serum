@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
 **                                                                            **
 **   The MIT License                                                          **
 **                                                                            **
@@ -26,60 +26,22 @@
 ********************************************************************************
 **
 **  Notes:
-**    -
-**
+**		mɘiꓭ
+**		ɯəıꓭ
 */
 
-#ifndef __LS_CRYPTO_SYMMETRIC_SALSA_20_H
-#define __LS_CRYPTO_SYMMETRIC_SALSA_20_H
+#ifndef __LS_CRYPTO_KDF_SCRYPT_H
+#define __LS_CRYPTO_KDF_SCRYPT_H
 
 
 #include "../../core/stdincl.h"
-
-
-#define LS_SALSA20_BLOCK_SIZE				64
-
-
-struct ls_salsa20_layout {
-	uint32_t c1;
-	uint32_t k1[4];
-	uint32_t c2;
-	uint64_t nonce;
-	uint64_t counter;
-	uint32_t c3;
-	uint32_t k2[4];
-	uint32_t c4;
-};
-
-union ls_salsa20_data {
-	uint32_t data[16];
-	struct ls_salsa20_layout layout;
-};
-
-typedef struct ls_salsa20 {
-	union ls_salsa20_data data;
-	uint8_t cache[LS_SALSA20_BLOCK_SIZE];
-	ls_nword_t cache_offset;
-} ls_salsa20_t;
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_salsa20_init_ex(ls_salsa20_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size, const void *const LS_RESTRICT iv);
-	LSAPI ls_result_t ls_salsa20_init(ls_salsa20_t *const LS_RESTRICT ctx, const void *const LS_RESTRICT key, const size_t key_size);
-	LSAPI ls_result_t ls_salsa20_clear(ls_salsa20_t *ctx);
-
-	LSAPI ls_result_t ls_salsa20_process_block(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_RESTRICT data);
-	LSAPI ls_result_t ls_salsa20_encrypt_block(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_RESTRICT data);
-	LSAPI ls_result_t ls_salsa20_decrypt_block(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_RESTRICT data);
-
-	LSAPI ls_result_t ls_salsa20_process_data(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_RESTRICT data, size_t size);
-	LSAPI ls_result_t ls_salsa20_encrypt(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_RESTRICT data, size_t size);
-	LSAPI ls_result_t ls_salsa20_decrypt(ls_salsa20_t *const LS_RESTRICT ctx, void *const LS_RESTRICT data, size_t size);
-
-	LSAPI void ls_salsa20_internal_perform_rounds(uint32_t *const out, const uint32_t *const block, const ls_nword_t rounds);
+	LSAPI ls_result_t ls_scrypt(uint8_t *const out, const size_t out_size, const uint8_t *const LS_RESTRICT pass, const size_t pass_size, const uint8_t *const LS_RESTRICT salt, const size_t salt_size, const uint64_t N, const uint32_t r, const uint32_t p);
 
 #ifdef __cplusplus
 }

@@ -43,7 +43,7 @@
 #if (LS_ANSI_ESCAPE_SUPPORT)
 #	define __LS_ANSI_PUT(x)					x
 #else
-#	define __LS_ANSI_PUT(x)
+#	define __LS_ANSI_PUT(x)					""
 #endif
 
 

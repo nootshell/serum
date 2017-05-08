@@ -45,7 +45,7 @@ ls_strtold(long double *out, const char *in, size_t size) {
 		if (out) {
 			*out = strtold(in, &lcp);
 		} else {
-			uintmax_t ph = strtold(in, &lcp);
+			long double ph = strtold(in, &lcp);
 		}
 		return (lcp && *lcp == '\0');
 	} else {

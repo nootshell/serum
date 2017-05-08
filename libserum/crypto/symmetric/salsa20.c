@@ -45,13 +45,12 @@ static const uint8_t theta[16] = "expand 16-byte k";
 
 
 void
-static ls_salsa20_get_block(ls_salsa20_t *ctx) {
+ls_salsa20_internal_perform_rounds(uint32_t *const out, const uint32_t *const block, const ls_nword_t rounds) {
 	uint32_t d[16];
-	memcpy(d, ctx, sizeof(d));
+	memcpy(d, block, sizeof(d));
 
 	ls_nword_t i;
-
-	for (i = 10; i--;) {
+	for (i = (rounds >> 1); i--;) {
 		d[ 4] ^= LS_ROTL32((d[ 0] + d[12]), 0x07);
 		d[ 8] ^= LS_ROTL32((d[ 4] + d[ 0]), 0x09);
 		d[12] ^= LS_ROTL32((d[ 8] + d[ 4]), 0x0D);
@@ -85,14 +84,19 @@ static ls_salsa20_get_block(ls_salsa20_t *ctx) {
 		d[14] ^= LS_ROTL32((d[13] + d[12]), 0x0D);
 		d[15] ^= LS_ROTL32((d[14] + d[13]), 0x12);
 	}
-
 	for (i = 16; i--;) {
-		((uint32_t*)ctx->cache)[i] = (d[i] + ctx->data.data[i]);
+		out[i] = (d[i] + block[i]);
 	}
+}
+
+
+void
+static ls_salsa20_get_block(ls_salsa20_t *ctx) {
+	ls_salsa20_internal_perform_rounds((uint32_t*)ctx->cache, ctx->data.data, 20);
 
 	if (!++(ctx->data.data[8])) {
 		if (!++(ctx->data.data[9])) {
-
+			// ...?
 		}
 	}
 

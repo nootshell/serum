@@ -34,8 +34,11 @@
 #define __LS_CORE_MEMORY_H
 
 
+#include "../data/nativeword.h"
 #include "./macro.h"
 #include "./detect_compiler.h"
+#include "./lsapi.h"
+
 
 #if (LS_MSC)
 #	include <malloc.h>
@@ -60,6 +63,24 @@
 #	include <sys/mman.h>
 #	define LS_MEMLOCK(ptr, size)			(mlock((ptr), (size)) == 0)
 #	define LS_MEMUNLOCK(ptr, size)			(munlock((ptr), (size)) == 0)
+#endif
+
+
+#if (!defined(LS_MEMORY_DESTROY_ITERATIONS))
+#	define LS_MEMORY_DESTROY_ITERATIONS		3
+#endif
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI const void *const volatile ls_memory_destroy_ex(void *const ptr, const size_t size, ls_nword_t iterations);
+	LSAPI const void *const ls_memory_destroy(void *const ptr, const size_t size);
+	LSAPI void ls_memory_free_indirect(void **const pptr);
+
+#ifdef __cplusplus
+}
 #endif
 
 

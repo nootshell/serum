@@ -34,9 +34,6 @@
 #define __LS_DATA_NATIVEWORD_H
 
 
-#include "../core/stdincl.h"
-
-
 typedef unsigned int ls_nword_t;
 typedef signed int ls_nwords_t;
 
