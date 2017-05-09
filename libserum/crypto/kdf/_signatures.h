@@ -30,8 +30,8 @@
 **
 */
 
-#ifndef __LS_CRYPTO_SYMMETRIC__SIGNATURES_H
-#define __LS_CRYPTO_SYMMETRIC__SIGNATURES_H
+#ifndef __LS_CRYPTO_KDF__SIGNATURES_H
+#define __LS_CRYPTO_KDF__SIGNATURES_H
 
 
 #include "../../core/stdincl.h"
