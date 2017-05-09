@@ -42,7 +42,7 @@
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_pbkdf2(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const uint32_t rounds, const size_t digest_size, ls_hmac_func_t const hmac);
+	LSAPI ls_result_t ls_pbkdf2_universal(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t rounds, const size_t digest_size, ls_hmac_func_t const hmac);
 
 #ifdef __cplusplus
 }

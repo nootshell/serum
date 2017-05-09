@@ -35,13 +35,15 @@
 
 
 #include "../../core/stdincl.h"
+#include "./_signatures.h"
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_scrypt(uint8_t *const out, const size_t out_size, const uint8_t *const LS_RESTRICT pass, const size_t pass_size, const uint8_t *const LS_RESTRICT salt, const size_t salt_size, const uint64_t N, const uint32_t r, const uint32_t p);
+	LSAPI ls_result_t ls_scrypt_universal(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t r, const ls_nword_t outer_rounds, ls_kdf_func_t kdf);
+	LSAPI ls_result_t ls_scrypt(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds);
 
 #ifdef __cplusplus
 }

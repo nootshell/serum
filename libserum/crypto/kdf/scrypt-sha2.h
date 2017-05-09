@@ -30,20 +30,25 @@
 **
 */
 
-#define FILE_PATH							"crypto/kdf/pbkdf2-md5.c"
-
-#include "./pbkdf2-md5.h"
-#include "./pbkdf2.h"
-#include "../hmac/hmac-md5.h"
+#ifndef __LS_CRYPTO_KDF_SCRYPT_SHA2_H
+#define __LS_CRYPTO_KDF_SCRYPT_SHA2_H
 
 
-ls_result_t ls_pbkdf2_md5(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t rounds) {
-	return ls_pbkdf2_universal(
-		out, out_size,
-		pass, pass_size,
-		salt, salt_size,
-		rounds,
-		LS_MD5_DIGEST_SIZE,
-		(ls_hmac_func_t)ls_hmac_md5
-	);
+#include "../../core/stdincl.h"
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_result_t ls_scrypt_sha2_224(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds);
+	LSAPI ls_result_t ls_scrypt_sha2_256(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds);
+	LSAPI ls_result_t ls_scrypt_sha2_384(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds);
+	LSAPI ls_result_t ls_scrypt_sha2_512(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds);
+
+#ifdef __cplusplus
 }
+#endif
+
+
+#endif
