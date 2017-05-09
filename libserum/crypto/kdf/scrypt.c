@@ -26,7 +26,7 @@
 ********************************************************************************
 **
 **  Notes:
-**    Derived from Tarsnap/scrypt, copyright block below.
+**    Derived from Tarsnap/scrypt, copyright block below. Heavily modified.
 **
 */
 
@@ -55,16 +55,16 @@
 * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 * SUCH DAMAGE.
 *
-* This file was originally written by Colin Percival as part of the Tarsnap
-* online backup system.
 */
 
 #define FILE_PATH							"crypto/kdf/scrypt.c"
 
 #include "./scrypt.h"
-#include "../../core/memory.h"
-#include "./pbkdf2-sha2.h"
+#include "./_signatures.h"
+#include "./scrypt-sha2.h"
 #include "../symmetric/salsa20.h"
+#include "../../core/memory.h"
+#include <string.h>
 
 
 uint64_t
@@ -84,107 +84,124 @@ static block_xor(ls_nword_t *const dest, const ls_nword_t *const src, const size
 
 
 void
-static block_salsa8_mix(const uint32_t *const Bin, uint32_t *const Bout, uint32_t *const X, const size_t r) {
-	memcpy(X, &Bin[((r << 1) - 1) * 16], 64);
+static block_mix_salsa8(const uint32_t *const in, uint32_t *const out, uint32_t *const X, const size_t r) {
+	memcpy(X, &in[((r << 1) - 1) * 16], 64);
 	
 	size_t i;
 	for (i = 0; i < (r << 1); i += 2) {
-		block_xor(X, &Bin[i * 16], 64);
+		block_xor(X, &in[i * 16], 64);
 		ls_salsa20_internal_perform_rounds(X, X, 8);
-		memcpy(&Bout[i * 8], X, 64);
+		memcpy(&out[i * 8], X, 64);
 
-		block_xor(X, &Bin[i * 16 + 16], 64);
+		block_xor(X, &in[i * 16 + 16], 64);
 		ls_salsa20_internal_perform_rounds(X, X, 8);
-		memcpy(&Bout[i * 8 + r * 16], X, 64);
+		memcpy(&out[i * 8 + r * 16], X, 64);
 	}
 }
 
 
 ls_result_t
-ls_scrypt(uint8_t *const out, const size_t out_size, const uint8_t *const LS_RESTRICT pass, const size_t pass_size, const uint8_t *const LS_RESTRICT salt, const size_t salt_size, const uint64_t N, const uint32_t r, const uint32_t p) {
+ls_scrypt_universal(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds, ls_kdf_func_t kdf) {
 	LS_RESULT_CHECK_NULL(out, 1);
-	LS_RESULT_CHECK_SIZE(out_size, 1);
 	LS_RESULT_CHECK_NULL(salt, 2);
-	LS_RESULT_CHECK_SIZE(salt_size, 2);
 	LS_RESULT_CHECK_NULL(pass, 3);
-	LS_RESULT_CHECK_SIZE(pass_size, 3);
-	LS_RESULT_CHECK_DATA(!r, 1);
-	LS_RESULT_CHECK_DATA(!p, 2);
-	LS_RESULT_CHECK_DATA(!N, 3);
-	LS_RESULT_CHECK(((uint64_t)(r) * (uint64_t)(p) >= (1 << 30)), LS_RESULT_CODE_SIZE, 4);
-	LS_RESULT_CHECK(((((N & (N - 1)) != 0) || (N < 2))), LS_RESULT_CODE_SIZE, 5);
+	LS_RESULT_CHECK_NULL(kdf, 4);
 
-	const size_t pmrm128 = (p * r * 128);
+	LS_RESULT_CHECK_SIZE(out_size, 1);
+	LS_RESULT_CHECK_SIZE(salt_size, 2);
+	LS_RESULT_CHECK_SIZE(pass_size, 3);
+
+	LS_RESULT_CHECK_DATA(!weight, 1);
+	LS_RESULT_CHECK_DATA(!outer_rounds, 2);
+	LS_RESULT_CHECK_DATA(!inner_rounds, 3);
+
+	LS_RESULT_CHECK(((((uint64_t)weight) * ((uint64_t)outer_rounds)) >= 0x40000000LLU), LS_RESULT_CODE_SIZE, 4);
+	LS_RESULT_CHECK(((((inner_rounds & (inner_rounds - 1)) != 0) || (inner_rounds < 2))), LS_RESULT_CODE_SIZE, 5);
+
+
+	const size_t pmrm128 = (outer_rounds * weight * 128);
 	uint8_t *B = malloc(pmrm128);
 
 	ls_result_t pbkdf_result;
-	if (!(pbkdf_result = ls_pbkdf2_sha2_256(B, pmrm128, pass, pass_size, salt, salt_size, 1)).success) {
-		ls_memory_free_indirect(&B);
+	if (!(pbkdf_result = kdf(B, pmrm128, pass, pass_size, salt, salt_size, 1)).success) {
+		ls_memory_free_indirect((void **const)&B);
 		return LS_RESULT_INHERITED(pbkdf_result, false);
 	}
 
 	/* Mixing scope. */ {
-		const size_t rm32 = (r * 32);
-		const size_t rm128 = (rm32 << 2);
+		const size_t wm32 = (weight * 32);
+		const size_t wm128 = (wm32 << 2);
 
 		uint32_t *B32;
-		uint32_t *V = malloc(rm128 * N);
-		uint32_t *X = malloc((rm128 << 1) + 64);
-		uint32_t *const Y = (X + rm32);
-		uint32_t *const Z = (Y + rm32);
+		uint32_t *V = malloc(wm128 * inner_rounds);
+		uint32_t *X = malloc((wm128 << 1) + 64);
+		uint32_t *const Y = (X + wm32);
+		uint32_t *const Z = (Y + wm32);
 
-		uint64_t i;
 		uint64_t j;
 		uint64_t k;
-		for (i = p; i--;) {
-			B32 = ((uint32_t*)&B[i * 128 * r]);
+
+		uint64_t i;
+		for (i = outer_rounds; i--;) {
+			B32 = ((uint32_t *const)&B[wm128 * i]);
 
 #if (LS_LITTLE_ENDIAN)
-			memcpy(X, B32, (sizeof(*X) * rm32));
+			memcpy(X, B32, (sizeof(*X) * wm32));
 #else
 			size_t l;
 
-			for (l = rm32; l--;) {
+			for (l = wm32; l--;) {
 				X[l] = LS_SWAP_ENDIAN_LITTLE_32(B32[l]);
 			}
 #endif
 
-			for (j = 0; j < N; j += 2) {
-				memcpy(&V[j * rm32], X, rm128);
-				block_salsa8_mix(X, Y, Z, r);
+			for (j = 0; j < inner_rounds; j += 2) {
+				memcpy(&V[j * wm32], X, wm128);
+				block_mix_salsa8(X, Y, Z, weight);
 
-				memcpy(&V[(j + 1) * rm32], Y, rm128);
-				block_salsa8_mix(Y, X, Z, r);
+				memcpy(&V[(j + 1) * wm32], Y, wm128);
+				block_mix_salsa8(Y, X, Z, weight);
 			}
 
-			for (j = (N >> 1); j--;) {
-				k = integerify(X, r) & (N - 1);
-				block_xor(X, &V[k * rm32], rm128);
-				block_salsa8_mix(X, Y, Z, r);
+			for (j = (inner_rounds >> 1); j--;) {
+				k = integerify(X, weight) & (inner_rounds - 1);
+				block_xor(X, &V[k * wm32], wm128);
+				block_mix_salsa8(X, Y, Z, weight);
 
-				k = integerify(Y, r) & (N - 1);
-				block_xor(Y, &V[k * rm32], rm128);
-				block_salsa8_mix(Y, X, Z, r);
+				k = integerify(Y, weight) & (inner_rounds - 1);
+				block_xor(Y, &V[k * wm32], wm128);
+				block_mix_salsa8(Y, X, Z, weight);
 			}
 
 #if (LS_LITTLE_ENDIAN)
-			memcpy(B32, X, (sizeof(*B32) * rm32));
+			memcpy(B32, X, (sizeof(*B32) * wm32));
 #else
-			for (l = rm32; l--;) {
+			for (l = wm32; l--;) {
 				B32[l] = LS_SWAP_ENDIAN_LITTLE_32(X[l]);
 			}
 #endif
 		}
 
-		ls_memory_free_indirect(&V);
-		ls_memory_free_indirect(&X);
+		ls_memory_free_indirect((void **const)&V);
+		ls_memory_free_indirect((void **const)&X);
 	}
 
-	pbkdf_result = ls_pbkdf2_sha2_256(out, out_size, pass, pass_size, B, pmrm128, 1);
-	ls_memory_free_indirect(&B);
+	pbkdf_result = kdf(out, out_size, pass, pass_size, B, pmrm128, 1);
+	ls_memory_free_indirect((void **const)&B);
 	if (!pbkdf_result.success) {
 		return LS_RESULT_INHERITED(pbkdf_result, false);
 	}
 
 	return LS_RESULT_SUCCESS;
+}
+
+
+ls_result_t
+ls_scrypt(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds) {
+	return ls_scrypt_sha2_256(
+		out, out_size,
+		pass, pass_size,
+		salt, salt_size,
+		inner_rounds, weight, outer_rounds
+	);
 }

@@ -30,20 +30,56 @@
 **
 */
 
-#define FILE_PATH							"crypto/kdf/pbkdf2-md5.c"
+#define FILE_PATH							"crypto/kdf/scrypt-sha2.c"
 
-#include "./pbkdf2-md5.h"
-#include "./pbkdf2.h"
-#include "../hmac/hmac-md5.h"
+#include "./scrypt-sha2.h"
+#include "./scrypt.h"
+#include "./pbkdf2-sha2.h"
 
 
-ls_result_t ls_pbkdf2_md5(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t rounds) {
-	return ls_pbkdf2_universal(
+ls_result_t
+ls_scrypt_sha2_224(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds) {
+	return ls_scrypt_universal(
 		out, out_size,
 		pass, pass_size,
 		salt, salt_size,
-		rounds,
-		LS_MD5_DIGEST_SIZE,
-		(ls_hmac_func_t)ls_hmac_md5
+		inner_rounds, weight, outer_rounds,
+		(ls_kdf_func_t)ls_pbkdf2_sha2_224
+	);
+}
+
+
+ls_result_t
+ls_scrypt_sha2_256(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds) {
+	return ls_scrypt_universal(
+		out, out_size,
+		pass, pass_size,
+		salt, salt_size,
+		inner_rounds, weight, outer_rounds,
+		(ls_kdf_func_t)ls_pbkdf2_sha2_256
+	);
+}
+
+
+ls_result_t
+ls_scrypt_sha2_384(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds) {
+	return ls_scrypt_universal(
+		out, out_size,
+		pass, pass_size,
+		salt, salt_size,
+		inner_rounds, weight, outer_rounds,
+		(ls_kdf_func_t)ls_pbkdf2_sha2_384
+	);
+}
+
+
+ls_result_t
+ls_scrypt_sha2_512(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds) {
+	return ls_scrypt_universal(
+		out, out_size,
+		pass, pass_size,
+		salt, salt_size,
+		inner_rounds, weight, outer_rounds,
+		(ls_kdf_func_t)ls_pbkdf2_sha2_512
 	);
 }

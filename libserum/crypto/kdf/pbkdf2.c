@@ -41,7 +41,7 @@ ID("PBKDF2 implementation");
 
 
 ls_result_t
-ls_pbkdf2(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const uint32_t rounds, const size_t digest_size, ls_hmac_func_t const hmac) {
+ls_pbkdf2_universal(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t rounds, const size_t digest_size, ls_hmac_func_t const hmac) {
 	LS_RESULT_CHECK_NULL(out, 1);
 	LS_RESULT_CHECK_SIZE(out_size, 1);
 	LS_RESULT_CHECK_NULL(pass, 2);
@@ -58,9 +58,11 @@ ls_pbkdf2(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRI
 
 	const ls_bool native_word = ((digest_size & (sizeof(ls_nword_t) - 1)) == 0);
 
+	size_t offset = 0;
+
 	size_t r, j;
 	ls_nword_t i, count;
-	for (count = 1; out_size > 0; ++count) {
+	for (count = 1; offset < out_size; ++count) {
 		*asalt32 = LS_SWAP_ENDIAN_BIG_32(count);
 
 		hmac(asalt, stacksizeof(asalt), pass, pass_size, d1);
@@ -84,10 +86,9 @@ ls_pbkdf2(uint8_t *LS_RESTRICT out, size_t out_size, const char *const LS_RESTRI
 		}
 
 		r = ((out_size < digest_size) ? out_size : digest_size);
-		memcpy(out, d1, r);
+		memcpy(out + offset, d1, r);
 
-		out += r;
-		out_size -= r;
+		offset += r;
 	};
 
 	stackfree(d1);
