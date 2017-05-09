@@ -1,6 +1,6 @@
 # Serum #
 
-***Experimental*** cryptography/networking multi-tool, licensed under the [MIT license](./COPYING.md).
+**Experimental** cryptography/networking multi-tool, licensed under the [MIT license](./COPYING.md).
 
 
 ## Features ##
@@ -36,6 +36,9 @@
 		- [PBKDF2-\*](./libserum/crypto/kdf/pbkdf2.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/PBKDF2)</sup>
 		- [PBKDF2-MD5](./libserum/crypto/kdf/pbkdf2-md5.h)
 		- [PBKDF2-SHA2](./libserum/crypto/kdf/pbkdf2-sha2.h)
+		- [scrypt-\*](./libserum/crypto/kdf/scrypt.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Scrypt)</sup>
+		- [scrypt-MD5](./libserum/crypto/kdf/scrypt-md5.h)
+		- [scrypt-SHA2](./libserum/crypto/kdf/scrypt-sha2.h)
 	- Key exchange
 		- [X25519](./libserum/crypto/key_exchange/x25519.h) <sup>[Wikipedia](https://en.wikipedia.org/wiki/Curve25519)</sup>
 	- Padding
@@ -55,6 +58,8 @@
 - Data
 	- Conversion
 		- [Strings to integers](./libserum/data/conversion/integers.h)
+		- [Strings to floats](./libserum/data/conversion/floats.h)
+	- [Native word](./libserum/data/nativeword.h)
 - Debug
 	- [Logging](./libserum/debug/log.h)
 	- [Memory dump functions](./libserum/debug/memdump.h)
