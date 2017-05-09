@@ -35,7 +35,7 @@
 #include "./rijndael-cbc.h"
 
 
-ID("Rijndael-CBC");
+ID("Rijndael-(P)CBC implementation");
 
 
 ls_result_t

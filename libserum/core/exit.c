@@ -37,6 +37,9 @@
 #include <stdarg.h>
 
 
+ID("abnormal termination routines");
+
+
 void
 ls_fatal_ex(const char *func, const char *file, ls_nword_t line, ls_nword_t exit_code, const char *fmt, ...) {
 	va_list vl;

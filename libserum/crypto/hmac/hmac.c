@@ -38,7 +38,7 @@
 #include "../../debug/memdump.h"
 
 
-ID("universal pluggable HMAC implementation");
+ID("pluggable HMAC implementation");
 
 
 void

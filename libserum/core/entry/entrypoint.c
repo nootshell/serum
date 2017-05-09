@@ -36,7 +36,7 @@
 #include "../detect.h"
 
 
-ID("library entry points");
+ID("library entrypoints");
 
 
 #if (LS_MSC)

@@ -37,6 +37,8 @@
 #include <string.h>
 
 
+ID("string to integer conversion routines");
+
 
 ls_bool
 ls_strtoumax(uintmax_t *out, const char *in, size_t size) {

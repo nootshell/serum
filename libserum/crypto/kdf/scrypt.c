@@ -67,6 +67,9 @@
 #include <string.h>
 
 
+ID("pluggable scrypt implementation");
+
+
 uint64_t
 static integerify(const uint32_t *const B, const size_t r) {
 	const uint32_t *const x2 = (uint32_t *)(((char *)B) + (((r << 1) - 1) * 64));

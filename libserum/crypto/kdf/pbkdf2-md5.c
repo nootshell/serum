@@ -37,7 +37,11 @@
 #include "../hmac/hmac-md5.h"
 
 
-ls_result_t ls_pbkdf2_md5(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t rounds) {
+ID("PBKDF2-MD5 implementation");
+
+
+ls_result_t
+ls_pbkdf2_md5(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t rounds) {
 	return ls_pbkdf2_universal(
 		out, out_size,
 		pass, pass_size,

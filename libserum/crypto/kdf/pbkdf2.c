@@ -37,7 +37,7 @@
 #include <string.h>
 
 
-ID("PBKDF2 implementation");
+ID("pluggable PBKDF2 implementation");
 
 
 ls_result_t

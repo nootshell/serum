@@ -37,7 +37,7 @@
 #include <stdio.h>
 
 
-ID("memory dumping");
+ID("memory dumping routines");
 
 
 void
