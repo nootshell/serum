@@ -37,6 +37,8 @@
 #include <string.h>
 
 
+ID("string to floating-point integer conversion routines");
+
 
 ls_bool
 ls_strtold(long double *out, const char *in, size_t size) {

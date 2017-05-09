@@ -45,7 +45,7 @@
 #endif
 
 
-ID("entrypoint for executable library");
+ID("ELF interpreter entrypoint");
 
 
 const char LS_ATTR_USED __attribute__((section(".interp"))) interp[] = ELF_INTERP;

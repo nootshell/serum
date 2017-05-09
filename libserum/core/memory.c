@@ -36,6 +36,9 @@
 #include "./stdincl.h"
 
 
+ID("memory-related routines");
+
+
 const void *const
 volatile ls_memory_destroy_ex(void *const ptr, const size_t size, ls_nword_t iterations) {
 	if (!ptr) {

@@ -37,6 +37,9 @@
 #include "./pbkdf2-sha2.h"
 
 
+ID("scrypt-SHA2 implementation");
+
+
 ls_result_t
 ls_scrypt_sha2_224(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds) {
 	return ls_scrypt_universal(

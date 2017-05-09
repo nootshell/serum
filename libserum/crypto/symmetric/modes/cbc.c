@@ -37,7 +37,7 @@
 #include <string.h>
 
 
-ID("Cipher Block Chaining");
+ID("pluggable (P)CBC implementation");
 
 
 ls_result_t

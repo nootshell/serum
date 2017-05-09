@@ -36,7 +36,7 @@
 #include "./logging/log.h"
 
 
-ID("function result value related code");
+ID("function result value related routines");
 
 
 static const char *strings[] = {

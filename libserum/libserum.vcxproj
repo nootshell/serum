@@ -192,6 +192,7 @@
     <ClInclude Include="crypto\kdf\pbkdf2-md5.h" />
     <ClInclude Include="crypto\kdf\pbkdf2-sha2.h" />
     <ClInclude Include="crypto\kdf\pbkdf2.h" />
+    <ClInclude Include="crypto\kdf\scrypt-md5.h" />
     <ClInclude Include="crypto\kdf\scrypt-sha2.h" />
     <ClInclude Include="crypto\kdf\scrypt.h" />
     <ClInclude Include="crypto\kdf\_signatures.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="crypto\kdf\pbkdf2-md5.c" />
     <ClCompile Include="crypto\kdf\pbkdf2-sha2.c" />
     <ClCompile Include="crypto\kdf\pbkdf2.c" />
+    <ClCompile Include="crypto\kdf\scrypt-md5.c" />
     <ClCompile Include="crypto\kdf\scrypt-sha2.c" />
     <ClCompile Include="crypto\kdf\scrypt.c" />
     <ClCompile Include="crypto\key_exchange\x25519.c" />
