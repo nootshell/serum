@@ -131,6 +131,8 @@ ls_scrypt_universal(uint8_t *const out, const size_t out_size, const char *const
 	/* Mixing scope. */ {
 		const size_t wm32 = (weight * 32);
 		const size_t wm128 = (wm32 << 2);
+		const uint64_t irshr1 = (inner_rounds >> 1);
+		const uint64_t irm1 = (inner_rounds - 1);
 
 		uint32_t *B32;
 		uint32_t *V = malloc(wm128 * inner_rounds);
@@ -163,12 +165,12 @@ ls_scrypt_universal(uint8_t *const out, const size_t out_size, const char *const
 				block_mix_salsa8(Y, X, Z, weight);
 			}
 
-			for (j = (inner_rounds >> 1); j--;) {
-				k = integerify(X, weight) & (inner_rounds - 1);
+			for (j = irshr1; j--;) {
+				k = (integerify(X, weight) & irm1);
 				block_xor(X, &V[k * wm32], wm128);
 				block_mix_salsa8(X, Y, Z, weight);
 
-				k = integerify(Y, weight) & (inner_rounds - 1);
+				k = (integerify(Y, weight) & irm1);
 				block_xor(Y, &V[k * wm32], wm128);
 				block_mix_salsa8(Y, X, Z, weight);
 			}
