@@ -46,12 +46,12 @@ ID("centralized logging");
 
 static ls_log_level_t global_log_level = LS_LOG_DEBUG;
 static const char *log_level_tags[] = {
-	"SIL",
-	"ERR",
-	"WRN",
-	"INF",
-	"VER",
-	"DBG",
+	"",
+	LS_ANSI_1(LS_ANSI_FG_BRIGHT_RED) "ERR" LS_ANSI_RESET,
+	LS_ANSI_1(LS_ANSI_FG_YELLOW) "WRN" LS_ANSI_RESET,
+	LS_ANSI_1(LS_ANSI_FG_BRIGHT_BLUE) "INF" LS_ANSI_RESET,
+	LS_ANSI_1(LS_ANSI_FG_DARK_GRAY) "VER" LS_ANSI_RESET,
+	LS_ANSI_1(LS_ANSI_FG_PINK) "DBG" LS_ANSI_RESET,
 	NULL
 };
 static size_t log_level_tag_count = 0;
@@ -86,7 +86,17 @@ ls_log(ls_log_level_t level, const char *fmt, ...) {
 		ls_fatal(1, "Failed to lock logging mutex.");
 	}
 
-	printf("%" PRIu64 " [%s] > ", ls_nanos(), log_level_tags[level]);
+	/* Time printing scope. */ {
+		time_t twhole = ls_secs();
+		struct tm tbroken;
+		if (localtime_r(&twhole, &tbroken) == NULL) {
+			printf("%" PRIu64, twhole);
+		} else {
+			printf("%04u-%02u-%02u %02u:%02u:%02u", (1900 + tbroken.tm_year), tbroken.tm_mon, tbroken.tm_mday, tbroken.tm_hour, tbroken.tm_min, tbroken.tm_sec);
+		}
+	}
+
+	printf(" [%s] > ", log_level_tags[level]);
 
 	va_list vl;
 	va_start(vl, fmt);
@@ -102,6 +112,6 @@ ls_log(ls_log_level_t level, const char *fmt, ...) {
 
 
 void
-ls_set_log_level(ls_log_level_t level) {
+ls_log_set_level(ls_log_level_t level) {
 	global_log_level = level;
 }

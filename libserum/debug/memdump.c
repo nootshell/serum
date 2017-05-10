@@ -54,7 +54,7 @@ ls_memdump_ex(const void *const ptr, const size_t size, ls_nword_t columns, ls_n
 		items_per_column = 1;
 	}
 
-#define PRINTF_PTR_FMT						LS_ANSI_1(LS_ANSI_FG_CYAN) "0x%" LS_PRIPTR LS_ANSI_RESET ": "
+#define PRINTF_PTR_FMT						LS_ANSI_1(LS_ANSI_FG_TEAL) "0x%" LS_PRIPTR LS_ANSI_RESET ": "
 
 	const uint8_t *p8 = ptr;
 	printf(PRINTF_PTR_FMT, ((uintptr_t)p8));
