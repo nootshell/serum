@@ -62,6 +62,7 @@ extern "C" {
 #endif
 
 	LSAPI void ls_log(ls_log_level_t level, const char *fmt, ...);
+	LSAPI void ls_log_set_level(ls_log_level_t level);
 
 #ifdef __cplusplus
 }
