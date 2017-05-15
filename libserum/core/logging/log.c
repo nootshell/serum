@@ -115,3 +115,15 @@ void
 ls_log_set_level(ls_log_level_t level) {
 	global_log_level = level;
 }
+
+
+ls_log_level_t
+ls_log_get_level() {
+	return global_log_level;
+}
+
+
+ls_bool
+ls_can_log(ls_log_level_t level) {
+	return (level <= global_log_level);
+}

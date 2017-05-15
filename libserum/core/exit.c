@@ -67,5 +67,7 @@ ls_fatal_ex(const char *func, const char *file, ls_nword_t line, ls_nword_t exit
 		vfprintf(stderr, fmt, vl);
 	}
 
+	fputs("\n", stderr);
+
 	exit(64 | (exit_code & 0x3F));
 }

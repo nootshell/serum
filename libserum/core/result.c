@@ -63,6 +63,8 @@ static const char *strings[] = {
 	/* 0x0014 */ "Invalid type specified",
 	/* 0x0015 */ "Invalid state encountered",
 	/* 0x0016 */ "Object not found",
+	/* 0x0017 */ "Operation is useless",
+	/* 0x0018 */ "Verification failure",
 	NULL
 };
 static size_t num_strings = 0;
