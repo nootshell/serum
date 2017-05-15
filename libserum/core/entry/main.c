@@ -57,6 +57,7 @@ lib_main_entry() {
 #endif
 
 	if (ls_hook_mcheck() != 0) {
+		ls_log(LS_LOG_WARNING, "Couldn't hook mcheck.");
 		result |= 1;
 	}
 
@@ -80,6 +81,7 @@ lib_main_entry() {
 
 #if (LS_SELFTEST && LS_SELFTEST_STARTUP)
 	if (!ls_selftest_all()) {
+		ls_log(LS_LOG_ERROR, "Self-testing failed.");
 		result |= 2;
 	}
 #endif

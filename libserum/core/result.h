@@ -85,6 +85,8 @@ typedef struct ls_result {		// bit range   max val
 #define LS_RESULT_CODE_TYPE					0x0014	// Invalid type specified
 #define LS_RESULT_CODE_STATE				0x0015	// Invalid state encountered
 #define LS_RESULT_CODE_NOT_FOUND			0x0016	// Object not found
+#define LS_RESULT_CODE_USELESS				0x0017	// Operation is useless
+#define LS_RESULT_CODE_VERIFICATION			0x0018	// Verification failure
 
 
 #define LS_RESULT_SA(_system, _critical, _strict, _inherited, _inh_depth, _code, _param, _success)	\

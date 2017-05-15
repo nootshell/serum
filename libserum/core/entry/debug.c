@@ -40,7 +40,7 @@
 ID("debug hooking");
 
 
-#if (DEBUG && LS_HAVE_CHECK_INCLUDE)
+#if (DEBUG && LS_HAVE_CHECK_INCLUDE && LS_WANT_MCHECK)
 #	if (LS_CHECK_INCLUDE(mcheck.h))
 #		define WE_HAVE_MCHECK
 #		include <mcheck.h>
@@ -83,7 +83,9 @@ ls_hook_mcheck() {
 	}
 
 	return result;
-#else
+#elif (LS_WANT_MCHECK)
 	return -1;
+#else
+	return 0;
 #endif
 }
