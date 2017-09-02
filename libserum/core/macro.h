@@ -40,7 +40,7 @@
 
 #if (LS_USE_CHECK_BUILTIN)
 #	if (defined(__has_builtin))
-#		define LS_CHECK_BUILTIN(x)			__has_builtin(x)
+#		define LS_CHECK_BUILTIN(builtin)	__has_builtin(builtin)
 #		define LS_HAVE_CHECK_BUILTIN		1
 #	else
 #		if (defined(LS_COMPILER_WARN_FEATURE))
@@ -53,7 +53,7 @@
 
 #if (LS_USE_CHECK_INCLUDE)
 #	if (defined(__has_include))
-#		define LS_CHECK_INCLUDE(x)			__has_include(<x>)
+#		define LS_CHECK_INCLUDE(include)	__has_include(<include>)
 #		define LS_HAVE_CHECK_INCLUDE		1
 #	else
 #		if (defined(LS_COMPILER_WARN_FEATURE))
@@ -71,10 +71,12 @@
 
 #if (!defined(LS_HAVE_CHECK_BUILTIN))
 #	define LS_HAVE_CHECK_BUILTIN			0
+#	define LS_CHECK_BUILTIN(x)				0
 #endif
 
 #if (!defined(LS_HAVE_CHECK_INCLUDE))
 #	define LS_HAVE_CHECK_INCLUDE			0
+#	define LS_CHECK_INCLUDE(x)				0
 #endif
 
 

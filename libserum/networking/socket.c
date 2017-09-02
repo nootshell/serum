@@ -160,7 +160,7 @@ ls_socket_init_ex(ls_socket_t *const LS_RESTRICT ctx, const char *LS_RESTRICT no
 	++num_init_sockets;
 #endif
 
-	if ((err = getaddrinfo(node, NULL, &hints, &ctx->addrinfo))) {
+	if ((err = getaddrinfo(node, NULL, &hints, (struct addrinfo **)&ctx->addrinfo))) {
 		ls_log(LS_LOG_ERROR, "getaddrinfo() failed with error code: %u", err);
 		return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
 	}

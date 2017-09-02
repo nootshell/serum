@@ -61,6 +61,10 @@
 #	define LS_MD5_DENY_SIZE_ZERO			0
 #endif
 
+#if (!defined(LS_MEMORY_DESTROY_ZEROES))
+#	define LS_MEMORY_DESTROY_ZEROES			0
+#endif
+
 #if (!defined(LS_RIJNDAEL_STRICT))
 #	define LS_RIJNDAEL_STRICT				1
 #endif
@@ -74,11 +78,11 @@
 #endif
 
 #if (!defined(LS_USE_CHECK_BUILTIN))
-#	define LS_USE_CHECK_BUILTIN				1
+#	define LS_USE_CHECK_BUILTIN				0
 #endif
 
 #if (!defined(LS_USE_CHECK_INCLUDE))
-#	define LS_USE_CHECK_BUILTIN				1
+#	define LS_USE_CHECK_INCLUDE				0
 #endif
 
 #if (!defined(LS_VERBOSE_STARTUP))

@@ -40,20 +40,24 @@
 #define HAS_FLAG(flags, flag)				(((flags) & (flag)) == (flag))
 
 
-#define LS_ROT(s1, s2, bits, value, shift)	(((value) s1 (shift)) | ((value) s2 (-(shift) & ((bits) - 1))))
+#define LS_MKROT(name, s1, s2, bits)										\
+uint ## bits ## _t															\
+static LS_ATTR_INLINE name(uint ## bits ## _t value, ls_nwords_t shift) {	\
+	return (((value) s1 (shift)) | ((value) s2 (-(shift) & ((bits) - 1))));	\
+}
 
-#define LS_ROTL(bits, value, shift)			LS_ROT(<<, >>, (bits), (value), (shift))
-#define LS_ROTR(bits, value, shift)			LS_ROT(>>, <<, (bits), (value), (shift))
+#define LS_MKROTL(bits)	LS_MKROT(LS_ROTL ## bits, <<, >>, bits)
+#define LS_MKROTR(bits)	LS_MKROT(LS_ROTR ## bits, >>, <<, bits)
 
-#define LS_ROTL8(value, shift)				LS_ROTL(8, (value), (shift))
-#define LS_ROTL16(value, shift)				LS_ROTL(16, (value), (shift))
-#define LS_ROTL32(value, shift)				LS_ROTL(32, (value), (shift))
-#define LS_ROTL64(value, shift)				LS_ROTL(64, (value), (shift))
+LS_MKROTL(8)
+LS_MKROTL(16)
+LS_MKROTL(32)
+LS_MKROTL(64)
 
-#define LS_ROTR8(value, shift)				LS_ROTR(8, (value), (shift))
-#define LS_ROTR16(value, shift)				LS_ROTR(16, (value), (shift))
-#define LS_ROTR32(value, shift)				LS_ROTR(32, (value), (shift))
-#define LS_ROTR64(value, shift)				LS_ROTR(64, (value), (shift))
+LS_MKROTR(8)
+LS_MKROTR(16)
+LS_MKROTR(32)
+LS_MKROTR(64)
 
 
 #define BITMASK(bits)						((1LLU << (bits)) - 1)
@@ -132,7 +136,7 @@
 #endif
 
 
-#if ((LS_GCC || LS_LLVM) && LS_INTRINSICS)
+#if ((LS_GCC || LS_LLVM) && (LS_CHECK_BUILTIN(__builtin_bswap16) && LS_CHECK_BUILTIN(__builtin_bswap32) && LS_CHECK_BUILTIN(__builtin_bswap64)))
 #	define LS_SWAP_16(x)					__builtin_bswap16(x)
 #	define LS_SWAP_32(x)					__builtin_bswap32(x)
 #	define LS_SWAP_64(x)					__builtin_bswap64(x)

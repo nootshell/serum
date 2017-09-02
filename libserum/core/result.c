@@ -34,6 +34,7 @@
 
 #include "./result.h"
 #include "./logging/log.h"
+#include <stdio.h>
 
 
 ID("function result value related routines");
@@ -65,6 +66,7 @@ static const char *strings[] = {
 	/* 0x0016 */ "Object not found",
 	/* 0x0017 */ "Operation is useless",
 	/* 0x0018 */ "Verification failure",
+	/* 0x0019 */ "Mutex failure",
 	NULL
 };
 static size_t num_strings = 0;
@@ -72,15 +74,17 @@ static size_t num_strings = 0;
 
 ls_result_t
 __LS_RESULT_PRINT(ls_result_t ret, char const *const func, char const *const file, uint32_t const line) {
+#define LS_PRINT_RESULT_FFL_FMT				"% 32s:% -4u % 24s"
 	if (ret.code) {
 		if (ret.param) {
-			ls_log(LS_LOG_INFO, "%08X (" LS_RESULT_PRINTF_FORMAT ") %s (param %u)", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret), ls_result_get_code_string(ret.code), ret.param);
+			printf(LS_PRINT_RESULT_FFL_FMT " %08X (" LS_RESULT_PRINTF_FORMAT ") %s (param %u)\n", file, line, func, (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret), ls_result_get_code_string(ret.code), ret.param);
 		} else {
-			ls_log(LS_LOG_INFO, "%08X (" LS_RESULT_PRINTF_FORMAT ") %s", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret), ls_result_get_code_string(ret.code));
+			printf(LS_PRINT_RESULT_FFL_FMT " %08X (" LS_RESULT_PRINTF_FORMAT ") %s\n", file, line, func, (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret), ls_result_get_code_string(ret.code));
 		}
 	} else {
-		ls_log(LS_LOG_INFO, "%08X (" LS_RESULT_PRINTF_FORMAT ")", (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret));
+		printf(LS_PRINT_RESULT_FFL_FMT " %08X (" LS_RESULT_PRINTF_FORMAT ")\n", file, line, func, (*(uint32_t*)(&ret)), LS_RESULT_PRINTF_PARAMS(ret));
 	}
+#undef LS_PRINT_RESULT_FFL_FMT
 	return ret;
 }
 

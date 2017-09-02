@@ -56,7 +56,7 @@ parserArgumentsC=-ferror-limit=100 -fspell-checking -Wdocumentation -Wunused-par
 Name=GCC
 
 [Filters]
-size=13
+size=14
 
 [Filters][0]
 inclusive=0
@@ -82,6 +82,11 @@ targets=1
 inclusive=1
 pattern=*.ignore
 targets=3
+
+[Filters][13]
+inclusive=1
+pattern=*.s
+targets=1
 
 [Filters][2]
 inclusive=0

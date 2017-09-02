@@ -1,34 +1,34 @@
 /*******************************************************************************
- * *                                                                            **
- **   The MIT License                                                          **
- **                                                                            **
- **   Copyright 2017 icecubetray                                               **
- **                                                                            **
- **   Permission is hereby granted, free of charge, to any person              **
- **   obtaining a copy of this software and associated documentation files     **
- **   (the "Software"), to deal in the Software without restriction,           **
- **   including without limitation the rights to use, copy, modify, merge,     **
- **   publish, distribute, sublicense, and/or sell copies of the Software,     **
- **   and to permit persons to whom the Software is furnished to do so,        **
- **   subject to the following conditions:                                     **
- **                                                                            **
- **   The above copyright notice and this permission notice shall be           **
- **   included in all copies or substantial portions of the Software.          **
- **                                                                            **
- **   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,          **
- **   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF       **
- **   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   **
- **   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY     **
- **   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,     **
- **   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE        **
- **   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                   **
- **                                                                            **
- ********************************************************************************
- **
- **  Notes:
- **    -
- **
- */
+**                                                                            **
+**   The MIT License                                                          **
+**                                                                            **
+**   Copyright 2017 icecubetray                                               **
+**                                                                            **
+**   Permission is hereby granted, free of charge, to any person              **
+**   obtaining a copy of this software and associated documentation files     **
+**   (the "Software"), to deal in the Software without restriction,           **
+**   including without limitation the rights to use, copy, modify, merge,     **
+**   publish, distribute, sublicense, and/or sell copies of the Software,     **
+**   and to permit persons to whom the Software is furnished to do so,        **
+**   subject to the following conditions:                                     **
+**                                                                            **
+**   The above copyright notice and this permission notice shall be           **
+**   included in all copies or substantial portions of the Software.          **
+**                                                                            **
+**   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,          **
+**   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF       **
+**   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   **
+**   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY     **
+**   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,     **
+**   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE        **
+**   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                   **
+**                                                                            **
+********************************************************************************
+**
+**  Notes:
+**    -
+**
+*/
 
 #ifndef __LS_CORE_LOGGING_ANSI_H
 #define __LS_CORE_LOGGING_ANSI_H
@@ -52,9 +52,9 @@
 #define LS_ANSI_SET_FONT_PRIMARY			LS_ANSI_SET_FONT("0")
 
 // Font weight, intensity
-#define _LS_ANSI_SGR_BOLDINTENSE			__LS_ANSI_PUT("1")
-#define _LS_ANSI_SGR_LESSINTENSE			__LS_ANSI_PUT("2")
-#define _LS_ANSI_SGR_BOLD_OFF_UNDERLINE_DBL __LS_ANSI_PUT("21")
+#define LS_ANSI_OPT_BOLDINTENSE				__LS_ANSI_PUT("1")
+#define LS_ANSI_OPT_LESSINTENSE				__LS_ANSI_PUT("2")
+#define LS_ANSI_OPT_BOLD_OFF_UNDERLINE_DBL	__LS_ANSI_PUT("21")
 
 // Styling
 #define LS_ANSI_OPT_ITALIC					__LS_ANSI_PUT("3")
