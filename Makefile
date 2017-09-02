@@ -48,6 +48,9 @@ dt: d run_test
 
 dt_o: d_o run_test
 
+dr: CFLAGS += -DLS_LOG_RESULTS=1
+dr: d
+
 
 
 obj/%.o: %.c

@@ -87,6 +87,7 @@ typedef struct ls_result {		// bit range   max val
 #define LS_RESULT_CODE_NOT_FOUND			0x0016	// Object not found
 #define LS_RESULT_CODE_USELESS				0x0017	// Operation is useless
 #define LS_RESULT_CODE_VERIFICATION			0x0018	// Verification failure
+#define LS_RESULT_CODE_MUTEX				0x0019	// Mutex failure
 
 
 #define LS_RESULT_SA(_system, _critical, _strict, _inherited, _inh_depth, _code, _param, _success)	\
@@ -103,7 +104,6 @@ typedef struct ls_result {		// bit range   max val
 	})
 
 #if (LS_LOG_RESULTS)
-#	include "../debug/log.h"
 #	define LS_RESULT(_system, _critical, _strict, _inherited, _inh_depth, _code, _param, _success)	\
 	__LS_RESULT_PRINT(LS_RESULT_SA((_system), (_critical), (_strict), (_inherited), (_inh_depth), (_code), (_param), (_success)), __func__, FILE_PATH, __LINE__)
 #else

@@ -74,7 +74,7 @@
 
 typedef uintptr_t ls_sockfd_t;
 typedef struct ls_socket {
-	struct addrinfo *addrinfo;
+	struct addrinfo *volatile addrinfo;
 	struct addrinfo *selected;
 	ls_sockfd_t fd;
 	uint32_t flags;

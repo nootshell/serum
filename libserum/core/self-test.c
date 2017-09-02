@@ -61,9 +61,6 @@ struct ls_selftest tests[] = {
 ls_bool
 ls_selftest_all() {
 	const size_t max = ((sizeof(tests) / sizeof(*tests)) - 1);
-	ls_nword_t failures = 0;
-	struct ls_selftest *current_test;
-	struct ls_selftest *stackalloc(failed_entries, max);
 
 	if (max == 0) {
 #if (LS_SELFTEST_VERBOSE)
@@ -71,6 +68,10 @@ ls_selftest_all() {
 #endif
 		return false;
 	}
+
+	ls_nword_t failures = 0;
+	struct ls_selftest *current_test;
+	struct ls_selftest *stackalloc(failed_entries, max);
 
 	ls_nword_t i;
 	for (i = 0; i < max; ++i) {
@@ -84,11 +85,13 @@ ls_selftest_all() {
 		}
 	}
 
+	ls_bool result = false;
+
 	if (!failures) {
 #if (LS_SELFTEST_VERBOSE)
 		ls_log(LS_LOG_VERBOSE, "All tests passed.");
 #endif
-		return true;
+		result = true;
 	} else {
 		if (failures == max) {
 			ls_log(LS_LOG_ERROR, "All tests failed:");
@@ -102,7 +105,9 @@ ls_selftest_all() {
 		}
 	}
 
-	return false;
+	stackfree(failed_entries);
+
+	return result;
 }
 
 #endif

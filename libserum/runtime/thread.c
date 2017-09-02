@@ -126,6 +126,7 @@ static ls_thread_exec(ls_thread_t *thread) {
 		return LS_RESULT_INHERITED(result, LS_RESULT_INHERIT_SUCCESS);
 	} else {
 		ls_log(LS_LOG_ERROR, "Entrypoint or flag missing.");
+		ls_log(LS_LOG_ERROR, "%p " LS_FMT_U32_TO_BINARY, thread->entrypoint, LS_FMT_U32_TO_BINARY_ARGS(thread->flags));
 		return LS_RESULT_ERROR(LS_RESULT_CODE_DATA);
 	}
 
@@ -225,6 +226,7 @@ ls_thread_start(ls_thread_t *thread) {
 
 	thread->flags |= LS_THREAD_STARTED;
 	if (pthread_create(&thread->thread, attr_ptr, __ls_thread_entry, thread) != 0) {
+		ls_log(LS_LOG_ERROR, "pthread_create failed.");
 		thread->flags &= ~LS_THREAD_STARTED;
 		result = LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_FUNCTION, 3);
 		goto __cleanup;

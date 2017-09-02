@@ -89,10 +89,10 @@ ls_log(ls_log_level_t level, const char *fmt, ...) {
 	/* Time printing scope. */ {
 		time_t twhole = ls_secs();
 		struct tm tbroken;
-		if (localtime_r(&twhole, &tbroken) == NULL) {
-			printf("%" PRIu64, twhole);
-		} else {
+		if (localtime_r(&twhole, &tbroken) != NULL) {
 			printf("%04u-%02u-%02u %02u:%02u:%02u", (1900 + tbroken.tm_year), tbroken.tm_mon, tbroken.tm_mday, tbroken.tm_hour, tbroken.tm_min, tbroken.tm_sec);
+		} else {
+			printf("%" PRIu64, twhole);
 		}
 	}
 

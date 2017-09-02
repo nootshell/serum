@@ -112,11 +112,16 @@
 #	define LS_COMPILER_VERSION				__VERSION__
 #
 #	define LS_ATTR_THREAD					__thread
-#	define LS_ATTR_USED						__attribute__((used))
-#	define LS_ATTR_CONSTRUCTOR				__attribute__((constructor))
-#	define LS_ATTR_DESTRUCTOR				__attribute__((destructor))
+#	define __LS_ATTR(x)						__attribute__((x))
+#	define LS_ATTR_USED						__LS_ATTR(used)
+#	define LS_ATTR_CONSTRUCTOR				__LS_ATTR(constructor)
+#	define LS_ATTR_DESTRUCTOR				__LS_ATTR(destructor)
 #	define LS_ATTR_INLINE					inline
-#	define LS_ATTR_ALIGN(x)					__attribute__((alignment(x)))
+#	define LS_ATTR_ALIGN(x)					__LS_ATTR(alignment(x))
+#	define LS_ATTR_NONNULL(params)			__LS_ATTR(__nonnull__ params)
+#	define LS_ATTR_NONNULL_EX(...)			LS_ATTR_NONNULL((__VA_ARGS__))
+#	define LS_ATTR_PURE						__LS_ATTR(pure)
+#	define LS_ATTR_CONST					__LS_ATTR(const)
 #
 #	define LS_RESTRICT						restrict
 #
@@ -182,6 +187,12 @@
 #	define LS_ATTR_INLINE
 #	define LS_NO_ATTR_INLINE
 	LS_COMPILER_WARN_FEATURE("attribute for function inlining");
+#endif
+
+#if (!defined(LS_ATTR_NONNULL))
+#	define LS_ATTR_NONNULL(params)
+#	define LS_NO_ATTR_NONNULL
+	LS_COMPILER_WARN_FEATURE("attribute for non-null pointers");
 #endif
 
 

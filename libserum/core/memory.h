@@ -38,6 +38,8 @@
 #include "./macro.h"
 #include "./detect_compiler.h"
 #include "./lsapi.h"
+#include "./result.h"
+#include "../runtime/mutex.h"
 
 
 #if (LS_MSC)
@@ -66,18 +68,47 @@
 #endif
 
 
-#if (!defined(LS_MEMORY_DESTROY_ITERATIONS))
-#	define LS_MEMORY_DESTROY_ITERATIONS		3
-#endif
+#define LS_MEMORY_GUARD_WORD				0xDEADBEEF
+
+#define LS_MEMORY_LOCKED					BIT_1
+#define LS_MEMORY_UNSWAPPABLE				LS_MEMORY_LOCKED
+#define LS_MEMORY_READABLE					BIT_2
+#define LS_MEMORY_WRITABLE					BIT_3
+#define LS_MEMORY_EXECUTABLE				BIT_4
+#define LS_MEMORY_DESTROY					BIT_5
+#define LS_MEMORY_WRAPPED					BIT_6
+
+#define LS_MEMORY_DEFAULT_FLAGS				(LS_MEMORY_READABLE | LS_MEMORY_WRITABLE | LS_MEMORY_DESTROY)
+
+
+typedef struct ls_memory_area {
+	ls_mutex_t perm_mutex;
+	void *__location;
+	ls_nword_t __guard;
+	ls_nword_t flags;
+	void *data;
+	size_t size;
+} ls_memory_area_t;
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	LSAPI const void *const volatile ls_memory_destroy_ex(void *const ptr, const size_t size, ls_nword_t iterations);
-	LSAPI const void *const ls_memory_destroy(void *const ptr, const size_t size);
-	LSAPI void ls_memory_free_indirect(void **const pptr);
+	LSAPI void ls_memory_destroy(void *const ptr, size_t size) LS_ATTR_NONNULL_EX(1);
+	LSAPI ls_bool ls_memequ(const void *const LS_RESTRICT cmp1, const void *const LS_RESTRICT cmp2, size_t size) LS_ATTR_PURE LS_ATTR_NONNULL_EX(1, 2);
+
+	LSAPI ls_result_t ls_memory_area_init_ex(ls_memory_area_t *const area, const size_t size, const ls_nword_t flags, const ls_nword_t guard);
+	LSAPI ls_result_t ls_memory_area_init(ls_memory_area_t *const area, const size_t size);
+	LSAPI ls_result_t ls_memory_area_wrap_ex(ls_memory_area_t *const LS_RESTRICT area, void *const LS_RESTRICT ptr, const size_t size, const ls_nword_t flags);
+	LSAPI ls_result_t ls_memory_area_wrap(ls_memory_area_t *const LS_RESTRICT area, void *const LS_RESTRICT ptr, const size_t size);
+	LSAPI ls_result_t ls_memory_area_clear(ls_memory_area_t *const area);
+
+	LSAPI ls_result_t ls_memory_area_set_flags(ls_memory_area_t *const area, const ls_nword_t flags);
+	LSAPI ls_result_t ls_memory_area_set_swappable(ls_memory_area_t *const area, const ls_bool swappable);		// Default: true
+	LSAPI ls_result_t ls_memory_area_set_readable(ls_memory_area_t *const area, const ls_bool readable);		// Default: true
+	LSAPI ls_result_t ls_memory_area_set_writable(ls_memory_area_t *const area, const ls_bool writeable);		// Default: true
+	LSAPI ls_result_t ls_memory_area_set_executable(ls_memory_area_t *const area, const ls_bool executable);	// Default: false
 
 #ifdef __cplusplus
 }
