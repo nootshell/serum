@@ -107,7 +107,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>STORE_COMPILATION_OPTIONS=1;_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;LS_LOG_RESULTS=0;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LS_SELFTEST_VERBOSE=1;STORE_COMPILATION_OPTIONS=1;_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;LS_LOG_RESULTS=0;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
     </ClCompile>
@@ -165,6 +165,7 @@
     <ClInclude Include="core\entry\main.h" />
     <ClInclude Include="core\errstr.h" />
     <ClInclude Include="core\exit.h" />
+    <ClInclude Include="core\fix_windows.h" />
     <ClInclude Include="core\identification.h" />
     <ClInclude Include="core\info.h" />
     <ClInclude Include="core\integers.h" />
@@ -182,7 +183,6 @@
     <ClInclude Include="core\time.h" />
     <ClInclude Include="core\varsize.h" />
     <ClInclude Include="crypto\hashing\md5.h" />
-    <ClInclude Include="crypto\hashing\self-test.h" />
     <ClInclude Include="crypto\hashing\sha2.h" />
     <ClInclude Include="crypto\hashing\_signatures.h" />
     <ClInclude Include="crypto\hmac\hmac-md5.h" />
@@ -247,6 +247,7 @@
     <ClCompile Include="crypto\kdf\scrypt-md5.c" />
     <ClCompile Include="crypto\kdf\scrypt-sha2.c" />
     <ClCompile Include="crypto\kdf\scrypt.c" />
+    <ClCompile Include="crypto\kdf\self-test.c" />
     <ClCompile Include="crypto\key_exchange\x25519.c" />
     <ClCompile Include="crypto\padding\iso9797.c" />
     <ClCompile Include="crypto\prng\device.c" />

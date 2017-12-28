@@ -106,13 +106,18 @@ static block_mix_salsa8(const uint32_t *const in, uint32_t *const out, uint32_t 
 ls_result_t
 ls_scrypt_universal(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t inner_rounds, const ls_nword_t weight, const ls_nword_t outer_rounds, ls_kdf_func_t kdf) {
 	LS_RESULT_CHECK_NULL(out, 1);
-	LS_RESULT_CHECK_NULL(salt, 2);
-	LS_RESULT_CHECK_NULL(pass, 3);
+	LS_RESULT_CHECK_NULL(pass, 2);
+	LS_RESULT_CHECK_NULL(salt, 3);
 	LS_RESULT_CHECK_NULL(kdf, 4);
 
 	LS_RESULT_CHECK_SIZE(out_size, 1);
-	LS_RESULT_CHECK_SIZE(salt_size, 2);
-	LS_RESULT_CHECK_SIZE(pass_size, 3);
+#if (LS_KDF_DENY_PASS_SIZE_ZERO)
+	LS_RESULT_CHECK_SIZE(pass_size, 2);
+#endif
+#if (LS_KDF_DENY_SALT_SIZE_ZERO)
+	LS_RESULT_CHECK_SIZE(salt_size, 3);
+#endif
+
 
 	LS_RESULT_CHECK_DATA(!weight, 1);
 	LS_RESULT_CHECK_DATA(!outer_rounds, 2);

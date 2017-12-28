@@ -131,7 +131,7 @@ typedef struct ls_result {		// bit range   max val
 #define LS_RESULT_CHECK(cond, code, param)	if ((cond)) { return LS_RESULT_ERROR_PARAM((code), (param)); }
 
 #define LS_RESULT_CHECK_NULL(var, param)	LS_RESULT_CHECK(!(var), LS_RESULT_CODE_NULL, (param))
-#define LS_RESULT_CHECK_SIZE(var, param)	LS_RESULT_CHECK(!(var), LS_RESULT_CODE_SIZE, (param))
+#define LS_RESULT_CHECK_SIZE(var, param)	LS_RESULT_CHECK(((var) < 1), LS_RESULT_CODE_SIZE, (param))
 #define LS_RESULT_CHECK_DATA(cond, param)	LS_RESULT_CHECK((cond), LS_RESULT_CODE_DATA, (param))
 #define LS_RESULT_CHECK_STATE(flags, flag, param) \
 											LS_RESULT_CHECK(!HAS_FLAG((flags), (flag)), LS_RESULT_CODE_STATE, (param))

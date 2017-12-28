@@ -99,8 +99,7 @@
 #
 #	define LS_COMPILER_MESG(msg)			__pragma(message(msg))
 #
-#	define NO_MIN_MAX
-#	define WIN32_LEAN_AND_MEAN
+#	include "./fix_windows.h"
 #	include <Windows.h>
 
 	typedef intptr_t ssize_t;
@@ -152,7 +151,7 @@
 #define LS_COMPILER_WARN_PREFIX				"warn"
 #define LS_COMPILER_INFO(msg)				LS_COMPILER_MESG("  " LS_COMPILER_INFO_PREFIX ": " msg)
 #define LS_COMPILER_WARN(msg)				LS_COMPILER_MESG("  " LS_COMPILER_WARN_PREFIX ": " msg)
-#define LS_COMPILER_WARN_FEATURE(desc)		LS_COMPILER_WARN(LS_COMPILER_FEATURE_MISSING ": " desc)
+#define LS_COMPILER_WARN_FEATURE(desc)		//LS_COMPILER_WARN(LS_COMPILER_FEATURE_MISSING ": " desc)
 
 
 #if (!defined(LS_COMPILER_VERSION))
@@ -189,12 +188,33 @@
 	LS_COMPILER_WARN_FEATURE("attribute for function inlining");
 #endif
 
+#if (!defined(LS_ATTR_ALIGN))
+#	define LS_ATTR_ALIGN(missing)
+#	define LS_NO_ATTR_ALIGN
+	LS_COMPILER_WARN_FEATURE("attribute for alignment");
+#endif
+
 #if (!defined(LS_ATTR_NONNULL))
-#	define LS_ATTR_NONNULL(params)
+#	define LS_ATTR_NONNULL(missing)
 #	define LS_NO_ATTR_NONNULL
 	LS_COMPILER_WARN_FEATURE("attribute for non-null pointers");
 #endif
 
+#if (!defined(LS_ATTR_NONNULL_EX))
+#	define LS_ATTR_NONNULL_EX(...)
+#endif
+
+#if (!defined(LS_ATTR_PURE))
+#	define LS_ATTR_PURE
+#	define LS_NO_ATTR_PURE
+	LS_COMPILER_WARN_FEATURE("__attribute__((pure))"); // todo
+#endif
+
+#if (!defined(LS_ATTR_CONST))
+#	define LS_ATTR_CONST
+#	define LS_NO_ATTR_CONST
+	LS_COMPILER_WARN_FEATURE("__attribute__((const))"); // TODO
+#endif
 
 #if (!defined(LS_RESTRICT))
 #	define LS_RESTRICT

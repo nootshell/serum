@@ -40,6 +40,10 @@
 #include <stdarg.h>
 #include <inttypes.h>
 
+#if (LS_MSC)
+#	include <time.h>
+#endif
+
 
 ID("centralized logging");
 
@@ -87,6 +91,15 @@ ls_log(ls_log_level_t level, const char *fmt, ...) {
 	}
 
 	/* Time printing scope. */ {
+#if (LS_MSC)
+		time_t twhole = ls_millis();
+		struct tm *tbroken;
+		if ((tbroken = localtime(&twhole)) != NULL) {
+			printf("%04u-%02u-%02u %02u:%02u:%02u", (1900 + tbroken->tm_year), tbroken->tm_mon, tbroken->tm_mday, tbroken->tm_hour, tbroken->tm_min, tbroken->tm_sec);
+		} else {
+			printf("%" PRIu64, twhole);
+		}
+#else
 		time_t twhole = ls_secs();
 		struct tm tbroken;
 		if (localtime_r(&twhole, &tbroken) != NULL) {
@@ -94,6 +107,7 @@ ls_log(ls_log_level_t level, const char *fmt, ...) {
 		} else {
 			printf("%" PRIu64, twhole);
 		}
+#endif
 	}
 
 	printf(" [%s] > ", log_level_tags[level]);
@@ -104,6 +118,9 @@ ls_log(ls_log_level_t level, const char *fmt, ...) {
 	va_end(vl);
 
 	puts("");
+
+	// TODO: dynamic
+	fflush(stdout);
 
 	if (!ls_mutex_unlock(&log_lock).success) {
 		ls_fatal(1, "Failed to unlock logging mutex.");

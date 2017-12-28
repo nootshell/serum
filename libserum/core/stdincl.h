@@ -34,6 +34,7 @@
 #define __LS_CORE_STDINCL_H
 
 
+#include "./fix_windows.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <stddef.h>

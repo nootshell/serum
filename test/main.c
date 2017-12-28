@@ -50,6 +50,7 @@
 const uint64_t n = 7500;
 
 void bench(double *s, double *g, void *cmp1, void *cmp2, size_t size) {
+#if (!LS_MSC)
 	uint64_t
 		s_t[n],
 		g_t[n];
@@ -77,10 +78,15 @@ void bench(double *s, double *g, void *cmp1, void *cmp2, size_t size) {
 
 	*s = (s_total / (double)n);
 	*g = (g_total / (double)n);
+#endif
 }
 
 int main(int argc, char *argv[], char *env[]) {
 	if (argc < 4) {
+#if (LS_MSC)
+		puts("unsupported");
+		return 1;
+#endif
 		uint8_t kutjebef[250], asdfasdf[sizeof(kutjebef)];
 		ls_memory_destroy(kutjebef, sizeof(kutjebef));
 		ls_memory_destroy(asdfasdf, sizeof(asdfasdf));
@@ -112,11 +118,15 @@ int main(int argc, char *argv[], char *env[]) {
 		ls_memory_area_t out_area;
 		ls_memory_area_init(&out_area, out_size);
 		uint8_t *out = out_area.data;
-		if (!ls_scrypt(out, out_size, pass, pass_size, salt, salt_size, (uint32_t)rounds, (uint32_t)r, (uint32_t)p).success) {
+
+		ls_result_t result;
+		if (!(result = ls_scrypt(out, out_size, pass, pass_size, salt, salt_size, (uint32_t)rounds, (uint32_t)r, (uint32_t)p)).success) {
+			ls_log(LS_LOG_ERROR, "%s, param %u, inherited=%c", ls_result_get_code_string(result.code), result.param, (result.inherited ? 'y' : 'n'));
 			return 1;
 		}
 
-		printf("scrypt(\"%s\", \"%s\", %" PRIuMAX ", %" PRIuMAX ", %" PRIuMAX ", %" PRIuMAX ") =\n", pass, salt, rounds, r, p, out_size);
+		ls_log(LS_LOG_INFO, "scrypt(\"%s\", \"%s\", %" PRIuMAX ", %" PRIuMAX ", %" PRIuMAX ", %" PRIuMAX ") =", pass, salt, rounds, r, p, out_size);
+
 		out -= 4;
 		out_size += 8;
 		ls_memdump(out, out_size);

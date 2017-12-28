@@ -32,15 +32,13 @@
 
 #define FILE_PATH							"crypto/hashing/self-test.c"
 
-#include "./self-test.h"
+#include "../../core/stdincl.h"
 
 #if (LS_SELFTEST && LS_SELFTEST_CRYPTO_HASHING)
 
 #include "../../core/memory.h"
 #include "../../debug/__self-test_logging.h"
 #include "./_signatures.h"
-#include "./sha2.h"
-#include "./md5.h"
 #include <string.h>
 
 
@@ -56,6 +54,9 @@ static const char *vectors[] = {
 	"This is a test string that is /so/ original that no one has ever used it anywhere before.",
 	NULL
 };
+
+
+#include "./sha2.h"
 
 static const ls_sha2_224_digest_t samples_sha2_224[] = {
 	{ 0xD1, 0x4A, 0x02, 0x8C, 0x2A, 0x3A, 0x2B, 0xC9, 0x47, 0x61, 0x02, 0xBB, 0x28, 0x82, 0x34, 0xC4, 0x15, 0xA2, 0xB0, 0x1F, 0x82, 0x8E, 0xA6, 0x2A, 0xC5, 0xB3, 0xE4, 0x2F },
@@ -93,6 +94,9 @@ static const ls_sha2_512_digest_t samples_sha2_512[] = {
 	{ 0xBB, 0x53, 0x37, 0x75, 0xEE, 0x29, 0xA1, 0x2E, 0x51, 0xFD, 0x9B, 0xBA, 0x80, 0x89, 0xC0, 0xCA, 0xA9, 0x5D, 0x19, 0x51, 0x6B, 0x56, 0x07, 0x1B, 0xE4, 0x0F, 0xAA, 0xBD, 0xB5, 0xD6, 0x08, 0xE7, 0xF3, 0x58, 0x7F, 0x38, 0x77, 0x68, 0x5B, 0x7B, 0x82, 0xDD, 0x6A, 0xE9, 0x10, 0xB1, 0x34, 0xEE, 0x1A, 0x92, 0xD3, 0x51, 0xBE, 0x99, 0x25, 0x22, 0xAB, 0x61, 0xCE, 0xBB, 0x55, 0x9B, 0x9D, 0xBD }
 };
 
+
+#include "./md5.h"
+
 static const ls_md5_digest_t samples_md5[] = {
 	{ 0xD4, 0x1D, 0x8C, 0xD9, 0x8F, 0x00, 0xB2, 0x04, 0xE9, 0x80, 0x09, 0x98, 0xEC, 0xF8, 0x42, 0x7E },
 	{ 0x9E, 0x10, 0x7D, 0x9D, 0x37, 0x2B, 0xB6, 0x82, 0x6B, 0xD8, 0x1D, 0x35, 0x42, 0xA4, 0x19, 0xD6 },
@@ -112,6 +116,7 @@ static ls_test_crypto_hash(void *const hf_data, ls_hash_init_func_t const hf_ini
 	LS_RESULT_CHECK_NULL(hf_clear, 5);
 	LS_RESULT_CHECK_NULL(input, 6);
 	LS_RESULT_CHECK_NULL(sample, 7);
+
 	LS_RESULT_CHECK_SIZE(sample_size, 1);
 
 	ls_result_t result;
@@ -126,10 +131,12 @@ static ls_test_crypto_hash(void *const hf_data, ls_hash_init_func_t const hf_ini
 
 	uint8_t stackalloc(sample_buffer, sample_size);
 	if (!(result = hf_finish(hf_data, sample_buffer)).success) {
+		stackfree(sample_buffer);
 		return LS_RESULT_INHERITED(result, false);
 	}
 
 	if (!(result = hf_clear(hf_data)).success) {
+		stackfree(sample_buffer);
 		return LS_RESULT_INHERITED(result, false);
 	}
 
@@ -140,6 +147,7 @@ static ls_test_crypto_hash(void *const hf_data, ls_hash_init_func_t const hf_ini
 	}
 
 	memset(sample_buffer, 0, sample_size);
+	stackfree(sample_buffer);
 
 	return result;
 }
@@ -147,53 +155,55 @@ static ls_test_crypto_hash(void *const hf_data, ls_hash_init_func_t const hf_ini
 
 ls_bool
 ls_selftest_crypto_hashing() {
-	struct ls_sha2_32 sha2_32;
-	struct ls_sha2_64 sha2_64;
-	ls_md5_t md5;
+	ls_bool passed = true;
 
 	ls_nword_t i;
 	const char *input = NULL;
 	size_t input_size = 0;
-	ls_bool passed = true;
+
+	struct ls_sha2_32 sha2_32;
+	struct ls_sha2_64 sha2_64;
+	ls_md5_t md5;
 
 	START_TEST("cryptographic hash functions");
+
 	for (i = 0; (input = vectors[i]); ++i) {
 		input_size = strlen(input);
 
 		START_VECTOR(i, input);
 
 		if (ls_test_crypto_hash(&sha2_32, (ls_hash_init_func_t)ls_sha2_224_init, (ls_hash_update_func_t)ls_sha2_224_update, (ls_hash_finish_func_t)ls_sha2_224_finish, (ls_hash_clear_func_t)ls_sha2_224_clear, input, input_size, samples_sha2_224[i], sizeof(*samples_sha2_224)).success) {
-			TEST_SUB_PASSED("SHA-2-224");
+			TEST_SUB_PASSED("SHA2-224");
 		} else {
-			TEST_SUB_FAILED("SHA-2-224");
+			TEST_SUB_FAILED("SHA2-224");
 			passed = false;
 		}
 
 		if (ls_test_crypto_hash(&sha2_32, (ls_hash_init_func_t)ls_sha2_256_init, (ls_hash_update_func_t)ls_sha2_256_update, (ls_hash_finish_func_t)ls_sha2_256_finish, (ls_hash_clear_func_t)ls_sha2_256_clear, input, input_size, samples_sha2_256[i], sizeof(*samples_sha2_256)).success) {
-			TEST_SUB_PASSED("SHA-2-256");
+			TEST_SUB_PASSED("SHA2-256");
 		} else {
-			TEST_SUB_FAILED("SHA-2-256");
+			TEST_SUB_FAILED("SHA2-256");
 			passed = false;
 		}
 
 		if (ls_test_crypto_hash(&sha2_64, (ls_hash_init_func_t)ls_sha2_384_init, (ls_hash_update_func_t)ls_sha2_384_update, (ls_hash_finish_func_t)ls_sha2_384_finish, (ls_hash_clear_func_t)ls_sha2_384_clear, input, input_size, samples_sha2_384[i], sizeof(*samples_sha2_384)).success) {
-			TEST_SUB_PASSED("SHA-2-384");
+			TEST_SUB_PASSED("SHA2-384");
 		} else {
-			TEST_SUB_FAILED("SHA-2-384");
+			TEST_SUB_FAILED("SHA2-384");
 			passed = false;
 		}
 
 		if (ls_test_crypto_hash(&sha2_64, (ls_hash_init_func_t)ls_sha2_512_init, (ls_hash_update_func_t)ls_sha2_512_update, (ls_hash_finish_func_t)ls_sha2_512_finish, (ls_hash_clear_func_t)ls_sha2_512_clear, input, input_size, samples_sha2_512[i], sizeof(*samples_sha2_512)).success) {
-			TEST_SUB_PASSED("SHA-2-512");
+			TEST_SUB_PASSED("SHA2-512");
 		} else {
-			TEST_SUB_FAILED("SHA-2-512");
+			TEST_SUB_FAILED("SHA2-512");
 			passed = false;
 		}
 
 		if (ls_test_crypto_hash(&md5, (ls_hash_init_func_t)ls_md5_init, (ls_hash_update_func_t)ls_md5_update, (ls_hash_finish_func_t)ls_md5_finish, (ls_hash_clear_func_t)ls_md5_clear, input, input_size, samples_md5[i], sizeof(*samples_md5)).success) {
-			TEST_SUB_PASSED("MD5      ");
+			TEST_SUB_PASSED("MD5     ");
 		} else {
-			TEST_SUB_FAILED("MD5      ");
+			TEST_SUB_FAILED("MD5     ");
 			passed = false;
 		}
 	}

@@ -45,6 +45,10 @@
 #	define LS_SELFTEST_CRYPTO_HASHING		1
 #endif
 
+#if (!defined(LS_SELFTEST_CRYPTO_KDF))
+#	define LS_SELFTEST_CRYPTO_KDF			1
+#endif
+
 #if (!defined(LS_SELFTEST_STARTUP))
 #	define LS_SELFTEST_STARTUP				1
 #endif
