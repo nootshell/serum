@@ -54,17 +54,22 @@ static LS_ATTR_INLINE prep_key(uint8_t *const LS_RESTRICT out, const size_t out_
 ls_result_t
 ls_hmac_universal(const void *const LS_RESTRICT data, const size_t data_size, const void *LS_RESTRICT key, size_t key_size, void *const LS_RESTRICT digest, const size_t digest_size, const size_t block_size, void *const LS_RESTRICT hf_data, ls_hash_init_func_t const hf_init, ls_hash_update_func_t const hf_update, ls_hash_finish_func_t const hf_finish, ls_hash_clear_func_t const hf_clear) {
 	LS_RESULT_CHECK_NULL(data, 1);
-	LS_RESULT_CHECK_SIZE(data_size, 1);
 	LS_RESULT_CHECK_NULL(key, 2);
-	LS_RESULT_CHECK_SIZE(key_size, 2);
 	LS_RESULT_CHECK_NULL(digest, 3);
-	LS_RESULT_CHECK_SIZE(digest_size, 3);
-	LS_RESULT_CHECK_SIZE(block_size, 4);
 	LS_RESULT_CHECK_NULL(hf_data, 4);
 	LS_RESULT_CHECK_NULL(hf_init, 5);
 	LS_RESULT_CHECK_NULL(hf_update, 6);
 	LS_RESULT_CHECK_NULL(hf_finish, 7);
 	LS_RESULT_CHECK_NULL(hf_clear, 8);
+
+#if (LS_HMAC_DENY_DATA_SIZE_ZERO)
+	LS_RESULT_CHECK_SIZE(data_size, 1);
+#endif
+#if (LS_HMAC_DENY_KEY_SIZE_ZERO)
+	LS_RESULT_CHECK_SIZE(key_size, 2);
+#endif
+	LS_RESULT_CHECK_SIZE(digest_size, 3);
+	LS_RESULT_CHECK_SIZE(block_size, 4);
 
 
 	uint8_t stackalloc(buffer_block, block_size);

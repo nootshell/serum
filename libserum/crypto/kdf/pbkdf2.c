@@ -43,11 +43,17 @@ ID("pluggable PBKDF2 implementation");
 ls_result_t
 ls_pbkdf2_universal(uint8_t *const out, const size_t out_size, const char *const LS_RESTRICT pass, const size_t pass_size, const char *const LS_RESTRICT salt, const size_t salt_size, const ls_nword_t rounds, const size_t digest_size, ls_hmac_func_t const hmac) {
 	LS_RESULT_CHECK_NULL(out, 1);
-	LS_RESULT_CHECK_SIZE(out_size, 1);
 	LS_RESULT_CHECK_NULL(pass, 2);
-	LS_RESULT_CHECK_SIZE(pass_size, 2);
 	LS_RESULT_CHECK_NULL(salt, 3);
+
+	LS_RESULT_CHECK_SIZE(out_size, 1);
+#if (LS_KDF_DENY_PASS_SIZE_ZERO)
+	LS_RESULT_CHECK_SIZE(pass_size, 2);
+#endif
+#if (LS_KDF_DENY_SALT_SIZE_ZERO)
 	LS_RESULT_CHECK_SIZE(salt_size, 3);
+#endif
+
 
 	uint8_t stackalloc(d1, digest_size);
 	uint8_t stackalloc(d2, digest_size);

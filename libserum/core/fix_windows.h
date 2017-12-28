@@ -26,26 +26,22 @@
 ********************************************************************************
 **
 **  Notes:
-**    -
+**    Added due to windows /always/ requiring special treatment.
 **
 */
 
-#ifndef __LS_CRYPTO_HASHING_SELFTEST_H
-#define __LS_CRYPTO_HASHING_SELFTEST_H
+#ifndef __LS_CORE_FIX_WINDOWS_H
+#define __LS_CORE_FIX_WINDOWS_H
 
 
-#include "../../core/stdincl.h"
+#define WIN32_LEAN_AND_MEAN
 
-
-#ifdef __cplusplus
-extern "C" {
+#if (!defined(NO_MIN_MAX))
+#	define NO_MIN_MAX
 #endif
 
-	LSAPI ls_bool ls_selftest_crypto_hashing();
-
-#ifdef __cplusplus
-}
-#endif
+#undef min
+#undef max
 
 
 #endif

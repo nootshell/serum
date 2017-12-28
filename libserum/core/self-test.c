@@ -39,20 +39,25 @@
 #include "./memory.h"
 #include "./logging/log.h"
 
-#include "../crypto/hashing/self-test.h"
-
 
 ID("BIST: global");
 
 
+LSAPI ls_bool ls_selftest_crypto_hashing();
+LSAPI ls_bool ls_selftest_crypto_kdf();
+
+
 struct ls_selftest {
 	ls_bool(*func)();
-	char description[32];
+	char description[40];
 };
 
 struct ls_selftest tests[] = {
 #if (LS_SELFTEST_CRYPTO_HASHING)
 	{ ls_selftest_crypto_hashing, "cryptographic hash functions" },
+#endif
+#if (LS_SELFTEST_CRYPTO_KDF)
+	{ ls_selftest_crypto_kdf, "cryptographic key derivation functions" },
 #endif
 	{ 0 }
 };
@@ -63,15 +68,13 @@ ls_selftest_all() {
 	const size_t max = ((sizeof(tests) / sizeof(*tests)) - 1);
 
 	if (max == 0) {
-#if (LS_SELFTEST_VERBOSE)
 		ls_log(LS_LOG_ERROR, "No self-tests to perform.");
-#endif
-		return false;
+		return true;
 	}
 
 	ls_nword_t failures = 0;
 	struct ls_selftest *current_test;
-	struct ls_selftest *stackalloc(failed_entries, max);
+	struct ls_selftest *stackalloc(failed_entries, (max * sizeof(*failed_entries)));
 
 	ls_nword_t i;
 	for (i = 0; i < max; ++i) {

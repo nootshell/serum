@@ -155,23 +155,22 @@ ls_memory_area_wrap(ls_memory_area_t *const LS_RESTRICT area, void *const LS_RES
 ls_result_t
 ls_memory_area_clear(ls_memory_area_t *const area) {
 	LS_RESULT_CHECK_NULL(area, 1);
-
-	if (!ls_mutex_lock(&area->perm_mutex).success) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_MUTEX, 1);
-	}
-
-	const size_t actual_size = (area->size + (HAS_FLAG(area->flags, LS_MEMORY_WRAPPED) ? 0 : (sizeof(area->__guard) << 1)));
-
-	if (HAS_FLAG(area->flags, LS_MEMORY_LOCKED)) {
-		if (!LS_MEMUNLOCK(area->__location, actual_size)) {
-			ls_mutex_unlock(&area->perm_mutex);
-			return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
-		}
-	}
-
 	if (area->__location) {
+		if (!ls_mutex_lock(&area->perm_mutex).success) {
+			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_MUTEX, 1);
+		}
+
+		const size_t actual_size = (area->size + (HAS_FLAG(area->flags, LS_MEMORY_WRAPPED) ? 0 : (sizeof(area->__guard) << 1)));
+
 		if (HAS_FLAG(area->flags, LS_MEMORY_DESTROY)) {
 			ls_memory_destroy(area->__location, actual_size);
+		}
+
+		if (HAS_FLAG(area->flags, LS_MEMORY_LOCKED)) {
+			if (!LS_MEMUNLOCK(area->__location, actual_size)) {
+				ls_mutex_unlock(&area->perm_mutex);
+				return LS_RESULT_ERROR(LS_RESULT_CODE_LOCK);
+			}
 		}
 
 		if (!HAS_FLAG(area->flags, LS_MEMORY_WRAPPED)) {
@@ -179,10 +178,10 @@ ls_memory_area_clear(ls_memory_area_t *const area) {
 		}
 
 		area->__location = NULL;
-	}
 
-	if (!ls_mutex_unlock(&area->perm_mutex).success) {
-		return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_MUTEX, 2);
+		if (!ls_mutex_unlock(&area->perm_mutex).success) {
+			return LS_RESULT_ERROR_PARAM(LS_RESULT_CODE_MUTEX, 2);
+		}
 	}
 
 	// TODO: clear struct
