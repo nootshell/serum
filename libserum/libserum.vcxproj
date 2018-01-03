@@ -18,6 +18,24 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="data\time.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core\setup.h" />
+    <ClInclude Include="core\setup\bitops-inline.h" />
+    <ClInclude Include="core\setup\bitops.h" />
+    <ClInclude Include="core\setup\intrinsics.h" />
+    <ClInclude Include="core\setup\macros.h" />
+    <ClInclude Include="core\setup\platform-detection.h" />
+    <ClInclude Include="core\setup\platform-setup.h" />
+    <ClInclude Include="core\setup\special-treatment-for-windows.h" />
+    <ClInclude Include="core\setup\types.h" />
+    <ClInclude Include="data\time.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="io\CONTRIBUTING.md" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{45BFC5A6-3B5F-4AB9-A403-307477D9E780}</ProjectGuid>
     <RootNamespace>libserum</RootNamespace>
@@ -93,9 +111,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>STORE_COMPILATION_OPTIONS=1;_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;LS_LOG_RESULTS=0;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LS_EXPORTING=1;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -107,9 +126,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>LS_SELFTEST_VERBOSE=1;STORE_COMPILATION_OPTIONS=1;_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;LS_LOG_RESULTS=0;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LS_EXPORTING=1;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -123,9 +143,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;LS_LOG_RESULTS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LS_EXPORTING=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -141,9 +162,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIBSERUM_EXPORTS=1;LS_LOG_RESULTS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LS_EXPORTING=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -152,122 +174,6 @@
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="core\bits.h" />
-    <ClInclude Include="core\bool.h" />
-    <ClInclude Include="core\defaults.h" />
-    <ClInclude Include="core\detect.h" />
-    <ClInclude Include="core\detect_compiler.h" />
-    <ClInclude Include="core\detect_endianness.h" />
-    <ClInclude Include="core\detect_os.h" />
-    <ClInclude Include="core\detect_platform.h" />
-    <ClInclude Include="core\entry\debug.h" />
-    <ClInclude Include="core\entry\main.h" />
-    <ClInclude Include="core\errstr.h" />
-    <ClInclude Include="core\exit.h" />
-    <ClInclude Include="core\fix_windows.h" />
-    <ClInclude Include="core\identification.h" />
-    <ClInclude Include="core\info.h" />
-    <ClInclude Include="core\integers.h" />
-    <ClInclude Include="core\intrinsics.h" />
-    <ClInclude Include="core\logging\ansi.h" />
-    <ClInclude Include="core\logging\log.h" />
-    <ClInclude Include="core\lsapi.h" />
-    <ClInclude Include="core\macro.h" />
-    <ClInclude Include="core\math.h" />
-    <ClInclude Include="core\memory.h" />
-    <ClInclude Include="core\ptrarithmetic.h" />
-    <ClInclude Include="core\result.h" />
-    <ClInclude Include="core\self-test.h" />
-    <ClInclude Include="core\stdincl.h" />
-    <ClInclude Include="core\time.h" />
-    <ClInclude Include="core\varsize.h" />
-    <ClInclude Include="crypto\hashing\md5.h" />
-    <ClInclude Include="crypto\hashing\sha2.h" />
-    <ClInclude Include="crypto\hashing\_signatures.h" />
-    <ClInclude Include="crypto\hmac\hmac-md5.h" />
-    <ClInclude Include="crypto\hmac\hmac-sha2.h" />
-    <ClInclude Include="crypto\hmac\hmac.h" />
-    <ClInclude Include="crypto\hmac\_signatures.h" />
-    <ClInclude Include="crypto\kdf\pbkdf2-md5.h" />
-    <ClInclude Include="crypto\kdf\pbkdf2-sha2.h" />
-    <ClInclude Include="crypto\kdf\pbkdf2.h" />
-    <ClInclude Include="crypto\kdf\scrypt-md5.h" />
-    <ClInclude Include="crypto\kdf\scrypt-sha2.h" />
-    <ClInclude Include="crypto\kdf\scrypt.h" />
-    <ClInclude Include="crypto\kdf\_signatures.h" />
-    <ClInclude Include="crypto\key_exchange\x25519.h" />
-    <ClInclude Include="crypto\padding\iso9797.h" />
-    <ClInclude Include="crypto\prng\device.h" />
-    <ClInclude Include="crypto\prng\isaac.h" />
-    <ClInclude Include="crypto\storage\key.h" />
-    <ClInclude Include="crypto\symmetric\modes\cbc.h" />
-    <ClInclude Include="crypto\symmetric\rijndael-cbc.h" />
-    <ClInclude Include="crypto\symmetric\rijndael.h" />
-    <ClInclude Include="crypto\symmetric\salsa20.h" />
-    <ClInclude Include="crypto\symmetric\xxtea.h" />
-    <ClInclude Include="crypto\symmetric\_signatures.h" />
-    <ClInclude Include="crypto\symmetric\__rijndael-tables.h" />
-    <ClInclude Include="data\conversion\floats.h" />
-    <ClInclude Include="data\conversion\integers.h" />
-    <ClInclude Include="data\nativeword.h" />
-    <ClInclude Include="debug\memdump.h" />
-    <ClInclude Include="debug\__self-test_logging.h" />
-    <ClInclude Include="math\curve25519.h" />
-    <ClInclude Include="networking\packet-decoder.h" />
-    <ClInclude Include="networking\packet.h" />
-    <ClInclude Include="networking\socket.h" />
-    <ClInclude Include="runtime\mutex.h" />
-    <ClInclude Include="runtime\thread.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="core\entry\debug.c" />
-    <ClCompile Include="core\entry\entrypoint.c" />
-    <ClCompile Include="core\entry\executable.c" />
-    <ClCompile Include="core\entry\main.c" />
-    <ClCompile Include="core\exit.c" />
-    <ClCompile Include="core\info.c" />
-    <ClCompile Include="core\logging\log.c" />
-    <ClCompile Include="core\memory.c" />
-    <ClCompile Include="core\result.c" />
-    <ClCompile Include="core\self-test.c" />
-    <ClCompile Include="core\time.c" />
-    <ClCompile Include="core\varsize.c" />
-    <ClCompile Include="crypto\hashing\md5.c" />
-    <ClCompile Include="crypto\hashing\self-test.c" />
-    <ClCompile Include="crypto\hashing\sha2-template-update.c" />
-    <ClCompile Include="crypto\hashing\sha2-template.c" />
-    <ClCompile Include="crypto\hashing\sha2.c" />
-    <ClCompile Include="crypto\hmac\hmac-md5.c" />
-    <ClCompile Include="crypto\hmac\hmac-sha2.c" />
-    <ClCompile Include="crypto\hmac\hmac.c" />
-    <ClCompile Include="crypto\kdf\pbkdf2-md5.c" />
-    <ClCompile Include="crypto\kdf\pbkdf2-sha2.c" />
-    <ClCompile Include="crypto\kdf\pbkdf2.c" />
-    <ClCompile Include="crypto\kdf\scrypt-md5.c" />
-    <ClCompile Include="crypto\kdf\scrypt-sha2.c" />
-    <ClCompile Include="crypto\kdf\scrypt.c" />
-    <ClCompile Include="crypto\kdf\self-test.c" />
-    <ClCompile Include="crypto\key_exchange\x25519.c" />
-    <ClCompile Include="crypto\padding\iso9797.c" />
-    <ClCompile Include="crypto\prng\device.c" />
-    <ClCompile Include="crypto\prng\isaac.c" />
-    <ClCompile Include="crypto\storage\key.c" />
-    <ClCompile Include="crypto\symmetric\modes\cbc.c" />
-    <ClCompile Include="crypto\symmetric\rijndael-cbc.c" />
-    <ClCompile Include="crypto\symmetric\rijndael.c" />
-    <ClCompile Include="crypto\symmetric\salsa20.c" />
-    <ClCompile Include="crypto\symmetric\xxtea.c" />
-    <ClCompile Include="data\conversion\floats.c" />
-    <ClCompile Include="data\conversion\integers.c" />
-    <ClCompile Include="debug\memdump.c" />
-    <ClCompile Include="math\curve25519.c" />
-    <ClCompile Include="networking\packet-decoder.c" />
-    <ClCompile Include="networking\packet.c" />
-    <ClCompile Include="networking\socket.c" />
-    <ClCompile Include="runtime\mutex.c" />
-    <ClCompile Include="runtime\thread.c" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libserum", "libserum\libserum.vcxproj", "{45BFC5A6-3B5F-4AB9-A403-307477D9E780}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{B30AAE13-4F78-4856-BE0D-80C08C8EF093}"
 	ProjectSection(ProjectDependencies) = postProject
 		{45BFC5A6-3B5F-4AB9-A403-307477D9E780} = {45BFC5A6-3B5F-4AB9-A403-307477D9E780}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{722903A9-4803-4ADF-868F-B9D258774268}"
+	ProjectSection(SolutionItems) = preProject
+		CONTRIBUTING.md = CONTRIBUTING.md
 	EndProjectSection
 EndProject
 Global
