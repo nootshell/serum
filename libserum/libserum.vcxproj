@@ -19,7 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="crypto\hashing\md5.c" />
+    <ClCompile Include="data\atom.c" />
     <ClCompile Include="data\time.c" />
+    <ClCompile Include="io\log.c" />
+    <ClCompile Include="threading\mutex.c" />
+    <ClCompile Include="threading\thread.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\setup.h" />
@@ -27,14 +32,18 @@
     <ClInclude Include="core\setup\bitops.h" />
     <ClInclude Include="core\setup\intrinsics.h" />
     <ClInclude Include="core\setup\macros.h" />
+    <ClInclude Include="core\setup\magic.h" />
     <ClInclude Include="core\setup\platform-detection.h" />
     <ClInclude Include="core\setup\platform-setup.h" />
+    <ClInclude Include="core\setup\result.h" />
     <ClInclude Include="core\setup\special-treatment-for-windows.h" />
     <ClInclude Include="core\setup\types.h" />
+    <ClInclude Include="crypto\hashing\md5.h" />
+    <ClInclude Include="data\atom.h" />
     <ClInclude Include="data\time.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="io\CONTRIBUTING.md" />
+    <ClInclude Include="io\log.h" />
+    <ClInclude Include="threading\mutex.h" />
+    <ClInclude Include="threading\thread.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{45BFC5A6-3B5F-4AB9-A403-307477D9E780}</ProjectGuid>
@@ -108,13 +117,19 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>LS_EXPORTING=1;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
       <CompileAs>CompileAsC</CompileAs>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <ErrorReporting>None</ErrorReporting>
+      <DisableSpecificWarnings>4255;4464;4668;4702;4820</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -123,13 +138,19 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>LS_EXPORTING=1;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
       <CompileAs>CompileAsC</CompileAs>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <ErrorReporting>None</ErrorReporting>
+      <DisableSpecificWarnings>4255;4464;4668;4702;4820</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -138,7 +159,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -147,6 +168,12 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
       <CompileAs>CompileAsC</CompileAs>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <ErrorReporting>None</ErrorReporting>
+      <DisableSpecificWarnings>4255;4464;4668;4702;4820</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -157,7 +184,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -166,6 +193,12 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
       <CompileAs>CompileAsC</CompileAs>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <ErrorReporting>None</ErrorReporting>
+      <DisableSpecificWarnings>4255;4464;4668;4702;4820</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

@@ -40,7 +40,9 @@
 #undef __MKROTATE
 #define __MKROTATE(type_ret, name, bits, op1, op2)							\
 	static inline type_ret name(type_ret value, unsigned int rotate) {		\
-		return ((value op1 rotate) | (value op2 ((bits) - rotate)));		\
+		return (rotate ?													\
+			((value op1 rotate) | (value op2 ((bits) - rotate))) : value	\
+		);																	\
 	}
 	
 __MKROTATE( ls_uint8_t,  __ls_rotl8,  LS_BITS_BYTE, <<, >>)

@@ -12,7 +12,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{722903A9-4803-4ADF-868F-B9D258774268}"
 	ProjectSection(SolutionItems) = preProject
-		CONTRIBUTING.md = CONTRIBUTING.md
+		config.m4 = config.m4
+		config.w32 = config.w32
+		doxygen.cfg = doxygen.cfg
 	EndProjectSection
 EndProject
 Global

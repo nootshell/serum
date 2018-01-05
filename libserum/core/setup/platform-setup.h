@@ -55,6 +55,7 @@
 #	define LS_ATTR_NONNULL					__LS_ATTR(nonnull)
 #	define LS_ATTR_NONNULL_EX(...)			__LS_ATTR(nonnull (__VA_ARGS__))
 #	define LS_ATTR_PURE						__LS_ATTR(pure)
+#	define LS_ATTR_CONST					__LS_ATTR(const)
 #elif (LS_MSC || LS_MINGW)
 #	define __LS_ATTR(x)						__declspec(x)
 #
@@ -67,6 +68,7 @@
 #	define LS_ATTR_NONNULL
 #	define LS_ATTR_NONNULL_EX(...)
 #	define LS_ATTR_PURE
+#	define LS_ATTR_CONST
 #
 #	define restrict							__restrict
 #

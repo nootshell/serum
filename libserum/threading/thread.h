@@ -27,118 +27,35 @@
 
 
 
-#include "./time.h"
+#ifndef __LS_THREADING_THREAD_H
+#define __LS_THREADING_THREAD_H
 
 
 
-ls_uint64_t
-ls_time_nanos() {
-#if (LS_MSC || LS_MINGW)
-	FILETIME ft;
-	GetSystemTimeAsFileTime(&ft);
-	return (((((ls_uint64_t)ft.dwHighDateTime << LS_BITS_DWORD) | ft.dwLowDateTime) / 10) - 0x295E9648864000);
-#else
-	struct timespec ts;
-	if (clock_gettime(CLOCK_REALTIME, &ts) != 0) {
-		return 0;
-	}
-	return ((ts.tv_sec * 1000000000) + ts.tv_nsec);
-#endif
-}
+#include "../core/setup.h"
+#include "../data/atom.h"
 
-time_t
-ls_time_secs() {
-	return time(NULL);
-}
-
-
-
-ls_result_t
-ls_localtime(const time_t time, struct tm *const out_tm) {
-#if (LS_MSC || LS_MINGW)
-	if (localtime_s(out_tm, &time) != 0) {
-		return 1;
-	}
-#else
-	if (localtime_r(&time, out_tm) == NULL) {
-		return 1;
-	}
+#if (LIBSERUM_DOXYGEN)
+#	// Doxygen preprocessor.
+#elif (LS_PTHREADS)
+#	include <pthread.h>
+#elif (!LS_WTHREADS)
+#	error Unsupported threading API.
 #endif
 
-	return 0;
-}
-
-ls_result_t
-ls_localtime_now(struct tm *const out_tm) {
-	return ls_localtime(
-		ls_time_secs(),
-		out_tm
-	);
-}
 
 
-
-ls_result_t
-ls_timespec_to_millis(const struct timespec *const restrict ts, ls_uint64_t *const restrict out_millis) {
-	if (ts == NULL || out_millis == NULL) {
-		return LS_E_NULL;
-	}
-
-	*out_millis = ((ts->tv_sec * 1000) + (ts->tv_nsec / 1000000));
-	return LS_E_SUCCESS;
-}
-
-ls_result_t
-ls_millis_to_timespec(const ls_uint64_t millis, struct timespec *const out_ts) {
-	if (out_ts == NULL) {
-		return LS_E_NULL;
-	}
-
-	if (millis == 0) {
-		out_ts->tv_sec = out_ts->tv_nsec = 0;
-	} else {
-		out_ts->tv_sec = (millis / 1000);
-		out_ts->tv_nsec = (long int)((millis - out_ts->tv_sec) * 1000000);
-	}
-
-	return LS_E_SUCCESS;
-}
-
-
-
-
-ls_uint64_t
-ls_rdtsc() {
-#if (LS_INTRINSICS_GOT_RDTSC)
-	return LS_RDTSC();
-#else
-	uint64_t tsc = 0;
-
-#	if ((LS_GCC || LS_LLVM) && (LS_X86 || LS_X64))
-	asm volatile (
-		"rdtsc\n\t"
-		"shl $32, %%rdx\n\t"
-		"or %%rdx, %0"
-		: "=a" (tsc)
-		:
-		: "rdx"
-	);
-#	elif ((LS_MSC || LS_MINGW) && LS_X86)
-	__asm {
-		rdtsc
-
-#		if (LS_BIG_ENDIAN)
-		mov dword ptr [tsc + 0], edx
-		mov dword ptr [tsc + 4], eax
-#		else
-		mov dword ptr [tsc + 4], edx
-		mov dword ptr [tsc + 0], eax
-#		endif
-	};
-#	elif (!defined(LS_IGNORE_RDTSC))
-#		error Missing RDTSC implementation.
-#	endif
-
-	return tsc;
+typedef struct ls_thread {
+#if (LIBSERUM_DOXYGEN)
+	platform_specific thr_objs;
+#elif (LS_PTHREADS)
+#	error TODO
+#elif (LS_WTHREADS)
+	void *obj;
+	ls_uint32_t tid;
 #endif
-}
+} ls_thread_t;
+
+
+
+#endif
