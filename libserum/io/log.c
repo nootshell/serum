@@ -27,118 +27,128 @@
 
 
 
-#include "./time.h"
+#include "./log.h"
 
 
 
-ls_uint64_t
-ls_time_nanos() {
-#if (LS_MSC || LS_MINGW)
-	FILETIME ft;
-	GetSystemTimeAsFileTime(&ft);
-	return (((((ls_uint64_t)ft.dwHighDateTime << LS_BITS_DWORD) | ft.dwLowDateTime) / 10) - 0x295E9648864000);
-#else
-	struct timespec ts;
-	if (clock_gettime(CLOCK_REALTIME, &ts) != 0) {
-		return 0;
+#define SELECT_LOG(logptr)					\
+	if (logptr == NULL) {					\
+		logptr = &__global_log;				\
 	}
-	return ((ts.tv_sec * 1000000000) + ts.tv_nsec);
-#endif
-}
 
-time_t
-ls_time_secs() {
-	return time(NULL);
-}
+
+
+static ls_log_t __global_log = { 0 };
 
 
 
 ls_result_t
-ls_localtime(const time_t time, struct tm *const out_tm) {
-#if (LS_MSC || LS_MINGW)
-	if (localtime_s(out_tm, &time) != 0) {
+ls_log_init(ls_log_t *restrict log, const ls_log_level_t level, FILE *const fstd, FILE *const ferr, const ls_uint32_t flags) {
+	SELECT_LOG(log);
+
+	if (LS_MAGIC32_VALID(log->flags)) {
 		return 1;
 	}
-#else
-	if (localtime_r(&time, out_tm) == NULL) {
-		return 1;
-	}
-#endif
+
+	log->fstd = (fstd ? fstd : stdout);
+	log->ferr = (ferr ? ferr : stderr);
+	log->level = level;
+	log->flags = LS_MAGIC32_SET(flags);
 
 	return 0;
 }
 
 ls_result_t
-ls_localtime_now(struct tm *const out_tm) {
-	return ls_localtime(
-		ls_time_secs(),
-		out_tm
-	);
+ls_log_clear(ls_log_t *log, const ls_uint16_t flags) {
+	SELECT_LOG(log);
+
+	if (!LS_MAGIC32_VALID(log->flags)) {
+		return 1;
+	}
+
+	if (log->fstd) {
+		if (LS_FLAG(flags, LS_LOG_CLEAR_CLOSE_STD)) {
+			if (fclose(log->fstd) != 0) {
+				return 2;
+			}
+		}
+		log->fstd = NULL;
+	}
+
+	if (log->ferr) {
+		if (LS_FLAG(flags, LS_LOG_CLEAR_CLOSE_ERR)) {
+			if (fclose(log->ferr) != 0) {
+				return 3;
+			}
+		}
+		log->ferr = NULL;
+	}
+
+	log->flags = 0;
+	return 0;
 }
 
 
+
+ls_log_t *
+ls_log_alloc(const ls_log_level_t level, FILE *const fstd, FILE *const ferr, const ls_uint32_t flags) {
+	errno = 0;
+
+	ls_log_t *mlog = calloc(1, sizeof(ls_log_t));
+	if (mlog == NULL) {
+		return NULL;
+	}
+
+	if (ls_log_init(mlog, level, fstd, ferr, flags) != 0) {
+		errno = ECANCELED;
+		free(mlog);
+		return NULL;
+	}
+
+	return mlog;
+}
 
 ls_result_t
-ls_timespec_to_millis(const struct timespec *const restrict ts, ls_uint64_t *const restrict out_millis) {
-	if (ts == NULL || out_millis == NULL) {
-		return LS_E_NULL;
+ls_log_free(ls_log_t *const log, const ls_uint16_t flags) {
+	if (log == NULL) {
+		return 1;
 	}
 
-	*out_millis = ((ts->tv_sec * 1000) + (ts->tv_nsec / 1000000));
-	return LS_E_SUCCESS;
-}
-
-ls_result_t
-ls_millis_to_timespec(const ls_uint64_t millis, struct timespec *const out_ts) {
-	if (out_ts == NULL) {
-		return LS_E_NULL;
+	ls_result_t result = ls_log_clear(log, flags);
+	if (result != 0) {
+		return (1 + result);
 	}
 
-	if (millis == 0) {
-		out_ts->tv_sec = out_ts->tv_nsec = 0;
-	} else {
-		out_ts->tv_sec = (millis / 1000);
-		out_ts->tv_nsec = (long int)((millis - out_ts->tv_sec) * 1000000);
-	}
-
-	return LS_E_SUCCESS;
+	free(log);
+	return 0;
 }
 
 
 
+ls_bool_t
+ls_log_write_allowed(const ls_log_t *log, const ls_log_level_t target_level) {
+	SELECT_LOG(log);
 
-ls_uint64_t
-ls_rdtsc() {
-#if (LS_INTRINSICS_GOT_RDTSC)
-	return LS_RDTSC();
-#else
-	uint64_t tsc = 0;
+	if (!LS_MAGIC32_VALID(log->flags)) {
+		return false;
+	}
 
-#	if ((LS_GCC || LS_LLVM) && (LS_X86 || LS_X64))
-	asm volatile (
-		"rdtsc\n\t"
-		"shl $32, %%rdx\n\t"
-		"or %%rdx, %0"
-		: "=a" (tsc)
-		:
-		: "rdx"
-	);
-#	elif ((LS_MSC || LS_MINGW) && LS_X86)
-	__asm {
-		rdtsc
+	return (target_level <= log->level);
+}
 
-#		if (LS_BIG_ENDIAN)
-		mov dword ptr [tsc + 0], edx
-		mov dword ptr [tsc + 4], eax
-#		else
-		mov dword ptr [tsc + 4], edx
-		mov dword ptr [tsc + 0], eax
-#		endif
-	};
-#	elif (!defined(LS_IGNORE_RDTSC))
-#		error Missing RDTSC implementation.
-#	endif
 
-	return tsc;
-#endif
+
+size_t
+ls_log_write(const ls_log_t *restrict log, const char *const restrict buffer, const size_t size, const ls_log_level_t level) {
+	if (buffer == NULL || size == 0 || buffer[size] != '\0') {
+		return 0;
+	}
+
+	SELECT_LOG(log);
+
+	if (!ls_log_write_allowed(log, level)) {
+		return 0;
+	}
+
+	return 0;
 }

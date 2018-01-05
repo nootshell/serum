@@ -27,118 +27,40 @@
 
 
 
-#include "./time.h"
+#ifndef __LS_IO_LOG_H
+#define __LS_IO_LOG_H
 
 
 
-ls_uint64_t
-ls_time_nanos() {
-#if (LS_MSC || LS_MINGW)
-	FILETIME ft;
-	GetSystemTimeAsFileTime(&ft);
-	return (((((ls_uint64_t)ft.dwHighDateTime << LS_BITS_DWORD) | ft.dwLowDateTime) / 10) - 0x295E9648864000);
-#else
-	struct timespec ts;
-	if (clock_gettime(CLOCK_REALTIME, &ts) != 0) {
-		return 0;
-	}
-	return ((ts.tv_sec * 1000000000) + ts.tv_nsec);
+#include "../core/setup.h"
+
+#include <stdio.h>
+
+
+
+// log defs
+
+#define LS_LOG_CLEAR_CLOSE_STD				0x0001
+#define LS_LOG_CLEAR_CLOSE_ERR				0x0002
+
+
+
+typedef enum ls_log_level {
+	LS_LOG_LEVEL_ERROR = 1,
+	LS_LOG_LEVEL_WARNING = 2,
+	LS_LOG_LEVEL_INFO = 3,
+	LS_LOG_LEVEL_VERBOSE = 4,
+	LS_LOG_LEVEL_DEBUG = 5
+} ls_log_level_t;
+
+typedef struct ls_log {
+	FILE *fstd;
+	FILE *ferr;
+	ls_uint32_t flags;
+	ls_log_level_t level;
+} ls_log_t;
+#define a sizeof(ls_log_t)
+
+
+
 #endif
-}
-
-time_t
-ls_time_secs() {
-	return time(NULL);
-}
-
-
-
-ls_result_t
-ls_localtime(const time_t time, struct tm *const out_tm) {
-#if (LS_MSC || LS_MINGW)
-	if (localtime_s(out_tm, &time) != 0) {
-		return 1;
-	}
-#else
-	if (localtime_r(&time, out_tm) == NULL) {
-		return 1;
-	}
-#endif
-
-	return 0;
-}
-
-ls_result_t
-ls_localtime_now(struct tm *const out_tm) {
-	return ls_localtime(
-		ls_time_secs(),
-		out_tm
-	);
-}
-
-
-
-ls_result_t
-ls_timespec_to_millis(const struct timespec *const restrict ts, ls_uint64_t *const restrict out_millis) {
-	if (ts == NULL || out_millis == NULL) {
-		return LS_E_NULL;
-	}
-
-	*out_millis = ((ts->tv_sec * 1000) + (ts->tv_nsec / 1000000));
-	return LS_E_SUCCESS;
-}
-
-ls_result_t
-ls_millis_to_timespec(const ls_uint64_t millis, struct timespec *const out_ts) {
-	if (out_ts == NULL) {
-		return LS_E_NULL;
-	}
-
-	if (millis == 0) {
-		out_ts->tv_sec = out_ts->tv_nsec = 0;
-	} else {
-		out_ts->tv_sec = (millis / 1000);
-		out_ts->tv_nsec = (long int)((millis - out_ts->tv_sec) * 1000000);
-	}
-
-	return LS_E_SUCCESS;
-}
-
-
-
-
-ls_uint64_t
-ls_rdtsc() {
-#if (LS_INTRINSICS_GOT_RDTSC)
-	return LS_RDTSC();
-#else
-	uint64_t tsc = 0;
-
-#	if ((LS_GCC || LS_LLVM) && (LS_X86 || LS_X64))
-	asm volatile (
-		"rdtsc\n\t"
-		"shl $32, %%rdx\n\t"
-		"or %%rdx, %0"
-		: "=a" (tsc)
-		:
-		: "rdx"
-	);
-#	elif ((LS_MSC || LS_MINGW) && LS_X86)
-	__asm {
-		rdtsc
-
-#		if (LS_BIG_ENDIAN)
-		mov dword ptr [tsc + 0], edx
-		mov dword ptr [tsc + 4], eax
-#		else
-		mov dword ptr [tsc + 4], edx
-		mov dword ptr [tsc + 0], eax
-#		endif
-	};
-#	elif (!defined(LS_IGNORE_RDTSC))
-#		error Missing RDTSC implementation.
-#	endif
-
-	return tsc;
-#endif
-}

@@ -27,118 +27,137 @@
 
 
 
-#include "./time.h"
-
-
-
-ls_uint64_t
-ls_time_nanos() {
-#if (LS_MSC || LS_MINGW)
-	FILETIME ft;
-	GetSystemTimeAsFileTime(&ft);
-	return (((((ls_uint64_t)ft.dwHighDateTime << LS_BITS_DWORD) | ft.dwLowDateTime) / 10) - 0x295E9648864000);
-#else
-	struct timespec ts;
-	if (clock_gettime(CLOCK_REALTIME, &ts) != 0) {
-		return 0;
-	}
-	return ((ts.tv_sec * 1000000000) + ts.tv_nsec);
-#endif
-}
-
-time_t
-ls_time_secs() {
-	return time(NULL);
-}
+#include "./atom.h"
 
 
 
 ls_result_t
-ls_localtime(const time_t time, struct tm *const out_tm) {
-#if (LS_MSC || LS_MINGW)
-	if (localtime_s(out_tm, &time) != 0) {
-		return 1;
-	}
-#else
-	if (localtime_r(&time, out_tm) == NULL) {
-		return 1;
-	}
-#endif
-
-	return 0;
-}
-
-ls_result_t
-ls_localtime_now(struct tm *const out_tm) {
-	return ls_localtime(
-		ls_time_secs(),
-		out_tm
-	);
-}
-
-
-
-ls_result_t
-ls_timespec_to_millis(const struct timespec *const restrict ts, ls_uint64_t *const restrict out_millis) {
-	if (ts == NULL || out_millis == NULL) {
+ls_atom32_init(ls_atom32_t *const atom) {
+	if (atom == NULL) {
 		return LS_E_NULL;
 	}
 
-	*out_millis = ((ts->tv_sec * 1000) + (ts->tv_nsec / 1000000));
-	return LS_E_SUCCESS;
+	if (LS_MAGIC32_VALID(atom->lock.flags)) {
+		return LS_E_MAGIC;
+	}
+
+	atom->timeout_millis = 0;
+	atom->value = 0;
+	return ls_mutex_init(&atom->lock);
 }
 
+
+
 ls_result_t
-ls_millis_to_timespec(const ls_uint64_t millis, struct timespec *const out_ts) {
-	if (out_ts == NULL) {
+ls_atom32_clear(ls_atom32_t *const atom) {
+	if (atom == NULL) {
 		return LS_E_NULL;
 	}
 
-	if (millis == 0) {
-		out_ts->tv_sec = out_ts->tv_nsec = 0;
-	} else {
-		out_ts->tv_sec = (millis / 1000);
-		out_ts->tv_nsec = (long int)((millis - out_ts->tv_sec) * 1000000);
+	if (!LS_MAGIC32_VALID(atom->lock.flags)) {
+		return LS_E_MAGIC;
 	}
 
-	return LS_E_SUCCESS;
+	atom->timeout_millis = 0;
+	atom->value = 0;
+	return ls_mutex_clear(&atom->lock);
 }
 
 
 
+ls_result_t
+ls_atom32_flag_set(ls_atom32_t *const atom, const ls_uint32_t flag) {
+	if (atom == NULL) {
+		return LS_E_NULL;
+	}
 
-ls_uint64_t
-ls_rdtsc() {
-#if (LS_INTRINSICS_GOT_RDTSC)
-	return LS_RDTSC();
-#else
-	uint64_t tsc = 0;
+	if (flag == 0) {
+		return LS_E_INVALID;
+	}
 
-#	if ((LS_GCC || LS_LLVM) && (LS_X86 || LS_X64))
-	asm volatile (
-		"rdtsc\n\t"
-		"shl $32, %%rdx\n\t"
-		"or %%rdx, %0"
-		: "=a" (tsc)
-		:
-		: "rdx"
-	);
-#	elif ((LS_MSC || LS_MINGW) && LS_X86)
-	__asm {
-		rdtsc
+	if (!LS_MAGIC32_VALID(atom->lock.flags)) {
+		return LS_E_MAGIC;
+	}
 
-#		if (LS_BIG_ENDIAN)
-		mov dword ptr [tsc + 0], edx
-		mov dword ptr [tsc + 4], eax
-#		else
-		mov dword ptr [tsc + 4], edx
-		mov dword ptr [tsc + 0], eax
-#		endif
-	};
-#	elif (!defined(LS_IGNORE_RDTSC))
-#		error Missing RDTSC implementation.
-#	endif
+	{
+		ls_result_t result = LS_E_UNINITIALIZED;
+		if (atom->timeout_millis == 0) {
+			result = ls_mutex_lock(&atom->lock);
+		} else {
+			result = ls_mutex_timedlock_millis(&atom->lock, atom->timeout_millis);
+		}
+		if (result != LS_E_SUCCESS) {
+			return result;
+		}
+	}
 
-	return tsc;
-#endif
+	atom->value |= flag;
+
+	return ls_mutex_unlock(&atom->lock);
+}
+
+
+
+ls_result_t
+ls_atom32_flag_unset(ls_atom32_t *const atom, const ls_uint32_t flag) {
+	if (atom == NULL) {
+		return LS_E_NULL;
+	}
+
+	if (flag == 0) {
+		return LS_E_INVALID;
+	}
+
+	if (!LS_MAGIC32_VALID(atom->lock.flags)) {
+		return LS_E_MAGIC;
+	}
+
+	{
+		ls_result_t result = LS_E_UNINITIALIZED;
+		if (atom->timeout_millis == 0) {
+			result = ls_mutex_lock(&atom->lock);
+		} else {
+			result = ls_mutex_timedlock_millis(&atom->lock, atom->timeout_millis);
+		}
+		if (result != LS_E_SUCCESS) {
+			return result;
+		}
+	}
+
+	atom->value &= ~flag;
+
+	return ls_mutex_unlock(&atom->lock);
+}
+
+
+
+ls_result_t
+ls_atom32_flag_get(ls_atom32_t *const restrict atom, const ls_uint32_t flag, ls_bool_t *const restrict out_state) {
+	if (atom == NULL) {
+		return LS_E_NULL;
+	}
+
+	if (flag == 0) {
+		return LS_E_INVALID;
+	}
+
+	if (!LS_MAGIC32_VALID(atom->lock.flags)) {
+		return LS_E_MAGIC;
+	}
+
+	{
+		ls_result_t result = LS_E_UNINITIALIZED;
+		if (atom->timeout_millis == 0) {
+			result = ls_mutex_lock(&atom->lock);
+		} else {
+			result = ls_mutex_timedlock_millis(&atom->lock, atom->timeout_millis);
+		}
+		if (result != LS_E_SUCCESS) {
+			return result;
+		}
+	}
+
+	*out_state = LS_FLAG(atom->value, flag);
+
+	return ls_mutex_unlock(&atom->lock);
 }

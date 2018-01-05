@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
 **                                                                           **
 **   The MIT License                                                         **
 **                                                                           **
@@ -36,11 +36,17 @@
 
 
 
-#define LS_E_SUCCCESS						0
-#define LS_E_FAILURE						1
-#define LS_E_NULL							2
-#define LS_E_INVALID						3
-#define LS_E_UNSUPPORTED					4
+#define LS_E_SUCCESS						0x00
+#define LS_E_FAILURE						0x01
+#define LS_E_NULL							0x02
+#define LS_E_INVALID						0x03
+#define LS_E_UNSUPPORTED					0x04
+#define LS_E_MAGIC							0x05
+#define LS_E_TIMEOUT						0x06
+#define LS_E_ABANDONED						0x07
+#define LS_E_SIZE							0x08
+#define LS_E_UNINITIALIZED					0x09
+#define LS_E_CONVERSION						0x0A
 
 
 

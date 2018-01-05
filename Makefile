@@ -1,17 +1,9 @@
 CC = gcc
 LD = gcc
 
-DISTRO_DEF = $(shell sh ./get-distro.sh)
-GIT_INFO = $(shell sh ./get-git-info.sh)
-ELF_INTERP = $(shell sh ./get-elf-interpreter.sh)
-LS_MCHECK =
-LS_PTHREADS = $(shell sh ./get-pthreads.sh)
-
 CFLAGS = \
 	-fPIC -fstack-protector-strong -I. \
-	-DMAKEFILE=1 -DDISTRO=\"$(DISTRO_DEF)\" \
-	$(GIT_INFO) \
-	$(ELF_INTERP)
+	-DMAKEFILE=1
 
 
 all: release test

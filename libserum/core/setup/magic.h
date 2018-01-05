@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
 **                                                                           **
 **   The MIT License                                                         **
 **                                                                           **
@@ -27,37 +27,15 @@
 
 
 
-#ifndef __LS_CORE_SETUP_H
-#define __LS_CORE_SETUP_H
+#ifndef __LS_CORE_SETUP_MAGIC_H
+#define __LS_CORE_SETUP_MAGIC_H
 
 
 
-#include <stdlib.h>
-#include <errno.h>
-
-#include "./setup/types.h"
-#include "./setup/result.h"
-#include "./setup/platform-setup.h"
-#include "./setup/bitops.h"
-#include "./setup/magic.h"
-
-
-
-#if (!LIBSERUM_DOXYGEN)
-#	if (LS_EXPORTING)
-#		define LSAPI						LS_EXPORT
-#	else
-#		define LSAPI						LS_IMPORT
-#	endif
-#else
-#	define LSAPI
-#endif
-
-#if (!LS_WINDOWS || LS_THREADING_PTHREADS)
-#	define LS_PTHREADS						1
-#elif (LS_WINDOWS)
-#	define LS_WTHREADS						1
-#endif
+#define LS_MAGIC32							0xED000000
+#define LS_MAGIC32_STRIP(flags)				((flags) & 0x00FFFFFF)
+#define LS_MAGIC32_SET(flags)				(LS_MAGIC32_STRIP(flags) | LS_MAGIC32)
+#define LS_MAGIC32_VALID(flags)				(((flags) & 0xFF000000) == LS_MAGIC32)
 
 
 
