@@ -68,6 +68,10 @@
 #			define LS_RDTSC					__rdtsc
 #			define LS_INTRINSICS_GOT_RDTSC	1
 #		endif
+#	elif (LS_GCC || LS_LLVM)
+		// GCC and LLVM should be optimizing our fallback implementations nicely.
+#		define LS_INTRINSICS_IGNORE_ROTL	1
+#		define LS_INTRINSICS_IGNORE_ROTR	1
 #	endif
 #endif
 

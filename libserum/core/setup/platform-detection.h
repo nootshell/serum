@@ -35,6 +35,10 @@
 #include <limits.h>
 
 #ifdef CHAR_BIT
+#	if (CHAR_BIT != 8)
+#		error Currently only platforms with 8-bit characters are supported.
+#	endif
+
 #	define LS_BITS_BYTE						CHAR_BIT
 #	define LS_BITS_WORD						(LS_BITS_BYTE << 1)
 #	define LS_BITS_DWORD					(LS_BITS_BYTE << 2)

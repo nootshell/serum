@@ -8,9 +8,6 @@ CFLAGS = \
 
 all: release test
 
-all_dbg: debug test
-
-all_dbg_origin: debug_origin test
 
 clean:
 	@echo -n "Cleaning..."
@@ -20,30 +17,6 @@ clean:
 	@rm -Rf obj/test
 	@echo " done."
 	@echo
-
-run_test:
-	@bin/test
-
-r: clean all_dbg
-
-r_o: clean all_dbg_origin
-
-rt: r run_test
-
-rt_o: r_o run_test
-
-d: all_dbg
-
-d_o: all_dbg_origin
-
-dt: d run_test
-
-dt_o: d_o run_test
-
-dr: CFLAGS += -DLS_LOG_RESULTS=1
-dr: d
-
-
 
 obj/%.o: %.c
 	@echo -n "| $@"
@@ -61,28 +34,19 @@ bin/libserum.so: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find libserum -t
 	@echo " (done)"
 	@echo
 
-bin/test: bin/libserum.so
+#bin/test: bin/libserum.so
 bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name '*.c')))
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
-	@$(CC) -lserum -o $@ $^
+	@$(CC) -o $@ $^
 	@echo " (done)"
 	@echo
 
 
 
 debug: CFLAGS += -g -DDEBUG
-debug: LS_MCHECK += $(shell sh ./get-mcheck.sh)
-debug: lib
-
-debug_origin: CFLAGS += -ULS_LOG_ORIGIN -DLS_LOG_ORIGIN=1
-debug_origin: debug
+debug: bin/libserum.so
 
 release: CFLAGS += -O3 -DRELEASE
-release: lib
+release: bin/libserum.so
 
-
-
-lib: bin/libserum.so
-
-test: bin/test
