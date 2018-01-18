@@ -51,7 +51,10 @@ static const ls_uint8_t __ls_sanitize_m__ = ((1U << LS_BITS_BYTE) - 1);
 
 
 #if (!LS_INTRINSICS_GOT_ROTL)
-	LS_COMPILER_LOG("Missing ROTL intrinsics, using fallback.")
+#	if (!LS_INTRINSICS_IGNORE_ROTL)
+		LS_COMPILER_LOG("Missing ROTL intrinsics, using fallback.")
+#	endif
+
 #	define LS_ROTL8							__ls_rotl8
 #	define LS_ROTL16						__ls_rotl16
 #	define LS_ROTL32						__ls_rotl32
@@ -59,7 +62,10 @@ static const ls_uint8_t __ls_sanitize_m__ = ((1U << LS_BITS_BYTE) - 1);
 #endif
 
 #if (!LS_INTRINSICS_GOT_ROTR)
-	LS_COMPILER_LOG("Missing ROTR intrinsics, using fallback.")
+#	if (!LS_INTRINSICS_IGNORE_ROTR)
+		LS_COMPILER_LOG("Missing ROTR intrinsics, using fallback.")
+#	endif
+
 #	define LS_ROTR8							__ls_rotr8
 #	define LS_ROTR16						__ls_rotr16
 #	define LS_ROTR32						__ls_rotr32

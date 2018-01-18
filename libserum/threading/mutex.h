@@ -108,7 +108,7 @@ extern "C" {
 	**		`#LS_E_UNSUPPORTED` if the implementation is missing.
 	*/
 	LSAPI ls_result_t ls_mutex_lock(const ls_mutex_t *const mutex);
-	
+
 	/*!	\brief Locks a mutex.
 	**
 	**	Same as `#ls_mutex_lock`, except that this function will time-out

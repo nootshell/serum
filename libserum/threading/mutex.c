@@ -73,7 +73,7 @@ ls_mutex_init(ls_mutex_t *const mutex) {
 #else
 	return LS_E_UNSUPPORTED;
 #endif
-	
+
 	mutex->flags = 0;
 	mutex->flags = LS_MAGIC32_SET(mutex->flags);
 	return LS_E_SUCCESS;
@@ -103,7 +103,7 @@ ls_mutex_clear(ls_mutex_t *const mutex) {
 #else
 	return LS_E_UNSUPPORTED;
 #endif
-	
+
 	mutex->flags = 0;
 	return LS_E_SUCCESS;
 }
@@ -131,7 +131,7 @@ ls_mutex_lock(const ls_mutex_t *const mutex) {
 #else
 	return LS_E_UNSUPPORTED;
 #endif
-	
+
 	return LS_E_SUCCESS;
 }
 
