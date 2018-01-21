@@ -11,7 +11,7 @@ parserArgumentsC=-ferror-limit=100 -fspell-checking -Wdocumentation -Wunused-par
 Name=GCC
 
 [Filters]
-size=5
+size=7
 
 [Filters][0]
 inclusive=0
@@ -36,6 +36,16 @@ targets=1
 [Filters][4]
 inclusive=0
 pattern=*.kate-swp
+targets=1
+
+[Filters][5]
+inclusive=0
+pattern=/obj/libserum/core/main.o
+targets=1
+
+[Filters][6]
+inclusive=0
+pattern=*.log
 targets=1
 
 [Project]

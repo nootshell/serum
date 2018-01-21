@@ -128,10 +128,10 @@
 #define LS_ID_MINGW							4
 
 #ifndef LS_ID_COMPILER
-#	if (defined(__GNUC__))
-#		define LS_ID_COMPILER				LS_ID_GCC
-#	elif (defined(__llvm__) || defined(__clang__))
+#	if (defined(__llvm__) || defined(__clang__))
 #		define LS_ID_COMPILER				LS_ID_LLVM
+#	elif (defined(__GNUC__))
+#		define LS_ID_COMPILER				LS_ID_GCC
 #	elif (defined(__MINGW32__))
 #		define LS_ID_COMPILER				LS_ID_MINGW
 #	elif (defined(_MSC_VER))

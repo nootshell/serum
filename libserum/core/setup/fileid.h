@@ -46,7 +46,7 @@
 
 
 
-#define LS_CODENAME                         ""
+#define LS_CODENAME                         "Fresh"
 #define LS_VERSION							GIT_TAG
 
 #define LS_AUTHORS							\
@@ -54,7 +54,8 @@
 
 
 
-#define FILEID(desc)						static LS_ATTR_USED const char ___FILEID___[] = "$Id: " FILEPATH GIT_COMMIT " " desc " $"
+#define FILEID_PLAIN(name, string)			static LS_ATTR_USED const char name[] = "$Id: " string " $"
+#define FILEID(desc)						FILEID_PLAIN(___FILEID___, FILEPATH GIT_COMMIT " " desc)
 
 
 

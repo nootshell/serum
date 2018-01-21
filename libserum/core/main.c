@@ -27,19 +27,59 @@
 
 
 
-#ifdef ELF_INTERPRETER
-
-
-
 #include "./setup.h"
 
 #include <stdio.h>
 
 
 
-FILEID("Self-testing ELF entrypoint.");
+#ifndef KERNEL
+#	if (LS_LINUX)
+#		define KERNEL						"Linux"
+#	elif (LS_WINDOWS)
+#		define KERNEL						"NT"
+#	else
+#		define KERNEL						"Unknown"
+#	endif
+#endif
+
+#ifndef KERNEL_ARCH
+#	define KERNEL_ARCH						""
+#endif
+
+#if (LS_GCC)
+#	define COMPILER							"GCC"
+#elif (LS_LLVM)
+#	define COMPILER							"LLVM"
+#elif (LS_MINGW)
+#	define COMPILER							"MinGW"
+#elif (LS_MSC)
+#	define COMPILER							"MSC"
+#else
+#	define COMPILER							"Unknown"
+#endif
+
+#if (LS_X86)
+#	define ARCH								"x86"
+#elif (LS_X64)
+#	define ARCH								"x64"
+#elif (LS_ARM)
+#	define ARCH								"ARM"
+#else
+#	define ARCH								"Unknown"
+#endif
 
 
+
+FILEID_PLAIN(___COREID___, ">> libserum (" LS_VERSION ", \"" LS_CODENAME "\") built for " ARCH " with " COMPILER " on " KERNEL " " KERNEL_ARCH " at " TIMESTAMP " <<");
+
+
+
+#if (defined(ELF_INTERPRETER) && LS_LINUX)
+
+
+
+FILEID("ELF entrypoint for self-testing.");
 
 const char LS_ATTR_USED __attribute__((section(".interp"))) interp[] = ELF_INTERPRETER;
 
