@@ -35,6 +35,9 @@
 #define __LS_MKSTR(x)						#x
 #define LS_MKSTR(x)							__LS_MKSTR(x)
 
+#define __LS_MAYBE_EMPTY(x)					x ## 1
+#define LS_MAYBE_EMPTY(x)					__LS_MAYBE_EMPTY(x)
+
 
 
 #endif

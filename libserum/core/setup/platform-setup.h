@@ -48,14 +48,16 @@
 #	include "./macros.h"
 #	define LS_COMPILER_LOG(mesg)			_Pragma(LS_MKSTR(message mesg))
 #
-#	define LS_EXPORT						__LS_ATTR((visibility("default")))
+#	define LS_EXPORT						__LS_ATTR(visibility("default"))
 #	define LS_IMPORT
-#	define LS_INTERNAL						__LS_ATTR((visibility("hidden")))
+#	define LS_INTERNAL						__LS_ATTR(visibility("hidden"))
 #
 #	define LS_ATTR_NONNULL					__LS_ATTR(nonnull)
 #	define LS_ATTR_NONNULL_EX(...)			__LS_ATTR(nonnull (__VA_ARGS__))
 #	define LS_ATTR_PURE						__LS_ATTR(pure)
 #	define LS_ATTR_CONST					__LS_ATTR(const)
+#	define LS_ATTR_USED						__LS_ATTR(used)
+#	define LS_ATTR_NORETURN					__LS_ATTR(noreturn)
 #elif (LS_MSC || LS_MINGW)
 #	define __LS_ATTR(x)						__declspec(x)
 #
@@ -69,6 +71,8 @@
 #	define LS_ATTR_NONNULL_EX(...)
 #	define LS_ATTR_PURE
 #	define LS_ATTR_CONST
+#	define LS_ATTR_USED
+#	define LS_ATTR_NORETURN					__LS_ATTR(noreturn)
 #
 #	define restrict							__restrict
 #

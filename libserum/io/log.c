@@ -31,6 +31,10 @@
 
 
 
+FILEID("Logging functionality.");
+
+
+
 #define SELECT_LOG(logptr)					\
 	if (logptr == NULL) {					\
 		logptr = &__global_log;				\

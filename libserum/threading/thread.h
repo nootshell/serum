@@ -33,7 +33,7 @@
 
 
 #include "../core/setup.h"
-#include "../data/atom.h"
+#include "./mutex.h"
 
 #if (LIBSERUM_DOXYGEN)
 #	// Doxygen preprocessor.
@@ -49,7 +49,7 @@ typedef struct ls_thread {
 #if (LIBSERUM_DOXYGEN)
 	platform_specific thr_objs;
 #elif (LS_PTHREADS)
-#	error TODO
+	pthread_t obj;
 #elif (LS_WTHREADS)
 	void *obj;
 	ls_uint32_t tid;

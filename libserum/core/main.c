@@ -27,11 +27,29 @@
 
 
 
-#include "./thread.h"
+#ifdef ELF_INTERPRETER
 
 
 
-FILEID("Threading interface.");
+#include "./setup.h"
+
+#include <stdio.h>
 
 
 
+FILEID("Self-testing ELF entrypoint.");
+
+
+
+const char LS_ATTR_USED __attribute__((section(".interp"))) interp[] = ELF_INTERPRETER;
+
+
+
+void LS_ATTR_NORETURN __libserum_main() {
+	puts("entry");
+	exit(0);
+}
+
+
+
+#endif

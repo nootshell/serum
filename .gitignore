@@ -1,6 +1,7 @@
 # Decent git implementations will support this flawlessly.
 *
 !*/
+!Makefile
 !*.c
 !*.h
 !.gitignore

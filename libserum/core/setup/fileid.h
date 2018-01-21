@@ -27,11 +27,35 @@
 
 
 
-#include "./thread.h"
+#if (!defined(__LS_CORE_SETUP_FILEID_H) && LS_EXPORTING)
+#define __LS_CORE_SETUP_FILEID_H
 
 
 
-FILEID("Threading interface.");
+#include "./platform-setup.h"
 
 
 
+#ifndef GIT_TAG
+#	define GIT_TAG							"undefined"
+#endif
+
+#ifndef GIT_COMMIT
+#	define GIT_COMMIT						" (no commit info)"
+#endif
+
+
+
+#define LS_CODENAME                         ""
+#define LS_VERSION							GIT_TAG
+
+#define LS_AUTHORS							\
+			"ice cube tray"
+
+
+
+#define FILEID(desc)						static LS_ATTR_USED const char ___FILEID___[] = "$Id: " FILEPATH GIT_COMMIT " " desc " $"
+
+
+
+#endif
