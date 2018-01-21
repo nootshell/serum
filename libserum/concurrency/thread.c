@@ -35,3 +35,36 @@ FILEID("Threading interface.");
 
 
 
+ls_result_t
+ls_thread_init(ls_thread_t *const thread, const ls_uint32_t flags) {
+	return LS_E_UNSUPPORTED;
+}
+
+ls_result_t
+ls_thread_clear(ls_thread_t *const thread) {
+	return LS_E_UNSUPPORTED;
+}
+
+
+
+ls_result_t
+ls_thread_start(ls_thread_t *const thread) {
+	return LS_E_UNSUPPORTED;
+}
+
+ls_result_t
+ls_thread_stop(ls_thread_t *const thread) {
+	return LS_E_UNSUPPORTED;
+}
+
+
+
+ls_result_t
+ls_thread_suspend(ls_thread_t *const thread) {
+	return LS_E_UNSUPPORTED;
+}
+
+ls_result_t
+ls_thread_resume(ls_thread_t *const thread) {
+	return LS_E_UNSUPPORTED;
+}

@@ -34,13 +34,16 @@ LS_ELF_INTERP = $(shell ./elf_interp.sh)
 
 GIT_COMMIT_HEAD = $(shell git rev-parse HEAD)
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
-GIT_TAG = $(shell git name-rev --tags --name-only HEAD)
+GIT_TAG = $(shell git describe --tags --abbrev=0 2> /dev/null || echo "0-dev")
+TIMESTAMP = $(shell date -Iseconds)
+KERNEL = $(shell uname -sr)
+KERNEL_ARCH = $(shell uname -m)
 
 CFLAGS = \
 	-Wall -fPIC -fstack-protector-strong -I. \
 	-DMAKEFILE=1 \
 	-DGIT_BRANCH="\"$(GIT_BRANCH)\"" -DGIT_TAG="\"$(GIT_TAG)\"" \
-	-DFILEPATH="\"$^\""
+	-DFILEPATH="\"$^\"" -DTIMESTAMP="\"$(TIMESTAMP)\"" -DKERNEL="\"$(KERNEL)\"" -DKERNEL_ARCH="\"$(KERNEL_ARCH)\""
 
 TITLE = "done"
 
@@ -65,10 +68,17 @@ obj/%.o: %.c
 	@$(CC) $(CFLAGS) -DGIT_COMMIT="\"$(shell git log -n 1 --pretty=format:" ($(GIT_BRANCH) %H %aI)" -- $^)\"" -c $^ -o $@
 	@echo "| $@ (done)"
 
+obj/libserum/core/main.o: $(shell touch libserum/core/main.c)
+obj/libserum/core/main.o: CFLAGS += $(LS_ELF_INTERP) -Wno-unused-command-line-argument
+obj/libserum/core/main.o: libserum/core/main.c
+	@mkdir -p $(@D)
+	@$(CC) $(CFLAGS) -DGIT_COMMIT="\"$(shell git log -n 1 --pretty=format:" ($(GIT_BRANCH) %H %aI)" -- $^)\"" -c $^ -o $@
+	@echo "| $@ (done)"
 
 
-bin/libserum.so: CFLAGS += -DLS_EXPORTING=1 $(LS_ELF_INTERP)
-bin/libserum.so: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find libserum -type f -name '*.c')))
+
+bin/libserum.so: CFLAGS += -DLS_EXPORTING=1
+bin/libserum.so: obj/libserum/core/main.o $(addprefix obj/, $(patsubst %.c, %.o, $(shell find libserum -type f -name '*.c' ! -wholename libserum/core/main.c)))
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
 	@$(LD) -o $@ -shared -lpthread $(LS_ELF_INTERP) $^
