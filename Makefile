@@ -37,7 +37,7 @@ GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_TAG = $(shell git name-rev --tags --name-only HEAD)
 
 CFLAGS = \
-	-fPIC -fstack-protector-strong -I. \
+	-Wall -fPIC -fstack-protector-strong -I. \
 	-DMAKEFILE=1 \
 	-DGIT_BRANCH="\"$(GIT_BRANCH)\"" -DGIT_TAG="\"$(GIT_TAG)\"" \
 	-DFILEPATH="\"$^\""
