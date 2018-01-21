@@ -39,8 +39,19 @@
 #	// Doxygen preprocessor.
 #elif (LS_PTHREADS)
 #	include <pthread.h>
-#elif (!LS_WTHREADS)
+#	define CONST_PTHREADS					const
+#elif (LS_WTHREADS)
+#	define CONST_WTHREADS					const
+#else
 #	error Unsupported threading API.
+#endif
+
+#ifndef CONST_PTHREADS
+#	define CONST_PTHREADS
+#endif
+
+#ifndef CONST_WTHREADS
+#	define CONST_WTHREADS
 #endif
 
 
@@ -50,7 +61,7 @@ typedef struct ls_mutex {
 #if (LIBSERUM_DOXYGEN)
 	platform_specific lock;
 #elif (LS_PTHREADS)
-#	error TODO
+	pthread_mutex_t lock;
 #elif (LS_WTHREADS)
 	void *lock;
 #endif
@@ -107,12 +118,15 @@ extern "C" {
 	**		`#LS_E_FAILURE` on failure;									<br/>
 	**		`#LS_E_UNSUPPORTED` if the implementation is missing.
 	*/
-	LSAPI ls_result_t ls_mutex_lock(const ls_mutex_t *const mutex);
+	LSAPI ls_result_t ls_mutex_lock(CONST_WTHREADS ls_mutex_t *const mutex);
 
 	/*!	\brief Locks a mutex.
 	**
 	**	Same as `#ls_mutex_lock`, except that this function will time-out
 	**	after the specified \p timeout while waiting.
+	**
+	**	\param mutex The mutex to lock.
+	**	\param timeout The time to wait before timing out.
 	**
 	**	\return
 	**		`#LS_E_INVALID` if a timeout of zero was given;				<br/>
@@ -120,10 +134,10 @@ extern "C" {
 	**		`#LS_E_TIMEOUT` if it times out;							<br/>
 	**		return values from `#ls_mutex_lock` otherwise.
 	*/
-	LSAPI ls_result_t ls_mutex_timedlock(const ls_mutex_t *const mutex, const struct timespec timeout);
+	LSAPI ls_result_t ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec timeout);
 
 	//! \copydoc ls_mutex_timedlock
-	LSAPI ls_result_t ls_mutex_timedlock_millis(const ls_mutex_t *const mutex, const ls_uint64_t timeout_millis);
+	LSAPI ls_result_t ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint64_t timeout_millis);
 
 	/*!	\brief Unlocks a mutex.
 	**
@@ -137,7 +151,7 @@ extern "C" {
 	**		`#LS_E_SUCCESS` on success;									<br/>
 	**		`#LS_E_UNSUPPORTED` if the implementation is missing.
 	*/
-	LSAPI ls_result_t ls_mutex_unlock(const ls_mutex_t *const mutex);
+	LSAPI ls_result_t ls_mutex_unlock(CONST_WTHREADS ls_mutex_t *const mutex);
 
 #ifdef __cplusplus
 }

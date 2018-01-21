@@ -38,6 +38,7 @@
 #include "./setup/types.h"
 #include "./setup/result.h"
 #include "./setup/platform-setup.h"
+#include "./setup/fileid.h"
 #include "./setup/bitops.h"
 #include "./setup/magic.h"
 
@@ -57,6 +58,14 @@
 #	define LS_PTHREADS						1
 #elif (LS_WINDOWS)
 #	define LS_WTHREADS						1
+#endif
+
+#ifndef LS_PTHREADS
+#	define LS_PTHREADS						0
+#endif
+
+#ifndef LS_WTHREADS
+#	define LS_WTHREADS						0
 #endif
 
 

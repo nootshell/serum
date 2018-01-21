@@ -1,52 +1,100 @@
+###############################################################################
+##                                                                           ##
+##   The MIT License                                                         ##
+##                                                                           ##
+##   Copyright 2017-2018 icecubetray                                         ##
+##                                                                           ##
+##   Permission is hereby granted, free of charge, to any person             ##
+##   obtaining a copy of this software and associated documentation files    ##
+##   (the "Software"), to deal in the Software without restriction,          ##
+##   including without limitation the rights to use, copy, modify, merge,    ##
+##   publish, distribute, sublicense, and/or sell copies of the Software,    ##
+##   and to permit persons to whom the Software is furnished to do so,       ##
+##   subject to the following conditions:                                    ##
+##                                                                           ##
+##   The above copyright notice and this permission notice shall be          ##
+##   included in all copies or substantial portions of the Software.         ##
+##                                                                           ##
+##   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,         ##
+##   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF      ##
+##   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  ##
+##   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY    ##
+##   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,    ##
+##   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE       ##
+##   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                  ##
+##                                                                           ##
+###############################################################################
+
+
+
 CC = gcc
 LD = gcc
 
+LS_ELF_INTERP = $(shell ./elf_interp.sh)
+
+GIT_COMMIT_HEAD = $(shell git rev-parse HEAD)
+GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
+GIT_TAG = $(shell git name-rev --tags --name-only HEAD)
+
 CFLAGS = \
 	-fPIC -fstack-protector-strong -I. \
-	-DMAKEFILE=1
+	-DMAKEFILE=1 \
+	-DGIT_BRANCH="\"$(GIT_BRANCH)\"" -DGIT_TAG="\"$(GIT_TAG)\"" \
+	-DFILEPATH="\"$^\""
+
+TITLE = "done"
 
 
-all: release test
+
+.PHONY: all clean debug release rebuild
 
 
-clean:
-	@echo -n "Cleaning..."
-	@rm -f bin/libserum.so
-	@rm -f bin/test
-	@rm -Rf obj/libserum
-	@rm -Rf obj/test
-	@echo " done."
-	@echo
+
+ifeq (,$(wildcard ./debug))
+all: release
+rebuild: clean release
+else
+all: rebuild
+rebuild: clean debug
+endif
+
+
 
 obj/%.o: %.c
-	@echo -n "| $@"
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) -c $^ -o $@
-	@echo " (done)"
+	@$(CC) $(CFLAGS) -DGIT_COMMIT="\"$(shell git log -n 1 --pretty=format:" ($(GIT_BRANCH) %H %aI)" -- $^)\"" -c $^ -o $@
+	@echo "| $@ (done)"
 
 
 
-bin/libserum.so: CFLAGS += -DLIBSERUM_EXPORTS=1
+bin/libserum.so: CFLAGS += -DLS_EXPORTING=1 $(LS_ELF_INTERP)
 bin/libserum.so: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find libserum -type f -name '*.c')))
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
-	@$(LD) -o $@ -shared $(LS_MCHECK) $(LS_PTHREADS) -Wl,-e,interp_entry $^
-	@echo " (done)"
+	@$(LD) -o $@ -shared -lpthread $(LS_ELF_INTERP) $^
+	@echo " ($(TITLE))"
 	@echo
 
-#bin/test: bin/libserum.so
+bin/test: bin/libserum.so
 bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name '*.c')))
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
 	@$(CC) -o $@ $^
-	@echo " (done)"
+	@echo " ($(TITLE))"
 	@echo
 
 
 
+clean:
+	@rm -f bin/libserum.so
+	@rm -f bin/test
+	@rm -Rf obj/libserum
+	@rm -Rf obj/test
+
+debug: TITLE = "debug"
 debug: CFLAGS += -g -DDEBUG
 debug: bin/libserum.so
 
+release: TITLE = "release"
 release: CFLAGS += -O3 -DRELEASE
 release: bin/libserum.so
-
