@@ -27,35 +27,64 @@
 
 
 
-#ifndef __LS_THREADING_THREAD_H
-#define __LS_THREADING_THREAD_H
+#include "./state.h"
 
 
 
-#include "../core/setup.h"
-#include "./mutex.h"
+ls_result_t
+ls_state_init_ex(ls_state_t *const state, const ls_nword_t value) {
+	if (state == NULL) {
+		return LS_E_NULL;
+	}
 
-#if (LIBSERUM_DOXYGEN)
-#	// Doxygen preprocessor.
-#elif (LS_PTHREADS)
-#	include <pthread.h>
-#elif (!LS_WTHREADS)
-#	error Unsupported threading API.
-#endif
+	const ls_result_t result = ls_mutex_init(&state->__lock);
+	if (result != LS_E_SUCCESS) {
+		return result;
+	}
+
+	state->value = value;
+	return LS_E_SUCCESS;
+}
+
+ls_result_t
+ls_state_clear(ls_state_t *const state) {
+	if (state == NULL) {
+		return LS_E_NULL;
+	}
+
+	const ls_result_t result = ls_mutex_clear(&state->__lock);
+	if (result != LS_E_SUCCESS) {
+		return result;
+	}
+
+	state->value = 0;
+	return LS_E_SUCCESS;
+}
 
 
+ls_result_t
+ls_state_set(ls_state_t *const state, const ls_nword_t value) {
+	if (state == NULL) {
+		return LS_E_NULL;
+	}
 
-typedef struct ls_thread {
-#if (LIBSERUM_DOXYGEN)
-	platform_specific thr_objs;
-#elif (LS_PTHREADS)
-	pthread_t obj;
-#elif (LS_WTHREADS)
-	void *obj;
-	ls_uint32_t tid;
-#endif
-} ls_thread_t;
+	LS_MUTEX_ACQUIRE_OR_ERROR(&state->__lock);
+	state->value = value;
+	LS_MUTEX_RELEASE_OR_ERROR(&state->__lock);
 
+	return LS_E_SUCCESS;
+}
 
+ls_result_t
+ls_state_get(ls_state_t *const restrict state, ls_nword_t *const restrict out_value) {
+	if (state == NULL) {
+		return LS_E_NULL;
+	}
 
-#endif
+	LS_MUTEX_ACQUIRE_OR_ERROR(&state->__lock);
+	const ls_nword_t value = state->value;
+	LS_MUTEX_RELEASE_OR_ERROR(&state->__lock);
+
+	*out_value = value;
+	return LS_E_SUCCESS;
+}

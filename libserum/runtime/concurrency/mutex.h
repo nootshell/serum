@@ -27,12 +27,12 @@
 
 
 
-#ifndef __LS_THREADING_MUTEX_H
-#define __LS_THREADING_MUTEX_H
+#ifndef __LS_RUNTIME_CONCURRENCY_MUTEX_H
+#define __LS_RUNTIME_CONCURRENCY_MUTEX_H
 
 
 
-#include "../core/setup.h"
+#include "../../core/setup.h"
 #include <time.h>
 
 #if (LIBSERUM_DOXYGEN)
@@ -54,6 +54,11 @@
 #	define CONST_WTHREADS
 #endif
 
+#if (LS_EXPORTING)
+#	define LS_MUTEX_ACQUIRE_OR_ERROR(lockp)	if (ls_mutex_lock((lockp)) != LS_E_SUCCESS) { return LS_E_LOCK; }
+#	define LS_MUTEX_RELEASE_OR_ERROR(lockp)	if (ls_mutex_unlock((lockp)) != LS_E_SUCCESS) { return LS_E_LOCK; }
+#endif
+
 
 
 typedef struct ls_mutex {
@@ -67,7 +72,7 @@ typedef struct ls_mutex {
 #endif
 
 	//! \brief Flags for the mutex. Currently only used to store its magic.
-	ls_uint32_t flags;
+	ls_uint32_t __flags;
 } ls_mutex_t;
 
 

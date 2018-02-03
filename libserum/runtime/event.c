@@ -1,4 +1,4 @@
-﻿/******************************************************************************
+/******************************************************************************
 **                                                                           **
 **   The MIT License                                                         **
 **                                                                           **
@@ -27,32 +27,63 @@
 
 
 
-#ifndef __LS_CORE_SETUP_RESULT_H
-#define __LS_CORE_SETUP_RESULT_H
+#include "./event.h"
 
 
 
-#include "./types.h"
+ls_result_t
+ls_event_init_ex(ls_event_t *const event, const ls_uint32_t flags, const size_t initial_capacity) {
+	if (event == NULL) {
+		return LS_E_NULL;
+	}
+
+	if (LS_MAGIC32_VALID(event->__flags)) {
+		return LS_E_MAGIC;
+	}
+
+	if (initial_capacity > 0) {
+		event->__handlers = calloc(
+			(event->__handler_capacity = initial_capacity),
+			sizeof(*event->__handlers)
+		);
+	} else {
+		event->__handlers = malloc(
+			(event->__handler_capacity = 0)
+		);
+	}
+
+	event->__flags = LS_MAGIC32_SET(flags);
+	return LS_E_SUCCESS;
+}
+
+ls_result_t
+ls_event_clear(ls_event_t *const event) {
+	if (event == NULL) {
+		return LS_E_NULL;
+	}
+
+	if (!LS_MAGIC32_VALID(event->__flags)) {
+		return LS_E_MAGIC;
+	}
+
+	if (event->__handlers) {
+		free(event->__handlers);
+		event->__handlers = NULL;
+	}
+
+	event->__flags = 0;
+	return LS_E_SUCCESS;
+}
 
 
 
-#define LS_E_SUCCESS						0x00
-#define LS_E_FAILURE						0x01
-#define LS_E_NULL							0x02
-#define LS_E_INVALID						0x03
-#define LS_E_UNSUPPORTED					0x04
-#define LS_E_MAGIC							0x05
-#define LS_E_TIMEOUT						0x06
-#define LS_E_ABANDONED						0x07
-#define LS_E_SIZE							0x08
-#define LS_E_UNINITIALIZED					0x09
-#define LS_E_CONVERSION						0x0A
-#define LS_E_LOCK							0x0B
+ls_result_t
+ls_event_fire_ex(const ls_event_t *const restrict event, void *const restrict data) {
+	if (event == NULL) {
+		return LS_E_NULL;
+	}
 
+	// TODO
 
-
-typedef ls_nword_t ls_result_t;
-
-
-
-#endif
+	return LS_E_SUCCESS;
+}

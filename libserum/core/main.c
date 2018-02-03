@@ -85,10 +85,13 @@ const char LS_ATTR_USED __attribute__((section(".interp"))) interp[] = ELF_INTER
 
 
 
-void LS_ATTR_NORETURN __libserum_main() {
-	puts("entry");
+void LS_ATTR_NORETURN __libserum_main(void *dummy, int argc, char **argv, char **env) {
+	puts("hi");
+	printf("dummy at %p\n", dummy);
+	printf("got %u args at %p\n", argc, argv);
 	exit(0);
 }
+__attribute__((section(".init_array"), aligned (sizeof (void *)))) typeof(__libserum_main) *init = &__libserum_main;
 
 
 

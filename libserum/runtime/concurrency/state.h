@@ -27,44 +27,44 @@
 
 
 
-#include "./thread.h"
+#ifndef __LS_RUNTIME_CONCURRENCY_STATE_H
+#define __LS_RUNTIME_CONCURRENCY_STATE_H
 
 
 
-FILEID("Threading interface.");
+#include "../../core/setup.h"
+
+#include "./mutex.h"
 
 
 
-ls_result_t
-ls_thread_init(ls_thread_t *const thread, const ls_uint32_t flags) {
-	return LS_E_UNSUPPORTED;
+typedef struct ls_state {
+	ls_mutex_t __lock;
+	ls_nword_t value;
+} ls_state_t;
+
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+    LSAPI ls_result_t ls_state_init_ex(ls_state_t *const state, const ls_nword_t value);
+
+	static ls_result_t inline ls_state_init(ls_state_t *const state) {
+		return ls_state_init_ex(state, 0);
+	}
+
+	LSAPI ls_result_t ls_state_clear(ls_state_t *const state);
+
+	LSAPI ls_result_t ls_state_set(ls_state_t *const state, const ls_nword_t value);
+
+	LSAPI ls_result_t ls_state_get(ls_state_t *const restrict state, ls_nword_t *const restrict out_value);
+
+#ifdef __cplusplus
 }
-
-ls_result_t
-ls_thread_clear(ls_thread_t *const thread) {
-	return LS_E_UNSUPPORTED;
-}
+#endif
 
 
 
-ls_result_t
-ls_thread_start(ls_thread_t *const thread) {
-	return LS_E_UNSUPPORTED;
-}
-
-ls_result_t
-ls_thread_stop(ls_thread_t *const thread) {
-	return LS_E_UNSUPPORTED;
-}
-
-
-
-ls_result_t
-ls_thread_suspend(ls_thread_t *const thread) {
-	return LS_E_UNSUPPORTED;
-}
-
-ls_result_t
-ls_thread_resume(ls_thread_t *const thread) {
-	return LS_E_UNSUPPORTED;
-}
+#endif
