@@ -1,4 +1,4 @@
-﻿/******************************************************************************
+/******************************************************************************
 **                                                                           **
 **   The MIT License                                                         **
 **                                                                           **
@@ -27,31 +27,46 @@
 
 
 
-#ifndef __LS_CORE_SETUP_RESULT_H
-#define __LS_CORE_SETUP_RESULT_H
+#ifndef __LS_RUNTIME_EVENT_H
+#define __LS_RUNTIME_EVENT_H
 
 
 
-#include "./types.h"
+#include "../core/setup.h"
 
 
 
-#define LS_E_SUCCESS						0x00
-#define LS_E_FAILURE						0x01
-#define LS_E_NULL							0x02
-#define LS_E_INVALID						0x03
-#define LS_E_UNSUPPORTED					0x04
-#define LS_E_MAGIC							0x05
-#define LS_E_TIMEOUT						0x06
-#define LS_E_ABANDONED						0x07
-#define LS_E_SIZE							0x08
-#define LS_E_UNINITIALIZED					0x09
-#define LS_E_CONVERSION						0x0A
-#define LS_E_LOCK							0x0B
+typedef struct ls_event ls_event_t;
+
+typedef void (*ls_event_handler_t)(const ls_event_t *const restrict event, void *const restrict data);
+
+struct ls_event {
+	ls_event_handler_t *__handlers;
+	size_t __handler_count;
+	size_t __handler_capacity;
+	void *tag;
+	ls_uint32_t __flags;
+};
 
 
 
-typedef ls_nword_t ls_result_t;
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_result_t ls_event_init_ex(ls_event_t *const event, const ls_uint32_t flags, const size_t initial_capacity);
+
+	static ls_result_t inline ls_event_init(ls_event_t *const event) { return ls_event_init_ex(event, 0, 0); }
+
+	LSAPI ls_result_t ls_event_clear(ls_event_t *const event);
+
+	LSAPI ls_result_t ls_event_fire_ex(const ls_event_t *const restrict event, void *const restrict data);
+
+	static ls_result_t inline ls_event_fire(const ls_event_t *const event) { return ls_event_fire_ex(event, NULL); }
+
+#ifdef __cplusplus
+}
+#endif
 
 
 

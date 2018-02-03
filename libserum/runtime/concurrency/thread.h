@@ -1,4 +1,4 @@
-﻿/******************************************************************************
+/******************************************************************************
 **                                                                           **
 **   The MIT License                                                         **
 **                                                                           **
@@ -27,31 +27,42 @@
 
 
 
-#ifndef __LS_CORE_SETUP_RESULT_H
-#define __LS_CORE_SETUP_RESULT_H
+#ifndef __LS_RUNTIME_CONCURRENCY_THREAD_H
+#define __LS_RUNTIME_CONCURRENCY_THREAD_H
 
 
 
-#include "./types.h"
+#include "../../core/setup.h"
+#include "./mutex.h"
+
+#if (LIBSERUM_DOXYGEN)
+#	// Doxygen preprocessor.
+#elif (LS_PTHREADS)
+#	include <pthread.h>
+#elif (!LS_WTHREADS)
+#	error Unsupported threading API.
+#endif
 
 
 
-#define LS_E_SUCCESS						0x00
-#define LS_E_FAILURE						0x01
-#define LS_E_NULL							0x02
-#define LS_E_INVALID						0x03
-#define LS_E_UNSUPPORTED					0x04
-#define LS_E_MAGIC							0x05
-#define LS_E_TIMEOUT						0x06
-#define LS_E_ABANDONED						0x07
-#define LS_E_SIZE							0x08
-#define LS_E_UNINITIALIZED					0x09
-#define LS_E_CONVERSION						0x0A
-#define LS_E_LOCK							0x0B
+typedef enum ls_thread_status {
+	LS_THREAD_UNKNOWN = 0xFFFF,
+	LS_THREAD_RUNNING = 0x0001,
+	LS_THREAD_SUSPENDED = 0x0002
+} ls_thread_status_t;
 
-
-
-typedef ls_nword_t ls_result_t;
+typedef struct ls_thread {
+#if (LIBSERUM_DOXYGEN)
+	platform_specific thr_objs;
+#elif (LS_PTHREADS)
+	pthread_t __obj;
+#elif (LS_WTHREADS)
+#	error TODO
+#endif
+	ls_mutex_t __lock;
+	ls_uint32_t __flags;
+	ls_thread_status_t status;
+} ls_thread_t;
 
 
 

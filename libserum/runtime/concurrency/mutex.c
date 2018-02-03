@@ -28,7 +28,7 @@
 
 
 #include "./mutex.h"
-#include "../data/time.h"
+#include "../../data/time.h"
 
 
 
@@ -64,7 +64,7 @@ ls_mutex_init(ls_mutex_t *const mutex) {
 		return LS_E_NULL;
 	}
 
-	if (LS_MAGIC32_VALID(mutex->flags)) {
+	if (LS_MAGIC32_VALID(mutex->__flags)) {
 		return LS_E_MAGIC;
 	}
 
@@ -80,12 +80,9 @@ ls_mutex_init(ls_mutex_t *const mutex) {
 	return LS_E_UNSUPPORTED;
 #endif
 
-	mutex->flags = 0;
-	mutex->flags = LS_MAGIC32_SET(mutex->flags);
+	mutex->__flags = LS_MAGIC32_SET(0);
 	return LS_E_SUCCESS;
 }
-
-
 
 ls_result_t
 ls_mutex_clear(ls_mutex_t *const mutex) {
@@ -93,7 +90,7 @@ ls_mutex_clear(ls_mutex_t *const mutex) {
 		return LS_E_NULL;
 	}
 
-	if (!LS_MAGIC32_VALID(mutex->flags)) {
+	if (!LS_MAGIC32_VALID(mutex->__flags)) {
 		return LS_E_MAGIC;
 	}
 
@@ -112,10 +109,9 @@ ls_mutex_clear(ls_mutex_t *const mutex) {
 	return LS_E_UNSUPPORTED;
 #endif
 
-	mutex->flags = 0;
+	mutex->__flags = 0;
 	return LS_E_SUCCESS;
 }
-
 
 
 ls_result_t
@@ -124,7 +120,7 @@ ls_mutex_lock(CONST_WTHREADS ls_mutex_t *const mutex) {
 		return LS_E_NULL;
 	}
 
-	if (!LS_MAGIC32_VALID(mutex->flags)) {
+	if (!LS_MAGIC32_VALID(mutex->__flags)) {
 		return LS_E_MAGIC;
 	}
 
@@ -146,7 +142,6 @@ ls_mutex_lock(CONST_WTHREADS ls_mutex_t *const mutex) {
 }
 
 
-
 ls_result_t
 ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec timeout) {
 #if (!LS_WTHREADS)
@@ -156,7 +151,7 @@ ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec
 		return LS_E_NULL;
 	}
 
-	if (!LS_MAGIC32_VALID(mutex->flags)) {
+	if (!LS_MAGIC32_VALID(mutex->__flags)) {
 		return LS_E_MAGIC;
 	}
 #endif
@@ -184,7 +179,6 @@ ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec
 }
 
 
-
 ls_result_t
 ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint64_t timeout_millis) {
 	if (mutex == NULL) {
@@ -195,7 +189,7 @@ ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint6
 		return LS_E_INVALID;
 	}
 
-	if (!LS_MAGIC32_VALID(mutex->flags)) {
+	if (!LS_MAGIC32_VALID(mutex->__flags)) {
 		return LS_E_MAGIC;
 	}
 
@@ -226,14 +220,13 @@ ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint6
 }
 
 
-
 ls_result_t
 ls_mutex_unlock(CONST_WTHREADS ls_mutex_t *const mutex) {
 	if (mutex == NULL) {
 		return LS_E_NULL;
 	}
 
-	if (!LS_MAGIC32_VALID(mutex->flags)) {
+	if (!LS_MAGIC32_VALID(mutex->__flags)) {
 		return LS_E_MAGIC;
 	}
 
