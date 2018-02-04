@@ -6,7 +6,7 @@
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "Serum"
 PROJECT_NUMBER         =
-PROJECT_BRIEF          = "PHP Framework"
+PROJECT_BRIEF          = "Swiss army knife for client/server infrastructures."
 PROJECT_LOGO           =
 OUTPUT_DIRECTORY       = ./doc
 CREATE_SUBDIRS         = NO
