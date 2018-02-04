@@ -64,10 +64,6 @@ ls_mutex_init(ls_mutex_t *const mutex) {
 		return LS_E_NULL;
 	}
 
-	if (LS_MAGIC32_VALID(mutex->__flags)) {
-		return LS_E_MAGIC;
-	}
-
 #if (LS_PTHREADS)
 	if (pthread_mutex_init(&mutex->lock, NULL) != 0) {
 		return LS_E_FAILURE;
@@ -80,7 +76,6 @@ ls_mutex_init(ls_mutex_t *const mutex) {
 	return LS_E_UNSUPPORTED;
 #endif
 
-	mutex->__flags = LS_MAGIC32_SET(0);
 	return LS_E_SUCCESS;
 }
 
@@ -88,10 +83,6 @@ ls_result_t
 ls_mutex_clear(ls_mutex_t *const mutex) {
 	if (mutex == NULL) {
 		return LS_E_NULL;
-	}
-
-	if (!LS_MAGIC32_VALID(mutex->__flags)) {
-		return LS_E_MAGIC;
 	}
 
 #if (LS_PTHREADS)
@@ -109,7 +100,6 @@ ls_mutex_clear(ls_mutex_t *const mutex) {
 	return LS_E_UNSUPPORTED;
 #endif
 
-	mutex->__flags = 0;
 	return LS_E_SUCCESS;
 }
 
@@ -118,10 +108,6 @@ ls_result_t
 ls_mutex_lock(CONST_WTHREADS ls_mutex_t *const mutex) {
 	if (mutex == NULL) {
 		return LS_E_NULL;
-	}
-
-	if (!LS_MAGIC32_VALID(mutex->__flags)) {
-		return LS_E_MAGIC;
 	}
 
 #if (LS_PTHREADS)
@@ -150,10 +136,6 @@ ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec
 	if (mutex == NULL) {
 		return LS_E_NULL;
 	}
-
-	if (!LS_MAGIC32_VALID(mutex->__flags)) {
-		return LS_E_MAGIC;
-	}
 #endif
 
 	if (timeout.tv_sec == 0 && timeout.tv_nsec == 0) {
@@ -180,22 +162,18 @@ ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec
 
 
 ls_result_t
-ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint64_t timeout_millis) {
+ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint64_t timeout) {
 	if (mutex == NULL) {
 		return LS_E_NULL;
 	}
 
-	if (timeout_millis == 0) {
+	if (timeout == 0) {
 		return LS_E_INVALID;
-	}
-
-	if (!LS_MAGIC32_VALID(mutex->__flags)) {
-		return LS_E_MAGIC;
 	}
 
 #if (LS_PTHREADS)
 	struct timespec ts = { 0 };
-	if (ls_millis_to_timespec(timeout_millis, &ts) != LS_E_SUCCESS) {
+	if (ls_millis_to_timespec(timeout, &ts) != LS_E_SUCCESS) {
 		return LS_E_CONVERSION;
 	}
 
@@ -207,11 +185,11 @@ ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint6
 		return LS_E_UNINITIALIZED;
 	}
 
-	if (timeout_millis >= MAXDWORD) {
+	if (timeout >= MAXDWORD) {
 		return LS_E_SIZE;
 	}
 
-	return __WaitForSingleObject(mutex, (const DWORD)timeout_millis);
+	return __WaitForSingleObject(mutex, (const DWORD)timeout);
 #else
 	return LS_E_UNSUPPORTED;
 #endif
@@ -224,10 +202,6 @@ ls_result_t
 ls_mutex_unlock(CONST_WTHREADS ls_mutex_t *const mutex) {
 	if (mutex == NULL) {
 		return LS_E_NULL;
-	}
-
-	if (!LS_MAGIC32_VALID(mutex->__flags)) {
-		return LS_E_MAGIC;
 	}
 
 #if (LS_PTHREADS)

@@ -27,53 +27,50 @@
 
 
 
-#ifndef __LS_RUNTIME_EVENT_H
-#define __LS_RUNTIME_EVENT_H
+#ifndef __LS_COLLECTIONS_UTILITIES_INLINE_H
+#define __LS_COLLECTIONS_UTILITIES_INLINE_H
 
 
 
 #include "../core/setup.h"
 
-#include "./concurrency/mutex.h"
+#include "./types.h"
 
 
 
-typedef struct ls_event ls_event_t;
-
-typedef void (*ls_event_handler_t)(const ls_event_t *const restrict event, void *const restrict data);
-
-struct ls_event {
-	ls_event_handler_t *__handlers;
-	size_t __handler_count;
-	size_t __handler_capacity;
-	void *tag;
-	ls_mutex_t __lock;
-	ls_uint32_t __flags;
-};
-
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	LSAPI ls_result_t ls_event_init_ex(ls_event_t *const event, const ls_uint32_t flags, const size_t initial_capacity);
-
-	static ls_result_t inline ls_event_init(ls_event_t *const event) {
-		return ls_event_init_ex(event, 0, 0);
+LS_FORCE_INLINE
+void *const
+ls_pcollection_find_inline(ls_pcollection_t collection, const void *const find, const size_t size) {
+	if (collection == NULL || size == 0) {
+		return NULL;
 	}
 
-	LSAPI ls_result_t ls_event_clear(ls_event_t *const event);
-
-	LSAPI ls_result_t ls_event_fire_ex(ls_event_t *const restrict event, void *const restrict data);
-
-	static ls_result_t inline ls_event_fire(ls_event_t *const event) {
-		return ls_event_fire_ex(event, NULL);
+	size_t i;
+	for (i = 0; i < size; ++i) {
+		if (collection[i] == find) {
+			return ((void *const)&collection[i]);
+		}
 	}
 
-#ifdef __cplusplus
+	return NULL;
 }
-#endif
+
+LS_FORCE_INLINE
+void *const
+ls_pcollection_rfind_inline(ls_pcollection_t collection, const void *const find, const size_t size) {
+	if (collection == NULL || size == 0) {
+		return NULL;
+	}
+
+	size_t i;
+	for (i = size; i--;) {
+		if (collection[i] == find) {
+			return ((void *const)&collection[i]);
+		}
+	}
+
+	return NULL;
+}
 
 
 
