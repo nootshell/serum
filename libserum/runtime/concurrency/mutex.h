@@ -70,9 +70,6 @@ typedef struct ls_mutex {
 #elif (LS_WTHREADS)
 	void *lock;
 #endif
-
-	//! \brief Flags for the mutex. Currently only used to store its magic.
-	ls_uint32_t __flags;
 } ls_mutex_t;
 
 
@@ -142,7 +139,7 @@ extern "C" {
 	LSAPI ls_result_t ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec timeout);
 
 	//! \copydoc ls_mutex_timedlock
-	LSAPI ls_result_t ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint64_t timeout_millis);
+	LSAPI ls_result_t ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint64_t timeout);
 
 	/*!	\brief Unlocks a mutex.
 	**
