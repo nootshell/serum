@@ -48,6 +48,10 @@
 #define LS_E_UNINITIALIZED					0x09
 #define LS_E_CONVERSION						0x0A
 #define LS_E_LOCK							0x0B
+#define LS_E_STATE							0x0C
+#define LS_E_NOOP							0x0D
+#define LS_E_MEMORY							0x0E
+#define LS_E_ALREADY						0x0F
 
 
 

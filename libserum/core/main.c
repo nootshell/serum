@@ -71,7 +71,8 @@
 
 
 
-FILEID_PLAIN(___COREID___, ">> libserum (" LS_VERSION ", \"" LS_CODENAME "\") built for " ARCH " with " COMPILER " on " KERNEL " " KERNEL_ARCH " at " TIMESTAMP " <<");
+#define CORE_FILEID							"libserum (" LS_VERSION ", \"" LS_CODENAME "\") built for " ARCH " with " COMPILER " on " KERNEL " " KERNEL_ARCH " at " TIMESTAMP
+FILEID_PLAIN(___COREID___, ">>> " CORE_FILEID " <<<");
 
 
 
@@ -79,19 +80,26 @@ FILEID_PLAIN(___COREID___, ">> libserum (" LS_VERSION ", \"" LS_CODENAME "\") bu
 
 
 
-FILEID("ELF entrypoint for self-testing.");
+FILEID("ELF entrypoint for debugging/self-testing purposes.");
+
+
 
 const char LS_ATTR_USED __attribute__((section(".interp"))) interp[] = ELF_INTERPRETER;
 
+void
+LS_ATTR_NORETURN __libserum_main(const void *const d_ptr, const int argc, const char *const *const argv, const char *const *const env) {
+	puts(CORE_FILEID);
 
+	// This whole function is one big HACK, but the arguments are even more of a HACK
+	// which I may or may not drop later on depending on how big of a mess it'll be.
+	int i;
+	printf("Got %u arguments:\n", argc);
+	for (i = 0; i < argc; ++i) {
+		printf("\t%u: %p\n", i, argv[i]);
+	}
 
-void LS_ATTR_NORETURN __libserum_main(void *dummy, int argc, char **argv, char **env) {
-	puts("hi");
-	printf("dummy at %p\n", dummy);
-	printf("got %u args at %p\n", argc, argv);
 	exit(0);
 }
-__attribute__((section(".init_array"), aligned (sizeof (void *)))) typeof(__libserum_main) *init = &__libserum_main;
 
 
 

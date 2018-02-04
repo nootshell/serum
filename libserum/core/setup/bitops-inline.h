@@ -33,14 +33,15 @@
 
 
 #include "./types.h"
-#include "./platform-detection.h"
+#include "./platform-setup.h"
 
 
 
 #if (LS_BITS_BYTE == 8)
 #	undef __MKROTATE
 #	define __MKROTATE(type_ret, name, bits, op1, op2)							\
-		static inline type_ret name(type_ret value, unsigned int rotate) {		\
+		static LS_FORCE_INLINE													\
+		type_ret name(type_ret value, unsigned int rotate) {					\
 			return ((value op1 rotate) | (value op2 (-rotate & ((bits) - 1))));	\
 		}
 
