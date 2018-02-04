@@ -10,6 +10,10 @@ Serum has a `Makefile` based compilation process.
 # default to building the release target.
 $ touch debug
 
+# To automatically run Doxygen if installed after building libserum, make sure
+# the file 'autodoxy' exists.
+$ touch autodoxy
+
 # Do the actual compilation.
 $ make
 
