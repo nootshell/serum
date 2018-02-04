@@ -82,7 +82,7 @@ bin/libserum.so: obj/libserum/core/main.o $(addprefix obj/, $(patsubst %.c, %.o,
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
 	@$(LD) -o $@ -shared -lpthread $(LS_ELF_INTERP) $^
-	@echo " ($(TITLE))"
+	@echo -n " ($(TITLE))$(shell ./autodoxy.sh wrap)"
 	@echo
 
 bin/test: bin/libserum.so

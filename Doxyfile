@@ -27,7 +27,7 @@ MULTILINE_CPP_IS_BRIEF = NO
 INHERIT_DOCS           = YES
 SEPARATE_MEMBER_PAGES  = NO
 TAB_SIZE               = 4
-ALIASES                =
+ALIASES                = "mtsafe=\xrefitem mtsafe \"Multithreading Safe\" \"Multithreading Safe Functions\""
 TCL_SUBST              =
 OPTIMIZE_OUTPUT_FOR_C  = YES
 OPTIMIZE_OUTPUT_JAVA   = NO
@@ -135,8 +135,6 @@ REFERENCES_LINK_SOURCE = YES
 SOURCE_TOOLTIPS        = YES
 USE_HTAGS              = NO
 VERBATIM_HEADERS       = YES
-CLANG_ASSISTED_PARSING = NO
-CLANG_OPTIONS          =
 
 #---------------------------------------------------------------------------
 # Configuration options related to the alphabetical class index

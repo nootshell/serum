@@ -1,8 +1,12 @@
 COPYING.md
+Doxyfile
 Makefile
 README.md
-doxygen.cfg
 elf_interp.sh
+libserum/collections/types.h
+libserum/collections/utilities-inline.h
+libserum/collections/utilities.c
+libserum/collections/utilities.h
 libserum/core/main.c
 libserum/core/setup.h
 libserum/core/setup/bitops-inline.h
