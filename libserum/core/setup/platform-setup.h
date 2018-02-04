@@ -58,6 +58,9 @@
 #	define LS_ATTR_CONST					__LS_ATTR(const)
 #	define LS_ATTR_USED						__LS_ATTR(used)
 #	define LS_ATTR_NORETURN					__LS_ATTR(noreturn)
+#	define LS_ATTR_FORCE_INLINE				__LS_ATTR(always_inline)
+#
+#	define LS_FORCE_INLINE					inline LS_ATTR_FORCE_INLINE
 #elif (LS_MSC || LS_MINGW)
 #	define __LS_ATTR(x)						__declspec(x)
 #
@@ -73,10 +76,19 @@
 #	define LS_ATTR_CONST
 #	define LS_ATTR_USED
 #	define LS_ATTR_NORETURN					__LS_ATTR(noreturn)
+#	define LS_ATTR_FORCE_INLINE				__forceinline
+#
+#	define LS_FORCE_INLINE					LS_ATTR_FORCE_INLINE
 #
 #	define restrict							__restrict
 #
 #	include "./special-treatment-for-windows.h"
+#endif
+
+
+
+#if (LS_INLINE_NOT_A_HINT)
+#	define inline							LS_FORCE_INLINE
 #endif
 
 
