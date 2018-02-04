@@ -31,6 +31,10 @@
 
 
 
+FILEID("MT-safe state object.");
+
+
+
 ls_result_t
 ls_state_init_ex(ls_state_t *const state, const ls_nword_t value) {
 	if (state == NULL) {
@@ -41,6 +45,17 @@ ls_state_init_ex(ls_state_t *const state, const ls_nword_t value) {
 	if (result != LS_E_SUCCESS) {
 		return result;
 	}
+
+#if (LS_PTHREADS)
+	if (pthread_cond_init(&state->__cond, NULL) != 0) {
+		return LS_E_FAILURE;
+	}
+#elif (LS_WTHREADS)
+#	error TODO
+#else
+	LS_COMPILER_LOG("State unsupported.");
+	return LS_E_UNSUPPORTED;
+#endif
 
 	state->value = value;
 	return LS_E_SUCCESS;
@@ -56,6 +71,16 @@ ls_state_clear(ls_state_t *const state) {
 	if (result != LS_E_SUCCESS) {
 		return result;
 	}
+
+#if (LS_PTHREADS)
+	if (pthread_cond_destroy(&state->__cond) != 0) {
+		return LS_E_FAILURE;
+	}
+#elif (LS_WTHREADS)
+#	error TODO
+#else
+	return LS_E_UNSUPPORTED;
+#endif
 
 	state->value = 0;
 	return LS_E_SUCCESS;
