@@ -33,7 +33,9 @@
 
 
 #include "../../core/setup.h"
+
 #include "./mutex.h"
+#include "./state.h"
 
 #if (LIBSERUM_DOXYGEN)
 #	// Doxygen preprocessor.
@@ -51,7 +53,12 @@ typedef enum ls_thread_status {
 	LS_THREAD_SUSPENDED = 0x0002
 } ls_thread_status_t;
 
-typedef struct ls_thread {
+typedef struct ls_thread ls_thread_t;
+
+typedef int (*ls_thread_entry_t)(const ls_thread_t *thread);
+
+struct ls_thread {
+	ls_thread_entry_t entrypoint;
 #if (LIBSERUM_DOXYGEN)
 	platform_specific thr_objs;
 #elif (LS_PTHREADS)
@@ -60,9 +67,40 @@ typedef struct ls_thread {
 #	error TODO
 #endif
 	ls_mutex_t __lock;
+	ls_state_t __state;
 	ls_uint32_t __flags;
 	ls_thread_status_t status;
-} ls_thread_t;
+};
+
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_result_t ls_thread_init_ex(ls_thread_t *const thread, const ls_uint32_t flags);
+
+	static ls_result_t inline ls_thread_init(ls_thread_t *const thread) {
+		return ls_thread_init_ex(thread, 0);
+	}
+
+	LSAPI ls_result_t ls_thread_clear(ls_thread_t *const thread);
+
+	LSAPI ls_result_t ls_thread_start_ex(ls_thread_t *const thread, const size_t stacksize);
+
+	static ls_result_t inline ls_thread_start(ls_thread_t *const thread) {
+		return ls_thread_start_ex(thread, 0);
+	}
+
+	LSAPI ls_result_t ls_thread_stop(ls_thread_t *const thread);
+
+	LSAPI ls_result_t ls_thread_suspend(ls_thread_t *const thread);
+
+	LSAPI ls_result_t ls_thread_resume(ls_thread_t *const thread);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 

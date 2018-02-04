@@ -52,7 +52,7 @@ FILEID("Threading interface.");
 
 
 ls_result_t
-ls_thread_init(ls_thread_t *const thread, const ls_uint32_t flags) {
+ls_thread_init_ex(ls_thread_t *const thread, const ls_uint32_t flags) {
 	if (thread == NULL) {
 		return LS_E_NULL;
 	}
@@ -63,6 +63,10 @@ ls_thread_init(ls_thread_t *const thread, const ls_uint32_t flags) {
 
 	if (ls_mutex_init(&thread->__lock) != LS_E_SUCCESS) {
 		return LS_E_LOCK;
+	}
+
+	if (ls_state_init(&thread->__state) != LS_E_SUCCESS) {
+		return LS_E_STATE;
 	}
 
 	thread->__flags = LS_MAGIC32_SET(flags);
@@ -83,6 +87,10 @@ ls_thread_clear(ls_thread_t *const thread) {
 		return LS_E_LOCK;
 	}
 
+	if (ls_state_clear(&thread->__state) != LS_E_SUCCESS) {
+		return LS_E_STATE;
+	}
+
 #if (LS_PTHREADS)
 	/*if (pthread_destroy(&thread->__thread) != 0) {
 		return LS_E_FAILURE;
@@ -90,13 +98,14 @@ ls_thread_clear(ls_thread_t *const thread) {
 #elif (LS_WTHREADS)
 #	error TODO
 #else
-	LS_COMPILER_WARN("Threading unsupported.");
+	LS_COMPILER_LOG("Threading unsupported.");
 	return LS_E_UNSUPPORTED;
 #endif
 
 	thread->__flags = 0;
 	return LS_E_SUCCESS;
 }
+
 
 
 ls_result_t
@@ -109,24 +118,30 @@ ls_thread_start_ex(ls_thread_t *const thread, const size_t stacksize) {
 		return LS_E_MAGIC;
 	}
 
+	LS_MUTEX_ACQUIRE_OR_ERROR(&thread->__lock);
+
+	if (ls_state_set(&thread->__state, 1) != LS_E_SUCCESS) {
+		goto __ret_failure;
+	}
+
 #if (LS_PTHREADS)
 	pthread_attr_t attr;
 	pthread_attr_t *p_attr = NULL;
 
 	if (stacksize > 0) {
 		if (pthread_attr_init(&attr) != 0) {
-			return LS_E_FAILURE;
+			goto __ret_failure;
 		}
 
 		if (pthread_attr_setstacksize(&attr, stacksize) != 0) {
-			return LS_E_FAILURE;
+			goto __ret_failure;
 		}
 
 		p_attr = &attr;
 	}
 
 	if (pthread_create(&thread->__obj, p_attr, &__ls_thread_entry, thread) != 0) {
-		return LS_E_FAILURE;
+		goto __ret_failure;
 	}
 #elif (LS_WTHREADS)
 #	error TODO
@@ -134,12 +149,23 @@ ls_thread_start_ex(ls_thread_t *const thread, const size_t stacksize) {
 	return LS_E_UNSUPPORTED;
 #endif
 
-	return LS_E_SUCCESS;
-}
+	ls_nword_t state;
+	for (;;) {
+		if (ls_state_get(&thread->__state, &state) != LS_E_SUCCESS) {
+			goto __ret_failure;
+		}
 
-ls_result_t
-ls_thread_start(ls_thread_t *const thread) {
-	return ls_thread_start_ex(thread, 0);
+		if (state == 0) {
+			break;
+		}
+	}
+
+	LS_MUTEX_RELEASE_OR_ERROR(&thread->__lock);
+	return LS_E_SUCCESS;
+
+__ret_failure:
+	LS_MUTEX_RELEASE_OR_ERROR(&thread->__lock);
+	return LS_E_FAILURE;
 }
 
 ls_result_t
@@ -156,6 +182,7 @@ ls_thread_stop(ls_thread_t *const thread) {
 }
 
 
+
 ls_result_t
 ls_thread_suspend(ls_thread_t *const thread) {
 	return LS_E_UNSUPPORTED;
@@ -165,6 +192,7 @@ ls_result_t
 ls_thread_resume(ls_thread_t *const thread) {
 	return LS_E_UNSUPPORTED;
 }
+
 
 
 static THRAPI_RETURN __ls_thread_entry(void *param) {
@@ -177,7 +205,18 @@ static THRAPI_RETURN __ls_thread_entry(void *param) {
 		return THRAPI_BAD;
 	}
 
+	ls_nword_t state;
+	if (ls_state_get(&thread->__state, &state) != LS_E_SUCCESS) {
+		goto __ret_bad;
+	} else if (state != 1) {
+		goto __ret_bad;
+	}
+
 	// ...
 
 	return THRAPI_GOOD;
+
+__ret_bad:
+	ls_state_set(&thread->__state, 0);
+	return THRAPI_BAD;
 }
