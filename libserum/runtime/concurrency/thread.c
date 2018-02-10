@@ -31,6 +31,11 @@
 
 #include <string.h>
 
+#if (LS_LINUX)
+#	include <sys/syscall.h>
+#	include <unistd.h>
+#endif
+
 
 
 #if (LS_PTHREADS)
@@ -45,9 +50,26 @@
 
 static THRAPI_RETURN __ls_thread_entry(void *param);
 
+static LS_ATTR_THREADLOCAL ls_tid_t __tid = 0;
+
 
 
 FILEID("Threading interface.");
+
+
+
+ls_tid_t
+ls_get_tid() {
+#if (LS_LINUX)
+	if (__tid == 0) {
+		__tid = syscall(SYS_gettid);
+	}
+	return __tid;
+#else
+	LS_COMPILER_LOG("");
+	return 0;
+#endif
+}
 
 
 
