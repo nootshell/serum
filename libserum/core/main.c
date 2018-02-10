@@ -29,7 +29,14 @@
 
 #include "./setup.h"
 
+#include "../io/log.h"
+#include "../runtime/concurrency/mutex.h"
+#include "../runtime/concurrency/state.h"
+#include "../runtime/concurrency/thread.h"
+#include "../runtime/event.h"
+
 #include <stdio.h>
+#include <inttypes.h>
 
 
 
@@ -69,6 +76,8 @@
 #	define ARCH								"Unknown"
 #endif
 
+#define PRINT_SZ(type)						printf("\t%5"PRIuPTR" = %s\n", sizeof(type), LS_MKSTR(type));
+
 
 
 #define CORE_FILEID							"libserum (" LS_VERSION ", \"" LS_CODENAME "\") built for " ARCH " with " COMPILER " on " KERNEL " " KERNEL_ARCH " at " TIMESTAMP
@@ -84,19 +93,35 @@ FILEID("ELF entrypoint for debugging/self-testing purposes.");
 
 
 
-const char LS_ATTR_USED __attribute__((section(".interp"))) interp[] = ELF_INTERPRETER;
+const char LS_ATTR_USED __LS_ATTR(section(".interp")) interp[] = ELF_INTERPRETER;
 
 void
 LS_ATTR_NORETURN __libserum_main(const void *const d_ptr, const int argc, const char *const *const argv, const char *const *const env) {
 	puts(CORE_FILEID);
 
+	puts("");
+	puts("\tBytes   Type");
+	PRINT_SZ(ls_uint8_t);
+	PRINT_SZ(ls_uint16_t);
+	PRINT_SZ(ls_uint32_t);
+	PRINT_SZ(ls_uint64_t);
+	PRINT_SZ(void*);
+
+	puts("");
+	puts("\tBytes   Structure");
+	PRINT_SZ(ls_log_t);
+	PRINT_SZ(ls_mutex_t);
+	PRINT_SZ(ls_state_t);
+	PRINT_SZ(ls_thread_t);
+	PRINT_SZ(ls_event_t);
+
 	// This whole function is one big HACK, but the arguments are even more of a HACK
 	// which I may or may not drop later on depending on how big of a mess it'll be.
-	int i;
-	printf("Got %u arguments:\n", argc);
-	for (i = 0; i < argc; ++i) {
-		printf("\t%u: %p\n", i, argv[i]);
-	}
+	//int i;
+	//printf("Got %u arguments:\n", argc);
+	//for (i = 0; i < argc; ++i) {
+	//	printf("\t%u: %p\n", i, argv[i]);
+	//}
 
 	exit(0);
 }
