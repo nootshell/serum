@@ -64,6 +64,7 @@ ls_event_init_ex(ls_event_t *const event, const ls_uint32_t flags, const size_t 
 		);
 	}
 
+	event->__handler_count = 0;
 	event->__flags = LS_MAGIC32_SET(flags);
 
 	LS_MUTEX_RELEASE_OR_ERROR(&event->__lock);
@@ -144,6 +145,8 @@ ls_event_push(ls_event_t *const event, ls_event_handler_t const handler) {
 
 		*hp = handler;
 	}
+
+	event->__handler_count = nhc;
 
 
 	LS_MUTEX_RELEASE_OR_ERROR(&event->__lock);

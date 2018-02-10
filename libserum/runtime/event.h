@@ -40,7 +40,7 @@
 
 typedef struct ls_event ls_event_t;
 
-typedef void (*ls_event_handler_t)(const ls_event_t *const restrict event, void *const restrict data);
+typedef void (*ls_event_handler_t)(const ls_event_t *restrict event, void *restrict data);
 
 struct ls_event {
 	ls_event_handler_t *__handlers;
@@ -64,6 +64,10 @@ extern "C" {
 	}
 
 	LSAPI ls_result_t ls_event_clear(ls_event_t *const event);
+
+	LSAPI ls_result_t ls_event_push(ls_event_t *const event, ls_event_handler_t const handler);
+
+	LSAPI ls_result_t ls_event_pop(ls_event_t *const event, ls_event_handler_t const handler);
 
 	LSAPI ls_result_t ls_event_fire_ex(ls_event_t *const restrict event, void *const restrict data);
 
