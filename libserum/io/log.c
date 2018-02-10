@@ -43,10 +43,11 @@ FILEID("Logging functionality.");
 
 
 
-#define GET_LOG(logp)						if ((logp) == NULL) { (logp) = &__global_log; }
+#define GET_LOGPTR(logp)					if ((logp) == NULL) { (logp) = &__global_log; }
 
-#define CHECK_LOG(logp, post_magic)					\
-	const ls_bool_t global = (log == NULL);			\
+#define GET_LOG(logp, post_magic)					\
+	const ls_bool_t global = ((logp) == NULL);		\
+	GET_LOGPTR((logp));								\
 	if (!LS_MAGIC32_VALID((logp)->__flags)) {		\
 		if (!global) {								\
 			return LS_E_MAGIC;						\
@@ -78,7 +79,7 @@ ls_log_init_ex(ls_log_t *restrict log, const ls_uint32_t flags, const ls_log_lev
 		return LS_E_NULL;
 	}
 
-	GET_LOG(log);
+	GET_LOGPTR(log);
 
 	if (LS_MAGIC32_VALID(log->__flags)) {
 		return LS_E_MAGIC;
@@ -111,7 +112,7 @@ ls_log_init_ex(ls_log_t *restrict log, const ls_uint32_t flags, const ls_log_lev
 
 ls_result_t
 ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams) {
-	GET_LOG(log);
+	GET_LOGPTR(log);
 
 	if (!LS_MAGIC32_VALID(log->__flags)) {
 		return LS_E_MAGIC;
@@ -163,10 +164,8 @@ ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *c
 	}
 
 
-	GET_LOG(log);
-
 	// When appropriate, returns an error or initializes the global log.
-	CHECK_LOG(
+	GET_LOG(
 		log,
 		if (!LS_FLAG(log->__flags, LS_LOG_MULTI)) { return LS_E_STATE; }
 		if (log->__outf == NULL) { return LS_E_NULL; }
@@ -200,10 +199,8 @@ ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *con
 	}
 
 
-	GET_LOG(log);
-
 	// When appropriate, returns an error or initializes the global log.
-	CHECK_LOG(log,);
+	GET_LOG(log,);
 
 
 	FILE *stream = NULL;
@@ -241,7 +238,6 @@ ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *con
 #if (LS_VALGRIND)
 	memset(prefix, 0, buffsz);
 #endif
-	ls_memory_dump(prefix, buffsz);
 
 
 	int pr = snprintf(
@@ -252,7 +248,6 @@ ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *con
 		tm.tm_hour, tm.tm_min, tm.tm_sec,
 		level, getpid(), ls_get_tid()
 	);
-	ls_memory_dump(prefix, buffsz);
 
 	if (pr <= 0) {
 		result = LS_E_FAILURE;
@@ -260,7 +255,6 @@ ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *con
 	}
 
 	memcpy(&prefix[pr], format, format_length);
-	ls_memory_dump(prefix, buffsz);
 
 
 	// Transform any CR/NL already in the string to spaces.
@@ -270,12 +264,9 @@ ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *con
 			prefix[i] = ' ';
 		}
 	}
-	ls_memory_dump(prefix, buffsz);
 
 	strcpy(&prefix[pr + format_length], LS_EOL);
-	ls_memory_dump(prefix, buffsz);
 	prefix[pr + format_length + LS_EOL_SIZE] = '\0';
-	ls_memory_dump(prefix, buffsz);
 
 
 	va_list vl;
