@@ -36,6 +36,7 @@
 
 #include "./mutex.h"
 #include "./state.h"
+#include "../event.h"
 
 #if (LIBSERUM_DOXYGEN)
 #	// Doxygen preprocessor.
@@ -50,17 +51,21 @@
 typedef int ls_tid_t;
 
 typedef enum ls_thread_status {
-	LS_THREAD_UNKNOWN = 0xFFFF,
-	LS_THREAD_RUNNING = 0x0001,
-	LS_THREAD_SUSPENDED = 0x0002
+	LS_THREAD_ERROR = 0,
+	LS_THREAD_INITIALIZING = 1,
+	LS_THREAD_RUNNING = 2,
+	LS_THREAD_STOPPING = 3,
+	LS_THREAD_STOPPED = 4
 } ls_thread_status_t;
 
 typedef struct ls_thread ls_thread_t;
 
-typedef int (*ls_thread_entry_t)(const ls_thread_t *thread);
+typedef int (*ls_thread_entry_t)(ls_thread_t *thread);
 
 struct ls_thread {
 	ls_thread_entry_t entrypoint;
+	void *tag;
+	ls_event_t on_stopped;
 #if (LIBSERUM_DOXYGEN)
 	platform_specific thr_objs;
 #elif (LS_PTHREADS)
@@ -71,7 +76,7 @@ struct ls_thread {
 	ls_mutex_t __lock;
 	ls_state_t __state;
 	ls_uint32_t __flags;
-	ls_thread_status_t status;
+	int exit_code;
 };
 
 
@@ -82,10 +87,10 @@ extern "C" {
 
 	LSAPI ls_tid_t ls_get_tid();
 
-	LSAPI ls_result_t ls_thread_init_ex(ls_thread_t *const thread, const ls_uint32_t flags);
+	LSAPI ls_result_t ls_thread_init_ex(ls_thread_t *const thread, const ls_thread_entry_t entrypoint, const ls_uint32_t flags);
 
-	static ls_result_t inline ls_thread_init(ls_thread_t *const thread) {
-		return ls_thread_init_ex(thread, 0);
+	static ls_result_t inline ls_thread_init(ls_thread_t *const thread, const ls_thread_entry_t entrypoint) {
+		return ls_thread_init_ex(thread, entrypoint, 0);
 	}
 
 	LSAPI ls_result_t ls_thread_clear(ls_thread_t *const thread);
@@ -96,11 +101,21 @@ extern "C" {
 		return ls_thread_start_ex(thread, 0);
 	}
 
+	LSAPI ls_result_t ls_thread_start_ex_await(ls_thread_t *const thread, const size_t stacksize);
+
+	static ls_result_t inline ls_thread_start_await(ls_thread_t *const thread) {
+		return ls_thread_start_ex_await(thread, 0);
+	}
+
 	LSAPI ls_result_t ls_thread_stop(ls_thread_t *const thread);
+
+	LSAPI ls_result_t ls_thread_stop_await(ls_thread_t *const thread);
 
 	LSAPI ls_result_t ls_thread_suspend(ls_thread_t *const thread);
 
 	LSAPI ls_result_t ls_thread_resume(ls_thread_t *const thread);
+
+	LSAPI ls_thread_status_t ls_thread_status(ls_thread_t *const thread);
 
 #ifdef __cplusplus
 }
