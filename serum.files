@@ -8,6 +8,8 @@ libserum/collections/utilities-inline.h
 libserum/collections/utilities.c
 libserum/collections/utilities.h
 libserum/core/main.c
+libserum/core/memory.c
+libserum/core/memory.h
 libserum/core/setup.h
 libserum/core/setup/bitops-inline.h
 libserum/core/setup/bitops.h
@@ -24,8 +26,6 @@ libserum/crypto/hashing/md5.c
 libserum/crypto/hashing/md5.h
 libserum/data/time.c
 libserum/data/time.h
-libserum/debug/memory.c
-libserum/debug/memory.h
 libserum/io/log.c
 libserum/io/log.h
 libserum/runtime/concurrency/mutex.c
