@@ -34,32 +34,72 @@
 
 #include "../core/setup.h"
 
+#include "../runtime/concurrency/mutex.h"
+
 #include <stdio.h>
 
 
 
-// log defs
+#if (LS_DEBUG)
+#	define LS_LOG_LEVEL_DEFAULT				LS_LOG_LEVEL_DEBUG
+#	define LS_LOG_STREAM_DEFAULT			stdout
+#else
+#	define LS_LOG_LEVEL_DEFAULT				LS_LOG_LEVEL_SEVERE
+#	define LS_LOG_STREAM_DEFAULT			stderr
+#endif
 
-#define LS_LOG_CLEAR_CLOSE_STD				0x0001
-#define LS_LOG_CLEAR_CLOSE_ERR				0x0002
+#define LS_LOG_MULTI						0x0001
 
 
 
 typedef enum ls_log_level {
-	LS_LOG_LEVEL_ERROR = 1,
-	LS_LOG_LEVEL_WARNING = 2,
-	LS_LOG_LEVEL_INFO = 3,
-	LS_LOG_LEVEL_VERBOSE = 4,
-	LS_LOG_LEVEL_DEBUG = 5
+	LS_LOG_LEVEL_UNKNOWN = 0,
+	LS_LOG_LEVEL_SEVERE = 1,
+	LS_LOG_LEVEL_ERROR = 2,
+	LS_LOG_LEVEL_WARNING = 3,
+	LS_LOG_LEVEL_INFO = 4,
+	LS_LOG_LEVEL_VERBOSE = 5,
+	LS_LOG_LEVEL_DEBUG = 6,
+
+	LS_LOG_LEVEL_COUNT = (LS_LOG_LEVEL_DEBUG)
 } ls_log_level_t;
 
 typedef struct ls_log {
-	FILE *fstd;
-	FILE *ferr;
-	ls_uint32_t flags;
+	FILE *__outf;
+
+	ls_uint32_t __flags;
 	ls_log_level_t level;
 } ls_log_t;
-#define a sizeof(ls_log_t)
+
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_result_t ls_log_init_ex(ls_log_t *restrict log, const ls_uint32_t flags, const ls_log_level_t level, FILE *const restrict std_stream);
+
+	static ls_result_t inline ls_log_init(ls_log_t *log, const ls_uint32_t flags, const ls_log_level_t level) {
+		return ls_log_init_ex(log, flags, level, stdout);
+	}
+
+	LSAPI ls_result_t ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams);
+
+	static ls_result_t inline ls_log_clear(ls_log_t *log) {
+		return ls_log_clear_ex(log, true);
+	}
+
+	LSAPI ls_result_t ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream, const ls_bool_t close_stream);
+
+	static ls_result_t inline ls_log_set_stream(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream) {
+		return ls_log_set_stream_ex(log, level, stream, true);
+	}
+
+	LSAPI ls_result_t ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 

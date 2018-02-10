@@ -52,6 +52,10 @@
 #define LS_E_NOOP							0x0D
 #define LS_E_MEMORY							0x0E
 #define LS_E_ALREADY						0x0F
+#define LS_E_IO_CLOSE						0x10
+#define LS_E_IO_TARGET						0x11
+#define LS_E_IO_WRITE						0x12
+#define LS_E_IO_FLUSH						0x13
 
 
 

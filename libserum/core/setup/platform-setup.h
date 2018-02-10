@@ -38,8 +38,10 @@
 
 #if (LS_WINDOWS)
 #	define LS_EOL							"\r\n"
+#	define LS_EOL_SIZE						2
 #else
 #	define LS_EOL							"\n"
+#	define LS_EOL_SIZE						1
 #endif
 
 #if (LS_GCC || LS_LLVM)
