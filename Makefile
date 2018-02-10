@@ -38,6 +38,7 @@ GIT_TAG = $(shell git describe --tags --abbrev=0 2> /dev/null || echo "0-dev")
 TIMESTAMP = $(shell date -Iseconds)
 KERNEL = $(shell uname -sr)
 KERNEL_ARCH = $(shell uname -m)
+REMAKE = $(shell touch libserum/core/main.c)
 
 CFLAGS = \
 	-Wall -fPIC -fstack-protector-strong -I. \
@@ -68,7 +69,7 @@ obj/%.o: %.c
 	@$(CC) $(CFLAGS) -DGIT_COMMIT="\"$(shell git log -n 1 --pretty=format:" ($(GIT_BRANCH) %H %aI)" -- $^)\"" -c $^ -o $@
 	@echo "| $@ (done)"
 
-obj/libserum/core/main.o: $(shell touch libserum/core/main.c)
+obj/libserum/core/main.o: $(REMAKE)
 obj/libserum/core/main.o: CFLAGS += $(LS_ELF_INTERP) -Wno-unused-command-line-argument
 obj/libserum/core/main.o: libserum/core/main.c
 	@mkdir -p $(@D)
