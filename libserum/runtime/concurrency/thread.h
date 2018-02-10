@@ -47,6 +47,8 @@
 
 
 
+typedef int ls_tid_t;
+
 typedef enum ls_thread_status {
 	LS_THREAD_UNKNOWN = 0xFFFF,
 	LS_THREAD_RUNNING = 0x0001,
@@ -77,6 +79,8 @@ struct ls_thread {
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+	LSAPI ls_tid_t ls_get_tid();
 
 	LSAPI ls_result_t ls_thread_init_ex(ls_thread_t *const thread, const ls_uint32_t flags);
 

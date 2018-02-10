@@ -59,6 +59,7 @@
 #	define LS_ATTR_USED						__LS_ATTR(used)
 #	define LS_ATTR_NORETURN					__LS_ATTR(noreturn)
 #	define LS_ATTR_FORCE_INLINE				__LS_ATTR(always_inline)
+#	define LS_ATTR_THREADLOCAL				__thread
 #
 #	define LS_FORCE_INLINE					inline LS_ATTR_FORCE_INLINE
 #elif (LS_MSC || LS_MINGW)
@@ -77,6 +78,7 @@
 #	define LS_ATTR_USED
 #	define LS_ATTR_NORETURN					__LS_ATTR(noreturn)
 #	define LS_ATTR_FORCE_INLINE				__forceinline
+#	define LS_ATTR_THREADLOCAL				__LS_ATTR(thread)
 #
 #	define LS_FORCE_INLINE					LS_ATTR_FORCE_INLINE
 #
