@@ -98,6 +98,7 @@ ls_thread_init_ex(ls_thread_t *const thread, const ls_uint32_t flags) {
 ls_result_t
 ls_thread_clear(ls_thread_t *const thread) {
 	if (thread == NULL) {
+		ls_debug("NULL encountered.");
 		return LS_E_NULL;
 	}
 
@@ -193,6 +194,7 @@ __ret_failure:
 ls_result_t
 ls_thread_stop(ls_thread_t *const thread) {
 	if (thread == NULL) {
+		ls_debug("NULL encountered.");
 		return LS_E_NULL;
 	}
 
@@ -219,6 +221,7 @@ ls_thread_resume(ls_thread_t *const thread) {
 
 static THRAPI_RETURN __ls_thread_entry(void *param) {
 	if (param == NULL) {
+		ls_debug("NULL encountered.");
 		return THRAPI_BAD;
 	}
 

@@ -70,4 +70,10 @@
 
 
 
+#if (LS_EXPORTING && LS_DEBUG)
+#	include "../io/log.h"
+#endif
+
+
+
 #endif
