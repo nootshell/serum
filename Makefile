@@ -46,6 +46,8 @@ CFLAGS = \
 	-DGIT_BRANCH="\"$(GIT_BRANCH)\"" -DGIT_TAG="\"$(GIT_TAG)\"" \
 	-DFILEPATH="\"$^\"" -DTIMESTAMP="\"$(TIMESTAMP)\"" -DKERNEL="\"$(KERNEL)\"" -DKERNEL_ARCH="\"$(KERNEL_ARCH)\""
 
+CFLAGS_DEBUG = -g -DLS_DEBUG=1
+
 TITLE = "done"
 
 
@@ -86,6 +88,7 @@ bin/libserum.so: obj/libserum/core/main.o $(addprefix obj/, $(patsubst %.c, %.o,
 	@echo -n " ($(TITLE))$(shell ./autodoxy.sh wrap)"
 	@echo
 
+bin/test: CFLAGS += $(CFLAGS_DEBUG)
 bin/test: bin/libserum.so
 bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name '*.c')))
 	@echo -n "+-> $@"
@@ -103,9 +106,13 @@ clean:
 	@rm -Rf obj/test
 
 debug: TITLE = "debug"
-debug: CFLAGS += -g -DDEBUG
+debug: CFLAGS += $(CFLAGS_DEBUG)
 debug: bin/libserum.so
 
 release: TITLE = "release"
 release: CFLAGS += -O3 -DRELEASE
 release: bin/libserum.so
+
+valgrind: TITLE = "valgrind"
+valgrind: CFLAGS += $(CFLAGS_DEBUG) -DLS_VALGRIND=1
+valgrind: clean bin/libserum.so bin/test
