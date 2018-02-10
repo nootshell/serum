@@ -61,6 +61,7 @@ static inline __WaitForSingleObject(const ls_mutex_t *const mutex, const DWORD t
 ls_result_t
 ls_mutex_init(ls_mutex_t *const mutex) {
 	if (mutex == NULL) {
+		ls_debug("NULL encountered.");
 		return LS_E_NULL;
 	}
 
@@ -82,6 +83,7 @@ ls_mutex_init(ls_mutex_t *const mutex) {
 ls_result_t
 ls_mutex_clear(ls_mutex_t *const mutex) {
 	if (mutex == NULL) {
+		ls_debug("NULL encountered.");
 		return LS_E_NULL;
 	}
 
@@ -107,6 +109,7 @@ ls_mutex_clear(ls_mutex_t *const mutex) {
 ls_result_t
 ls_mutex_lock(CONST_WTHREADS ls_mutex_t *const mutex) {
 	if (mutex == NULL) {
+		ls_debug("NULL encountered.");
 		return LS_E_NULL;
 	}
 
@@ -134,6 +137,7 @@ ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec
 	// WTHREADS already checks these in ls_timedlock_millis
 
 	if (mutex == NULL) {
+		ls_debug("NULL encountered.");
 		return LS_E_NULL;
 	}
 #endif
@@ -164,6 +168,7 @@ ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec
 ls_result_t
 ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint64_t timeout) {
 	if (mutex == NULL) {
+		ls_debug("NULL encountered.");
 		return LS_E_NULL;
 	}
 
@@ -201,6 +206,7 @@ ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint6
 ls_result_t
 ls_mutex_unlock(CONST_WTHREADS ls_mutex_t *const mutex) {
 	if (mutex == NULL) {
+		ls_debug("NULL encountered.");
 		return LS_E_NULL;
 	}
 

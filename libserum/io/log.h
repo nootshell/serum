@@ -43,9 +43,13 @@
 #if (LS_DEBUG)
 #	define LS_LOG_LEVEL_DEFAULT				LS_LOG_LEVEL_DEBUG
 #	define LS_LOG_STREAM_DEFAULT			stdout
+#	define ls_debug(str)					ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u " str, __func__, __LINE__)
+#	define ls_debugf(fmt, ...)				ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u " fmt, __func__, __LINE__, __VA_ARGS__)
 #else
 #	define LS_LOG_LEVEL_DEFAULT				LS_LOG_LEVEL_SEVERE
 #	define LS_LOG_STREAM_DEFAULT			stderr
+#	define ls_debug(str)
+#	define ls_debugf(fmt, ...)
 #endif
 
 #define LS_LOG_MULTI						0x0001
