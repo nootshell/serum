@@ -29,130 +29,270 @@
 
 #include "./log.h"
 
+#include "../core/memory.h"
+#include "../data/time.h"
+#include "../runtime/concurrency/thread.h"
+
+#include <string.h>
+#include <stdarg.h>
+#include <unistd.h>
+
 
 
 FILEID("Logging functionality.");
 
 
 
-#define SELECT_LOG(logptr)					\
-	if (logptr == NULL) {					\
-		logptr = &__global_log;				\
+#define GET_LOG(logp)						if ((logp) == NULL) { (logp) = &__global_log; }
+
+#define CHECK_LOG(logp, post_magic)					\
+	const ls_bool_t global = (log == NULL);			\
+	if (!LS_MAGIC32_VALID((logp)->__flags)) {		\
+		if (!global) {								\
+			return LS_E_MAGIC;						\
+		}											\
+		post_magic;									\
+		const ls_result_t result = ls_log_init_ex(	\
+			(logp),									\
+			0,										\
+			LS_LOG_LEVEL_DEFAULT,					\
+			LS_LOG_STREAM_DEFAULT					\
+		);											\
+		if (result != LS_E_SUCCESS) {				\
+			return result;							\
+		}											\
 	}
 
 
 
-static ls_log_t __global_log = { 0 };
+static LS_ATTR_USED ls_log_t __global_log = { 0 };
+
+// YYYY-MM-DD HH:MM:SS LEVEL TID
+static const char log_prefix[] = "[%04u-%02u-%02u %02u:%02u:%02u %u %05u %05u] ";
 
 
 
 ls_result_t
-ls_log_init(ls_log_t *restrict log, const ls_log_level_t level, FILE *const fstd, FILE *const ferr, const ls_uint32_t flags) {
-	SELECT_LOG(log);
-
-	if (LS_MAGIC32_VALID(log->flags)) {
-		return 1;
+ls_log_init_ex(ls_log_t *restrict log, const ls_uint32_t flags, const ls_log_level_t level, FILE *const restrict std_stream) {
+	if (std_stream == NULL) {
+		return LS_E_NULL;
 	}
 
-	log->fstd = (fstd ? fstd : stdout);
-	log->ferr = (ferr ? ferr : stderr);
-	log->level = level;
-	log->flags = LS_MAGIC32_SET(flags);
+	GET_LOG(log);
 
-	return 0;
+	if (LS_MAGIC32_VALID(log->__flags)) {
+		return LS_E_MAGIC;
+	}
+
+	if (LS_FLAG(flags, LS_LOG_MULTI)) {
+		// Allocate memory to hold streams for each level.
+		//     0: std/fallback
+		// <lvl>: null-for-std/<stream>
+		FILE **const p = (FILE **const)calloc((LS_LOG_LEVEL_COUNT + 1), sizeof(std_stream));
+		if (p == NULL) {
+			return LS_E_MEMORY;
+		}
+
+		p[0] = std_stream;
+		log->__outf = (FILE *const)p;
+	} else {
+		log->__outf = std_stream;
+	}
+
+	if (level > 0 && level <= LS_LOG_LEVEL_COUNT) {
+		log->level = level;
+	} else {
+		log->level = LS_LOG_LEVEL_UNKNOWN;
+	}
+
+	log->__flags = LS_MAGIC32_SET(flags);
+	return LS_E_SUCCESS;
 }
 
 ls_result_t
-ls_log_clear(ls_log_t *log, const ls_uint16_t flags) {
-	SELECT_LOG(log);
+ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams) {
+	GET_LOG(log);
 
-	if (!LS_MAGIC32_VALID(log->flags)) {
-		return 1;
+	if (!LS_MAGIC32_VALID(log->__flags)) {
+		return LS_E_MAGIC;
 	}
 
-	if (log->fstd) {
-		if (LS_FLAG(flags, LS_LOG_CLEAR_CLOSE_STD)) {
-			if (fclose(log->fstd) != 0) {
-				return 2;
+	const ls_uint32_t flags = log->__flags;
+
+	if (LS_FLAG(flags, LS_LOG_MULTI) && log->__outf != NULL) {
+		ls_bool_t errors = false;
+
+		if (close_streams != false) {
+			ls_nword_t i;
+
+			FILE
+				**const streams = (FILE **const)log->__outf,
+				*stream = NULL;
+
+			for (i = (LS_LOG_LEVEL_COUNT + 1); i--;) {
+				stream = streams[i];
+
+				if (stream != NULL && (stream != stdin && stream != stdout && stream != stderr)) {
+					if (fclose(stream) == 0) {
+						streams[i] = NULL;
+					} else {
+						errors = true;
+					}
+				}
 			}
 		}
-		log->fstd = NULL;
-	}
 
-	if (log->ferr) {
-		if (LS_FLAG(flags, LS_LOG_CLEAR_CLOSE_ERR)) {
-			if (fclose(log->ferr) != 0) {
-				return 3;
-			}
+		if (errors == false) {
+			free(log->__outf);
+			log->__outf = NULL;
+		} else {
+			return LS_E_IO_CLOSE;
 		}
-		log->ferr = NULL;
 	}
 
-	log->flags = 0;
-	return 0;
+	log->__flags = 0;
+	return LS_E_SUCCESS;
 }
 
 
-
-ls_log_t *
-ls_log_alloc(const ls_log_level_t level, FILE *const fstd, FILE *const ferr, const ls_uint32_t flags) {
-	errno = 0;
-
-	ls_log_t *mlog = calloc(1, sizeof(ls_log_t));
-	if (mlog == NULL) {
-		return NULL;
-	}
-
-	if (ls_log_init(mlog, level, fstd, ferr, flags) != 0) {
-		errno = ECANCELED;
-		free(mlog);
-		return NULL;
-	}
-
-	return mlog;
-}
 
 ls_result_t
-ls_log_free(ls_log_t *const log, const ls_uint16_t flags) {
-	if (log == NULL) {
-		return 1;
+ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream, const ls_bool_t close_stream) {
+	if (level < 0 || level > LS_LOG_LEVEL_COUNT) {
+		return LS_E_INVALID;
 	}
 
-	ls_result_t result = ls_log_clear(log, flags);
-	if (result != 0) {
-		return (1 + result);
+
+	GET_LOG(log);
+
+	// When appropriate, returns an error or initializes the global log.
+	CHECK_LOG(
+		log,
+		if (!LS_FLAG(log->__flags, LS_LOG_MULTI)) { return LS_E_STATE; }
+		if (log->__outf == NULL) { return LS_E_NULL; }
+	);
+
+
+	FILE **const streams = (FILE **const)log->__outf;
+
+	if (close_stream && streams[level] != NULL) {
+		FILE *const stream = streams[level];
+
+		if (stream != stdin && stream != stdout && stream != stderr) {
+			if (fclose(stream) != 0) {
+				return LS_E_IO_CLOSE;
+			}
+		}
 	}
 
-	free(log);
-	return 0;
+	streams[level] = stream;
+
+
+	return LS_E_SUCCESS;
 }
 
 
 
-ls_bool_t
-ls_log_write_allowed(const ls_log_t *log, const ls_log_level_t target_level) {
-	SELECT_LOG(log);
-
-	if (!LS_MAGIC32_VALID(log->flags)) {
-		return false;
+ls_result_t
+ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...) {
+	if (format == NULL) {
+		return LS_E_NULL;
 	}
 
-	return (target_level <= log->level);
-}
+
+	GET_LOG(log);
+
+	// When appropriate, returns an error or initializes the global log.
+	CHECK_LOG(log,);
 
 
+	FILE *stream = NULL;
 
-size_t
-ls_log_write(const ls_log_t *restrict log, const char *const restrict buffer, const size_t size, const ls_log_level_t level) {
-	if (buffer == NULL || size == 0 || buffer[size] != '\0') {
-		return 0;
+	if (LS_FLAG(log->__flags, LS_LOG_MULTI)) {
+		FILE *const *const streams = (FILE *const *const)log->__outf;
+
+		if (streams[level] != NULL) {
+			stream = streams[level];
+		} else {
+			stream = streams[0];
+		}
+	} else {
+		stream = log->__outf;
 	}
 
-	SELECT_LOG(log);
-
-	if (!ls_log_write_allowed(log, level)) {
-		return 0;
+	if (stream == NULL) {
+		return LS_E_IO_TARGET;
 	}
 
-	return 0;
+
+	volatile struct tm tm = { 0 };
+	if (ls_localtime_now((struct tm *const)&tm) != LS_E_SUCCESS) {
+		return LS_E_FAILURE;
+	}
+
+
+	ls_result_t result = LS_E_SUCCESS;
+
+	const size_t format_length = strlen(format);
+	const size_t buffsz = (format_length + sizeof(log_prefix) + LS_EOL_SIZE);
+
+
+	LS_STACK_ALLOC(char, prefix, buffsz);
+#if (LS_VALGRIND)
+	memset(prefix, 0, buffsz);
+#endif
+	ls_memory_dump(prefix, buffsz);
+
+
+	int pr = snprintf(
+		prefix,
+		sizeof(log_prefix),
+		log_prefix,
+		(1900 + tm.tm_year), (tm.tm_mon + 1), tm.tm_mday,
+		tm.tm_hour, tm.tm_min, tm.tm_sec,
+		level, getpid(), ls_get_tid()
+	);
+	ls_memory_dump(prefix, buffsz);
+
+	if (pr <= 0) {
+		result = LS_E_FAILURE;
+		goto __cleanup;
+	}
+
+	memcpy(&prefix[pr], format, format_length);
+	ls_memory_dump(prefix, buffsz);
+
+
+	// Transform any CR/NL already in the string to spaces.
+	size_t i = 0;
+	for (i = buffsz; i--;) {
+		if (prefix[i] == '\r' || prefix[i] == '\n') {
+			prefix[i] = ' ';
+		}
+	}
+	ls_memory_dump(prefix, buffsz);
+
+	strcpy(&prefix[pr + format_length], LS_EOL);
+	ls_memory_dump(prefix, buffsz);
+	prefix[pr + format_length + LS_EOL_SIZE] = '\0';
+	ls_memory_dump(prefix, buffsz);
+
+
+	va_list vl;
+	va_start(vl, format);
+	pr = vfprintf(stream, prefix, vl);
+	va_end(vl);
+
+	if (pr <= 0) {
+		result = LS_E_IO_WRITE;
+	}
+
+
+__cleanup:
+	if (fflush(stream) != 0) {
+		result = LS_E_IO_FLUSH;
+	}
+
+	LS_STACK_FREE(prefix);
+	return result;
 }

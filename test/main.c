@@ -25,8 +25,29 @@
 **                                                                            **
 *******************************************************************************/
 
-#include "../libserum/core/setup/bitops-inline.h"
+
+
+#include <string.h>
+
+#include "../libserum/io/log.h"
+#include "../libserum/core/memory.h"
+#include "../libserum/data/time.h"
+
 
 int main(int argc, char *argv[], char *env[]) {
+	ls_log_t log = { 0 };
+	//ls_memory_dump(&log, sizeof(log));
 
+	ls_log_init(&log, LS_LOG_MULTI, LS_LOG_LEVEL_DEBUG);
+	//ls_memory_dump(&log, sizeof(log));
+
+	ls_log_write(&log, LS_LOG_LEVEL_INFO, "%s%s - %s %s! - %i %llu", "ab", "cd", "hello", "world", 1, ls_time_nanos());
+	ls_log_write(&log, LS_LOG_LEVEL_INFO, "%s%s - %s %s! - %i", "ab", "cd", "hello", "world", 1);
+	ls_log_write(&log, LS_LOG_LEVEL_INFO, "%s%s - %s %s! - %i", "ab", "cd", "hello", "world", 1);
+	ls_log_write(&log, LS_LOG_LEVEL_INFO, "%s%s - %s %s! - %i", "ab", "cd", "hello", "world", 1);
+
+	ls_log_clear(&log);
+	//ls_memory_dump(&log, sizeof(log));
+
+	return 0;
 }
