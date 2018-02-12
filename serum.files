@@ -1,7 +1,9 @@
+vgbrute.sh
 COPYING.md
 Doxyfile
 Makefile
 README.md
+autodoxy.sh
 elf_interp.sh
 libserum/collections/types.h
 libserum/collections/utilities-inline.h

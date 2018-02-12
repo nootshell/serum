@@ -26,15 +26,16 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_RUNTIME_CONCURRENCY_STATE_H
 #define __LS_RUNTIME_CONCURRENCY_STATE_H
+
 
 
 
 #include "../../core/setup.h"
 
 #include "./mutex.h"
+
 
 #if (LIBSERUM_DOXYGEN)
 #	// Doxygen preprocessor.
@@ -48,6 +49,7 @@
 
 
 
+
 typedef struct ls_state {
 #if (LS_PTHREADS)
 	pthread_cond_t __cond;
@@ -57,6 +59,7 @@ typedef struct ls_state {
 	ls_mutex_t __lock;
 	ls_nword_t value;
 } ls_state_t;
+
 
 
 
@@ -79,6 +82,7 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
 
 
 

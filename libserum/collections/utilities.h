@@ -26,9 +26,9 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_COLLECTIONS_UTILITIES_H
 #define __LS_COLLECTIONS_UTILITIES_H
+
 
 
 
@@ -36,6 +36,7 @@
 
 #include "./types.h"
 #include "./utilities-inline.h"
+
 
 
 
@@ -50,6 +51,7 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
 
 
 

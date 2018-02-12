@@ -26,12 +26,13 @@
 ******************************************************************************/
 
 
-
 #include "./time.h"
 
 
 
+
 FILEID("Time related functionality.");
+
 
 
 
@@ -57,6 +58,7 @@ ls_time_secs() {
 
 
 
+
 ls_result_t
 ls_localtime(const time_t time, struct tm *const out_tm) {
 #if (LS_MSC || LS_MINGW)
@@ -72,6 +74,7 @@ ls_localtime(const time_t time, struct tm *const out_tm) {
 	return 0;
 }
 
+
 ls_result_t
 ls_localtime_now(struct tm *const out_tm) {
 	return ls_localtime(
@@ -79,6 +82,7 @@ ls_localtime_now(struct tm *const out_tm) {
 		out_tm
 	);
 }
+
 
 
 
@@ -91,6 +95,7 @@ ls_timespec_to_millis(const struct timespec *const restrict ts, ls_uint64_t *con
 	*out_millis = ((ts->tv_sec * 1000) + (ts->tv_nsec / 1000000));
 	return LS_E_SUCCESS;
 }
+
 
 ls_result_t
 ls_millis_to_timespec(const ls_uint64_t millis, struct timespec *const out_ts) {

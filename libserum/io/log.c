@@ -39,7 +39,9 @@
 
 
 
+
 FILEID("Logging functionality.");
+
 
 
 
@@ -66,10 +68,12 @@ FILEID("Logging functionality.");
 
 
 
+
 static LS_ATTR_USED ls_log_t __global_log = { 0 };
 
 // YYYY-MM-DD HH:MM:SS LEVEL PID TID
 static const char log_prefix[] = "[%04u-%02u-%02u %02u:%02u:%02u %u %05u %05u] ";
+
 
 
 
@@ -109,6 +113,7 @@ ls_log_init_ex(ls_log_t *restrict log, const ls_uint32_t flags, const ls_log_lev
 	log->__flags = LS_MAGIC32_SET(flags);
 	return LS_E_SUCCESS;
 }
+
 
 ls_result_t
 ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams) {
@@ -157,6 +162,7 @@ ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams) {
 
 
 
+
 ls_result_t
 ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream, const ls_bool_t close_stream) {
 	if (level < 0 || level > LS_LOG_LEVEL_COUNT) {
@@ -189,6 +195,7 @@ ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *c
 
 	return LS_E_SUCCESS;
 }
+
 
 
 

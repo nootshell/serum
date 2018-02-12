@@ -26,9 +26,9 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_CORE_SETUP_H
 #define __LS_CORE_SETUP_H
+
 
 
 
@@ -44,6 +44,7 @@
 
 
 
+
 #if (!LIBSERUM_DOXYGEN)
 #	if (LS_EXPORTING)
 #		define LSAPI						LS_EXPORT
@@ -53,6 +54,7 @@
 #else
 #	define LSAPI
 #endif
+
 
 #if (!LS_WINDOWS || LS_THREADING_PTHREADS)
 #	define LS_PTHREADS						1
@@ -70,9 +72,11 @@
 
 
 
+
 #if (LS_EXPORTING && LS_DEBUG)
 #	include "../io/log.h"
 #endif
+
 
 
 

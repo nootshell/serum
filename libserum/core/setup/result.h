@@ -26,13 +26,14 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_CORE_SETUP_RESULT_H
 #define __LS_CORE_SETUP_RESULT_H
 
 
 
+
 #include "./types.h"
+
 
 
 
@@ -59,7 +60,9 @@
 
 
 
+
 typedef ls_nword_t ls_result_t;
+
 
 
 

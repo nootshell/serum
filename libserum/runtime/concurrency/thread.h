@@ -26,9 +26,9 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_RUNTIME_CONCURRENCY_THREAD_H
 #define __LS_RUNTIME_CONCURRENCY_THREAD_H
+
 
 
 
@@ -38,6 +38,7 @@
 #include "./state.h"
 #include "../event.h"
 
+
 #if (LIBSERUM_DOXYGEN)
 #	// Doxygen preprocessor.
 #elif (LS_PTHREADS)
@@ -45,6 +46,7 @@
 #elif (!LS_WTHREADS)
 #	error Unsupported threading API.
 #endif
+
 
 
 
@@ -57,6 +59,7 @@ typedef enum ls_thread_status {
 	LS_THREAD_STOPPING = 3,
 	LS_THREAD_STOPPED = 4
 } ls_thread_status_t;
+
 
 typedef struct ls_thread ls_thread_t;
 
@@ -78,6 +81,7 @@ struct ls_thread {
 	ls_uint32_t __flags;
 	int exit_code;
 };
+
 
 
 
@@ -120,6 +124,7 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
 
 
 

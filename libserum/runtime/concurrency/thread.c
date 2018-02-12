@@ -38,6 +38,7 @@
 
 
 
+
 #if (LS_PTHREADS)
 #	define THRAPI_BAD		((void*)0)
 #	define THRAPI_GOOD		((void*)1)
@@ -48,13 +49,16 @@
 
 
 
+
 static THRAPI_RETURN __ls_thread_entry(void *param);
 
 static LS_ATTR_THREADLOCAL ls_tid_t __tid = 0;
 
 
 
+
 FILEID("Threading interface.");
+
 
 
 
@@ -70,6 +74,7 @@ ls_get_tid() {
 	return 0;
 #endif
 }
+
 
 
 
@@ -101,6 +106,7 @@ ls_thread_init_ex(ls_thread_t *const thread, const ls_thread_entry_t entrypoint,
 
 	return LS_E_SUCCESS;
 }
+
 
 ls_result_t
 ls_thread_clear(ls_thread_t *const thread) {
@@ -139,6 +145,7 @@ ls_thread_clear(ls_thread_t *const thread) {
 	thread->__flags = 0;
 	return LS_E_SUCCESS;
 }
+
 
 
 
@@ -187,6 +194,7 @@ static __ls_thread_start_internal(ls_thread_t *const thread, const size_t stacks
 
 
 
+
 ls_result_t
 ls_thread_start_ex(ls_thread_t *const thread, const size_t stacksize) {
 	if (thread == NULL) {
@@ -202,6 +210,7 @@ ls_thread_start_ex(ls_thread_t *const thread, const size_t stacksize) {
 
 	return result;
 }
+
 
 ls_result_t
 ls_thread_start_ex_await(ls_thread_t *const thread, const size_t stacksize) {
@@ -237,6 +246,7 @@ ls_thread_start_ex_await(ls_thread_t *const thread, const size_t stacksize) {
 
 
 
+
 ls_result_t
 ls_thread_stop(ls_thread_t *const thread) {
 	if (thread == NULL) {
@@ -264,6 +274,7 @@ ls_thread_stop(ls_thread_t *const thread) {
 	return LS_E_SUCCESS;
 }
 
+
 ls_result_t
 ls_thread_stop_await(ls_thread_t *const thread) {
 	ls_result_t result;
@@ -288,15 +299,18 @@ ls_thread_stop_await(ls_thread_t *const thread) {
 
 
 
+
 ls_result_t
 ls_thread_suspend(ls_thread_t *const thread) {
 	return LS_E_UNSUPPORTED;
 }
 
+
 ls_result_t
 ls_thread_resume(ls_thread_t *const thread) {
 	return LS_E_UNSUPPORTED;
 }
+
 
 
 
@@ -314,6 +328,7 @@ ls_thread_status(ls_thread_t *const thread) {
 
 	return (ls_thread_status_t)state;
 }
+
 
 
 

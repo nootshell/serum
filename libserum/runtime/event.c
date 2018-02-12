@@ -33,7 +33,9 @@
 
 
 
+
 FILEID("Simple event interface.");
+
 
 
 
@@ -72,6 +74,7 @@ ls_event_init_ex(ls_event_t *const event, const ls_uint32_t flags, const size_t 
 	return LS_E_SUCCESS;
 }
 
+
 ls_result_t
 ls_event_clear(ls_event_t *const event) {
 	if (event == NULL) {
@@ -95,6 +98,7 @@ ls_event_clear(ls_event_t *const event) {
 	event->__flags = 0;
 	return LS_E_SUCCESS;
 }
+
 
 
 
@@ -154,6 +158,7 @@ ls_event_push(ls_event_t *const event, ls_event_handler_t const handler) {
 	return LS_E_SUCCESS;
 }
 
+
 ls_result_t
 ls_event_pop(ls_event_t *const event, ls_event_handler_t const handler) {
 	if (event == NULL) {
@@ -162,6 +167,7 @@ ls_event_pop(ls_event_t *const event, ls_event_handler_t const handler) {
 
 	return LS_E_UNSUPPORTED;
 }
+
 
 
 

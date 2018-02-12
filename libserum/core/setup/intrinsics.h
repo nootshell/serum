@@ -26,13 +26,14 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_CORE_SETUP_INTRINSICS_H
 #define __LS_CORE_SETUP_INTRINSICS_H
 
 
 
+
 #include "./platform-detection.h"
+
 
 
 
@@ -43,6 +44,7 @@
 #	include <intrin.h>
 #	define LS_INTRINSICS					1
 #endif
+
 
 
 
@@ -74,6 +76,7 @@
 #		define LS_INTRINSICS_IGNORE_ROTR	1
 #	endif
 #endif
+
 
 
 

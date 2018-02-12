@@ -26,13 +26,14 @@
 ******************************************************************************/
 
 
-
 #if (!defined(__LS_CORE_SETUP_FILEID_H) && LS_EXPORTING)
 #define __LS_CORE_SETUP_FILEID_H
 
 
 
+
 #include "./platform-setup.h"
+
 
 
 
@@ -46,6 +47,7 @@
 
 
 
+
 #define LS_CODENAME                         "Fresh"
 #define LS_VERSION							GIT_TAG
 
@@ -54,8 +56,10 @@
 
 
 
+
 #define FILEID_PLAIN(name, string)			static LS_ATTR_USED const char name[] = "$Id: " string " $"
 #define FILEID(desc)						FILEID_PLAIN(___FILEID___, FILEPATH GIT_COMMIT " " desc)
+
 
 
 

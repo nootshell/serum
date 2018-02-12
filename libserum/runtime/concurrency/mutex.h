@@ -26,14 +26,15 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_RUNTIME_CONCURRENCY_MUTEX_H
 #define __LS_RUNTIME_CONCURRENCY_MUTEX_H
 
 
 
+
 #include "../../core/setup.h"
 #include <time.h>
+
 
 #if (LIBSERUM_DOXYGEN)
 #	// Doxygen preprocessor.
@@ -45,6 +46,9 @@
 #else
 #	error Unsupported threading API.
 #endif
+
+
+
 
 #ifndef CONST_PTHREADS
 #	define CONST_PTHREADS
@@ -61,6 +65,7 @@
 
 
 
+
 typedef struct ls_mutex {
 	//! \brief The (platform specific) locking object.
 #if (LIBSERUM_DOXYGEN)
@@ -71,6 +76,7 @@ typedef struct ls_mutex {
 	void *lock;
 #endif
 } ls_mutex_t;
+
 
 
 
@@ -158,6 +164,7 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
 
 
 

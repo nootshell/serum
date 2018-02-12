@@ -1,7 +1,6 @@
 #!/usr/bin/sh
 
 
-
 ###############################################################################
 ##                                                                           ##
 ##   The MIT License                                                         ##
@@ -30,7 +29,6 @@
 ###############################################################################
 
 
-
 #
 #	Fetches the first existing ELF interpreter from files in /usr/bin, /usr/lib, /bin, and /lib.
 #	For use in libserum's Makefile; any errors given by commands used are suppressed.
@@ -39,6 +37,7 @@
 #	this script runs it'll fetch the results from there, unless 'skipcache' was specified as first
 #	parameter.
 #
+
 
 
 
@@ -58,7 +57,6 @@ if [ $CACHE == 1 ]; then
 		exit 0;
 	fi
 fi
-
 
 
 echo > "$LOGFILE";
@@ -102,7 +100,6 @@ do
 		fi
 	done
 done
-
 
 
 # We didn't fetch any results.

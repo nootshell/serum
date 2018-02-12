@@ -26,9 +26,9 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_IO_LOG_H
 #define __LS_IO_LOG_H
+
 
 
 
@@ -37,6 +37,7 @@
 #include "../runtime/concurrency/mutex.h"
 
 #include <stdio.h>
+
 
 
 
@@ -53,6 +54,7 @@
 #endif
 
 #define LS_LOG_MULTI						0x0001
+
 
 
 
@@ -74,6 +76,7 @@ typedef struct ls_log {
 	ls_uint32_t __flags;
 	ls_log_level_t level;
 } ls_log_t;
+
 
 
 
@@ -104,6 +107,7 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
 
 
 

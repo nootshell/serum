@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 ###############################################################################
 ##																			 ##
 ##	 The MIT License														 ##
@@ -29,12 +30,12 @@
 
 
 
+
 if [ "$1" == "wrap" ]; then
 	WRAP=1
 else
 	WRAP=0
 fi
-
 
 
 RESULT="";
@@ -50,6 +51,7 @@ if [ -f ./autodoxy ]; then
 		RESULT="autodoxy: doxygen missing";
 	fi
 fi
+
 
 if [ $WRAP == 1 ]; then
 	if [ -n "$RESULT" ]; then
