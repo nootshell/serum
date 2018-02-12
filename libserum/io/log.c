@@ -68,7 +68,7 @@ FILEID("Logging functionality.");
 
 static LS_ATTR_USED ls_log_t __global_log = { 0 };
 
-// YYYY-MM-DD HH:MM:SS LEVEL TID
+// YYYY-MM-DD HH:MM:SS LEVEL PID TID
 static const char log_prefix[] = "[%04u-%02u-%02u %02u:%02u:%02u %u %05u %05u] ";
 
 
