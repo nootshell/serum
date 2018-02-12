@@ -26,7 +26,6 @@
 ******************************************************************************/
 
 
-
 #include "./setup.h"
 
 #include "../io/log.h"
@@ -37,6 +36,7 @@
 
 #include <stdio.h>
 #include <inttypes.h>
+
 
 
 
@@ -80,8 +80,10 @@
 
 
 
+
 #define CORE_FILEID							"libserum (" LS_VERSION ", \"" LS_CODENAME "\") built for " ARCH " with " COMPILER " on " KERNEL " " KERNEL_ARCH " at " TIMESTAMP
 FILEID_PLAIN(___COREID___, ">>> " CORE_FILEID " <<<");
+
 
 
 
@@ -89,7 +91,9 @@ FILEID_PLAIN(___COREID___, ">>> " CORE_FILEID " <<<");
 
 
 
+
 FILEID("ELF entrypoint for debugging/self-testing purposes.");
+
 
 
 
@@ -125,6 +129,7 @@ LS_ATTR_NORETURN __libserum_main(const void *const d_ptr, const int argc, const 
 
 	exit(0);
 }
+
 
 
 

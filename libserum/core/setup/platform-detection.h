@@ -26,9 +26,9 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_CORE_SETUP_PLATFORM_DETECTION_H
 #define __LS_CORE_SETUP_PLATFORM_DETECTION_H
+
 
 
 
@@ -46,6 +46,7 @@
 #else
 #	error Missing preprocessor definition: CHAR_BIT
 #endif
+
 
 
 
@@ -75,6 +76,7 @@
 
 
 
+
 #define LS_ID_LINUX							1
 #define LS_ID_WINDOWS						2
 #define LS_ID_MAC							3
@@ -101,6 +103,7 @@
 
 
 
+
 #define LS_ID_LITTLE_ENDIAN					1
 #define LS_ID_BIG_ENDIAN					2
 
@@ -119,6 +122,7 @@
 #else
 #	error Unknown endianness.
 #endif
+
 
 
 
@@ -154,6 +158,7 @@
 #if (defined(_UCRT))
 #	define LS_UCRT							1
 #endif
+
 
 
 

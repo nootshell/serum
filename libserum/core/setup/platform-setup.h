@@ -26,13 +26,14 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_CORE_SETUP_PLATFORM_SETUP_H
 #define __LS_CORE_SETUP_PLATFORM_SETUP_H
 
 
 
+
 #include "./platform-detection.h"
+
 
 
 
@@ -91,9 +92,11 @@
 
 
 
+
 #if (LS_INLINE_NOT_A_HINT)
 #	define inline							LS_FORCE_INLINE
 #endif
+
 
 
 

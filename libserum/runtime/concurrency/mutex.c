@@ -32,7 +32,9 @@
 
 
 
+
 FILEID("Mutual exclusion lock.");
+
 
 
 
@@ -58,6 +60,7 @@ static inline __WaitForSingleObject(const ls_mutex_t *const mutex, const DWORD t
 
 
 
+
 ls_result_t
 ls_mutex_init(ls_mutex_t *const mutex) {
 	if (mutex == NULL) {
@@ -79,6 +82,7 @@ ls_mutex_init(ls_mutex_t *const mutex) {
 
 	return LS_E_SUCCESS;
 }
+
 
 ls_result_t
 ls_mutex_clear(ls_mutex_t *const mutex) {
@@ -104,6 +108,8 @@ ls_mutex_clear(ls_mutex_t *const mutex) {
 
 	return LS_E_SUCCESS;
 }
+
+
 
 
 ls_result_t
@@ -201,6 +207,8 @@ ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint6
 
 	return LS_E_SUCCESS;
 }
+
+
 
 
 ls_result_t

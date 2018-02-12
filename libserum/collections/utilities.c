@@ -26,8 +26,8 @@
 ******************************************************************************/
 
 
-
 #include "./utilities.h"
+
 
 
 
@@ -35,10 +35,12 @@ FILEID("Utilities for collections.");
 
 
 
+
 void *const
 ls_pcollection_find(ls_pcollection_t collection, const void *const find, const size_t size) {
 	return ls_pcollection_find_inline(collection, find, size);
 }
+
 
 void *const
 ls_pcollection_rfind(ls_pcollection_t collection, const void *const find, const size_t size) {

@@ -26,9 +26,9 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_CORE_SETUP_SPECIAL_TREATMENT_FOR_WINDOWS_H
 #define __LS_CORE_SETUP_SPECIAL_TREATMENT_FOR_WINDOWS_H
+
 
 
 
@@ -70,6 +70,7 @@
 #define NOIME
 
 #include <Windows.h>
+
 
 
 

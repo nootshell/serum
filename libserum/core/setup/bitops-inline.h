@@ -26,14 +26,15 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_CORE_SETUP_BITOPS_INLINE_H
 #define __LS_CORE_SETUP_BITOPS_INLINE_H
 
 
 
+
 #include "./types.h"
 #include "./platform-setup.h"
+
 
 
 
@@ -59,6 +60,7 @@
 #else
 #	error Missing rotate fallbacks.
 #endif
+
 
 
 

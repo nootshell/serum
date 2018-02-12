@@ -26,14 +26,15 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_CORE_SETUP_TYPES_H
 #define __LS_CORE_SETUP_TYPES_H
 
 
 
+
 #include <stdint.h>
 #include <stdbool.h>
+
 
 
 
@@ -45,6 +46,7 @@ typedef uint_least32_t ls_uint32_t;
 typedef uint_least64_t ls_uint64_t;
 
 typedef bool ls_bool_t;
+
 
 
 

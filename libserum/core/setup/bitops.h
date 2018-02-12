@@ -26,9 +26,9 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_CORE_SETUP_BITOPS_H
 #define __LS_CORE_SETUP_BITOPS_H
+
 
 
 
@@ -37,7 +37,9 @@
 
 
 
+
 #define LS_FLAG(flags, flag)				(((flags) & (flag)) == (flag))
+
 
 
 
@@ -47,6 +49,7 @@ static const ls_uint8_t __ls_sanitize_m__ = ((1U << LS_BITS_BYTE) - 1);
 #else
 #	define LS_BYTE_SANITIZE(x)				x
 #endif
+
 
 
 
@@ -71,6 +74,7 @@ static const ls_uint8_t __ls_sanitize_m__ = ((1U << LS_BITS_BYTE) - 1);
 #	define LS_ROTR32						__ls_rotr32
 #	define LS_ROTR64						__ls_rotr64
 #endif
+
 
 
 

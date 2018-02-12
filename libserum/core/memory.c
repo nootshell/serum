@@ -26,15 +26,16 @@
 ******************************************************************************/
 
 
-
 #include "./memory.h"
 
 #include <inttypes.h>
 
 
 
+
 static const char fmt_normal[] = "%0*"PRIXPTR": ";
 static const char fmt_ansi[] = "\033[0;36m%0*"PRIXPTR"\033[0m: \033[0;37m";
+
 
 
 

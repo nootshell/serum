@@ -26,15 +26,16 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_RUNTIME_EVENT_H
 #define __LS_RUNTIME_EVENT_H
+
 
 
 
 #include "../core/setup.h"
 
 #include "./concurrency/mutex.h"
+
 
 
 
@@ -50,6 +51,7 @@ struct ls_event {
 	ls_mutex_t __lock;
 	ls_uint32_t __flags;
 };
+
 
 
 
@@ -78,6 +80,7 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
 
 
 

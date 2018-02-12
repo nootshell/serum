@@ -26,8 +26,8 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_CORE_MEMORY_H
+
 
 
 
@@ -37,11 +37,11 @@
 
 
 
+
 #if (LS_GCC || LS_LLVM)
 #	define LS_STACK_ALLOC(type, var, sizeb)	type var[(sizeb)]
 #	define LS_STACK_FREE(var)
 #endif
-
 
 
 #ifndef LS_STACK_ALLOC
@@ -51,6 +51,7 @@
 #ifndef LS_STACK_FREE
 #	error LS_STACK_FREE has not been defined.
 #endif
+
 
 
 
@@ -67,6 +68,7 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
 
 
 
