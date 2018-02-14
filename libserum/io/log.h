@@ -69,7 +69,7 @@ typedef enum ls_log_level {
 typedef struct ls_log {
 	FILE *__outf;
 
-	ls_uint32_t __flags;
+	uint32_t __flags;
 	ls_log_level_t level;
 } ls_log_t;
 
@@ -80,9 +80,9 @@ typedef struct ls_log {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_log_init_ex(ls_log_t *restrict log, const ls_uint32_t flags, const ls_log_level_t level, FILE *const restrict std_stream);
+	LSAPI ls_result_t ls_log_init_ex(ls_log_t *restrict log, const uint32_t flags, const ls_log_level_t level, FILE *const restrict std_stream);
 
-	static ls_result_t inline ls_log_init(ls_log_t *log, const ls_uint32_t flags, const ls_log_level_t level) {
+	static ls_result_t inline ls_log_init(ls_log_t *log, const uint32_t flags, const ls_log_level_t level) {
 		return ls_log_init_ex(log, flags, level, stdout);
 	}
 

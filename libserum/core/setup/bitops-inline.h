@@ -46,15 +46,15 @@
 			return ((value op1 rotate) | (value op2 (-rotate & ((bits) - 1))));	\
 		}
 
-	__MKROTATE( ls_uint8_t,  __ls_rotl8,  LS_BITS_BYTE, <<, >>)
-	__MKROTATE(ls_uint16_t, __ls_rotl16,  LS_BITS_WORD, <<, >>)
-	__MKROTATE(ls_uint32_t, __ls_rotl32, LS_BITS_DWORD, <<, >>)
-	__MKROTATE(ls_uint64_t, __ls_rotl64, LS_BITS_QWORD, <<, >>)
+	__MKROTATE( uint8_t,  __ls_rotl8,  LS_BITS_BYTE, <<, >>)
+	__MKROTATE(uint16_t, __ls_rotl16,  LS_BITS_WORD, <<, >>)
+	__MKROTATE(uint32_t, __ls_rotl32, LS_BITS_DWORD, <<, >>)
+	__MKROTATE(uint64_t, __ls_rotl64, LS_BITS_QWORD, <<, >>)
 
-	__MKROTATE( ls_uint8_t,  __ls_rotr8,  LS_BITS_BYTE, >>, <<)
-	__MKROTATE(ls_uint16_t, __ls_rotr16,  LS_BITS_WORD, >>, <<)
-	__MKROTATE(ls_uint32_t, __ls_rotr32, LS_BITS_DWORD, >>, <<)
-	__MKROTATE(ls_uint64_t, __ls_rotr64, LS_BITS_QWORD, >>, <<)
+	__MKROTATE( uint8_t,  __ls_rotr8,  LS_BITS_BYTE, >>, <<)
+	__MKROTATE(uint16_t, __ls_rotr16,  LS_BITS_WORD, >>, <<)
+	__MKROTATE(uint32_t, __ls_rotr32, LS_BITS_DWORD, >>, <<)
+	__MKROTATE(uint64_t, __ls_rotr64, LS_BITS_QWORD, >>, <<)
 
 #	undef __MKROTATE
 #else

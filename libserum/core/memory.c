@@ -54,7 +54,7 @@ ls_memory_dump_ex(const void *const src, const size_t size, const ls_nword_t col
 	}
 
 
-	const ls_uint8_t *src8 = src;
+	const uint8_t *src8 = src;
 	const char *const pfmt = (ansi ? fmt_ansi : fmt_normal);
 	const size_t pfmt_sz = ((sizeof(void*) << 1) + (ansi ? 18 : 0) + 2);
 

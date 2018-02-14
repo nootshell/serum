@@ -77,7 +77,7 @@ static const char log_prefix[] = "[%04u-%02u-%02u %02u:%02u:%02u %u %05u %05u] "
 
 
 ls_result_t
-ls_log_init_ex(ls_log_t *restrict log, const ls_uint32_t flags, const ls_log_level_t level, FILE *const restrict std_stream) {
+ls_log_init_ex(ls_log_t *restrict log, const uint32_t flags, const ls_log_level_t level, FILE *const restrict std_stream) {
 	if (std_stream == NULL) {
 		return LS_E_NULL;
 	}
@@ -122,7 +122,7 @@ ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams) {
 		return LS_E_MAGIC;
 	}
 
-	const ls_uint32_t flags = log->__flags;
+	const uint32_t flags = log->__flags;
 
 	if (LS_FLAG(flags, LS_LOG_MULTI) && log->__outf != NULL) {
 		ls_bool_t errors = false;

@@ -78,7 +78,7 @@ struct ls_thread {
 #endif
 	ls_mutex_t __lock;
 	ls_state_t __state;
-	ls_uint32_t __flags;
+	uint32_t __flags;
 	int exit_code;
 };
 
@@ -91,7 +91,7 @@ extern "C" {
 
 	LSAPI ls_tid_t ls_get_tid();
 
-	LSAPI ls_result_t ls_thread_init_ex(ls_thread_t *const thread, const ls_thread_entry_t entrypoint, const ls_uint32_t flags);
+	LSAPI ls_result_t ls_thread_init_ex(ls_thread_t *const thread, const ls_thread_entry_t entrypoint, const uint32_t flags);
 
 	static ls_result_t inline ls_thread_init(ls_thread_t *const thread, const ls_thread_entry_t entrypoint) {
 		return ls_thread_init_ex(thread, entrypoint, 0);

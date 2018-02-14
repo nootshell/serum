@@ -39,7 +39,7 @@ FILEID("Simple event interface.");
 
 
 ls_result_t
-ls_event_init_ex(ls_event_t *const event, const ls_uint32_t flags, const size_t initial_capacity) {
+ls_event_init_ex(ls_event_t *const event, const uint32_t flags, const size_t initial_capacity) {
 	if (event == NULL) {
 		return LS_E_NULL;
 	}

@@ -156,7 +156,7 @@ ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec
 		return LS_E_FAILURE;
 	}
 #elif (LS_WTHREADS)
-	ls_uint64_t millis = 0;
+	uint64_t millis = 0;
 	if (ls_timespec_to_millis(&timeout, &millis) != LS_E_SUCCESS) {
 		return LS_E_CONVERSION;
 	}
@@ -171,7 +171,7 @@ ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec
 
 
 ls_result_t
-ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const ls_uint64_t timeout) {
+ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const uint64_t timeout) {
 	if (mutex == NULL) {
 		ls_debug("NULL encountered.");
 		return LS_E_NULL;

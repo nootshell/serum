@@ -78,7 +78,7 @@ ls_get_tid() {
 
 
 ls_result_t
-ls_thread_init_ex(ls_thread_t *const thread, const ls_thread_entry_t entrypoint, const ls_uint32_t flags) {
+ls_thread_init_ex(ls_thread_t *const thread, const ls_thread_entry_t entrypoint, const uint32_t flags) {
 	if (thread == NULL || entrypoint == NULL) {
 		ls_debug("NULL encountered.");
 		return LS_E_NULL;

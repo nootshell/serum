@@ -40,11 +40,6 @@
 
 typedef unsigned int ls_nword_t;
 
-typedef uint_least8_t ls_uint8_t;
-typedef uint_least16_t ls_uint16_t;
-typedef uint_least32_t ls_uint32_t;
-typedef uint_least64_t ls_uint64_t;
-
 typedef bool ls_bool_t;
 
 

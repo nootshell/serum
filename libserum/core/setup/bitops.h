@@ -44,7 +44,7 @@
 
 
 #if (!LS_SANITIZE_BYTES)
-static const ls_uint8_t __ls_sanitize_m__ = ((1U << LS_BITS_BYTE) - 1);
+static const uint8_t __ls_sanitize_m__ = ((1U << LS_BITS_BYTE) - 1);
 #	define LS_BYTE_SANITIZE(x)				((x) & __ls_sanitize_m__)
 #else
 #	define LS_BYTE_SANITIZE(x)				x

@@ -36,12 +36,12 @@ FILEID("Time related functionality.");
 
 
 
-ls_uint64_t
+uint64_t
 ls_time_nanos() {
 #if (LS_MSC || LS_MINGW)
 	FILETIME ft;
 	GetSystemTimeAsFileTime(&ft);
-	return (((((ls_uint64_t)ft.dwHighDateTime << LS_BITS_DWORD) | ft.dwLowDateTime) / 10) - 0x295E9648864000);
+	return (((((uint64_t)ft.dwHighDateTime << LS_BITS_DWORD) | ft.dwLowDateTime) / 10) - 0x295E9648864000);
 #else
 	struct timespec ts;
 	if (clock_gettime(CLOCK_REALTIME, &ts) != 0) {
@@ -87,7 +87,7 @@ ls_localtime_now(struct tm *const out_tm) {
 
 
 ls_result_t
-ls_timespec_to_millis(const struct timespec *const restrict ts, ls_uint64_t *const restrict out_millis) {
+ls_timespec_to_millis(const struct timespec *const restrict ts, uint64_t *const restrict out_millis) {
 	if (ts == NULL || out_millis == NULL) {
 		return LS_E_NULL;
 	}
@@ -98,7 +98,7 @@ ls_timespec_to_millis(const struct timespec *const restrict ts, ls_uint64_t *con
 
 
 ls_result_t
-ls_millis_to_timespec(const ls_uint64_t millis, struct timespec *const out_ts) {
+ls_millis_to_timespec(const uint64_t millis, struct timespec *const out_ts) {
 	if (out_ts == NULL) {
 		return LS_E_NULL;
 	}
@@ -116,7 +116,7 @@ ls_millis_to_timespec(const ls_uint64_t millis, struct timespec *const out_ts) {
 
 
 
-ls_uint64_t
+uint64_t
 ls_rdtsc() {
 #if (LS_INTRINSICS_GOT_RDTSC)
 	return LS_RDTSC();

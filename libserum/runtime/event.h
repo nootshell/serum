@@ -49,7 +49,7 @@ struct ls_event {
 	size_t __handler_capacity;
 	void *tag;
 	ls_mutex_t __lock;
-	ls_uint32_t __flags;
+	uint32_t __flags;
 };
 
 
@@ -59,7 +59,7 @@ struct ls_event {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_event_init_ex(ls_event_t *const event, const ls_uint32_t flags, const size_t initial_capacity);
+	LSAPI ls_result_t ls_event_init_ex(ls_event_t *const event, const uint32_t flags, const size_t initial_capacity);
 
 	static ls_result_t inline ls_event_init(ls_event_t *const event) {
 		return ls_event_init_ex(event, 0, 0);

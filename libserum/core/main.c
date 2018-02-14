@@ -105,10 +105,10 @@ LS_ATTR_NORETURN __libserum_main(const void *const d_ptr, const int argc, const 
 
 	puts("");
 	puts("\tBytes   Type");
-	PRINT_SZ(ls_uint8_t);
-	PRINT_SZ(ls_uint16_t);
-	PRINT_SZ(ls_uint32_t);
-	PRINT_SZ(ls_uint64_t);
+	PRINT_SZ(uint8_t);
+	PRINT_SZ(uint16_t);
+	PRINT_SZ(uint32_t);
+	PRINT_SZ(uint64_t);
 	PRINT_SZ(void*);
 
 	puts("");
