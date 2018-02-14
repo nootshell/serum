@@ -26,9 +26,9 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_CORE_SETUP_MACROS_H
 #define __LS_CORE_SETUP_MACROS_H
+
 
 
 
@@ -37,6 +37,7 @@
 
 #define __LS_MAYBE_EMPTY(x)					x ## 1
 #define LS_MAYBE_EMPTY(x)					__LS_MAYBE_EMPTY(x)
+
 
 
 

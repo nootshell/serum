@@ -26,9 +26,9 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_CORE_SETUP_MAGIC_H
 #define __LS_CORE_SETUP_MAGIC_H
+
 
 
 
@@ -36,6 +36,7 @@
 #define LS_MAGIC32_STRIP(flags)				((flags) & 0x00FFFFFF)
 #define LS_MAGIC32_SET(flags)				(LS_MAGIC32_STRIP(flags) | LS_MAGIC32)
 #define LS_MAGIC32_VALID(flags)				(((flags) & 0xFF000000) == LS_MAGIC32)
+
 
 
 
