@@ -1,12 +1,27 @@
-# Decent git implementations will support this flawlessly.
+# Exclude all files.
 *
 !*/
-!Makefile
+
+# Include files with these extensions.
 !*.c
 !*.h
+!*.sh
+!*.md
+
+# Include these repo files.
 !.gitignore
 !.gitattributes
 !.editorconfig
-!*.sh
-!*.md
+
+# Include these build files.
+!Doxyfile
+!Makefile
+
+# Include these project files.
 !*.kdev4
+!serum.creator
+!serum.files
+!serum.includes
+
+# Include these CI files.
+!.travis.yml

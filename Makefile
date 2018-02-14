@@ -27,10 +27,12 @@
 
 
 
-CC = gcc
-LD = gcc
 
-LS_ELF_INTERP = $(shell ./elf_interp.sh)
+ifeq (,$(CC))
+	CC = gcc
+endif
+
+LS_ELF_INTERP = $(shell sh ./elf_interp.sh)
 
 GIT_COMMIT_HEAD = $(shell git rev-parse HEAD)
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
@@ -52,7 +54,7 @@ TITLE = "done"
 
 
 
-.PHONY: all clean debug release rebuild
+.PHONY: all clean debug release rebuild valgrind
 
 
 
@@ -84,7 +86,7 @@ bin/libserum.so: CFLAGS += -DLS_EXPORTING=1
 bin/libserum.so: obj/libserum/core/main.o $(addprefix obj/, $(patsubst %.c, %.o, $(shell find libserum -type f -name '*.c' ! -wholename libserum/core/main.c)))
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
-	@$(LD) -o $@ -shared -lpthread $(LS_ELF_INTERP) $^
+	@$(CC) -o $@ -shared -lpthread $(LS_ELF_INTERP) $^
 	@echo -n " ($(TITLE))$(shell ./autodoxy.sh wrap)"
 	@echo
 
@@ -102,8 +104,10 @@ bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name
 clean:
 	@rm -f bin/libserum.so
 	@rm -f bin/test
+	@echo "- Removed binaries."
 	@rm -Rf obj/libserum
 	@rm -Rf obj/test
+	@echo "- Removed object files."
 
 debug: TITLE = "debug"
 debug: CFLAGS += $(CFLAGS_DEBUG)

@@ -40,19 +40,32 @@
 
 
 
+__do_log() {
+	if (test "$LOG" -eq 1); then
+		local N=''
+		if (test -n "$1" && test "$1" = "-n"); then
+			N="-n"
+		fi
+
+		echo $N "$@" >> "$LOGFILE";
+	fi
+}
+
+
+
 
 CACHE=1
 LOG=1
 LOGFILE="./elf_interp.log"
 
-if [ $# -gt 0 ]; then
-	if [ $1 == "skipcache" ]; then
+if (test "$#" -gt 0); then
+	if (test "$1" = "skipcache"); then
 		CACHE=0
 	fi
 fi
 
-if [ $CACHE == 1 ]; then
-	if [ -f ./.elf_interp_cache ]; then
+if (test "$CACHE" -eq 1); then
+	if (test -f ./.elf_interp_cache); then
 		cat ./.elf_interp_cache;
 		exit 0;
 	fi
@@ -63,25 +76,25 @@ echo > "$LOGFILE";
 
 for DIRECTORY in /usr/bin /usr/lib /bin /lib
 do
-	if [ $LOG == 1 ]; then echo "Entered '$DIRECTORY'" >> "$LOGFILE" 2>&1; fi
+	__do_log "Entered '$DIRECTORY'";
 	for FILE in $(find $DIRECTORY -maxdepth 1 -type f ! -name '*.*' 2>> "$LOGFILE")
 	do
-		if [ $LOG == 1 ]; then echo -n "Found '$FILE':" >> "$LOGFILE" 2>&1; fi
+		__do_log -n "Found '$FILE':";
 		ELF=$(readelf -l $FILE 2> /dev/null)
 
-		if [ $? == 0 ]; then
-			if [ $LOG == 1 ]; then echo -n " valid ELF:" >> "$LOGFILE" 2>&1; fi
+		if (test "$?" -eq 0); then
+			__do_log -n " valid ELF:";
 
 			ELF=$(
-				grep -xoEe ".*[[]Requesting program interpreter: ([/][^ ].+)[]].*" <<< "$ELF" 2>> "$LOGFILE" |
-				awk -F:\  '{print $2}'                                                        2>> "$LOGFILE" |
-				awk -F] '{print $1}'                                                          2>> "$LOGFILE" |
-				tr -dc [:print:]                                                              2>> "$LOGFILE"
+				(echo "$ELF" | grep -xoEe ".*[[]Requesting program interpreter: ([/][^ ].+)[]].*") 2>>"$LOGFILE" |
+				awk -F:\  '{print $2}'                                                             2>>"$LOGFILE" |
+				awk -F] '{print $1}'                                                               2>>"$LOGFILE" |
+				tr -dc [:print:]                                                                   2>>"$LOGFILE"
 			);
 
-			if [ $? == 0 ]; then
-				if [ -f "$ELF" ]; then
-					if [ $LOG == 1 ]; then echo " valid interpreter" >> "$LOGFILE" 2>&1; fi
+			if (test "$?" -eq 0); then
+				if (test -f "$ELF"); then
+					__do_log " valid interpreter";
 
 					# Interpreter found, and it exists: compile the string to be passed to the compiler.
 					ELF="-DELF_INTERPRETER=\"\\\"$ELF\\\"\" -Wl,-e,__libserum_main";
@@ -92,11 +105,11 @@ do
 
 					exit 0;
 				else
-					if [ $LOG == 1 ]; then echo " interpreter does not exist" >> "$LOGFILE" 2>&1; fi
+					__do_log " interpreter does not exist";
 				fi
 			fi
 		else
-			if [ $LOG == 1 ]; then echo " invalid ELF" >> "$LOGFILE" 2>&1; fi
+			__do_log " invalid ELF";
 		fi
 	done
 done
