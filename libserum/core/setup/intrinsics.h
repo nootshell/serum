@@ -75,6 +75,21 @@
 #		define LS_INTRINSICS_IGNORE_ROTL	1
 #		define LS_INTRINSICS_IGNORE_ROTR	1
 #	endif
+
+
+#	if (LS_GCC || LS_LLVM)
+#		define LS_SWAP_16(x)				__builtin_bswap16(x)
+#		define LS_SWAP_32(x)				__builtin_bswap32(x)
+#		define LS_SWAP_64(x)				__builtin_bswap64(x)
+
+#		define LS_INTRINSICS_GOT_SWAP		1
+#	elif (LS_MSC || LS_MINGW)
+#		define LS_SWAP_16(x)				_byteswap_ushort(x)
+#		define LS_SWAP_32(x)				_byteswap_ulong(x)
+#		define LS_SWAP_64(x)				_byteswap_uint64(x)
+
+#		define LS_INTRINSICS_GOT_SWAP		1
+#	endif
 #endif
 
 

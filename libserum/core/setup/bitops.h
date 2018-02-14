@@ -78,4 +78,48 @@ static const uint8_t __ls_sanitize_m__ = ((1U << LS_BITS_BYTE) - 1);
 
 
 
+
+#if (!LS_INTRINSICS_GOT_SWAP)
+#	define LS_SWAP_16(x) (					 \
+		(((x) & 0xFF00            ) >>  8) | \
+		(((x) & 0x00FF            ) <<  8)	 \
+	)
+#	define LS_SWAP_32(x) (					 \
+		(((x) & 0xFF000000        ) >> 24) | \
+		(((x) & 0x00FF0000        ) >>  8) | \
+		(((x) & 0x0000FF00        ) <<  8) | \
+		(((x) & 0x000000FF        ) << 24)	 \
+	)
+#	define LS_SWAP_64(x) (					 \
+		(((x) & 0xFF00000000000000) >> 56) | \
+		(((x) & 0x00FF000000000000) >> 40) | \
+		(((x) & 0x0000FF0000000000) >> 24) | \
+		(((x) & 0x000000FF00000000) >>  8) | \
+		(((x) & 0x00000000FF000000) <<  8) | \
+		(((x) & 0x0000000000FF0000) << 24) | \
+		(((x) & 0x000000000000FF00) << 40) | \
+		(((x) & 0x00000000000000FF) << 56)	 \
+	)
+#endif
+
+
+#if (LS_BIG_ENDIAN)
+#	define LS_ENSURE_BIG16(x)				(x)
+#	define LS_ENSURE_BIG32(x)				(x)
+#	define LS_ENSURE_BIG64(x)				(x)
+#	define LS_ENSURE_LITTLE16(x)			LS_SWAP_16((x))
+#	define LS_ENSURE_LITTLE32(x)			LS_SWAP_32((x))
+#	define LS_ENSURE_LITTLE64(x)			LS_SWAP_64((x))
+#else
+#	define LS_ENSURE_BIG16(x)				LS_SWAP_16((x))
+#	define LS_ENSURE_BIG32(x)				LS_SWAP_32((x))
+#	define LS_ENSURE_BIG64(x)				LS_SWAP_64((x))
+#	define LS_ENSURE_LITTLE16(x)			(x)
+#	define LS_ENSURE_LITTLE32(x)			(x)
+#	define LS_ENSURE_LITTLE64(x)			(x)
+#endif
+
+
+
+
 #endif
