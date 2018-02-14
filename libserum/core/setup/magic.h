@@ -32,10 +32,40 @@
 
 
 
-#define LS_MAGIC32							0xED000000
+#include "../setup.h"
+
+
+
+
+#define LS_MAGIC8							0xED
+
+#define LS_MAGIC32							(LS_MAGIC8 << 24)
 #define LS_MAGIC32_STRIP(flags)				((flags) & 0x00FFFFFF)
 #define LS_MAGIC32_SET(flags)				(LS_MAGIC32_STRIP(flags) | LS_MAGIC32)
 #define LS_MAGIC32_VALID(flags)				(((flags) & 0xFF000000) == LS_MAGIC32)
+
+#define LS_MAGIC64							(LS_MAGIC8 << 56)
+#define LS_MAGIC64_STRIP(flags)				((flags) & 0x00FFFFFFFFFFFFFF)
+#define LS_MAGIC64_SET(flags)				(LS_MAGIC64_STRIP(flags) | LS_MAGIC64)
+#define LS_MAGIC64_VALID(flags)				(((flags) & 0xFF00000000000000) == LS_MAGIC64)
+
+
+
+
+#if (LS_EXPORTING)
+#	if (!LS_NO_WAND_FLICKING)
+#		define __LS_MAGIC32_FLICK_W(n, f)	if (n LS_MAGIC32_VALID(f)) { return LS_E_MAGIC; }
+#		define __LS_MAGIC64_FLICK_W(n, f)	if (n LS_MAGIC64_VALID(f)) { return LS_E_MAGIC; }
+#	else
+#		define __LS_MAGIC32_FLICK_W(n, f)
+#		define __LS_MAGIC64_FLICK_W(n, f)
+#	endif
+
+#	define LS_MAGIC32_VALID_OR_ERROR(f)		__LS_MAGIC32_FLICK_W(!, f);
+#	define LS_MAGIC32_INVALID_OR_ERROR(f)	__LS_MAGIC32_FLICK_W(, f);
+#	define LS_MAGIC64_VALID_OR_ERROR(f)		__LS_MAGIC64_FLICK_W(!, f);
+#	define LS_MAGIC64_INVALID_OR_ERROR(f)	__LS_MAGIC64_FLICK_W(, f);
+#endif
 
 
 
