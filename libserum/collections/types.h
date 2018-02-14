@@ -26,9 +26,9 @@
 ******************************************************************************/
 
 
-
 #ifndef __LS_COLLECTIONS_TYPES_H
 #define __LS_COLLECTIONS_TYPES_H
+
 
 
 
@@ -36,7 +36,9 @@
 
 
 
+
 typedef void *const *const ls_pcollection_t;
+
 
 
 
