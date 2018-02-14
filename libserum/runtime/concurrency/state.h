@@ -37,7 +37,7 @@
 #include "./mutex.h"
 
 
-#if (LIBSERUM_DOXYGEN)
+#if (LS_DOXYGEN)
 #	// Doxygen preprocessor.
 #elif (LS_PTHREADS)
 #	include <pthread.h>

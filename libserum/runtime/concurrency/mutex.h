@@ -36,7 +36,7 @@
 #include <time.h>
 
 
-#if (LIBSERUM_DOXYGEN)
+#if (LS_DOXYGEN)
 #	// Doxygen preprocessor.
 #elif (LS_PTHREADS)
 #	include <pthread.h>
@@ -68,7 +68,7 @@
 
 typedef struct ls_mutex {
 	//! \brief The (platform specific) locking object.
-#if (LIBSERUM_DOXYGEN)
+#if (LS_DOXYGEN)
 	platform_specific lock;
 #elif (LS_PTHREADS)
 	pthread_mutex_t lock;

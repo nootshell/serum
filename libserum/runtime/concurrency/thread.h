@@ -39,7 +39,7 @@
 #include "../event.h"
 
 
-#if (LIBSERUM_DOXYGEN)
+#if (LS_DOXYGEN)
 #	// Doxygen preprocessor.
 #elif (LS_PTHREADS)
 #	include <pthread.h>
@@ -69,7 +69,7 @@ struct ls_thread {
 	ls_thread_entry_t entrypoint;
 	void *tag;
 	ls_event_t on_stopped;
-#if (LIBSERUM_DOXYGEN)
+#if (LS_DOXYGEN)
 	platform_specific thr_objs;
 #elif (LS_PTHREADS)
 	pthread_t __obj;

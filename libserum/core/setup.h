@@ -45,7 +45,7 @@
 
 
 
-#if (!LIBSERUM_DOXYGEN)
+#if (!LS_DOXYGEN)
 #	if (LS_EXPORTING)
 #		define LSAPI						LS_EXPORT
 #	else
