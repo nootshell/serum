@@ -37,6 +37,10 @@
 
 
 
+#ifndef FILEPATH
+#	define FILEPATH							"undefined"
+#endif
+
 #ifndef GIT_TAG
 #	define GIT_TAG							"undefined"
 #endif
