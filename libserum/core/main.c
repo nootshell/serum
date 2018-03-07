@@ -76,7 +76,7 @@
 #	define ARCH								"Unknown"
 #endif
 
-#define PRINT_SZ(type)						printf("\t%5"PRIuPTR" = %s\n", sizeof(type), LS_MKSTR(type));
+#define PRINT_SZ(type)						printf("\t%5" PRIuPTR " = %s\n", sizeof(type), LS_MKSTR(type));
 
 
 

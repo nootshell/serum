@@ -42,12 +42,12 @@
 #define LS_MAGIC32							(LS_MAGIC8 << 24)
 #define LS_MAGIC32_STRIP(flags)				((flags) & 0x00FFFFFF)
 #define LS_MAGIC32_SET(flags)				(LS_MAGIC32_STRIP(flags) | LS_MAGIC32)
-#define LS_MAGIC32_VALID(flags)				(((flags) & 0xFF000000) == LS_MAGIC32)
+#define LS_MAGIC32_VALID(flags)				((uint32_t)((flags) & 0xFF000000) == (uint32_t)LS_MAGIC32)
 
 #define LS_MAGIC64							(LS_MAGIC8 << 56)
 #define LS_MAGIC64_STRIP(flags)				((flags) & 0x00FFFFFFFFFFFFFF)
 #define LS_MAGIC64_SET(flags)				(LS_MAGIC64_STRIP(flags) | LS_MAGIC64)
-#define LS_MAGIC64_VALID(flags)				(((flags) & 0xFF00000000000000) == LS_MAGIC64)
+#define LS_MAGIC64_VALID(flags)				((uint64_t)((flags) & 0xFF00000000000000) == (uint64_t)LS_MAGIC64)
 
 
 
