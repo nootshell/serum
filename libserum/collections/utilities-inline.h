@@ -39,6 +39,11 @@
 
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 LS_FORCE_INLINE
 void *const
 ls_pcollection_find_inline(ls_pcollection_t collection, const void *const find, const size_t size) {
@@ -73,6 +78,11 @@ ls_pcollection_rfind_inline(ls_pcollection_t collection, const void *const find,
 
 	return NULL;
 }
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 
