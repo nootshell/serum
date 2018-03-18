@@ -37,6 +37,7 @@
 #include "../runtime/concurrency/mutex.h"
 
 #include <stdio.h>
+#include <stdarg.h>
 
 
 
@@ -71,6 +72,7 @@ typedef struct ls_log {
 
 	uint32_t __flags;
 	ls_log_level_t level;
+	uint32_t __opflags;
 } ls_log_t;
 
 
@@ -92,13 +94,40 @@ extern "C" {
 		return ls_log_clear_ex(log, true);
 	}
 
+	LSAPI ls_result_t ls_log_level_set(ls_log_t *log, const ls_log_level_t level);
+
 	LSAPI ls_result_t ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream, const ls_bool_t close_stream);
 
 	static ls_result_t inline ls_log_set_stream(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream) {
 		return ls_log_set_stream_ex(log, level, stream, true);
 	}
 
-	LSAPI ls_result_t ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...);
+	LSAPI ls_result_t ls_log_vwrite_ex(ls_log_t *restrict log, const ls_log_level_t level, const ls_bool_t eol, const char *const restrict format, va_list vl);
+
+	static ls_result_t inline ls_log_writeln(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...) {
+		va_list vl;
+		va_start(vl, format);
+
+		const ls_result_t result = ls_log_vwrite_ex(log, level, true, format, vl);
+
+		va_end(vl);
+
+
+		return result;
+	}
+
+	static ls_result_t inline ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...) {
+		va_list vl;
+		va_start(vl, format);
+
+		//const ls_result_t result = ls_log_vwrite_ex(log, level, false, format, vl);
+		const ls_result_t result = ls_log_vwrite_ex(log, level, true, format, vl); // < REMOVE AFTER STAMP FIX
+
+		va_end(vl);
+
+
+		return result;
+	}
 
 #ifdef __cplusplus
 }

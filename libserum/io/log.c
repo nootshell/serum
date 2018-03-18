@@ -88,6 +88,7 @@ ls_log_init_ex(ls_log_t *restrict log, const uint32_t flags, const ls_log_level_
 		return LS_E_MAGIC;
 	}
 
+
 	if (LS_FLAG(flags, LS_LOG_MULTI)) {
 		// Allocate memory to hold streams for each level.
 		//     0: std/fallback
@@ -110,6 +111,9 @@ ls_log_init_ex(ls_log_t *restrict log, const uint32_t flags, const ls_log_level_
 	}
 
 	log->__flags = LS_MAGIC32_SET(flags);
+	log->__opflags = 0;
+
+
 	return LS_E_SUCCESS;
 }
 
@@ -163,6 +167,22 @@ ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams) {
 
 
 ls_result_t
+ls_log_level_set(ls_log_t *log, const ls_log_level_t level) {
+	if (level < 0 || level > LS_LOG_LEVEL_COUNT) {
+		return LS_E_INVALID;
+	}
+
+	// When appropriate, returns an error or initializes the global log.
+	GET_LOG(log,);
+
+	log->level = level;
+	return LS_E_SUCCESS;
+}
+
+
+
+
+ls_result_t
 ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream, const ls_bool_t close_stream) {
 	if (level < 0 || level > LS_LOG_LEVEL_COUNT) {
 		return LS_E_INVALID;
@@ -199,7 +219,7 @@ ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *c
 
 
 ls_result_t
-ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...) {
+ls_log_vwrite_ex(ls_log_t *restrict log, const ls_log_level_t level, const ls_bool_t eol, const char *const restrict format, va_list vl) {
 	if (format == NULL) {
 		return LS_E_NULL;
 	}
@@ -207,6 +227,10 @@ ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *con
 
 	// When appropriate, returns an error or initializes the global log.
 	GET_LOG(log,);
+
+	if (level > log->level) {
+		return LS_E_NOOP;
+	}
 
 
 	FILE *stream = NULL;
@@ -228,7 +252,10 @@ ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *con
 	}
 
 
-	volatile struct tm tm = { 0 };
+	// TODO: rewrite this function holy shit and just do it properly thanks
+	//if (LS_FLAG(log->__opflags, opflag_level)) {
+
+	struct tm tm = { 0 };
 	if (ls_localtime_now((struct tm *const)&tm) != LS_E_SUCCESS) {
 		return LS_E_FAILURE;
 	}
@@ -237,7 +264,7 @@ ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *con
 	ls_result_t result = LS_E_SUCCESS;
 
 	const size_t format_length = strlen(format);
-	const size_t buffsz = (format_length + sizeof(log_prefix) + LS_EOL_SIZE);
+	const size_t buffsz = (format_length + sizeof(log_prefix) + (eol ? LS_EOL_SIZE : 0));
 
 
 	LS_STACK_ALLOC(char, prefix, buffsz);
@@ -271,14 +298,13 @@ ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *con
 		}
 	}
 
-	strcpy(&prefix[pr + format_length], LS_EOL);
-	prefix[pr + format_length + LS_EOL_SIZE] = '\0';
+	if (eol) {
+		strcpy(&prefix[pr + format_length], LS_EOL);
+	}
+	prefix[pr + format_length + (eol ? LS_EOL_SIZE : 0)] = '\0';
 
 
-	va_list vl;
-	va_start(vl, format);
 	pr = vfprintf(stream, prefix, vl);
-	va_end(vl);
 
 	if (pr <= 0) {
 		result = LS_E_IO_WRITE;
