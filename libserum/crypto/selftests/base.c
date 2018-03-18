@@ -41,6 +41,11 @@
 
 
 
+FILEID("Cryptographic selftesting (CST) base.");
+
+
+
+
 struct cstreg_entry {
 	ls_result_t (*entrypoint)(void *const __st);
 	char **failures;

@@ -35,6 +35,11 @@
 
 
 
+FILEID("Wrapper around the CST base to perform a full run.");
+
+
+
+
 ls_result_t
 lscst_full(const ls_bool_t logging) {
 	lscst_init();
