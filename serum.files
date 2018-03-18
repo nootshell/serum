@@ -25,8 +25,15 @@ libserum/crypto/hash.c
 libserum/crypto/hash.h
 libserum/crypto/hashing/md5min.c
 libserum/crypto/hashing/md5min.h
+libserum/crypto/selftests/base.c
+libserum/crypto/selftests/base.h
+libserum/crypto/selftests/hashing/md5min.c
+libserum/crypto/selftests/hashing/md5min.h
+libserum/data/string-utils.c
+libserum/data/string-utils.h
 libserum/data/time.c
 libserum/data/time.h
+libserum/io/ansi-ctrl.h
 libserum/io/log.c
 libserum/io/log.h
 libserum/runtime/concurrency/mutex.c

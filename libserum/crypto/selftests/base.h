@@ -26,94 +26,36 @@
 ******************************************************************************/
 
 
-#include "./setup.h"
-
-#include "../io/log.h"
-#include "../runtime/concurrency/mutex.h"
-#include "../runtime/concurrency/state.h"
-#include "../runtime/concurrency/thread.h"
-#include "../runtime/event.h"
-
-#include "../crypto/selftests/base.h"
-#include "../crypto/selftests/hashing/md5min.h"
-
-#include <stdio.h>
-#include <inttypes.h>
+#ifndef __LS_CRYPTO_SELFTESTS_BASE_H
+#define __LS_CRYPTO_SELFTESTS_BASE_H
 
 
 
 
-#ifndef KERNEL
-#	if (LS_LINUX)
-#		define KERNEL						"Linux"
-#	elif (LS_WINDOWS)
-#		define KERNEL						"NT"
-#	else
-#		define KERNEL						"Unknown"
-#	endif
+#include "../../core/setup.h"
+
+
+
+
+#if (LS_EXPORTING)
+
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-#ifndef KERNEL_ARCH
-#	define KERNEL_ARCH						""
-#endif
+	LSAPI ls_result_t lscst_init();
+	LSAPI void lscst_set_logging(const ls_bool_t enabled);
 
-#if (LS_GCC)
-#	define COMPILER							"GCC"
-#elif (LS_LLVM)
-#	define COMPILER							"LLVM"
-#elif (LS_MINGW)
-#	define COMPILER							"MinGW"
-#elif (LS_MSC)
-#	define COMPILER							"MSC"
-#else
-#	define COMPILER							"Unknown"
-#endif
+	LSAPI ls_result_t lscst_register(const char *const name, const char *const description, ls_result_t(*entrypoint)(void *const __st));
+	LSAPI ls_result_t lscst_launch();
 
-#if (LS_X86)
-#	define ARCH								"x86"
-#elif (LS_X64)
-#	define ARCH								"x64"
-#elif (LS_ARM)
-#	define ARCH								"ARM"
-#else
-#	define ARCH								"Unknown"
-#endif
+	LSAPI ls_result_t lscst_report_failure(void *const __st, const char *const mesg);
 
-#define PRINT_SZ(type)						printf("\t%5" PRIuPTR " = %s\n", sizeof(type), LS_MKSTR(type));
-
-
-
-
-#define CORE_FILEID							"libserum (" LS_VERSION ", \"" LS_CODENAME "\") built for " ARCH " with " COMPILER " on " KERNEL " " KERNEL_ARCH " at " TIMESTAMP
-FILEID_PLAIN(___COREID___, ">>> " CORE_FILEID " <<<");
-
-
-
-
-#if (defined(ELF_INTERPRETER) && LS_LINUX)
-
-
-
-
-FILEID("ELF entrypoint for debugging/self-testing purposes.");
-
-
-
-
-const char LS_ATTR_USED __LS_ATTR(section(".interp")) interp[] = ELF_INTERPRETER;
-
-void
-LS_ATTR_NORETURN __libserum_main(const void *const d_ptr, const int argc, const char *const *const argv, const char *const *const env) {
-	ls_log_level_set(NULL, LS_LOG_LEVEL_DEFAULT);
-	ls_log_writeln(NULL, LS_LOG_LEVEL_DEBUG, "%s", CORE_FILEID);
-
-	lscst_init();
-	lscst_set_logging(true);
-	lscst_register("MD5 (Minimal)", "Minimal MD5 implementation.", lscst_hashing_md5min);
-	ls_result_t st_result = lscst_launch();
-
-	exit((st_result != LS_E_SUCCESS));
+#ifdef __cplusplus
 }
+#endif
+
+#endif
 
 
 

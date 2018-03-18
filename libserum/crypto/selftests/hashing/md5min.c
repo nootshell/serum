@@ -26,96 +26,71 @@
 ******************************************************************************/
 
 
-#include "./setup.h"
+#include "./md5min.h"
 
-#include "../io/log.h"
-#include "../runtime/concurrency/mutex.h"
-#include "../runtime/concurrency/state.h"
-#include "../runtime/concurrency/thread.h"
-#include "../runtime/event.h"
-
-#include "../crypto/selftests/base.h"
-#include "../crypto/selftests/hashing/md5min.h"
+#include "../base.h"
 
 #include <stdio.h>
-#include <inttypes.h>
+#include <string.h>
 
 
 
 
-#ifndef KERNEL
-#	if (LS_LINUX)
-#		define KERNEL						"Linux"
-#	elif (LS_WINDOWS)
-#		define KERNEL						"NT"
-#	else
-#		define KERNEL						"Unknown"
-#	endif
-#endif
-
-#ifndef KERNEL_ARCH
-#	define KERNEL_ARCH						""
-#endif
-
-#if (LS_GCC)
-#	define COMPILER							"GCC"
-#elif (LS_LLVM)
-#	define COMPILER							"LLVM"
-#elif (LS_MINGW)
-#	define COMPILER							"MinGW"
-#elif (LS_MSC)
-#	define COMPILER							"MSC"
-#else
-#	define COMPILER							"Unknown"
-#endif
-
-#if (LS_X86)
-#	define ARCH								"x86"
-#elif (LS_X64)
-#	define ARCH								"x64"
-#elif (LS_ARM)
-#	define ARCH								"ARM"
-#else
-#	define ARCH								"Unknown"
-#endif
-
-#define PRINT_SZ(type)						printf("\t%5" PRIuPTR " = %s\n", sizeof(type), LS_MKSTR(type));
+struct vector {
+	uint8_t digest[16];
+	char data[64];
+} vectors[] = {
+	{
+		.data = "",
+		.digest = { 0xD4, 0x1D, 0x8C, 0xD9, 0x8F, 0x00, 0xB2, 0x04, 0xE9, 0x80, 0x09, 0x98, 0xEC, 0xF8, 0x42, 0x7E }
+	},
+	{
+		.data = "The quick brown fox jumps over the lazy dog",
+		.digest = { 0x9E, 0x10, 0x7D, 0x9D, 0x37, 0x2B, 0xB6, 0x82, 0x6B, 0xD8, 0x1D, 0x35, 0x42, 0xA4, 0x19, 0xD6 }
+	},
+	{
+		.data = "The quick brown fox jumps over the lazy dog.",
+		.digest = { 0xE4, 0xD9, 0x09, 0xC2, 0x90, 0xD0, 0xFB, 0x1C, 0xA0, 0x68, 0xFF, 0xAD, 0xDF, 0x22, 0xCB, 0xD0 }
+	}
+};
 
 
 
 
-#define CORE_FILEID							"libserum (" LS_VERSION ", \"" LS_CODENAME "\") built for " ARCH " with " COMPILER " on " KERNEL " " KERNEL_ARCH " at " TIMESTAMP
-FILEID_PLAIN(___COREID___, ">>> " CORE_FILEID " <<<");
+ls_result_t
+lscst_hashing_md5min(void *const __st) {
+	const size_t n = (sizeof(vectors) / sizeof(*vectors));
 
+	ls_result_t result = LS_E_SUCCESS;
 
+	ls_md5min_data_t ctx;
+	ls_md5_digest_t digest;
 
+	size_t i, len;
+	struct vector *vec;
+	for (i = 0; i < n; ++i) {
+		if (ls_md5min_init(&ctx) != LS_E_SUCCESS) {
+			lscst_report_failure(__st, "Failed to initialize context.");
+			result = LS_E_FAILURE;
+			continue;
+		}
 
-#if (defined(ELF_INTERPRETER) && LS_LINUX)
+		vec = &vectors[i];
 
+		len = strlen(vec->data);
+		if (ls_md5min_finish(&ctx, (const uint8_t *const)vec->data, len, (len * LS_BITS_BYTE), digest) != LS_E_SUCCESS) {
+			lscst_report_failure(__st, "Failed to finish context.");
+			result = LS_E_FAILURE;
+			continue;
+		}
 
+		if (memcmp(vec->digest, digest, sizeof(digest)) != 0) {
+			lscst_report_failure(__st, "Digest mismatch.");
+			result = LS_E_FAILURE;
+			continue;
+		}
+	}
 
-
-FILEID("ELF entrypoint for debugging/self-testing purposes.");
-
-
-
-
-const char LS_ATTR_USED __LS_ATTR(section(".interp")) interp[] = ELF_INTERPRETER;
-
-void
-LS_ATTR_NORETURN __libserum_main(const void *const d_ptr, const int argc, const char *const *const argv, const char *const *const env) {
-	ls_log_level_set(NULL, LS_LOG_LEVEL_DEFAULT);
-	ls_log_writeln(NULL, LS_LOG_LEVEL_DEBUG, "%s", CORE_FILEID);
-
-	lscst_init();
-	lscst_set_logging(true);
-	lscst_register("MD5 (Minimal)", "Minimal MD5 implementation.", lscst_hashing_md5min);
-	ls_result_t st_result = lscst_launch();
-
-	exit((st_result != LS_E_SUCCESS));
+	memset(&ctx, 0, sizeof(ctx));
+	return result;
 }
-
-
-
-
-#endif
