@@ -26,70 +26,76 @@
 ******************************************************************************/
 
 
-#ifndef __LS_CRYPTO_HASHING_MD5_H
-#define __LS_CRYPTO_HASHING_MD5_H
+#include "./md5base.h"
+
+#include "../base.h"
+
+#include <stdio.h>
+#include <string.h>
 
 
 
 
-#include "../../core/setup.h"
+FILEID("MD5 (base) selftests.");
 
 
 
 
-#define LS_MD5_BLOCK_SIZE					64
-#define LS_MD5_DIGEST_SIZE					16
+struct vector {
+	uint8_t digest[16];
+	char data[64];
+} vectors[] = {
+	{
+		.data = "",
+		.digest = { 0xD4, 0x1D, 0x8C, 0xD9, 0x8F, 0x00, 0xB2, 0x04, 0xE9, 0x80, 0x09, 0x98, 0xEC, 0xF8, 0x42, 0x7E }
+	},
+	{
+		.data = "The quick brown fox jumps over the lazy dog",
+		.digest = { 0x9E, 0x10, 0x7D, 0x9D, 0x37, 0x2B, 0xB6, 0x82, 0x6B, 0xD8, 0x1D, 0x35, 0x42, 0xA4, 0x19, 0xD6 }
+	},
+	{
+		.data = "The quick brown fox jumps over the lazy dog.",
+		.digest = { 0xE4, 0xD9, 0x09, 0xC2, 0x90, 0xD0, 0xFB, 0x1C, 0xA0, 0x68, 0xFF, 0xAD, 0xDF, 0x22, 0xCB, 0xD0 }
+	}
+};
 
 
 
 
-typedef struct ls_md5min_data {
-	uint32_t state_A;
-	uint32_t state_B;
-	uint32_t state_C;
-	uint32_t state_D;
-} ls_md5min_data_t;
+ls_result_t
+lscst_hashing_md5min(void *const __st) {
+	const size_t n = (sizeof(vectors) / sizeof(*vectors));
 
-typedef uint8_t ls_md5_digest_t[LS_MD5_DIGEST_SIZE];
+	ls_result_t result = LS_E_SUCCESS;
 
+	ls_md5base_data_t ctx;
+	ls_md5_digest_t digest;
 
+	size_t i, len;
+	struct vector *vec;
+	for (i = 0; i < n; ++i) {
+		if (ls_md5base_init(&ctx) != LS_E_SUCCESS) {
+			lscst_report_failure(__st, "Failed to initialize context.");
+			result = LS_E_FAILURE;
+			continue;
+		}
 
+		vec = &vectors[i];
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+		len = strlen(vec->data);
+		if (ls_md5base_finish(&ctx, (const uint8_t *const)vec->data, len, (len * LS_BITS_BYTE), digest) != LS_E_SUCCESS) {
+			lscst_report_failure(__st, "Failed to finish context.");
+			result = LS_E_FAILURE;
+			continue;
+		}
 
-	LSAPI ls_result_t ls_md5min_init(ls_md5min_data_t *const data);
+		if (memcmp(vec->digest, digest, sizeof(digest)) != 0) {
+			lscst_report_failure(__st, "Digest mismatch.");
+			result = LS_E_FAILURE;
+			continue;
+		}
+	}
 
-	LSAPI ls_result_t ls_md5min_transform(ls_md5min_data_t *const restrict data, const uint32_t *const restrict block);
-
-	/*!	\brief Finishes a minimal MD5 context and outputs its digest.
-	**
-	**	Transforms the remaining input, if any, and finishes the message
-	**	with proper padding. This function also clears the context.
-	**
-	**	\param data The MD5 context to finish.
-	**	\param input Remaining input to transform. May be `NULL` if
-	**	             \p size is `0`.
-	**	\param size The size of the remaining input.
-	**	\param bits The number of total bits in the message for
-	**	            this context.
-	**	\param digest The output location for the MD5 digest.
-	**
-	**	\return
-	**		`#LS_E_NULL` if \p data or \p digest is `NULL`.
-	**		`#LS_E_NULL` if \p size is greater than `0` and \p input is null.
-	**		`#LS_E_SIZE` if \p size is greater than `#LS_MD5_BLOCK_SIZE`.
-	**		`#LS_E_FAILURE` if any transformations fail.
-	**		`#LS_E_SUCCESS` otherwise.
-	*/
-	LSAPI ls_result_t ls_md5min_finish(ls_md5min_data_t *const restrict data, const uint8_t *const restrict input, size_t size, const size_t bits, ls_md5_digest_t digest);
-
-#ifdef __cplusplus
+	memset(&ctx, 0, sizeof(ctx));
+	return result;
 }
-#endif
-
-
-
-
-#endif

@@ -30,7 +30,7 @@
 
 #include "./base.h"
 
-#include "./hashing/md5min.h"
+#include "./hashing/md5base.h"
 
 
 

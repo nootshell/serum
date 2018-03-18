@@ -26,71 +26,28 @@
 ******************************************************************************/
 
 
-#include "./md5min.h"
-
-#include "../base.h"
-
-#include <stdio.h>
-#include <string.h>
+#ifndef __LS_CRYPTO_SELFTESTS_HASHING_MD5MIN_H
+#define __LS_CRYPTO_SELFTESTS_HASHING_MD5MIN_H
 
 
 
 
-struct vector {
-	uint8_t digest[16];
-	char data[64];
-} vectors[] = {
-	{
-		.data = "",
-		.digest = { 0xD4, 0x1D, 0x8C, 0xD9, 0x8F, 0x00, 0xB2, 0x04, 0xE9, 0x80, 0x09, 0x98, 0xEC, 0xF8, 0x42, 0x7E }
-	},
-	{
-		.data = "The quick brown fox jumps over the lazy dog",
-		.digest = { 0x9E, 0x10, 0x7D, 0x9D, 0x37, 0x2B, 0xB6, 0x82, 0x6B, 0xD8, 0x1D, 0x35, 0x42, 0xA4, 0x19, 0xD6 }
-	},
-	{
-		.data = "The quick brown fox jumps over the lazy dog.",
-		.digest = { 0xE4, 0xD9, 0x09, 0xC2, 0x90, 0xD0, 0xFB, 0x1C, 0xA0, 0x68, 0xFF, 0xAD, 0xDF, 0x22, 0xCB, 0xD0 }
-	}
-};
+#include "../../hashing/md5base.h"
 
 
 
 
-ls_result_t
-lscst_hashing_md5min(void *const __st) {
-	const size_t n = (sizeof(vectors) / sizeof(*vectors));
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-	ls_result_t result = LS_E_SUCCESS;
+	LSAPI ls_result_t lscst_hashing_md5min(void *const __st);
 
-	ls_md5min_data_t ctx;
-	ls_md5_digest_t digest;
-
-	size_t i, len;
-	struct vector *vec;
-	for (i = 0; i < n; ++i) {
-		if (ls_md5min_init(&ctx) != LS_E_SUCCESS) {
-			lscst_report_failure(__st, "Failed to initialize context.");
-			result = LS_E_FAILURE;
-			continue;
-		}
-
-		vec = &vectors[i];
-
-		len = strlen(vec->data);
-		if (ls_md5min_finish(&ctx, (const uint8_t *const)vec->data, len, (len * LS_BITS_BYTE), digest) != LS_E_SUCCESS) {
-			lscst_report_failure(__st, "Failed to finish context.");
-			result = LS_E_FAILURE;
-			continue;
-		}
-
-		if (memcmp(vec->digest, digest, sizeof(digest)) != 0) {
-			lscst_report_failure(__st, "Digest mismatch.");
-			result = LS_E_FAILURE;
-			continue;
-		}
-	}
-
-	memset(&ctx, 0, sizeof(ctx));
-	return result;
+#ifdef __cplusplus
 }
+#endif
+
+
+
+
+#endif
