@@ -66,8 +66,7 @@ extern "C" {
 	/*!	\brief Finishes a minimal MD5 context and outputs its digest.
 	**
 	**	Transforms the remaining input, if any, and finishes the message
-	**	with proper padding.
-	**	This function also clears its own context.
+	**	with proper padding. This function also clears the context.
 	**
 	**	\param data The MD5 context to finish.
 	**	\param input Remaining input to transform. May be `NULL` if

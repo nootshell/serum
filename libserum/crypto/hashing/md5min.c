@@ -48,7 +48,7 @@ FILEID("Minimal MD5 implementation.");
 
 
 ls_result_t
-ls_md5_init(ls_md5min_data_t *const data) {
+ls_md5min_init(ls_md5min_data_t *const data) {
 	if (data == NULL) {
 		return LS_E_NULL;
 	}
@@ -64,7 +64,7 @@ ls_md5_init(ls_md5min_data_t *const data) {
 
 
 ls_result_t
-ls_md5_transform(ls_md5min_data_t *const restrict data, const uint32_t *const restrict block) {
+ls_md5min_transform(ls_md5min_data_t *const restrict data, const uint32_t *const restrict block) {
 	if (data == NULL || block == NULL) {
 		return LS_E_NULL;
 	}
@@ -174,7 +174,7 @@ ls_md5_transform(ls_md5min_data_t *const restrict data, const uint32_t *const re
 
 
 ls_result_t
-ls_md5_finish(ls_md5min_data_t *const restrict data, const uint8_t *const restrict input, size_t size, const size_t bits, ls_md5_digest_t digest) {
+ls_md5min_finish(ls_md5min_data_t *const restrict data, const uint8_t *const restrict input, size_t size, const size_t bits, ls_md5_digest_t digest) {
 	if (data == NULL || (size > 0 && input == NULL) || digest == NULL) {
 		return LS_E_NULL;
 	}
@@ -199,7 +199,7 @@ ls_md5_finish(ls_md5min_data_t *const restrict data, const uint8_t *const restri
 		if (size < LS_MD5_BLOCK_SIZE) {
 			memset(&buffer[size], 0, diff);
 		}
-		if (ls_md5_transform(data, (const uint32_t *const)buffer) != LS_E_SUCCESS) {
+		if (ls_md5min_transform(data, (const uint32_t *const)buffer) != LS_E_SUCCESS) {
 			return LS_E_FAILURE;
 		}
 		size = 0;
@@ -212,7 +212,7 @@ ls_md5_finish(ls_md5min_data_t *const restrict data, const uint8_t *const restri
 	// Append the number of bits in the message to the end of the pad and
 	// perform the final transform.
 	*((uint64_t*)(buffer + (LS_MD5_BLOCK_SIZE - 8))) = LS_ENSURE_LITTLE64(bits);
-	if (ls_md5_transform(data, (const uint32_t *const)buffer) != LS_E_SUCCESS) {
+	if (ls_md5min_transform(data, (const uint32_t *const)buffer) != LS_E_SUCCESS) {
 		return LS_E_FAILURE;
 	}
 
