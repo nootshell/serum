@@ -26,12 +26,15 @@
 *******************************************************************************/
 
 
+#include "../libserum/io/log.h"
 #include "../libserum/crypto/selftests/full.h"
 
 
 
 
 int main(int argc, char *argv[], char *env[]) {
+	ls_log_level_set(NULL, LS_LOG_LEVEL_INFO);
+
 	const ls_result_t cst_result = lscst_full(true);
 
 	return ((cst_result == LS_E_SUCCESS) ? 0 : 1);
