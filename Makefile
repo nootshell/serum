@@ -87,7 +87,7 @@ bin/libserum.so: CFLAGS += -DLS_EXPORTING=1
 bin/libserum.so: obj/libserum/core/main.o $(addprefix obj/, $(patsubst %.c, %.o, $(shell find libserum -type f -name '*.c' ! -wholename libserum/core/main.c)))
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
-	@$(CC) -o $@ -shared -lpthread $(LS_ELF_INTERP) $^
+	@$(CC) -o $@ -shared -pthread $(LS_ELF_INTERP) $^
 	@echo -n " ($(TITLE))$(shell ./autodoxy.sh wrap)"
 	@echo
 
