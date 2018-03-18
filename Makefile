@@ -46,7 +46,8 @@ CFLAGS = \
 	-Wall -fPIC -fstack-protector-strong -I. \
 	-DMAKEFILE=1 \
 	-DGIT_BRANCH="\"$(GIT_BRANCH)\"" -DGIT_TAG="\"$(GIT_TAG)\"" \
-	-DFILEPATH="\"$^\"" -DTIMESTAMP="\"$(TIMESTAMP)\"" -DKERNEL="\"$(KERNEL)\"" -DKERNEL_ARCH="\"$(KERNEL_ARCH)\""
+	-DFILEPATH="\"$^\"" -DTIMESTAMP="\"$(TIMESTAMP)\"" -DKERNEL="\"$(KERNEL)\"" -DKERNEL_ARCH="\"$(KERNEL_ARCH)\"" \
+	-DLS_ANSI_SUPPORT=1
 
 CFLAGS_DEBUG = -g -DLS_DEBUG=1
 
