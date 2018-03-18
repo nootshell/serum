@@ -21,7 +21,6 @@
 !*.kdev4
 !serum.creator
 !serum.files
-!serum.includes
 
 # Include these CI files.
 !.travis.yml
