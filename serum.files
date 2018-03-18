@@ -27,6 +27,8 @@ libserum/crypto/hashing/md5min.c
 libserum/crypto/hashing/md5min.h
 libserum/crypto/selftests/base.c
 libserum/crypto/selftests/base.h
+libserum/crypto/selftests/full.c
+libserum/crypto/selftests/full.h
 libserum/crypto/selftests/hashing/md5min.c
 libserum/crypto/selftests/hashing/md5min.h
 libserum/data/string-utils.c

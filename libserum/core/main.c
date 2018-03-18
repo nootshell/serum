@@ -34,8 +34,7 @@
 #include "../runtime/concurrency/thread.h"
 #include "../runtime/event.h"
 
-#include "../crypto/selftests/base.h"
-#include "../crypto/selftests/hashing/md5min.h"
+#include "../crypto/selftests/full.h"
 
 #include <stdio.h>
 #include <inttypes.h>
@@ -107,12 +106,9 @@ LS_ATTR_NORETURN __libserum_main(const void *const d_ptr, const int argc, const 
 	ls_log_level_set(NULL, LS_LOG_LEVEL_DEFAULT);
 	ls_log_writeln(NULL, LS_LOG_LEVEL_DEBUG, "%s", CORE_FILEID);
 
-	lscst_init();
-	lscst_set_logging(true);
-	lscst_register("MD5 (Minimal)", "Minimal MD5 implementation.", lscst_hashing_md5min);
-	ls_result_t st_result = lscst_launch();
+	const ls_result_t st_result = lscst_full(true);
 
-	exit((st_result != LS_E_SUCCESS));
+	exit((st_result == LS_E_SUCCESS) ? 0 : 1);
 }
 
 

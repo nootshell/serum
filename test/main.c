@@ -26,14 +26,13 @@
 *******************************************************************************/
 
 
-#include <stdio.h>
-#include <string.h>
+#include "../libserum/crypto/selftests/full.h"
 
 
 
 
 int main(int argc, char *argv[], char *env[]) {
-	puts("Test test.");
+	const ls_result_t cst_result = lscst_full(true);
 
-	return 0;
+	return ((cst_result == LS_E_SUCCESS) ? 0 : 1);
 }
