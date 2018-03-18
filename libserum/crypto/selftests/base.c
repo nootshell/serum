@@ -146,7 +146,7 @@ lscst_launch() {
 
 	struct cstreg_entry *item;
 
-	uint64_t ns;
+	uint64_t ns = 0;
 	size_t i;
 	for (i = 0; i < __cstreg_count; ++i) {
 		item = &__cstreg[i];
