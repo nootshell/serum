@@ -61,7 +61,7 @@ extern "C" {
 
 	LSAPI ls_result_t ls_md5base_init(ls_md5base_data_t *const data);
 
-	LSAPI ls_result_t ls_md5base_transform(ls_md5base_data_t *const restrict data, const uint32_t *const restrict block);
+	LSAPI ls_result_t ls_md5base_update(ls_md5base_data_t *const restrict data, const uint32_t *const restrict block);
 
 	/*!	\brief Finishes a minimal MD5 context and outputs its digest.
 	**
