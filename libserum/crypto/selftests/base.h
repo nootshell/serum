@@ -37,8 +37,6 @@
 
 
 
-#if (LS_EXPORTING)
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -50,8 +48,6 @@ extern "C" {
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif
 
 
