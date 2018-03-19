@@ -26,28 +26,4 @@
 ******************************************************************************/
 
 
-#ifndef __LS_CRYPTO_SELFTESTS_FULL_H
-#define __LS_CRYPTO_SELFTESTS_FULL_H
-
-
-
-
-#include "../../core/setup.h"
-
-
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	LSAPI ls_result_t lscst_full(const ls_bool_t logging);
-
-#ifdef __cplusplus
-}
-#endif
-
-
-
-
-#endif
+#include "./hash.h"

@@ -50,6 +50,7 @@ struct ls_event {
 	void *tag;
 	ls_mutex_t __lock;
 	uint32_t __flags;
+	uint32_t __pad;
 };
 
 

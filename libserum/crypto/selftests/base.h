@@ -43,12 +43,9 @@
 extern "C" {
 #endif
 
-	LSAPI ls_result_t lscst_init();
 	LSAPI void lscst_set_logging(const ls_bool_t enabled);
 
-	LSAPI ls_result_t lscst_register(const char *const name, const char *const description, ls_result_t(*entrypoint)(void *const __st));
 	LSAPI ls_result_t lscst_launch();
-
 	LSAPI ls_result_t lscst_report_failure(void *const __st, const char *const mesg);
 
 #ifdef __cplusplus

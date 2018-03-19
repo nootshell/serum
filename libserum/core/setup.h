@@ -42,6 +42,10 @@
 #include "./setup/bitops.h"
 #include "./setup/magic.h"
 
+#if (LS_EXPORTING)
+#	include "./signatures.h"
+#endif
+
 
 
 

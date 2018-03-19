@@ -26,65 +26,32 @@
 ******************************************************************************/
 
 
-#ifndef __LS_RUNTIME_CONCURRENCY_STATE_H
-#define __LS_RUNTIME_CONCURRENCY_STATE_H
+#include "./hash_registry.h"
+
+#include "./hashing/md5base.h"
+#include "./selftests/hashing/md5base.h"
 
 
 
 
-#include "../../core/setup.h"
+#define INIT_SELFTEST(entryp)			{ .entrypoint = (entryp), .result = LS_E_NOOP, .failures = NULL, .n_failures = 0 }
 
-#include "./mutex.h"
+struct lsreg_hashing __hash_registry[] = {
+	{
+		.name = "MD5",
+		.ctx_size = sizeof(struct ls_md5base_data),
+		.block_size = LS_MD5_BLOCK_SIZE,
+		.digest_size = LS_MD5_DIGEST_SIZE,
 
+		.init = (lssig_hash_init)ls_md5base_init,
+		.clear = NULL,
+		.update = (lssig_hash_update)ls_md5base_update,
+		.finish = (lssig_hash_finish)ls_md5base_finish,
 
-#if (LS_DOXYGEN)
-#	// Doxygen preprocessor.
-#elif (LS_PTHREADS)
-#	include <pthread.h>
-#elif (LS_WTHREADS)
-#	error TODO
-#else
-#	error Unsupported threading API.
-#endif
-
-
-
-
-typedef struct ls_state {
-#if (LS_PTHREADS)
-	pthread_cond_t __cond;
-#elif (LS_WTHREADS)
-#	error TODO
-#endif
-	ls_mutex_t __lock;
-	ls_nword_t value;
-	uint32_t __pad;
-} ls_state_t;
-
-
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	LSAPI ls_result_t ls_state_init_ex(ls_state_t *const state, const ls_nword_t value);
-
-	static ls_result_t inline ls_state_init(ls_state_t *const state) {
-		return ls_state_init_ex(state, 0);
+		.selftest = INIT_SELFTEST(lscst_hashing_md5min),
+		.maintainer = "icecubetray"
 	}
+};
 
-	LSAPI ls_result_t ls_state_clear(ls_state_t *const state);
-
-	LSAPI ls_result_t ls_state_set(ls_state_t *const state, const ls_nword_t value);
-
-	LSAPI ls_result_t ls_state_get(ls_state_t *const restrict state, ls_nword_t *const restrict out_value);
-
-#ifdef __cplusplus
-}
-#endif
-
-
-
-
-#endif
+const size_t __hash_registry_size = sizeof(__hash_registry);
+const size_t __hash_registry_count = (sizeof(__hash_registry) / sizeof(*__hash_registry));

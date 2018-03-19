@@ -26,40 +26,15 @@
 ******************************************************************************/
 
 
-#ifndef __LS_RUNTIME_CONCURRENCY_STATE_H
-#define __LS_RUNTIME_CONCURRENCY_STATE_H
+#ifndef __LS_CRYPTO_HASH_H
+#define __LS_CRYPTO_HASH_H
 
 
 
 
-#include "../../core/setup.h"
+#include "../core/setup.h"
 
-#include "./mutex.h"
-
-
-#if (LS_DOXYGEN)
-#	// Doxygen preprocessor.
-#elif (LS_PTHREADS)
-#	include <pthread.h>
-#elif (LS_WTHREADS)
-#	error TODO
-#else
-#	error Unsupported threading API.
-#endif
-
-
-
-
-typedef struct ls_state {
-#if (LS_PTHREADS)
-	pthread_cond_t __cond;
-#elif (LS_WTHREADS)
-#	error TODO
-#endif
-	ls_mutex_t __lock;
-	ls_nword_t value;
-	uint32_t __pad;
-} ls_state_t;
+#include "./hash_registry.h"
 
 
 
@@ -68,17 +43,7 @@ typedef struct ls_state {
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_state_init_ex(ls_state_t *const state, const ls_nword_t value);
-
-	static ls_result_t inline ls_state_init(ls_state_t *const state) {
-		return ls_state_init_ex(state, 0);
-	}
-
-	LSAPI ls_result_t ls_state_clear(ls_state_t *const state);
-
-	LSAPI ls_result_t ls_state_set(ls_state_t *const state, const ls_nword_t value);
-
-	LSAPI ls_result_t ls_state_get(ls_state_t *const restrict state, ls_nword_t *const restrict out_value);
+	LSAPI ls_result_t ls_hash(const ls_nword_t algorithm, const uint8_t *const restrict data, const size_t size, uint8_t *const restrict digest);
 
 #ifdef __cplusplus
 }

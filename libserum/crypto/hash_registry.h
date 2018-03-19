@@ -26,26 +26,54 @@
 ******************************************************************************/
 
 
-#include "./full.h"
-
-#include "./base.h"
-
-#include "./hashing/md5base.h"
+#ifndef __LS_CRYPTO_HASH_REGISTRY_H
+#define __LS_CRYPTO_HASH_REGISTRY_H
 
 
 
 
-FILEID("Wrapper around the CST base to perform a full run.");
+#include "../core/signatures.h"
 
 
 
 
-ls_result_t
-lscst_full(const ls_bool_t logging) {
-	lscst_init();
-	lscst_set_logging(logging);
+#define LS_HASH_MD5							0
 
-	lscst_register("MD5 (Minimal)", "Minimal MD5 implementation.", lscst_hashing_md5min);
 
-	return lscst_launch();
-}
+
+
+#if (LS_EXPORTING)
+struct lsreg_hashing {
+	// Properties.
+	uint32_t flags;
+	char name[12];
+	size_t ctx_size;
+	size_t block_size;
+	size_t digest_size;
+
+	// Functions.
+	lssig_hash_init init;
+	lssig_hash_clear clear;
+	lssig_hash_update update;
+	lssig_hash_finish finish;
+
+	// Maintenance.
+	struct lscst_entry {
+		lssig_cst_case entrypoint;
+		char **failures;
+		size_t n_failures;
+		ls_result_t result;
+		uint32_t __pad;
+	} selftest;
+	char maintainer[32];
+};
+
+extern struct lsreg_hashing __hash_registry[];
+extern const size_t __hash_registry_size;
+extern const size_t __hash_registry_count;
+#endif
+
+
+
+
+#endif

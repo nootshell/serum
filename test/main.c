@@ -27,7 +27,8 @@
 
 
 #include "../libserum/io/log.h"
-#include "../libserum/crypto/selftests/full.h"
+
+#include "../libserum/crypto/selftests/base.h"
 
 
 
@@ -35,7 +36,8 @@
 int main(int argc, char *argv[], char *env[]) {
 	ls_log_level_set(NULL, LS_LOG_LEVEL_INFO);
 
-	const ls_result_t cst_result = lscst_full(true);
+	lscst_set_logging(true);
+	const ls_result_t cst_result = lscst_launch();
 
 	return ((cst_result == LS_E_SUCCESS) ? 0 : 1);
 }

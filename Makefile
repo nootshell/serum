@@ -43,7 +43,7 @@ KERNEL_ARCH = $(shell uname -m)
 REMAKE = $(shell touch libserum/core/main.c)
 
 CFLAGS = \
-	-Wall -fPIC -fstack-protector-strong -I. \
+	-Wall -Wpadded -fPIC -fstack-protector-strong -I. \
 	-DMAKEFILE=1 \
 	-DGIT_BRANCH="\"$(GIT_BRANCH)\"" -DGIT_TAG="\"$(GIT_TAG)\"" \
 	-DFILEPATH="\"$^\"" -DTIMESTAMP="\"$(TIMESTAMP)\"" -DKERNEL="\"$(KERNEL)\"" -DKERNEL_ARCH="\"$(KERNEL_ARCH)\"" \

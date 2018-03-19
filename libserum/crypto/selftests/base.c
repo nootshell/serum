@@ -28,11 +28,10 @@
 
 #include "./base.h"
 
-#include "./hashing/md5base.h"
 #include "../../io/ansi-ctrl.h"
 #include "../../io/log.h"
-#include "../../data/string-utils.h"
 #include "../../data/time.h"
+#include "../hash_registry.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -46,36 +45,10 @@ FILEID("Cryptographic selftesting (CST) base.");
 
 
 
-struct cstreg_entry {
-	ls_result_t (*entrypoint)(void *const __st);
-	char **failures;
-	size_t n_failures;
-	char name[16];
-	char description[52];
-	ls_result_t result;
-};
-
-static struct cstreg_entry *__cstreg = NULL;
-static size_t __cstreg_count = 0;
 static ls_bool_t __logging = false;
 
 
 
-
-ls_result_t
-lscst_init() {
-	if (__cstreg != NULL) {
-		return LS_E_ALREADY;
-	}
-
-	__cstreg = malloc(0);
-	if (__cstreg == NULL) {
-		return LS_E_MEMORY;
-	}
-
-	__cstreg_count = 0;
-	return LS_E_SUCCESS;
-}
 
 void
 lscst_set_logging(const ls_bool_t enabled) {
@@ -86,77 +59,24 @@ lscst_set_logging(const ls_bool_t enabled) {
 
 
 ls_result_t
-lscst_register(const char *const name, const char *const description, ls_result_t(*entrypoint)(void *const __st)) {
-	if (entrypoint == NULL) {
-		return LS_E_NULL;
-	}
-
-	if (__cstreg == NULL) {
-		return LS_E_STATE;
-	}
-
-
-	struct cstreg_entry item = {
-		.result = 0,
-		.entrypoint = entrypoint,
-		.failures = NULL,
-		.n_failures = 0
-	};
-
-
-	if (name != NULL) {
-		ls_strncpy(item.name, name, (sizeof(item.name) - 1));
-	} else {
-		memset(item.name, 0, sizeof(item.name));
-	}
-
-	if (description != NULL) {
-		ls_strncpy(item.description, description, (sizeof(item.description) - 1));
-	} else {
-		memset(item.description, 0, sizeof(item.description));
-	}
-
-
-	const size_t index = __cstreg_count;
-
-	void *const newp = realloc(__cstreg, (sizeof(*__cstreg) * (index + 1)));
-	if (newp == NULL) {
-		return LS_E_MEMORY;
-	} else {
-		__cstreg = newp;
-		++__cstreg_count;
-	}
-
-	memcpy(&__cstreg[index], &item, sizeof(*__cstreg));
-
-
-	return LS_E_SUCCESS;
-}
-
-
-
-
-ls_result_t
 lscst_launch() {
-	if (__cstreg == NULL) {
-		return LS_E_STATE;
-	}
-
-	if (__cstreg_count == 0) {
+	if (__hash_registry_count == 0) {
 		return LS_E_NOOP;
 	}
 
 
 	ls_result_t result = LS_E_SUCCESS;
 
-	struct cstreg_entry *item;
+	struct lsreg_hashing *item;
+	struct lscst_entry *item_st;
 
 	uint64_t ns = 0;
 	size_t i;
-	for (i = 0; i < __cstreg_count; ++i) {
-		item = &__cstreg[i];
+	for (i = 0; i < __hash_registry_count; ++i) {
+		item = &__hash_registry[i];
+		item_st = &item->selftest;
 
-		if (item->entrypoint == NULL) {
+		if (item_st->entrypoint == NULL) {
 			continue;
 		}
 
@@ -164,7 +84,7 @@ lscst_launch() {
 			ns = ls_time_nanos();
 		}
 
-		if ((item->result = item->entrypoint(item)) != LS_E_SUCCESS) {
+		if ((item_st->result = item_st->entrypoint(item_st)) != LS_E_SUCCESS) {
 			result = LS_E_FAILURE;
 		}
 
@@ -176,7 +96,7 @@ lscst_launch() {
 				"Ran %s in %" PRIu64 "ns: %s",
 				item->name,
 				ns,
-				((item->result == LS_E_SUCCESS) ? "passed" : "failed")
+				((item_st->result == LS_E_SUCCESS) ? "passed" : "failed")
 			);
 		}
 	}
@@ -186,16 +106,17 @@ lscst_launch() {
 		size_t f;
 		ls_bool_t success;
 		ls_log_level_t level;
-		for (i = 0; i < __cstreg_count; ++i) {
-			item = &__cstreg[i];
+		for (i = 0; i < __hash_registry_count; ++i) {
+			item = &__hash_registry[i];
+			item_st = &item->selftest;
 
-			success = (item->failures == NULL && item->n_failures == 0);
+
+			success = (item_st->failures == NULL && item_st->n_failures == 0);
 			level = (success ? LS_LOG_LEVEL_INFO : LS_LOG_LEVEL_SEVERE);
 
+
 			ls_log_writeln(NULL, level, "%s:", item->name);
-			if (item->description[0] != '\0') {
-				ls_log_writeln(NULL, level, "  Description: %s", item->description);
-			}
+
 
 			ls_log_writeln(NULL, level, "  Result:");
 
@@ -204,12 +125,13 @@ lscst_launch() {
 				continue;
 			}
 
-			for (f = 0; f < item->n_failures; ++f) {
-				ls_log_writeln(NULL, level, ">   " LS_ANSI_WRAP(LS_ANSI_FG_RED, "%s"), item->failures[f]);
-				free(item->failures[f]);
+			for (f = 0; f < item_st->n_failures; ++f) {
+				ls_log_writeln(NULL, level, ">   " LS_ANSI_WRAP(LS_ANSI_FG_RED, "%s"), item_st->failures[f]);
+				free(item_st->failures[f]);
 			}
 
-			free(item->failures);
+			free(item_st->failures);
+			item_st->failures = NULL;
 		}
 	}
 
@@ -238,7 +160,7 @@ lscst_report_failure(void *const __st, const char *const mesg) {
 	strncpy(str, mesg, mesglen);
 
 
-	struct cstreg_entry *item = __st;
+	struct lscst_entry *item = __st;
 	if (item->failures == NULL) {
 		item->n_failures = 0;
 	}

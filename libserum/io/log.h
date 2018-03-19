@@ -73,6 +73,7 @@ typedef struct ls_log {
 	uint32_t __flags;
 	ls_log_level_t level;
 	uint32_t __opflags;
+	uint32_t __pad;
 } ls_log_t;
 
 
