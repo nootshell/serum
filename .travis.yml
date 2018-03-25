@@ -1,7 +1,11 @@
 language: c
 
+
+
+
 matrix:
   include:
+
     - os: linux
       addons:
         apt:
@@ -12,8 +16,21 @@ matrix:
       env:
          - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
+    - os: osx
+      osx_image: xcode9.2
+      sudo: required
+      env:
+        - MATRIX_EVAL="sudo rm /usr/local/include/c++ && brew install --force gcc && export CC=gcc-7 && export CXX=g++-7"
+
+
+
+
 before_install:
     - eval "${MATRIX_EVAL}"
     - ./travis.sh before_install
+
+
 install: ./travis.sh install
+
+
 script: ./travis.sh script
