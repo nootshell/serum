@@ -26,13 +26,31 @@
 ******************************************************************************/
 
 
-#ifndef __LS_CRYPTO_SELFTESTS_HASHING_MD5MIN_H
-#define __LS_CRYPTO_SELFTESTS_HASHING_MD5MIN_H
+#ifndef __LS_CRYPTO_HASHING_MD5_H
+#define __LS_CRYPTO_HASHING_MD5_H
 
 
 
 
-#include "../../hashing/md5base.h"
+#include "../../../core/setup.h"
+
+
+
+
+#define LS_MD5_BLOCK_SIZE					64
+#define LS_MD5_DIGEST_SIZE					16
+
+
+
+
+typedef struct ls_md5base_data {
+	uint32_t state_A;
+	uint32_t state_B;
+	uint32_t state_C;
+	uint32_t state_D;
+} ls_md5base_data_t;
+
+typedef uint8_t ls_md5_digest_t[LS_MD5_DIGEST_SIZE];
 
 
 
@@ -41,7 +59,31 @@
 extern "C" {
 #endif
 
-	LSAPI ls_result_t lscst_hashing_md5min(void *const __st);
+	LSAPI ls_result_t ls_md5base_init(ls_md5base_data_t *const data);
+
+	LSAPI ls_result_t ls_md5base_update(ls_md5base_data_t *const restrict data, const uint32_t *const restrict block);
+
+	/*!	\brief Finishes a minimal MD5 context and outputs its digest.
+	**
+	**	Transforms the remaining input, if any, and finishes the message
+	**	with proper padding. This function also clears the context.
+	**
+	**	\param data The MD5 context to finish.
+	**	\param input Remaining input to transform. May be `NULL` if
+	**	             \p size is `0`.
+	**	\param size The size of the remaining input.
+	**	\param bits The number of total bits in the message for
+	**	            this context.
+	**	\param digest The output location for the MD5 digest.
+	**
+	**	\return
+	**		`#LS_E_NULL` if \p data or \p digest is `NULL`.
+	**		`#LS_E_NULL` if \p size is greater than `0` and \p input is null.
+	**		`#LS_E_SIZE` if \p size is greater than `#LS_MD5_BLOCK_SIZE`.
+	**		`#LS_E_FAILURE` if any transformations fail.
+	**		`#LS_E_SUCCESS` otherwise.
+	*/
+	LSAPI ls_result_t ls_md5base_finish(ls_md5base_data_t *const restrict data, const uint8_t *const restrict input, size_t size, const size_t bits, ls_md5_digest_t digest);
 
 #ifdef __cplusplus
 }

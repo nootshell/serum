@@ -28,8 +28,8 @@
 
 #include "./hash_registry.h"
 
-#include "./hashing/md5base.h"
-#include "./selftests/hashing/md5base.h"
+#include "./hashing/base/md5base.h"
+#include "./selftests/hashing/base/md5base.h"
 
 
 

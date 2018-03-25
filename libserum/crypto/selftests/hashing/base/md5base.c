@@ -28,7 +28,7 @@
 
 #include "./md5base.h"
 
-#include "../base.h"
+#include "../../base.h"
 
 #include <stdio.h>
 #include <string.h>
