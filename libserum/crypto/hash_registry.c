@@ -43,10 +43,10 @@ struct lsreg_hashing __hash_registry[] = {
 		.block_size = LS_MD5_BLOCK_SIZE,
 		.digest_size = LS_MD5_DIGEST_SIZE,
 
-		.init = (lssig_hash_init)ls_md5base_init,
+		.init = (lssig_hash_init)lsp_md5_init,
 		.clear = NULL,
-		.update = (lssig_hash_update)ls_md5base_update,
-		.finish = (lssig_hash_finish)ls_md5base_finish,
+		.update = (lssig_hash_update)lsp_md5_update,
+		.finish = (lssig_hash_finish)lsp_md5_finish,
 
 		.selftest = INIT_SELFTEST(lscst_hashing_md5min),
 		.maintainer = "icecubetray"

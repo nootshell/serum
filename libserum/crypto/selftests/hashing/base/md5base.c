@@ -94,7 +94,7 @@ lscst_hashing_md5min(void *const __st) {
 	size_t i, len;
 	struct vector *vec;
 	for (i = 0; i < n; ++i) {
-		if (ls_md5base_init(&ctx) != LS_E_SUCCESS) {
+		if (lsp_md5_init(&ctx) != LS_E_SUCCESS) {
 			lscst_report_failure(__st, "Failed to initialize context.");
 			result = LS_E_FAILURE;
 			continue;
@@ -103,7 +103,7 @@ lscst_hashing_md5min(void *const __st) {
 		vec = &vectors[i];
 
 		len = strlen(vec->data);
-		if (ls_md5base_finish(&ctx, (const uint8_t *const)vec->data, len, (len * LS_BITS_BYTE), digest) != LS_E_SUCCESS) {
+		if (lsp_md5_finish(&ctx, (const uint8_t *const)vec->data, len, (len * LS_BITS_BYTE), digest) != LS_E_SUCCESS) {
 			lscst_report_failure(__st, "Failed to finish context.");
 			result = LS_E_FAILURE;
 			continue;
