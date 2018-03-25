@@ -31,7 +31,7 @@
 
 
 
-FILEID("Time related functionality.");
+FILEID("Time-related routines.");
 
 
 

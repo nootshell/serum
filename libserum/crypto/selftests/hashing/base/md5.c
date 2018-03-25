@@ -26,8 +26,9 @@
 ******************************************************************************/
 
 
-#include "./md5base.h"
+#include "./md5.h"
 
+#include "../../../../core/memory.h"
 #include "../../base.h"
 
 #include <stdio.h>
@@ -36,7 +37,7 @@
 
 
 
-FILEID("MD5 (base) selftests.");
+FILEID("CST: MD5 [pure]");
 
 
 
@@ -88,7 +89,7 @@ lscst_hashing_md5min(void *const __st) {
 
 	ls_result_t result = LS_E_SUCCESS;
 
-	ls_md5base_data_t ctx;
+	lsp_md5_data_t ctx;
 	ls_md5_digest_t digest;
 
 	size_t i, len;
@@ -116,6 +117,6 @@ lscst_hashing_md5min(void *const __st) {
 		}
 	}
 
-	memset(&ctx, 0, sizeof(ctx));
+	ls_memory_clear(&ctx, sizeof(ctx));
 	return result;
 }

@@ -28,8 +28,13 @@
 
 #include "./hash_registry.h"
 
-#include "./hashing/base/md5base.h"
-#include "./selftests/hashing/base/md5base.h"
+#include "./hashing/base/md5.h"
+#include "./selftests/hashing/base/md5.h"
+
+
+
+
+FILEID("Registry of hash functions.");
 
 
 
@@ -39,7 +44,7 @@
 struct lsreg_hashing __hash_registry[] = {
 	{
 		.name = "MD5",
-		.ctx_size = sizeof(struct ls_md5base_data),
+		.ctx_size = sizeof(struct lsp_md5_data),
 		.block_size = LS_MD5_BLOCK_SIZE,
 		.digest_size = LS_MD5_DIGEST_SIZE,
 

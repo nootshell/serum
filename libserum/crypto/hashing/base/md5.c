@@ -26,7 +26,9 @@
 ******************************************************************************/
 
 
-#include "./md5base.h"
+#include "./md5.h"
+
+#include "../../../core/memory.h"
 
 #include <string.h>
 
@@ -42,13 +44,13 @@
 
 
 
-FILEID("MD5 implementation base.");
+FILEID("Pure MD5 implementation.");
 
 
 
 
 ls_result_t
-lsp_md5_init(ls_md5base_data_t *const data) {
+lsp_md5_init(lsp_md5_data_t *const data) {
 	if (data == NULL) {
 		return LS_E_NULL;
 	}
@@ -64,7 +66,7 @@ lsp_md5_init(ls_md5base_data_t *const data) {
 
 
 ls_result_t
-lsp_md5_update(ls_md5base_data_t *const restrict data, const uint32_t *const restrict block) {
+lsp_md5_update(lsp_md5_data_t *const restrict data, const uint32_t *const restrict block) {
 	if (data == NULL || block == NULL) {
 		return LS_E_NULL;
 	}
@@ -174,7 +176,7 @@ lsp_md5_update(ls_md5base_data_t *const restrict data, const uint32_t *const res
 
 
 ls_result_t
-lsp_md5_finish(ls_md5base_data_t *const restrict data, const uint8_t *const restrict input, size_t size, const size_t bits, ls_md5_digest_t digest) {
+lsp_md5_finish(lsp_md5_data_t *const restrict data, const uint8_t *const restrict input, size_t size, const size_t bits, ls_md5_digest_t digest) {
 	if (data == NULL || (size > 0 && input == NULL) || digest == NULL) {
 		return LS_E_NULL;
 	}
@@ -197,7 +199,7 @@ lsp_md5_finish(ls_md5base_data_t *const restrict data, const uint8_t *const rest
 	size_t diff = (LS_MD5_BLOCK_SIZE - size);
 	if (diff < 8) {
 		if (size < LS_MD5_BLOCK_SIZE) {
-			memset(&buffer[size], 0, diff);
+			ls_memory_clear(&buffer[size], diff);
 		}
 		if (lsp_md5_update(data, (const uint32_t *const)buffer) != LS_E_SUCCESS) {
 			return LS_E_FAILURE;
@@ -207,7 +209,7 @@ lsp_md5_finish(ls_md5base_data_t *const restrict data, const uint8_t *const rest
 	}
 
 	// Clear everything between the input and the final padding.
-	memset(&buffer[size], 0, (diff - 8));
+	ls_memory_clear(&buffer[size], (diff - 8));
 
 	// Append the number of bits in the message to the end of the pad and
 	// perform the final transform.

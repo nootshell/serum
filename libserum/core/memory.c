@@ -28,15 +28,19 @@
 
 #include "./memory.h"
 
+#include <string.h>
 #include <inttypes.h>
+
+
+
+
+FILEID("Memory-related routines.");
 
 
 
 
 static const char fmt_normal[] = "%0*"PRIXPTR": ";
 static const char fmt_ansi[] = "\033[0;36m%0*"PRIXPTR"\033[0m: \033[0;37m";
-
-
 
 
 ls_result_t
@@ -112,4 +116,15 @@ ls_memory_dump_ex(const void *const src, const size_t size, const ls_nword_t col
 
 
 	return result;
+}
+
+
+
+
+void
+ls_memory_clear(volatile void *const target, const size_t size) {
+	if (target && size) {
+		memset((void*)target, 0x00, size);
+		*(volatile char *const)target = *(volatile char *const)target;
+	}
 }

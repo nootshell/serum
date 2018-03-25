@@ -39,7 +39,7 @@
 
 
 
-FILEID("Logging functionality.");
+FILEID("Logging routines.");
 
 
 

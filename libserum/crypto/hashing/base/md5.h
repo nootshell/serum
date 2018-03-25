@@ -43,12 +43,12 @@
 
 
 
-typedef struct ls_md5base_data {
+typedef struct lsp_md5_data {
 	uint32_t state_A;
 	uint32_t state_B;
 	uint32_t state_C;
 	uint32_t state_D;
-} ls_md5base_data_t;
+} lsp_md5_data_t;
 
 typedef uint8_t ls_md5_digest_t[LS_MD5_DIGEST_SIZE];
 
@@ -59,9 +59,9 @@ typedef uint8_t ls_md5_digest_t[LS_MD5_DIGEST_SIZE];
 extern "C" {
 #endif
 
-	LSAPI ls_result_t lsp_md5_init(ls_md5base_data_t *const data);
+	LSAPI ls_result_t lsp_md5_init(lsp_md5_data_t *const data);
 
-	LSAPI ls_result_t lsp_md5_update(ls_md5base_data_t *const restrict data, const uint32_t *const restrict block);
+	LSAPI ls_result_t lsp_md5_update(lsp_md5_data_t *const restrict data, const uint32_t *const restrict block);
 
 	/*!	\brief Finishes a minimal MD5 context and outputs its digest.
 	**
@@ -83,7 +83,7 @@ extern "C" {
 	**		`#LS_E_FAILURE` if any transformations fail.
 	**		`#LS_E_SUCCESS` otherwise.
 	*/
-	LSAPI ls_result_t lsp_md5_finish(ls_md5base_data_t *const restrict data, const uint8_t *const restrict input, size_t size, const size_t bits, ls_md5_digest_t digest);
+	LSAPI ls_result_t lsp_md5_finish(lsp_md5_data_t *const restrict data, const uint8_t *const restrict input, size_t size, const size_t bits, ls_md5_digest_t digest);
 
 #ifdef __cplusplus
 }

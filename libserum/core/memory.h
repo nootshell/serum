@@ -65,6 +65,8 @@ extern "C" {
 		return ls_memory_dump_ex(src, size, 16, 1, stdout, true);
 	}
 
+	LSAPI void ls_memory_clear(volatile void *target, size_t size);
+
 #ifdef __cplusplus
 }
 #endif
