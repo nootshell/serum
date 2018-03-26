@@ -3,4 +3,6 @@ if (test -z "$TARGET"); then
 	exit 1;
 fi
 
-make $TARGET bin/test;
+make $TARGET;
+sudo make install;
+make bin/test;

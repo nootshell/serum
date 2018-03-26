@@ -13,6 +13,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-7
+      sudo: required
       env:
          - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
