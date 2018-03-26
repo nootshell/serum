@@ -31,7 +31,7 @@
 
 
 
-if [ "$1" == "wrap" ]; then
+if (test "$1" = "wrap"); then
 	WRAP=1
 else
 	WRAP=0
@@ -40,7 +40,7 @@ fi
 
 RESULT="";
 
-if [ -f ./autodoxy ]; then
+if (test -f ./autodoxy); then
 	if (which doxygen > /dev/null 2>&1); then
 		if (doxygen ./Doxyfile > autodoxy.log 2>&1); then
 			RESULT="autodoxy successful";
@@ -53,12 +53,12 @@ if [ -f ./autodoxy ]; then
 fi
 
 
-if [ $WRAP == 1 ]; then
-	if [ -n "$RESULT" ]; then
+if (test $WRAP -eq 1); then
+	if (test -n "$RESULT"); then
 		echo " ($RESULT)";
 	fi
 else
-	if [ -z "$RESULT" ]; then
+	if (test -z "$RESULT"); then
 		echo "autodoxy disabled";
 	else
 		echo $RESULT;
