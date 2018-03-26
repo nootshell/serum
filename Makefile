@@ -55,7 +55,7 @@ TITLE = "done"
 
 
 
-.PHONY: all clean debug release rebuild valgrind
+.PHONY: all clean debug release rebuild valgrind test install
 
 
 
@@ -74,7 +74,6 @@ obj/%.o: %.c
 	@$(CC) $(CFLAGS) -DGIT_COMMIT="\"$(shell git log -n 1 --pretty=format:" ($(GIT_BRANCH) %H %aI)" -- $^)\"" -c $^ -o $@
 	@echo "| $@ (done)"
 
-obj/libserum/core/main.o: $(REMAKE)
 obj/libserum/core/main.o: CFLAGS += $(LS_ELF_INTERP) -Wno-unused-command-line-argument
 obj/libserum/core/main.o: libserum/core/main.c
 	@mkdir -p $(@D)
@@ -96,9 +95,14 @@ bin/test: bin/libserum.so
 bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name '*.c')))
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
-	@$(CC) -o $@ $^
+	@$(CC) -lserum -o $@ $^
 	@echo " ($(TITLE))"
 	@echo
+
+
+
+install: bin/libserum.so
+	@cp bin/libserum.so /lib/libserum.so
 
 
 
@@ -114,6 +118,7 @@ debug: TITLE = "debug"
 debug: CFLAGS += $(CFLAGS_DEBUG)
 debug: bin/libserum.so
 
+release: $(REMAKE)
 release: TITLE = "release"
 release: CFLAGS += -O3 -DRELEASE
 release: bin/libserum.so
@@ -121,3 +126,7 @@ release: bin/libserum.so
 valgrind: TITLE = "valgrind"
 valgrind: CFLAGS += $(CFLAGS_DEBUG) -DLS_VALGRIND=1
 valgrind: clean bin/libserum.so bin/test
+
+test: TITLE = "test"
+test: bin/test
+	@bin/test
