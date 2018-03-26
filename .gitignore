@@ -16,6 +16,7 @@
 # Include these build files.
 !Doxyfile
 !Makefile
+!Dockerfile
 
 # Include these project files.
 !*.kdev4
