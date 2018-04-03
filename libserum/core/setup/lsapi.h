@@ -26,55 +26,25 @@
 ******************************************************************************/
 
 
-#ifndef __LS_CORE_SETUP_H
-#define __LS_CORE_SETUP_H
+#ifndef __LS_CORE_SETUP_LSAPI_H
+#define __LS_CORE_SETUP_LSAPI_H
 
 
 
 
-#include <stdlib.h>
-#include <errno.h>
-
-#include "./setup/types.h"
-#include "./setup/platform-setup.h"
-#include "./setup/fileid.h"
-#include "./setup/bitops.h"
-#include "./setup/magic.h"
-
-#include "./result.h"
-
-#include "./signatures.h"
+#include "./platform-setup.h"
 
 
 
 
-#if (!LS_WINDOWS || LS_THREADING_PTHREADS)
-#	define LS_PTHREADS						1
-#elif (LS_WINDOWS)
-#	define LS_WTHREADS						1
-#endif
-
-#ifndef LS_PTHREADS
-#	define LS_PTHREADS						0
-#endif
-
-#ifndef LS_WTHREADS
-#	define LS_WTHREADS						0
-#endif
-
-
-
-
-#if (LS_EXPORTING)
-#	include "../io/log.h"
-#
-#	if (LS_DEBUG)
-#		define ls_debug(str)					ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u " str, __func__, __LINE__)
-#		define ls_debugf(fmt, ...)				ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u " fmt, __func__, __LINE__, __VA_ARGS__)
+#if (!LS_DOXYGEN)
+#	if (LS_EXPORTING)
+#		define LSAPI						LS_EXPORT
 #	else
-#		define ls_debug(str)
-#		define ls_debugf(fmt, ...)
+#		define LSAPI						LS_IMPORT
 #	endif
+#else
+#	define LSAPI
 #endif
 
 

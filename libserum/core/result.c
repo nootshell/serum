@@ -26,95 +26,96 @@
 ******************************************************************************/
 
 
-#ifndef __LS_CORE_SETUP_RESULT_H
-#define __LS_CORE_SETUP_RESULT_H
+#include "./result.h"
 
 
 
 
-#include "./types.h"
+const char *const
+ls_result_string(const ls_result_t result) {
+	/* Chose to do a switch over a string table: takes in less space and is less error-prone. */
+	switch (result) {
+		case LS_E_SUCCESS:
+			return "Successful.";
 
+		case LS_E_FAILURE:
+			return "Failure.";
 
+		case LS_E_NULL:
+			return "Null-pointer encountered.";
 
+		case LS_E_INVALID:
+			return "Parameter or state/data invalid.";
 
-/*! \brief Successful. */
-#define LS_E_SUCCESS						0x00
+		case LS_E_UNSUPPORTED:
+			return "Operation not supported (not yet implemented).";
 
-/*! \brief Generic failure. */
-#define LS_E_FAILURE						0x01
+		case LS_E_MAGIC:
+			return "Magic value found (or not) where inappropriate.";
 
-/*! \brief Null-pointer encountered. */
-#define LS_E_NULL							0x02
+		case LS_E_TIMEOUT:
+			return "Operation timed out.";
 
-/*! \brief Parameter or state/data invalid. */
-#define LS_E_INVALID						0x03
+		case LS_E_ABANDONED:
+			return "Mutex/operation was abandoned.";
 
-/*! \brief Operation not supported (not yet implemented). */
-#define LS_E_UNSUPPORTED					0x04
+		case LS_E_SIZE:
+			return "Size parameter/data invalid.";
 
-/*! \brief Magic value found (or not) where inappropriate. */
-#define LS_E_MAGIC							0x05
+		case LS_E_UNINITIALIZED:
+			return "Object is in an uninitialized state.";
 
-/*! \brief Operation timed out. */
-#define LS_E_TIMEOUT						0x06
+		case LS_E_CONVERSION:
+			return "Conversion failure.";
 
-/*! \brief Mutex/operation was abandoned. */
-#define LS_E_ABANDONED						0x07
+		case LS_E_LOCK:
+			return "Mutex-related failure.";
 
-/*! \brief Size parameter/data invalid. */
-#define LS_E_SIZE							0x08
+		case LS_E_STATE:
+			return "Object is in an invalid state.";
 
-/*! \brief Object is in an uninitialized state. */
-#define LS_E_UNINITIALIZED					0x09
+		case LS_E_NOOP:
+			return "The operation would have no effect.";
 
-/*! \brief Conversion failure. */
-#define LS_E_CONVERSION						0x0A
+		case LS_E_MEMORY:
+			return "Memory-related failure (out of memory).";
 
-/*! \brief Mutex-related failure. */
-#define LS_E_LOCK							0x0B
+		case LS_E_ALREADY:
+			return "Operation is an unnecessary repetition.";
 
-/*! \brief Object is in an invalid state. */
-#define LS_E_STATE							0x0C
+		case LS_E_IO_CLOSE:
+			return "IO error related to closing.";
 
-/*! \brief The operation would have no effect. */
-#define LS_E_NOOP							0x0D
+		case LS_E_IO_TARGET:
+			return "Target IO stream invalid.";
 
-/*! \brief Memory-related failure. */
-#define LS_E_MEMORY							0x0E
+		case LS_E_IO_WRITE:
+			return "IO error related to writing.";
 
-/*! \brief Operation is an unnecessary repetition. */
-#define LS_E_ALREADY						0x0F
+		case LS_E_IO_FLUSH:
+			return "IO error related to flushing.";
 
-/*! \brief IO error related to closing. */
-#define LS_E_IO_CLOSE						0x10
+		case LS_E_BOUNDS:
+			return "Index out of bounds.";
 
-/*! \brief Target IO stream invalid. */
-#define LS_E_IO_TARGET						0x11
+		case LS_E_NOT_FOUND:
+			return "Object or item not found.";
 
-/*! \brief IO error related to writing. */
-#define LS_E_IO_WRITE						0x12
+		case LS_E_INOPERABLE:
+			return "Object seems to be in an inoperable state.";
 
-/*! \brief IO error related to flushing. */
-#define LS_E_IO_FLUSH						0x13
+		case LS_E_OUT_OF_SYNC:
+			return "Object seems to be out of sync.";
 
-/*! \brief Index out of bounds. */
-#define LS_E_BOUNDS							0x14
+		case LS_E_INITIALIZATION:
+			return "Initialization failure.";
 
-/*! \brief Object or item not found. */
-#define LS_E_NOT_FOUND						0x15
+		case LS_E_DATA_MISMATCH:
+			return "Data did not match what was expected.";
 
-/*! \brief Object seems to be in an inoperable state. */
-#define LS_E_INOPERABLE						0x16
+		default:
+			break;
+	}
 
-/*! \brief Object seems to be out of sync. */
-#define LS_E_OUT_OF_SYNC					0x17
-
-
-
-
-typedef ls_nword_t ls_result_t;
-
-
-
-
-#endif
+	return "Unknown.";
+}
