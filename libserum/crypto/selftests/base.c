@@ -28,6 +28,7 @@
 
 #include "./base.h"
 
+#include "../../core/memory.h"
 #include "../../io/ansi-ctrl.h"
 #include "../../io/log.h"
 #include "../../data/time.h"
@@ -67,16 +68,22 @@ lscst_launch() {
 
 	ls_result_t result = LS_E_SUCCESS;
 
-	struct lsreg_hashing *item;
-	struct lscst_entry *item_st;
 
+	register size_t i;
 	uint64_t ns = 0;
-	size_t i;
-	for (i = 0; i < __hash_registry_count; ++i) {
-		item = &__hash_registry[i];
-		item_st = &item->selftest;
+	lsreg_meta_t *meta = NULL;
+	ls_result_t st_result = LS_E_NOOP;
 
-		if (item_st->entrypoint == NULL) {
+
+	lsreg_hash_t *hash = NULL;
+	for (i = 0; i < __hash_registry_count; ++i) {
+		hash = &__hash_registry[i];
+		meta = &hash->meta;
+
+		if (meta->selftest == NULL) {
+			if (__logging) {
+				ls_log_writeln(NULL, LS_LOG_LEVEL_WARNING, "Hash algorithm #%" PRIuPTR " (%s) does not have a selftest entry set.", i, meta->name);
+			}
 			continue;
 		}
 
@@ -84,54 +91,19 @@ lscst_launch() {
 			ns = ls_time_nanos();
 		}
 
-		if ((item_st->result = item_st->entrypoint(item_st)) != LS_E_SUCCESS) {
+		if ((st_result = meta->selftest(meta)) != LS_E_SUCCESS) {
 			result = LS_E_FAILURE;
 		}
 
 		if (__logging) {
 			ns = (ls_time_nanos() - ns);
+
 			ls_log_writeln(
 				NULL,
-				LS_LOG_LEVEL_INFO,
-				"Ran %s in %" PRIu64 "ns: %s",
-				item->name,
-				ns,
-				((item_st->result == LS_E_SUCCESS) ? "passed" : "failed")
+				((st_result == LS_E_SUCCESS) ? LS_LOG_LEVEL_INFO : LS_LOG_LEVEL_SEVERE),
+				"Cryptographic selftest for " LS_ANSI_WRAP(LS_ANSI_FG_WHITE, "%s") " (%02" PRIXPTR ") %s, roughly " LS_ANSI_WRAP(LS_ANSI_FG_WHITE, "%" PRIu64) " nanoseconds were spent doing the test.",
+				meta->name, (i + 1), ((st_result == LS_E_SUCCESS) ? LS_ANSI_WRAP(LS_ANSI_FG_GREEN, "passed") : LS_ANSI_WRAP(LS_ANSI_FG_RED, "failed")), ns
 			);
-		}
-	}
-
-
-	if (__logging) {
-		size_t f;
-		ls_bool_t success;
-		ls_log_level_t level;
-		for (i = 0; i < __hash_registry_count; ++i) {
-			item = &__hash_registry[i];
-			item_st = &item->selftest;
-
-
-			success = (item_st->failures == NULL && item_st->n_failures == 0);
-			level = (success ? LS_LOG_LEVEL_INFO : LS_LOG_LEVEL_SEVERE);
-
-
-			ls_log_writeln(NULL, level, "%s:", item->name);
-
-
-			ls_log_writeln(NULL, level, "  Result:");
-
-			if (success) {
-				ls_log_writeln(NULL, level, "    " LS_ANSI_WRAP(LS_ANSI_FG_GREEN, "%s"), "No failures.");
-				continue;
-			}
-
-			for (f = 0; f < item_st->n_failures; ++f) {
-				ls_log_writeln(NULL, level, ">   " LS_ANSI_WRAP(LS_ANSI_FG_RED, "%s"), item_st->failures[f]);
-				free(item_st->failures[f]);
-			}
-
-			free(item_st->failures);
-			item_st->failures = NULL;
 		}
 	}
 
@@ -141,39 +113,31 @@ lscst_launch() {
 
 
 
-ls_result_t
-lscst_report_failure(void *const __st, const char *const mesg) {
-	if (__st == NULL || mesg == NULL) {
-		return LS_E_NULL;
+
+void
+lscst_log(const ls_result_t result, const char *const algorithm, const size_t index, const char *const source, const uint8_t *const data_expected, const uint8_t *const data_found, const size_t data_size) {
+	if (__logging) {
+		const ls_log_level_t level = ((result == LS_E_SUCCESS) ? LS_LOG_LEVEL_INFO : LS_LOG_LEVEL_SEVERE);
+		ls_log_writeln(
+			NULL,
+			level,
+			"%s (%s, %02" PRIuPTR ", \"%s\")",
+			ls_result_string(result), algorithm, index, source
+		);
+
+		if (data_expected != NULL && data_found != NULL && data_size > 0) {
+			ls_log_writeln(
+				NULL,
+				level,
+				" > Expected %s",
+				ls_memory_to_c_array(data_expected, data_size)
+			);
+			ls_log_writeln(
+				NULL,
+				level,
+				" > Found    %s",
+				ls_memory_to_c_array(data_found, data_size)
+			);
+		}
 	}
-
-	if (!__logging) {
-		return LS_E_NOOP;
-	}
-
-
-	const size_t mesglen = strlen(mesg);
-	char *str = malloc(mesglen + 1);
-	if (str == NULL) {
-		return LS_E_MEMORY;
-	}
-	strncpy(str, mesg, mesglen);
-
-
-	struct lscst_entry *item = __st;
-	if (item->failures == NULL) {
-		item->n_failures = 0;
-	}
-
-
-	char **ptr = realloc(item->failures, (sizeof(*item->failures) * (item->n_failures + 1)));
-	if (ptr == NULL) {
-		free(str);
-		return LS_E_MEMORY;
-	}
-	item->failures = ptr;
-
-	item->failures[item->n_failures++] = str;
-
-	return LS_E_SUCCESS;
 }

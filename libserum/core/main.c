@@ -107,7 +107,7 @@ LS_ATTR_NORETURN __libserum_main(const void *const d_ptr, const int argc, const 
 	ls_log_writeln(NULL, LS_LOG_LEVEL_DEBUG, "%s", CORE_FILEID);
 
 	lscst_set_logging(true);
-	const ls_result_t st_result = lscst_launch(true);
+	const ls_result_t st_result = lscst_launch();
 
 	exit((st_result == LS_E_SUCCESS) ? 0 : 1);
 }

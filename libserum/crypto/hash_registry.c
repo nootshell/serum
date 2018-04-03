@@ -39,11 +39,15 @@ FILEID("Registry of hash functions.");
 
 
 
-#define INIT_SELFTEST(entryp)			{ .entrypoint = (entryp), .result = LS_E_NOOP, .failures = NULL, .n_failures = 0 }
-
-struct lsreg_hashing __hash_registry[] = {
+struct lsreg_hash __hash_registry[] = {
 	{
-		.name = "MD5",
+		.meta = {
+			.selftest = (lssig_cst_case)lscst_hashing_md5min,
+			.flags = 0,
+			.name = "MD5",
+			.maintainer = "icecubetray"
+		},
+
 		.ctx_size = sizeof(struct lsp_md5_data),
 		.block_size = LS_MD5_BLOCK_SIZE,
 		.digest_size = LS_MD5_DIGEST_SIZE,
@@ -51,10 +55,7 @@ struct lsreg_hashing __hash_registry[] = {
 		.init = (lssig_hash_init)lsp_md5_init,
 		.clear = NULL,
 		.update = (lssig_hash_update)lsp_md5_update,
-		.finish = (lssig_hash_finish)lsp_md5_finish,
-
-		.selftest = INIT_SELFTEST(lscst_hashing_md5min),
-		.maintainer = "icecubetray"
+		.finish = (lssig_hash_finish)lsp_md5_finish
 	}
 };
 

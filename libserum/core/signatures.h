@@ -37,9 +37,6 @@
 
 
 
-// Cryptographic self-test function signatures.
-typedef ls_result_t (*lssig_cst_case)(void *const __st);
-
 // Cryptographic hash function signatures.
 typedef ls_result_t (*lssig_hash_init)(void *const ctx);
 typedef ls_result_t (*lssig_hash_clear)(void *const ctx);

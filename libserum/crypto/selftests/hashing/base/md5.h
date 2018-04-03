@@ -33,6 +33,7 @@
 
 
 #include "../../../hashing/base/md5.h"
+#include "../../../hash_registry.h"
 
 
 
@@ -41,7 +42,7 @@
 extern "C" {
 #endif
 
-	LSAPI ls_result_t lscst_hashing_md5min(void *const __st);
+	LSAPI ls_result_t lscst_hashing_md5min(const lsreg_meta_t *const meta);
 
 #ifdef __cplusplus
 }

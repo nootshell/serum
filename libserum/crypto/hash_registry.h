@@ -28,11 +28,14 @@
 
 #ifndef __LS_CRYPTO_HASH_REGISTRY_H
 #define __LS_CRYPTO_HASH_REGISTRY_H
+#if (LS_EXPORTING)
 
 
 
 
 #include "../core/signatures.h"
+
+#include "./selftests/base.h"
 
 
 
@@ -42,11 +45,22 @@
 
 
 
-#if (LS_EXPORTING)
-struct lsreg_hashing {
-	// Properties.
+typedef struct lsreg_meta lsreg_meta_t;
+
+typedef ls_result_t (*lssig_cst_case)(const lsreg_meta_t *const meta);
+
+struct lsreg_meta {
+	lssig_cst_case selftest;
 	uint32_t flags;
 	char name[12];
+	char maintainer[32];
+};
+
+typedef struct lsreg_hash {
+	// Metadata.
+	struct lsreg_meta meta;
+
+	// Properties.
 	size_t ctx_size;
 	size_t block_size;
 	size_t digest_size;
@@ -56,24 +70,15 @@ struct lsreg_hashing {
 	lssig_hash_clear clear;
 	lssig_hash_update update;
 	lssig_hash_finish finish;
+} lsreg_hash_t;
 
-	// Maintenance.
-	struct lscst_entry {
-		lssig_cst_case entrypoint;
-		char **failures;
-		size_t n_failures;
-		ls_result_t result;
-		uint32_t __pad;
-	} selftest;
-	char maintainer[32];
-};
 
-extern struct lsreg_hashing __hash_registry[];
+extern struct lsreg_hash __hash_registry[];
 extern const size_t __hash_registry_size;
 extern const size_t __hash_registry_count;
+
+
+
+
 #endif
-
-
-
-
 #endif
