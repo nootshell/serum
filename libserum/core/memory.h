@@ -65,6 +65,8 @@ extern "C" {
 		return ls_memory_dump_ex(src, size, 16, 1, stdout, true);
 	}
 
+	LSAPI char* ls_memory_to_c_array(const void *const data, const size_t size);
+
 	LSAPI void* ls_memory_free(void *const target);
 	LSAPI void ls_memory_clear(volatile void *const target, const size_t size);
 	LSAPI void* ls_memory_clear_free(volatile void *const target, const size_t size);

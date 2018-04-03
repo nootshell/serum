@@ -121,6 +121,38 @@ ls_memory_dump_ex(const void *const src, const size_t size, const ls_nword_t col
 
 
 
+char*
+ls_memory_to_c_array(const void *const data, const size_t size) {
+	// 6: '0xXX, ', 2: '{ ', 1: '\0'
+	char *const str = malloc((6 * size) + 2 + 1), *strp = str;
+	if (str == NULL) {
+		return NULL;
+	}
+
+	strcpy(strp, "{ ");
+	strp += 2;
+
+	register size_t i;
+	const uint8_t *const ptr = data;
+	for (i = 0; i < size; ++i) {
+		if (i > 0) {
+			strcpy(strp, ", ");
+			strp += 2;
+		}
+
+		snprintf(strp, (4 + 1), "0x%02X", ptr[i]);
+		strp += 4;
+	}
+
+	strcpy(strp, " }");
+	strp = NULL;
+
+	return str;
+}
+
+
+
+
 void*
 ls_memory_free(void *const target) {
 	if (target != NULL) {
@@ -142,5 +174,5 @@ ls_memory_clear(volatile void *const target, const size_t size) {
 void*
 ls_memory_clear_free(volatile void *const target, const size_t size) {
 	ls_memory_clear(target, size);
-	return ls_memory_free(target);
+	return ls_memory_free((void *const)target);
 }
