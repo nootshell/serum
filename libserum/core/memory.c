@@ -121,10 +121,26 @@ ls_memory_dump_ex(const void *const src, const size_t size, const ls_nword_t col
 
 
 
+void*
+ls_memory_free(void *const target) {
+	if (target != NULL) {
+		free(target);
+	}
+	return NULL;
+}
+
+
 void
 ls_memory_clear(volatile void *const target, const size_t size) {
 	if (target && size) {
 		memset((void*)target, 0x00, size);
 		*(volatile char *const)target = *(volatile char *const)target;
 	}
+}
+
+
+void*
+ls_memory_clear_free(volatile void *const target, const size_t size) {
+	ls_memory_clear(target, size);
+	return ls_memory_free(target);
 }
