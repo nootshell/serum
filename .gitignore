@@ -5,11 +5,15 @@
 # Exclude ignore/.
 ignore/
 
+# Include the master branch as submodule.
+master/
+
 # Include Markdown files.
 !*.md
 
 # Include these repo files.
 !.gitignore
+!.gitmodules
 !.gitattributes
 !.editorconfig
 
@@ -18,3 +22,6 @@ ignore/
 
 # Include these CI files.
 !.travis.yml
+
+# Include docs/.
+!docs/*
