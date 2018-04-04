@@ -1,0 +1,20 @@
+# Exclude all files.
+*
+!*/
+
+# Exclude ignore/.
+ignore/
+
+# Include Markdown files.
+!*.md
+
+# Include these repo files.
+!.gitignore
+!.gitattributes
+!.editorconfig
+
+# Include Doxyfiles.
+!Doxyfile
+
+# Include these CI files.
+!.travis.yml
