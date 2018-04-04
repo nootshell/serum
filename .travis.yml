@@ -6,19 +6,10 @@ services:
   - docker
 
 env:
-  - REPO="$TRAVIS_REPO_SLUG" REPODIR="/repositories/$REPO" BRANCH="$TRAVIS_BRANCH"
-
-before_install:
-  - docker pull icecubetray/alpine-icy:latest
-
-install:
-  - docker run -v "$(pwd)":"$REPODIR" -itd --name alpine-icy icecubetray/alpine-icy
-
-after_install:
-  - docker exec alpine-icy sh -c "cd '$REPODIR' && pwd && make clean release install bin/test"
+  - DOCKER_REPO_PATH="/repositories/$TRAVIS_REPO_SLUG"
 
 script:
-  - docker exec alpine-icy sh -c "cd '$REPODIR' && pwd && make test"
-
-after_script:
+  - docker pull icecubetray/alpine-icy:latest
+  - docker run -v "$(pwd)":"$DOCKER_REPO_PATH" -itd --name alpine-icy icecubetray/alpine-icy
+  - docker exec alpine-icy sh -c "cd '$DOCKER_REPO_PATH' && make clean release install && make clean bin/test test"
   - docker container rm --force alpine-icy
