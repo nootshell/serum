@@ -12,14 +12,13 @@ before_install:
   - docker pull icecubetray/alpine-icy:latest
 
 install:
-  - docker run -itd --name alpine-icy icecubetray/alpine-icy
-  - docker exec alpine-icy git clone https://github.com/$REPO.git --branch="$BRANCH" "$REPODIR"
+  - docker run -v "$(pwd)":"$REPODIR" -itd --name alpine-icy icecubetray/alpine-icy
 
 after_install:
-  - docker exec alpine-icy sh -c "cd '$REPODIR' && make clean release install bin/test"
+  - docker exec alpine-icy sh -c "cd '$REPODIR' && pwd && make clean release install bin/test"
 
 script:
-  - docker exec alpine-icy sh -c "cd '$REPODIR' && make test"
+  - docker exec alpine-icy sh -c "cd '$REPODIR' && pwd && make test"
 
 after_script:
   - docker container rm --force alpine-icy
