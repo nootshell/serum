@@ -6,12 +6,17 @@ stages:
 
 build:
   stage: build
-  script: make clean release install bin/test
+  script:
+    - make clean release install
+    - make clean bin/test
+    - mv /usr/lib/libserum.so bin/libserum.so
   artifacts:
     paths:
-      - /usr/lib/libserum.so
+      - bin/libserum.so
       - bin/test
 
 test:
   stage: test
-  script: bin/test
+  script:
+    - mv bin/libserum.so /usr/lib/libserum.so
+    - bin/test

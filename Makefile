@@ -91,11 +91,10 @@ bin/libserum.so: obj/libserum/core/main.o $(addprefix obj/, $(patsubst %.c, %.o,
 	@echo
 
 bin/test: CFLAGS += $(CFLAGS_DEBUG)
-bin/test: bin/libserum.so
 bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name '*.c')))
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
-	@$(CC) -lserum -o $@ $^
+	@$(CC) -o $@ $^ -lserum
 	@echo " ($(TITLE))"
 	@echo
 
