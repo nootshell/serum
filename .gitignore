@@ -2,6 +2,9 @@
 *
 !*/
 
+# Exclude ignore/.
+ignore/
+
 # Include files with these extensions.
 !*.c
 !*.h
