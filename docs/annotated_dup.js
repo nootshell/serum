@@ -1,0 +1,25 @@
+var annotated_dup =
+[
+    [ "ls_cbc", "structls__cbc.html", "structls__cbc" ],
+    [ "ls_device", "structls__device.html", "structls__device" ],
+    [ "ls_isaac", "structls__isaac.html", "structls__isaac" ],
+    [ "ls_key", "structls__key.html", "structls__key" ],
+    [ "ls_md5", "structls__md5.html", "structls__md5" ],
+    [ "ls_memory_area", "structls__memory__area.html", "structls__memory__area" ],
+    [ "ls_mutex", "structls__mutex.html", "structls__mutex" ],
+    [ "ls_packet", "structls__packet.html", "structls__packet" ],
+    [ "ls_packet_decoder", "structls__packet__decoder.html", "structls__packet__decoder" ],
+    [ "ls_packet_header", "structls__packet__header.html", "structls__packet__header" ],
+    [ "ls_result", "structls__result.html", "structls__result" ],
+    [ "ls_rijndael", "structls__rijndael.html", "structls__rijndael" ],
+    [ "ls_rijndael_cbc", "structls__rijndael__cbc.html", "structls__rijndael__cbc" ],
+    [ "ls_salsa20", "structls__salsa20.html", "structls__salsa20" ],
+    [ "ls_salsa20_data", "unionls__salsa20__data.html", "unionls__salsa20__data" ],
+    [ "ls_salsa20_layout", "structls__salsa20__layout.html", "structls__salsa20__layout" ],
+    [ "ls_sha2_32", "structls__sha2__32.html", "structls__sha2__32" ],
+    [ "ls_sha2_64", "structls__sha2__64.html", "structls__sha2__64" ],
+    [ "ls_socket", "structls__socket.html", "structls__socket" ],
+    [ "ls_thread", "structls__thread.html", "structls__thread" ],
+    [ "ls_x25519", "structls__x25519.html", "structls__x25519" ],
+    [ "ls_xxtea", "structls__xxtea.html", "structls__xxtea" ]
+];
