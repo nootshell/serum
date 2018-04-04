@@ -1,5 +1,8 @@
-# Serum \[[![Build Status](https://travis-ci.org/icecubetray/serum.svg?branch=rewrite)](https://travis-ci.org/icecubetray/serum)\]
+# Serum
 **Experimental** standalone toolkit, licensed under the [MIT license](./COPYING.md). Supposed to be cross-platform.
+
+[![Travis CI](https://travis-ci.org/icecubetray/serum.svg?branch=rewrite)](https://travis-ci.org/icecubetray/serum)
+[![GitLab CI](https://gitlab.com/icecubetray/serum/badges/rewrite/pipeline.svg)](https://gitlab.com/icecubetray/serum/commits/rewrite)
 
 <sup>*All shell examples assume you're in the root directory of the repo, unless otherwise specified.*</sup>
 
