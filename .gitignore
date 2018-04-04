@@ -22,7 +22,6 @@ ignore/
 !Dockerfile
 
 # Include these project files.
-!*.kdev4
 !serum.creator
 !serum.files
 

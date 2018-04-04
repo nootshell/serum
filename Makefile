@@ -87,7 +87,7 @@ bin/libserum.so: obj/libserum/core/main.o $(addprefix obj/, $(patsubst %.c, %.o,
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
 	@$(CC) -o $@ -shared -pthread $(LS_ELF_INTERP) $^
-	@echo -n " ($(TITLE))$(shell ./autodoxy.sh wrap)"
+	@echo -n " ($(TITLE))"
 	@echo
 
 bin/test: CFLAGS += $(CFLAGS_DEBUG)
