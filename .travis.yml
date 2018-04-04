@@ -11,5 +11,6 @@ env:
 script:
   - docker pull icecubetray/alpine-icy:latest
   - docker run -v "$(pwd)":"$DOCKER_REPO_PATH" -itd --name alpine-icy icecubetray/alpine-icy
+  - docker exec alpine-icy alpine-icy-info color
   - docker exec alpine-icy sh -c "cd '$DOCKER_REPO_PATH' && make clean release install && make clean bin/test test"
   - docker container rm --force alpine-icy
