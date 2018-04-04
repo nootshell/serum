@@ -1,0 +1,17 @@
+image: icecubetray/alpine-icy:latest
+
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  script: make clean release install bin/test
+  artifacts:
+    paths:
+      - /usr/lib/libserum.so
+      - bin/test
+
+test:
+  stage: test
+  script: bin/test

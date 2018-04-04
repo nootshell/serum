@@ -27,3 +27,4 @@ ignore/
 
 # Include these CI files.
 !.travis.yml
+!.gitlab-ci.yml
