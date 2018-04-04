@@ -1,37 +1,25 @@
+sudo: required
+
 language: c
 
+services:
+  - docker
 
-
-
-matrix:
-  include:
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-7
-      sudo: required
-      env:
-         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-
-#    - os: osx
-#      osx_image: xcode9.2
-#      sudo: required
-#      env:
-#        - MATRIX_EVAL="sudo rm /usr/local/include/c++ && brew install --force gcc && export CC=gcc-7 && export CXX=g++-7"
-
-
-
+env:
+  - REPO="$TRAVIS_REPO_SLUG" REPODIR="/repositories/$REPO" BRANCH="$TRAVIS_BRANCH"
 
 before_install:
-    - eval "${MATRIX_EVAL}"
-    - ./travis.sh before_install
+  - docker pull icecubetray/alpine-icy:latest
 
+install:
+  - docker run -itd --name alpine-icy icecubetray/alpine-icy
+  - docker exec alpine-icy git clone https://github.com/$REPO.git --branch="$BRANCH" "$REPODIR"
 
-install: ./travis.sh install
+after_install:
+  - docker exec alpine-icy sh -c "cd '$REPODIR' && make clean release install bin/test"
 
+script:
+  - docker exec alpine-icy sh -c "cd '$REPODIR' && make test"
 
-script: ./travis.sh script
+after_script:
+  - docker container rm --force alpine-icy
