@@ -102,7 +102,7 @@ bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name
 
 
 install: bin/libserum.so
-	@cp bin/libserum.so /lib/libserum.so
+	@cp bin/libserum.so /usr/lib/libserum.so
 
 
 
