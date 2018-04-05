@@ -6,7 +6,7 @@
 ignore/
 
 # Include the master branch as submodule.
-master/
+!master/
 
 # Include Markdown files.
 !*.md
@@ -23,3 +23,4 @@ master/
 
 # Include docs/.
 !docs/*
+!docs/*/*/*
