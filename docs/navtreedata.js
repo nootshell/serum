@@ -49,11 +49,11 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"____rijndael-tables_8h.html",
-"defaults_8h.html#aa8d3948c3a3fdd43df62acb9aae82656",
-"log_8h.html#a0691bbb961fe459207b77a05ec035a5e",
-"self-test_8h_source.html",
-"unionls__salsa20__data.html#a1adaa777b67a72272a7dab998d933cf3"
+"annotated.html",
+"d7/d7f/log_8h.html",
+"da/ddd/socket_8h.html#a0ffd3d44fb793ec9fa2dd0845f9dce0e",
+"de/d21/structls__result.html#aea6c4dea568ed04c59a65fa32105a4af",
+"globals_defs_g.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

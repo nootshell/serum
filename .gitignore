@@ -16,6 +16,7 @@ master/
 !.gitmodules
 !.gitattributes
 !.editorconfig
+!.gitkeep
 
 # Include Doxyfiles.
 !Doxyfile
