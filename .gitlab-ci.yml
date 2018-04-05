@@ -7,7 +7,7 @@ stages:
 build:
   stage: build
   script:
-    - alpine-icy-info
+    - alpine-icy-info color
     - make clean release install
     - make clean bin/test
     - mv /usr/lib/libserum.so bin/libserum.so
