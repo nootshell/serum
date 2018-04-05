@@ -22,5 +22,4 @@ ignore/
 !Doxyfile
 
 # Include docs/.
-!docs/*
-!docs/*/*/*
+!docs/**

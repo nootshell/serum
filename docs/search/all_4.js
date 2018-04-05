@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['data',['data',['../d7/d41/structls__memory__area.html#a1b7b8ec503f37614e08900acbaca703e',1,'ls_memory_area::data()'],['../d6/d45/structls__key.html#adae5aaca75820987ef93b70508ce5c38',1,'ls_key::data()'],['../dd/d75/structls__cbc.html#adc845d36d252016c5ac6191031972bfd',1,'ls_cbc::data()'],['../dc/d18/unionls__salsa20__data.html#a1adaa777b67a72272a7dab998d933cf3',1,'ls_salsa20_data::data()'],['../df/da4/structls__salsa20.html#ad08f8b2de139e36244f9c712401a42af',1,'ls_salsa20::data()']]],
+  ['debug_2eh',['debug.h',['../db/d16/debug_8h.html',1,'']]],
+  ['decode_5fcount',['decode_count',['../d0/dd8/structls__packet__decoder.html#a1b7f7b80a461f4c8177a892af313630f',1,'ls_packet_decoder']]],
+  ['decrypt',['decrypt',['../dd/d75/structls__cbc.html#adfc3374a8631e1fd1525798b0d1338e0',1,'ls_cbc']]],
+  ['defaults_2eh',['defaults.h',['../dd/da3/defaults_8h.html',1,'']]],
+  ['detect_2eh',['detect.h',['../de/d15/detect_8h.html',1,'']]],
+  ['detect_5fcompiler_2eh',['detect_compiler.h',['../d7/db1/detect__compiler_8h.html',1,'']]],
+  ['detect_5fendianness_2eh',['detect_endianness.h',['../db/d3f/detect__endianness_8h.html',1,'']]],
+  ['detect_5fos_2eh',['detect_os.h',['../d5/d58/detect__os_8h.html',1,'']]],
+  ['detect_5fplatform_2eh',['detect_platform.h',['../d4/d5d/detect__platform_8h.html',1,'']]],
+  ['dev_5fhardware',['DEV_HARDWARE',['../db/de9/device_8h.html#ac76ff8199e3090c0700a9a0a59cf7769a9720382dbdf6e084a97e9d2ba4d77469',1,'device.h']]],
+  ['dev_5funspecified',['DEV_UNSPECIFIED',['../db/de9/device_8h.html#ac76ff8199e3090c0700a9a0a59cf7769acf419df0569a0bff14b41ae882a90f3b',1,'device.h']]],
+  ['dev_5furandom',['DEV_URANDOM',['../db/de9/device_8h.html#ac76ff8199e3090c0700a9a0a59cf7769ac60401f41097b5673e36366abfebc4a1',1,'device.h']]],
+  ['dev_5furandom_5ffallback',['DEV_URANDOM_FALLBACK',['../db/de9/device_8h.html#ac76ff8199e3090c0700a9a0a59cf7769a464f4d23ca3d8336e3878f51bd2f9d52',1,'device.h']]],
+  ['device_2eh',['device.h',['../db/de9/device_8h.html',1,'']]],
+  ['dstackalloc',['dstackalloc',['../dc/d18/memory_8h.html#a339f582423075a311c5a53ebe574783f',1,'memory.h']]],
+  ['dstackfree',['dstackfree',['../dc/d18/memory_8h.html#ab64adbeeea2e91e525507e626725c57d',1,'memory.h']]],
+  ['dstacksizeof',['dstacksizeof',['../dc/d18/memory_8h.html#a2839175f2baa02c9f65171ff381c3a31',1,'memory.h']]]
+];
