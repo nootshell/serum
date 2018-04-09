@@ -50,6 +50,7 @@ CFLAGS = \
 	-DLS_ANSI_SUPPORT=1
 
 CFLAGS_DEBUG = -g -DLS_DEBUG=1
+CFLAGS_RELEASE = -Ofast
 
 TITLE = "done"
 
@@ -94,7 +95,7 @@ bin/test: CFLAGS += $(CFLAGS_DEBUG)
 bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name '*.c')))
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
-	@$(CC) -o $@ $^ -lserum
+	@$(CC) -o $@ $^ $(shell realpath bin/libserum.so)
 	@echo " ($(TITLE))"
 	@echo
 
@@ -119,7 +120,7 @@ debug: bin/libserum.so
 
 release: $(REMAKE)
 release: TITLE = "release"
-release: CFLAGS += -O3 -DRELEASE
+release: CFLAGS += $(CFLAGS_RELEASE) -DRELEASE
 release: bin/libserum.so
 
 valgrind: TITLE = "valgrind"
