@@ -40,7 +40,7 @@
 
 
 
-#define LS_HASH_MD5							0
+#define LS_HASH_MD5							1
 
 
 

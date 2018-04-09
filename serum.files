@@ -26,12 +26,12 @@ libserum/core/setup/types.h
 libserum/core/signatures.h
 libserum/crypto/hash_registry.c
 libserum/crypto/hash_registry.h
-libserum/crypto/hashing/base/md5.c
-libserum/crypto/hashing/base/md5.h
+libserum/crypto/hashing/md5.c
+libserum/crypto/hashing/md5.h
 libserum/crypto/selftests/base.c
 libserum/crypto/selftests/base.h
-libserum/crypto/selftests/hashing/base/md5.c
-libserum/crypto/selftests/hashing/base/md5.h
+libserum/crypto/selftests/hashing/md5.c
+libserum/crypto/selftests/hashing/md5.h
 libserum/data/time.c
 libserum/data/time.h
 libserum/io/ansi-ctrl.h

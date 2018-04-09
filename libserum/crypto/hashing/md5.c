@@ -28,7 +28,7 @@
 
 #include "./md5.h"
 
-#include "../../../core/memory.h"
+#include "../../core/memory.h"
 
 #include <string.h>
 
@@ -50,15 +50,16 @@ FILEID("Pure MD5 implementation.");
 
 
 ls_result_t
-lsp_md5_init(lsp_md5_data_t *const data) {
-	if (data == NULL) {
+ls_md5_init(ls_md5_data_t *const context) {
+	if (context == NULL) {
 		return LS_E_NULL;
 	}
 
-	data->state_A = 0x67452301U;
-	data->state_B = 0xEFCDAB89U;
-	data->state_C = 0x98BADCFEU;
-	data->state_D = 0x10325476U;
+	context->state_A = 0x67452301U;
+	context->state_B = 0xEFCDAB89U;
+	context->state_C = 0x98BADCFEU;
+	context->state_D = 0x10325476U;
+
 	return LS_E_SUCCESS;
 }
 
@@ -66,8 +67,8 @@ lsp_md5_init(lsp_md5_data_t *const data) {
 
 
 ls_result_t
-lsp_md5_update(lsp_md5_data_t *const restrict data, const uint32_t *const restrict block) {
-	if (data == NULL || block == NULL) {
+ls_md5_update(ls_md5_data_t *const restrict context, const ls_md5_block_t block) {
+	if (context == NULL || block == NULL) {
 		return LS_E_NULL;
 	}
 
@@ -75,27 +76,27 @@ lsp_md5_update(lsp_md5_data_t *const restrict data, const uint32_t *const restri
 	uint32_t a_old, b_old, c_old, d_old;
 
 	const uint32_t *block32;
-#if (!LS_LITTLE_ENDIAN)
-	block32 = block;
+#if (LS_LITTLE_ENDIAN)
+	block32 = (const uint32_t *const)block;
 #else
 	uint32_t le_block[16];
 	for (a = (sizeof(le_block) / sizeof(*le_block)); a--;) {
-		le_block[a] = LS_ENSURE_LITTLE32(block[a]);
+		le_block[a] = LS_ENSURE_LITTLE32(((typeof(block32))block)[a]);
 	}
-	block32 = (const uint32_t *const)le_block;
+	block32 = (typeof(block32))le_block;
 #endif
 
 	a_old = (
-		a = data->state_A
+		a = context->state_A
 	);
 	b_old = (
-		b = data->state_B
+		b = context->state_B
 	);
 	c_old = (
-		c = data->state_C
+		c = context->state_C
 	);
 	d_old = (
-		d = data->state_D
+		d = context->state_D
 	);
 
 	MD5R10(a, b, c, d, block32[ 0], 0xD76AA478U,  7);
@@ -166,18 +167,18 @@ lsp_md5_update(lsp_md5_data_t *const restrict data, const uint32_t *const restri
 	MD5R40(c, d, a, b, block32[ 2], 0x2AD7D2BBU, 15);
 	MD5R40(b, c, d, a, block32[ 9], 0xEB86D391U, 21);
 
-	data->state_A = (a_old + a);
-	data->state_B = (b_old + b);
-	data->state_C = (c_old + c);
-	data->state_D = (d_old + d);
+	context->state_A = (a_old + a);
+	context->state_B = (b_old + b);
+	context->state_C = (c_old + c);
+	context->state_D = (d_old + d);
 
 	return LS_E_SUCCESS;
 }
 
 
 ls_result_t
-lsp_md5_finish(lsp_md5_data_t *const restrict data, const uint8_t *const restrict input, size_t size, const size_t bits, ls_md5_digest_t digest) {
-	if (data == NULL || (size > 0 && input == NULL) || digest == NULL) {
+ls_md5_finish(ls_md5_data_t *const restrict context, const uint8_t *const restrict input, size_t size, const size_t bits, ls_md5_digest_t digest) {
+	if (context == NULL || (size > 0 && input == NULL) || digest == NULL) {
 		return LS_E_NULL;
 	}
 
@@ -187,11 +188,11 @@ lsp_md5_finish(lsp_md5_data_t *const restrict data, const uint8_t *const restric
 
 	// Populate the buffer with remaining input (if any), and the starting
 	// bit of the padding.
-	uint8_t buffer[LS_MD5_BLOCK_SIZE];
+	ls_md5_block_t block;
 	if (size > 0) {
-		memcpy(buffer, input, size);
+		memcpy(block, input, size);
 	}
-	buffer[size++] = 0x80;
+	block[size++] = 0x80;
 
 	// Check if the buffer can hold the input and the final padding and if
 	// not so, process what we have so far (split the finalization into two
@@ -199,9 +200,9 @@ lsp_md5_finish(lsp_md5_data_t *const restrict data, const uint8_t *const restric
 	size_t diff = (LS_MD5_BLOCK_SIZE - size);
 	if (diff < 8) {
 		if (size < LS_MD5_BLOCK_SIZE) {
-			ls_memory_clear(&buffer[size], diff);
+			ls_memory_clear(&block[size], diff);
 		}
-		if (lsp_md5_update(data, (const uint32_t *const)buffer) != LS_E_SUCCESS) {
+		if (ls_md5_update(context, block) != LS_E_SUCCESS) {
 			return LS_E_FAILURE;
 		}
 		size = 0;
@@ -209,24 +210,24 @@ lsp_md5_finish(lsp_md5_data_t *const restrict data, const uint8_t *const restric
 	}
 
 	// Clear everything between the input and the final padding.
-	ls_memory_clear(&buffer[size], (diff - 8));
+	ls_memory_clear(&block[size], (diff - 8));
 
 	// Append the number of bits in the message to the end of the pad and
 	// perform the final transform.
-	*((uint64_t*)(buffer + (LS_MD5_BLOCK_SIZE - 8))) = LS_ENSURE_LITTLE64(bits);
-	if (lsp_md5_update(data, (const uint32_t *const)buffer) != LS_E_SUCCESS) {
+	*((uint64_t*)(block + (LS_MD5_BLOCK_SIZE - 8))) = LS_ENSURE_LITTLE64(bits);
+	if (ls_md5_update(context, block) != LS_E_SUCCESS) {
 		return LS_E_FAILURE;
 	}
 
 	// Output the digest.
 	uint32_t *const dout32 = (uint32_t *const)digest;
-	dout32[0] = LS_ENSURE_LITTLE32(data->state_A);
-	dout32[1] = LS_ENSURE_LITTLE32(data->state_B);
-	dout32[2] = LS_ENSURE_LITTLE32(data->state_C);
-	dout32[3] = LS_ENSURE_LITTLE32(data->state_D);
+	dout32[0] = LS_ENSURE_LITTLE32(context->state_A);
+	dout32[1] = LS_ENSURE_LITTLE32(context->state_B);
+	dout32[2] = LS_ENSURE_LITTLE32(context->state_C);
+	dout32[3] = LS_ENSURE_LITTLE32(context->state_D);
 
 	// Clear the context.
-	data->state_A = data->state_B = data->state_C = data->state_D = 0;
+	context->state_A = context->state_B = context->state_C = context->state_D = 0;
 
 	return LS_E_SUCCESS;
 }

@@ -28,8 +28,8 @@
 
 #include "./hash_registry.h"
 
-#include "./hashing/base/md5.h"
-#include "./selftests/hashing/base/md5.h"
+#include "./hashing/md5.h"
+#include "./selftests/hashing/md5.h"
 
 
 
@@ -40,6 +40,7 @@ FILEID("Registry of hash functions.");
 
 
 struct lsreg_hash __hash_registry[] = {
+	{ /* Fill up 0th index. */ },
 	{
 		.meta = {
 			.selftest = (lssig_cst_case)lscst_hashing_md5min,
@@ -48,14 +49,14 @@ struct lsreg_hash __hash_registry[] = {
 			.maintainer = "icecubetray"
 		},
 
-		.ctx_size = sizeof(struct lsp_md5_data),
+		.ctx_size = sizeof(struct ls_md5_data),
 		.block_size = LS_MD5_BLOCK_SIZE,
 		.digest_size = LS_MD5_DIGEST_SIZE,
 
-		.init = (lssig_hash_init)lsp_md5_init,
+		.init = (lssig_hash_init)ls_md5_init,
 		.clear = NULL,
-		.update = (lssig_hash_update)lsp_md5_update,
-		.finish = (lssig_hash_finish)lsp_md5_finish
+		.update = (lssig_hash_update)ls_md5_update,
+		.finish = (lssig_hash_finish)ls_md5_finish
 	}
 };
 

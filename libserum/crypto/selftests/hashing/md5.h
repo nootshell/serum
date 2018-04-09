@@ -32,8 +32,8 @@
 
 
 
-#include "../../../hashing/base/md5.h"
-#include "../../../hash_registry.h"
+#include "../../hashing/md5.h"
+#include "../../hash_registry.h"
 
 
 

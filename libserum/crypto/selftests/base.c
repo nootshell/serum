@@ -28,11 +28,12 @@
 
 #include "./base.h"
 
+#include "../hash_registry.h"
+
 #include "../../core/memory.h"
+#include "../../data/time.h"
 #include "../../io/ansi-ctrl.h"
 #include "../../io/log.h"
-#include "../../data/time.h"
-#include "../hash_registry.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -76,7 +77,7 @@ lscst_launch() {
 
 
 	lsreg_hash_t *hash = NULL;
-	for (i = 0; i < __hash_registry_count; ++i) {
+	for (i = 1; i < __hash_registry_count; ++i) {
 		hash = &__hash_registry[i];
 		meta = &hash->meta;
 
@@ -101,8 +102,8 @@ lscst_launch() {
 			ls_log_writeln(
 				NULL,
 				((st_result == LS_E_SUCCESS) ? LS_LOG_LEVEL_INFO : LS_LOG_LEVEL_SEVERE),
-				"Cryptographic selftest for " LS_ANSI_WRAP(LS_ANSI_FG_WHITE, "%s") " (%02" PRIXPTR ") %s, roughly " LS_ANSI_WRAP(LS_ANSI_FG_WHITE, "%" PRIu64) " nanoseconds were spent doing the test.",
-				meta->name, (i + 1), ((st_result == LS_E_SUCCESS) ? LS_ANSI_WRAP(LS_ANSI_FG_GREEN, "passed") : LS_ANSI_WRAP(LS_ANSI_FG_RED, "failed")), ns
+				"Cryptographic selftest for " LS_ANSI_WRAP(LS_ANSI_FG_WHITE, "%s") " (ai=%02" PRIXPTR ") %s, roughly " LS_ANSI_WRAP(LS_ANSI_FG_WHITE, "%" PRIu64) " nanoseconds were spent doing the test.",
+				meta->name, i, ((st_result == LS_E_SUCCESS) ? LS_ANSI_WRAP(LS_ANSI_FG_GREEN, "passed") : LS_ANSI_WRAP(LS_ANSI_FG_RED, "failed")), ns
 			);
 		}
 	}
@@ -121,7 +122,7 @@ lscst_log(const ls_result_t result, const char *const algorithm, const size_t in
 		ls_log_writeln(
 			NULL,
 			level,
-			"%s (%s, %02" PRIuPTR ", \"%s\")",
+			"%s (algo=\"%s\", ti=%02" PRIuPTR ", src=\"%s\")",
 			ls_result_string(result), algorithm, index, source
 		);
 

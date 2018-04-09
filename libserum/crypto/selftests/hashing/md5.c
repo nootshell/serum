@@ -28,8 +28,8 @@
 
 #include "./md5.h"
 
-#include "../../../../core/memory.h"
-#include "../../base.h"
+#include "../../../core/memory.h"
+#include "../base.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -122,7 +122,7 @@ lscst_hashing_md5min(const lsreg_meta_t *const meta) {
 
 	ls_result_t result = LS_E_SUCCESS;
 
-	lsp_md5_data_t ctx;
+	ls_md5_data_t ctx;
 	ls_md5_digest_t digest;
 
 	size_t len = 0;
@@ -136,13 +136,13 @@ lscst_hashing_md5min(const lsreg_meta_t *const meta) {
 			continue;
 		}
 
-		if (lsp_md5_init(&ctx) != LS_E_SUCCESS) {
+		if (ls_md5_init(&ctx) != LS_E_SUCCESS) {
 			lscst_log(LS_E_INITIALIZATION, meta->name, i, vec->source, NULL, NULL, 0);
 			continue;
 		}
 
 		len = strlen(vec->data);
-		if (lsp_md5_finish(&ctx, (const uint8_t *const)vec->data, len, (len * LS_BITS_BYTE), digest) != LS_E_SUCCESS) {
+		if (ls_md5_finish(&ctx, (const uint8_t *const)vec->data, len, (len * LS_BITS_BYTE), digest) != LS_E_SUCCESS) {
 			lscst_log(LS_E_CONVERSION, meta->name, i, vec->source, NULL, NULL, 0);
 			continue;
 		}
