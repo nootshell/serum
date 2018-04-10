@@ -95,7 +95,7 @@ bin/test: CFLAGS += $(CFLAGS_DEBUG)
 bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name '*.c')))
 	@echo -n "+-> $@"
 	@mkdir -p $(@D)
-	@$(CC) -o $@ $^ $(shell ((test -f debug && realpath bin/libserum.so) || echo '-lserum'))
+	@$(CC) -o $@ $^ $(shell ((test -f bin/libserum.so && realpath bin/libserum.so) || echo '-lserum'))
 	@echo " ($(TITLE))"
 	@echo
 
