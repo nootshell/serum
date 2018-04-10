@@ -28,7 +28,6 @@
 
 #ifndef __LS_CRYPTO_HASH_REGISTRY_H
 #define __LS_CRYPTO_HASH_REGISTRY_H
-#if (LS_EXPORTING)
 
 
 
@@ -38,6 +37,9 @@
 #include "./selftests/base.h"
 
 
+
+
+#define LS_HASH_ALGORITHM_VALID(algo)		(((algo) > 0) && ((algo < __hash_registry_count)))
 
 
 #define LS_HASH_MD5							1
@@ -73,12 +75,17 @@ typedef struct lsreg_hash {
 } lsreg_hash_t;
 
 
-extern struct lsreg_hash __hash_registry[];
+typedef ls_nword_t ls_hash_algo_t;
+
+
+
+
+extern const struct lsreg_hash __hash_registry[];
+
 extern const size_t __hash_registry_size;
 extern const size_t __hash_registry_count;
 
 
 
 
-#endif
 #endif

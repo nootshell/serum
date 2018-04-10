@@ -24,6 +24,8 @@ libserum/core/setup/platform-setup.h
 libserum/core/setup/special-treatment-for-windows.h
 libserum/core/setup/types.h
 libserum/core/signatures.h
+libserum/crypto/hash.c
+libserum/crypto/hash.h
 libserum/crypto/hash_registry.c
 libserum/crypto/hash_registry.h
 libserum/crypto/hashing/md5.c

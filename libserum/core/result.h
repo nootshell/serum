@@ -116,6 +116,9 @@
 /*! \brief Data did not match what was expected. */
 #define LS_E_DATA_MISMATCH					0x19
 
+/*! \brief Algorithm error. */
+#define LS_E_ALGORITHM						0x1A
+
 
 
 

@@ -44,7 +44,7 @@
 
 
 
-FILEID("Pure MD5 implementation.");
+FILEID("MD5 implementation.");
 
 
 
@@ -55,6 +55,7 @@ ls_md5_init(ls_md5_data_t *const context) {
 		return LS_E_NULL;
 	}
 
+	context->length = 0;
 	context->state_A = 0x67452301U;
 	context->state_B = 0xEFCDAB89U;
 	context->state_C = 0x98BADCFEU;
@@ -167,6 +168,7 @@ ls_md5_update(ls_md5_data_t *const restrict context, const ls_md5_block_t block)
 	MD5R40(c, d, a, b, block32[ 2], 0x2AD7D2BBU, 15);
 	MD5R40(b, c, d, a, block32[ 9], 0xEB86D391U, 21);
 
+	context->length += LS_MD5_BLOCK_SIZE;
 	context->state_A = (a_old + a);
 	context->state_B = (b_old + b);
 	context->state_C = (c_old + c);
@@ -177,7 +179,7 @@ ls_md5_update(ls_md5_data_t *const restrict context, const ls_md5_block_t block)
 
 
 ls_result_t
-ls_md5_finish(ls_md5_data_t *const restrict context, const uint8_t *const restrict input, size_t size, const size_t bits, ls_md5_digest_t digest) {
+ls_md5_finish(ls_md5_data_t *const restrict context, const uint8_t *const restrict input, size_t size, ls_md5_digest_t digest) {
 	if (context == NULL || (size > 0 && input == NULL) || digest == NULL) {
 		return LS_E_NULL;
 	}
@@ -185,6 +187,8 @@ ls_md5_finish(ls_md5_data_t *const restrict context, const uint8_t *const restri
 	if (size > LS_MD5_BLOCK_SIZE) {
 		return LS_E_SIZE;
 	}
+
+	const size_t bits = ((context->length + size) * LS_BITS_BYTE);
 
 	// Populate the buffer with remaining input (if any), and the starting
 	// bit of the padding.

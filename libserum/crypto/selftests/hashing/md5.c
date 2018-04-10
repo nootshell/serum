@@ -142,7 +142,7 @@ lscst_hashing_md5min(const lsreg_meta_t *const meta) {
 		}
 
 		len = strlen(vec->data);
-		if (ls_md5_finish(&ctx, (const uint8_t *const)vec->data, len, (len * LS_BITS_BYTE), digest) != LS_E_SUCCESS) {
+		if (ls_md5_finish(&ctx, (const uint8_t *const)vec->data, len, digest) != LS_E_SUCCESS) {
 			lscst_log(LS_E_CONVERSION, meta->name, i, vec->source, NULL, NULL, 0);
 			continue;
 		}

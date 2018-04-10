@@ -40,7 +40,7 @@
 // Cryptographic hash function signatures.
 typedef ls_result_t (*lssig_hash_init)(void *const ctx);
 typedef ls_result_t (*lssig_hash_clear)(void *const ctx);
-typedef ls_result_t (*lssig_hash_update)(void *const restrict ctx, const uint8_t *const restrict data, const size_t size);
+typedef ls_result_t (*lssig_hash_update)(void *const restrict ctx, const uint8_t *const restrict data);
 typedef ls_result_t (*lssig_hash_finish)(void *const restrict ctx, const uint8_t *const restrict data, const size_t size, uint8_t *const restrict digest);
 
 

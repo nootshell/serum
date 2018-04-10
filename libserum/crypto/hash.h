@@ -26,106 +26,56 @@
 ******************************************************************************/
 
 
-#include "./result.h"
-
-#include "./setup/fileid.h"
-
-
-
-
-FILEID("Result parsing functionality.");
+#ifndef __LS_CRYPTO_HASH_H
+#define __LS_CRYPTO_HASH_H
 
 
 
 
-const char *const
-ls_result_string(const ls_result_t result) {
-	/* Chose to do a switch over a string table: takes in less space and is less error-prone. */
-	switch (result) {
-		case LS_E_SUCCESS:
-			return "Successful.";
+#include "../core/setup.h"
 
-		case LS_E_FAILURE:
-			return "Failure.";
+#include "./hash_registry.h"
 
-		case LS_E_NULL:
-			return "Null-pointer encountered.";
 
-		case LS_E_INVALID:
-			return "Parameter or state/data invalid.";
 
-		case LS_E_UNSUPPORTED:
-			return "Operation not supported (not yet implemented).";
 
-		case LS_E_MAGIC:
-			return "Magic value found (or not) where inappropriate.";
+typedef struct ls_hash {
+	/* Allocated memory for the context */
+	void *context;
+	size_t context_size;
 
-		case LS_E_TIMEOUT:
-			return "Operation timed out.";
+	/* Allocated memory for a buffer block */
+	uint8_t *buffer;
+	size_t buffer_size;
+	size_t buffer_index;
 
-		case LS_E_ABANDONED:
-			return "Mutex/operation was abandoned.";
+	/* Functions */
+	lssig_hash_init f_init;
+	lssig_hash_clear f_clear;
+	lssig_hash_update f_update;
+	lssig_hash_finish f_finish;
+} ls_hash_t;
 
-		case LS_E_SIZE:
-			return "Size parameter/data invalid.";
 
-		case LS_E_UNINITIALIZED:
-			return "Object is in an uninitialized state.";
 
-		case LS_E_CONVERSION:
-			return "Conversion failure.";
 
-		case LS_E_LOCK:
-			return "Mutex-related failure.";
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-		case LS_E_STATE:
-			return "Object is in an invalid state.";
+	LSAPI ls_result_t ls_hash_init(ls_hash_t *const hash, ls_hash_algo_t algorithm);
 
-		case LS_E_NOOP:
-			return "The operation would have no effect.";
+	LSAPI ls_result_t ls_hash_clear(ls_hash_t *const hash);
 
-		case LS_E_MEMORY:
-			return "Memory-related failure (out of memory).";
+	LSAPI ls_result_t ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict data, const size_t size);
 
-		case LS_E_ALREADY:
-			return "Operation is an unnecessary repetition.";
+	LSAPI ls_result_t ls_hash_finish(ls_hash_t *const restrict hash, uint8_t *const restrict out_digest);
 
-		case LS_E_IO_CLOSE:
-			return "IO error related to closing.";
-
-		case LS_E_IO_TARGET:
-			return "Target IO stream invalid.";
-
-		case LS_E_IO_WRITE:
-			return "IO error related to writing.";
-
-		case LS_E_IO_FLUSH:
-			return "IO error related to flushing.";
-
-		case LS_E_BOUNDS:
-			return "Index out of bounds.";
-
-		case LS_E_NOT_FOUND:
-			return "Object or item not found.";
-
-		case LS_E_INOPERABLE:
-			return "Object seems to be in an inoperable state.";
-
-		case LS_E_OUT_OF_SYNC:
-			return "Object seems to be out of sync.";
-
-		case LS_E_INITIALIZATION:
-			return "Initialization failure.";
-
-		case LS_E_DATA_MISMATCH:
-			return "Data did not match what was expected.";
-
-		case LS_E_ALGORITHM:
-			return "Algorithm error.";
-
-		default:
-			break;
-	}
-
-	return "Unknown.";
+#ifdef __cplusplus
 }
+#endif
+
+
+
+
+#endif

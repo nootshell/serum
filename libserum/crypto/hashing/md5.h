@@ -44,6 +44,7 @@
 
 
 typedef struct ls_md5_data {
+	size_t length;
 	uint32_t state_A;
 	uint32_t state_B;
 	uint32_t state_C;
@@ -103,7 +104,7 @@ extern "C" {
 	**		`#LS_E_FAILURE` if any transformations fail.
 	**		`#LS_E_SUCCESS` otherwise.
 	*/
-	LSAPI ls_result_t ls_md5_finish(ls_md5_data_t *const restrict context, const uint8_t *const restrict input, size_t size, const size_t bits, ls_md5_digest_t digest);
+	LSAPI ls_result_t ls_md5_finish(ls_md5_data_t *const restrict context, const uint8_t *const restrict input, size_t size, ls_md5_digest_t digest);
 
 #ifdef __cplusplus
 }

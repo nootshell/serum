@@ -70,13 +70,12 @@ lscst_launch() {
 	ls_result_t result = LS_E_SUCCESS;
 
 
-	register size_t i;
 	uint64_t ns = 0;
-	lsreg_meta_t *meta = NULL;
 	ls_result_t st_result = LS_E_NOOP;
 
-
-	lsreg_hash_t *hash = NULL;
+	register size_t i;
+	const lsreg_hash_t *hash = NULL;
+	const lsreg_meta_t *meta = NULL;
 	for (i = 1; i < __hash_registry_count; ++i) {
 		hash = &__hash_registry[i];
 		meta = &hash->meta;

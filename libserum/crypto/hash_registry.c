@@ -39,7 +39,7 @@ FILEID("Registry of hash functions.");
 
 
 
-struct lsreg_hash __hash_registry[] = {
+const struct lsreg_hash __hash_registry[] = {
 	{ /* Fill up 0th index. */ },
 	{
 		.meta = {
