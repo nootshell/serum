@@ -37,13 +37,15 @@
 
 #include "./setup/types.h"
 #include "./setup/platform-setup.h"
-#include "./setup/fileid.h"
-#include "./setup/bitops.h"
-#include "./setup/magic.h"
 
 #include "./result.h"
-
 #include "./signatures.h"
+
+#if (LS_EXPORTING)
+#	include "./setup/fileid.h"
+#	include "./setup/magic.h"
+#	include "./setup/bitops.h"
+#endif
 
 
 
