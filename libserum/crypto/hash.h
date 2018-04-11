@@ -67,6 +67,8 @@ extern "C" {
 
 	LSAPI ls_result_t ls_hash_clear(ls_hash_t *const hash);
 
+	LSAPI ls_result_t ls_hash_reinit(ls_hash_t *const hash);
+
 	LSAPI ls_result_t ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict data, const size_t size);
 
 	LSAPI ls_result_t ls_hash_finish(ls_hash_t *const restrict hash, uint8_t *const restrict out_digest);
