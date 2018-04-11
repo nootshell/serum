@@ -49,7 +49,7 @@ const struct lsreg_hash __hash_registry[] = {
 			.maintainer = "icecubetray"
 		},
 
-		.ctx_size = sizeof(struct ls_md5_data),
+		.ctx_size = sizeof(struct ls_md5),
 		.block_size = LS_MD5_BLOCK_SIZE,
 		.digest_size = LS_MD5_DIGEST_SIZE,
 

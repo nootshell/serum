@@ -122,7 +122,7 @@ lscst_hashing_md5min(const lsreg_meta_t *const meta) {
 
 	ls_result_t result = LS_E_SUCCESS;
 
-	ls_md5_data_t ctx;
+	ls_md5_t ctx;
 	ls_md5_digest_t digest;
 
 	size_t len = 0;

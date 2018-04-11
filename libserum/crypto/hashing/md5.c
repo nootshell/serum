@@ -50,7 +50,7 @@ FILEID("MD5 implementation.");
 
 
 ls_result_t
-ls_md5_init(ls_md5_data_t *const context) {
+ls_md5_init(ls_md5_t *const context) {
 	if (context == NULL) {
 		return LS_E_NULL;
 	}
@@ -68,7 +68,7 @@ ls_md5_init(ls_md5_data_t *const context) {
 
 
 ls_result_t
-ls_md5_update(ls_md5_data_t *const restrict context, const ls_md5_block_t block) {
+ls_md5_update(ls_md5_t *const restrict context, const ls_md5_block_t block) {
 	if (context == NULL || block == NULL) {
 		return LS_E_NULL;
 	}
@@ -179,7 +179,7 @@ ls_md5_update(ls_md5_data_t *const restrict context, const ls_md5_block_t block)
 
 
 ls_result_t
-ls_md5_finish(ls_md5_data_t *const restrict context, const uint8_t *const restrict input, size_t size, ls_md5_digest_t digest) {
+ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict input, size_t size, ls_md5_digest_t digest) {
 	if (context == NULL || (size > 0 && input == NULL) || digest == NULL) {
 		return LS_E_NULL;
 	}
