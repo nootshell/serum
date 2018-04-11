@@ -209,3 +209,32 @@ ls_hash_finish(ls_hash_t *const restrict hash, uint8_t *const restrict out_diges
 
 	return hash->f_finish(hash->context, hash->buffer, hash->buffer_index, out_digest);
 }
+
+
+
+
+ls_result_t
+ls_hash(ls_hash_algo_t algorithm, uint8_t *const restrict out_digest, const uint8_t *const restrict data, const size_t size) {
+	ls_hash_t hctx;
+	memset(&hctx, 0, sizeof(hctx));
+
+	ls_result_t result = LS_E_SUCCESS;
+
+
+	if ((result = ls_hash_init(&hctx, algorithm)) != LS_E_SUCCESS) {
+		goto __cleanup;
+	}
+
+	if ((result = ls_hash_update(&hctx, data, size)) != LS_E_SUCCESS) {
+		goto __cleanup;
+	}
+
+	if ((result = ls_hash_finish(&hctx, out_digest)) != LS_E_SUCCESS) {
+		goto __cleanup;
+	}
+
+
+__cleanup:
+	ls_hash_clear(&hctx);
+	return result;
+}
