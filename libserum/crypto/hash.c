@@ -63,7 +63,7 @@ ls_hash_init(ls_hash_t *const hash, ls_hash_algo_t algorithm) {
 
 	ptr = malloc(reg_entry->block_size);
 	if (ptr == NULL) {
-		free(hash->context);
+		hash->context = ls_memory_free(hash->context);
 		return LS_E_MEMORY;
 	}
 	hash->buffer = ptr;
