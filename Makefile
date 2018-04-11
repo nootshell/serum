@@ -32,7 +32,7 @@ ifeq (,$(CC))
 	CC = gcc
 endif
 
-LS_ELF_INTERP = $(shell sh ./elf_interp.sh)
+LS_ELF_INTERP = $(shell sh ./sbin/elf_interp.sh)
 
 GIT_COMMIT_HEAD = $(shell git rev-parse HEAD)
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
