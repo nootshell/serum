@@ -28,18 +28,10 @@
 
 #include "./md5.h"
 
+#include "../hash-utils.h"
 #include "../../core/memory.h"
 
 #include <string.h>
-
-
-
-
-#define MD5R10(a, b, c, d, x, t, s)			(a) = (LS_ROTL32(((a) + (((d) ^ ((b) & ((c) ^ (d)))) + (x) + (t))), (s)) + (b))
-#define MD5R20(a, b, c, d, x, t, s)			(a) = (LS_ROTL32(((a) + (((c) ^ ((d) & ((b) ^ (c)))) + (x) + (t))), (s)) + (b))
-#define MD5R31(a, b, c, d, x, t, s)			(a) = (LS_ROTL32(((a) + ((((b) ^ (c)) ^ (d)) + (x) + (t))), (s)) + (b))
-#define MD5R32(a, b, c, d, x, t, s)			(a) = (LS_ROTL32(((a) + (((b) ^ ((c) ^ (d))) + (x) + (t))), (s)) + (b))
-#define MD5R40(a, b, c, d, x, t, s)			(a) = (LS_ROTL32(((a) + (((c) ^ ((b) | ~(d))) + (x) + (t))), (s)) + (b))
 
 
 
@@ -65,6 +57,13 @@ ls_md5_init(ls_md5_t *const context) {
 }
 
 
+
+
+#define MD5R10(a, b, c, d, x, t, s)			(a) = (LS_ROTL32(((a) + (((d) ^ ((b) & ((c) ^ (d)))) + (x) + (t))), (s)) + (b))
+#define MD5R20(a, b, c, d, x, t, s)			(a) = (LS_ROTL32(((a) + (((c) ^ ((d) & ((b) ^ (c)))) + (x) + (t))), (s)) + (b))
+#define MD5R31(a, b, c, d, x, t, s)			(a) = (LS_ROTL32(((a) + ((((b) ^ (c)) ^ (d)) + (x) + (t))), (s)) + (b))
+#define MD5R32(a, b, c, d, x, t, s)			(a) = (LS_ROTL32(((a) + (((b) ^ ((c) ^ (d))) + (x) + (t))), (s)) + (b))
+#define MD5R40(a, b, c, d, x, t, s)			(a) = (LS_ROTL32(((a) + (((c) ^ ((b) | ~(d))) + (x) + (t))), (s)) + (b))
 
 
 ls_result_t
@@ -178,60 +177,50 @@ ls_md5_update(ls_md5_t *const restrict context, const ls_md5_block_t block) {
 }
 
 
+#undef MD5R10
+#undef MD5R20
+#undef MD5R31
+#undef MD5R32
+#undef MD5R40
+
+
+
+
 ls_result_t
-ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict input, size_t size, ls_md5_digest_t digest) {
-	if (context == NULL || (size > 0 && input == NULL) || digest == NULL) {
+ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict input, const size_t input_size, ls_md5_digest_t out_digest) {
+	if (context == NULL || (input_size > 0 && input == NULL) || out_digest == NULL) {
 		return LS_E_NULL;
 	}
 
-	if (size > LS_MD5_BLOCK_SIZE) {
+	if (input_size > LS_MD5_BLOCK_SIZE) {
 		return LS_E_SIZE;
 	}
 
-	const size_t bits = ((context->length + size) * LS_BITS_BYTE);
+	/* Pad the message, and perform the final transformation. */
+	{
+		ls_md5_block_t buffer;
 
-	// Populate the buffer with remaining input (if any), and the starting
-	// bit of the padding.
-	ls_md5_block_t block;
-	if (size > 0) {
-		memcpy(block, input, size);
-	}
-	block[size++] = 0x80;
+		const ls_result_t pad_result = __ls_hash_finish_80_00_length64(
+			context, (lssig_hash_update)ls_md5_update,
+			((context->length + input_size) * LS_BITS_BYTE),
+			buffer, LS_MD5_BLOCK_SIZE,
+			input, input_size
+		);
 
-	// Check if the buffer can hold the input and the final padding and if
-	// not so, process what we have so far (split the finalization into two
-	// transformations).
-	size_t diff = (LS_MD5_BLOCK_SIZE - size);
-	if (diff < 8) {
-		if (size < LS_MD5_BLOCK_SIZE) {
-			ls_memory_clear(&block[size], diff);
+		if (pad_result != LS_E_SUCCESS) {
+			return pad_result;
 		}
-		if (ls_md5_update(context, block) != LS_E_SUCCESS) {
-			return LS_E_FAILURE;
-		}
-		size = 0;
-		diff = LS_MD5_BLOCK_SIZE;
 	}
 
-	// Clear everything between the input and the final padding.
-	ls_memory_clear(&block[size], (diff - 8));
-
-	// Append the number of bits in the message to the end of the pad and
-	// perform the final transform.
-	*((uint64_t*)(block + (LS_MD5_BLOCK_SIZE - 8))) = LS_ENSURE_LITTLE64(bits);
-	if (ls_md5_update(context, block) != LS_E_SUCCESS) {
-		return LS_E_FAILURE;
-	}
-
-	// Output the digest.
-	uint32_t *const dout32 = (uint32_t *const)digest;
+	/* Output the digest. */
+	uint32_t *const dout32 = (uint32_t *const)out_digest;
 	dout32[0] = LS_ENSURE_LITTLE32(context->state_A);
 	dout32[1] = LS_ENSURE_LITTLE32(context->state_B);
 	dout32[2] = LS_ENSURE_LITTLE32(context->state_C);
 	dout32[3] = LS_ENSURE_LITTLE32(context->state_D);
 
-	// Clear the context.
-	context->state_A = context->state_B = context->state_C = context->state_D = 0;
+	/* Clear the context. */
+	context->length = context->state_A = context->state_B = context->state_C = context->state_D = 0;
 
 	return LS_E_SUCCESS;
 }

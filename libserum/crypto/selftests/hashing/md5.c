@@ -37,13 +37,13 @@
 
 
 
-FILEID("CST: MD5 [pure]");
+FILEID("CST: MD5");
 
 
 
 
 ls_result_t
-lscst_hashing_md5min(const lsreg_meta_t *const meta) {
+lscst_hashing_md5(const lsreg_meta_t *const meta) {
 	struct vector {
 		ls_md5_digest_t digest;
 		char data[LS_MD5_BLOCK_SIZE];

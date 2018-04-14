@@ -40,6 +40,7 @@
 #if (!LS_DOXYGEN)
 #	if (LS_EXPORTING)
 #		define LSAPI						LS_EXPORT
+#		define LSINT						LS_INTERNAL
 #	else
 #		define LSAPI						LS_IMPORT
 #	endif

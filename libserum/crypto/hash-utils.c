@@ -26,39 +26,67 @@
 ******************************************************************************/
 
 
-#include "./hash_registry.h"
+#include "./hash-utils.h"
 
-#include "./hashing/md5.h"
-#include "./selftests/hashing/md5.h"
+#include "../core/memory.h"
 
-
-
-
-FILEID("Registry of hash functions.");
+#include <string.h>
 
 
 
 
-const struct lsreg_hash __hash_registry[] = {
-	{ /* Fill up 0th index. */ },
-	{
-		.meta = {
-			.selftest = (lssig_cst_case)lscst_hashing_md5,
-			.flags = 0,
-			.name = "MD5",
-			.maintainer = "icecubetray"
-		},
-
-		.ctx_size = sizeof(struct ls_md5),
-		.block_size = LS_MD5_BLOCK_SIZE,
-		.digest_size = LS_MD5_DIGEST_SIZE,
-
-		.init = (lssig_hash_init)ls_md5_init,
-		.clear = NULL,
-		.update = (lssig_hash_update)ls_md5_update,
-		.finish = (lssig_hash_finish)ls_md5_finish
+ls_result_t
+__ls_hash_finish_80_00_length64(void *const restrict context, lssig_hash_update f_update, const uint64_t length, uint8_t *const restrict block_buffer, const size_t block_size, const void *const restrict input, const size_t input_size) {
+	if (context == NULL || f_update == NULL || block_buffer == NULL || (input_size > 0 && input == NULL)) {
+		return LS_E_NULL;
 	}
-};
 
-const size_t __hash_registry_size = sizeof(__hash_registry);
-const size_t __hash_registry_count = (sizeof(__hash_registry) / sizeof(*__hash_registry));
+	if (block_size == 0) {
+		return LS_E_SIZE;
+	}
+
+
+	// Populate the buffer with remaining input (if any), and the starting
+	// bit of the padding.
+	size_t pad_size;
+	if (input_size > 0) {
+		memcpy(block_buffer, input, input_size);
+		pad_size = input_size;
+	} else {
+		pad_size = 0;
+	}
+	block_buffer[pad_size++] = 0x80;
+
+
+	// Check if the buffer can hold the input and the final padding and if
+	// not so, process what we have so far (split the finalization into two
+	// transformations).
+	size_t diff = (block_size - pad_size);
+	if (diff < sizeof(uint64_t)) {
+		if (pad_size < block_size) {
+			ls_memory_clear(&block_buffer[pad_size], diff);
+		}
+
+		if (f_update(context, block_buffer) != LS_E_SUCCESS) {
+			return LS_E_FAILURE;
+		}
+
+		pad_size = 0;
+		diff = block_size;
+	}
+
+
+	// Clear everything between the pad bit and the length.
+	ls_memory_clear(&block_buffer[pad_size], (diff - 8));
+
+
+	// Append the length of the message to the end of the pad and perform the
+	// final transform.
+	*((uint64_t*)(block_buffer + (block_size - 8))) = LS_ENSURE_LITTLE64(length);
+	if (f_update(context, block_buffer) != LS_E_SUCCESS) {
+		return LS_E_FAILURE;
+	}
+
+
+	return LS_E_SUCCESS;
+}

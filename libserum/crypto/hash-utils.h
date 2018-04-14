@@ -26,39 +26,28 @@
 ******************************************************************************/
 
 
-#include "./hash_registry.h"
-
-#include "./hashing/md5.h"
-#include "./selftests/hashing/md5.h"
+#ifndef __LS_CRYPTO_HASH_UTILS_H
+#define __LS_CRYPTO_HASH_UTILS_H
 
 
 
 
-FILEID("Registry of hash functions.");
+#include "../core/setup.h"
 
 
 
 
-const struct lsreg_hash __hash_registry[] = {
-	{ /* Fill up 0th index. */ },
-	{
-		.meta = {
-			.selftest = (lssig_cst_case)lscst_hashing_md5,
-			.flags = 0,
-			.name = "MD5",
-			.maintainer = "icecubetray"
-		},
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-		.ctx_size = sizeof(struct ls_md5),
-		.block_size = LS_MD5_BLOCK_SIZE,
-		.digest_size = LS_MD5_DIGEST_SIZE,
+	LSINT ls_result_t __ls_hash_finish_80_00_length64(void *const restrict context, lssig_hash_update f_update, const uint64_t length, uint8_t *const restrict block_buffer, const size_t block_size, const void *const restrict input, const size_t input_size);
 
-		.init = (lssig_hash_init)ls_md5_init,
-		.clear = NULL,
-		.update = (lssig_hash_update)ls_md5_update,
-		.finish = (lssig_hash_finish)ls_md5_finish
-	}
-};
+#ifdef __cplusplus
+}
+#endif
 
-const size_t __hash_registry_size = sizeof(__hash_registry);
-const size_t __hash_registry_count = (sizeof(__hash_registry) / sizeof(*__hash_registry));
+
+
+
+#endif

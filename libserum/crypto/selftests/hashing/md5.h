@@ -26,8 +26,8 @@
 ******************************************************************************/
 
 
-#ifndef __LS_CRYPTO_SELFTESTS_HASHING_MD5MIN_H
-#define __LS_CRYPTO_SELFTESTS_HASHING_MD5MIN_H
+#ifndef __LS_CRYPTO_SELFTESTS_HASHING_MD5_H
+#define __LS_CRYPTO_SELFTESTS_HASHING_MD5_H
 
 
 
@@ -42,7 +42,7 @@
 extern "C" {
 #endif
 
-	LSAPI ls_result_t lscst_hashing_md5min(const lsreg_meta_t *const meta);
+	LSAPI ls_result_t lscst_hashing_md5(const lsreg_meta_t *const meta);
 
 #ifdef __cplusplus
 }
