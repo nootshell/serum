@@ -26,59 +26,57 @@
 ******************************************************************************/
 
 
-#include "./hash_registry.h"
-
-#include "./hashing/md5.h"
-#include "./selftests/hashing/md5.h"
-
-#include "./hashing/ripemd160.h"
-#include "./selftests/hashing/ripemd160.h"
+#ifndef __LS_CRYPTO_HASHING_RIPEMD160_H
+#define __LS_CRYPTO_HASHING_RIPEMD160_H
 
 
 
 
-FILEID("Registry of hash functions.");
+#include "../../core/setup.h"
 
 
 
 
-const struct lsreg_hash __hash_registry[] = {
-	{ /* Fill up 0th index. */ },
-	{
-		.meta = {
-			.selftest = (lssig_cst_case)lscst_hashing_md5,
-			.flags = 0,
-			.name = "MD5",
-			.maintainer = "icecubetray"
-		},
+#define LS_RIPEMD160_BLOCK_SIZE				64
+#define LS_RIPEMD160_DIGEST_SIZE			20
 
-		.ctx_size = sizeof(struct ls_md5),
-		.block_size = LS_MD5_BLOCK_SIZE,
-		.digest_size = LS_MD5_DIGEST_SIZE,
 
-		.init = (lssig_hash_init)ls_md5_init,
-		.clear = NULL,
-		.update = (lssig_hash_update)ls_md5_update,
-		.finish = (lssig_hash_finish)ls_md5_finish
-	},
-	{
-		.meta = {
-			.selftest = (lssig_cst_case)lscst_hashing_ripemd160,
-			.flags = 0,
-			.name = "RIPEMD-160",
-			.maintainer = "icecubetray"
-		},
 
-		.ctx_size = sizeof(struct ls_ripemd160),
-		.block_size = LS_RIPEMD160_BLOCK_SIZE,
-		.digest_size = LS_RIPEMD160_DIGEST_SIZE,
 
-		.init = (lssig_hash_init)ls_ripemd160_init,
-		.clear = NULL,
-		.update = (lssig_hash_update)ls_ripemd160_update,
-		.finish = (lssig_hash_finish)ls_ripemd160_finish
-	}
-};
+typedef struct ls_ripemd160 {
+	size_t length;
+	uint32_t state_A;
+	uint32_t state_B;
+	uint32_t state_C;
+	uint32_t state_D;
+	uint32_t state_E;
+	uint32_t __pad;
+} ls_ripemd160_t;
 
-const size_t __hash_registry_size = sizeof(__hash_registry);
-const size_t __hash_registry_count = (sizeof(__hash_registry) / sizeof(*__hash_registry));
+/*! \brief A byte array with the size of a RIPEMD-160 block (`#LS_RIPEMD160_BLOCK_SIZE`). */
+typedef uint8_t ls_ripemd160_block_t[LS_RIPEMD160_BLOCK_SIZE];
+
+/*! \brief A byte array with the size of a RIPEMD-160 digest (`#LS_RIPEMD160_DIGEST_SIZE`). */
+typedef uint8_t ls_ripemd160_digest_t[LS_RIPEMD160_DIGEST_SIZE];
+
+
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	LSAPI ls_result_t ls_ripemd160_init(ls_ripemd160_t *const context);
+
+	LSAPI ls_result_t ls_ripemd160_update(ls_ripemd160_t *const context, const ls_ripemd160_block_t block);
+
+	LSAPI ls_result_t ls_ripemd160_finish(ls_ripemd160_t *const restrict context, const uint8_t *const restrict input, const size_t input_size, ls_ripemd160_digest_t out_digest);
+
+#ifdef __cplusplus
+}
+#endif
+
+
+
+
+#endif

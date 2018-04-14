@@ -32,10 +32,14 @@ libserum/crypto/hash_registry.c
 libserum/crypto/hash_registry.h
 libserum/crypto/hashing/md5.c
 libserum/crypto/hashing/md5.h
+libserum/crypto/hashing/ripemd160.c
+libserum/crypto/hashing/ripemd160.h
 libserum/crypto/selftests/base.c
 libserum/crypto/selftests/base.h
 libserum/crypto/selftests/hashing/md5.c
 libserum/crypto/selftests/hashing/md5.h
+libserum/crypto/selftests/hashing/ripemd160.c
+libserum/crypto/selftests/hashing/ripemd160.h
 libserum/data/time.c
 libserum/data/time.h
 libserum/io/ansi-ctrl.h

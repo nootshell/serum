@@ -26,59 +26,29 @@
 ******************************************************************************/
 
 
-#include "./hash_registry.h"
-
-#include "./hashing/md5.h"
-#include "./selftests/hashing/md5.h"
-
-#include "./hashing/ripemd160.h"
-#include "./selftests/hashing/ripemd160.h"
+#ifndef __LS_CRYPTO_SELFTESTS_HASHING_RIPEMD160_H
+#define __LS_CRYPTO_SELFTESTS_HASHING_RIPEMD160_H
 
 
 
 
-FILEID("Registry of hash functions.");
+#include "../../hashing/ripemd160.h"
+#include "../../hash_registry.h"
 
 
 
 
-const struct lsreg_hash __hash_registry[] = {
-	{ /* Fill up 0th index. */ },
-	{
-		.meta = {
-			.selftest = (lssig_cst_case)lscst_hashing_md5,
-			.flags = 0,
-			.name = "MD5",
-			.maintainer = "icecubetray"
-		},
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-		.ctx_size = sizeof(struct ls_md5),
-		.block_size = LS_MD5_BLOCK_SIZE,
-		.digest_size = LS_MD5_DIGEST_SIZE,
+	LSAPI ls_result_t lscst_hashing_ripemd160(const lsreg_meta_t *const meta);
 
-		.init = (lssig_hash_init)ls_md5_init,
-		.clear = NULL,
-		.update = (lssig_hash_update)ls_md5_update,
-		.finish = (lssig_hash_finish)ls_md5_finish
-	},
-	{
-		.meta = {
-			.selftest = (lssig_cst_case)lscst_hashing_ripemd160,
-			.flags = 0,
-			.name = "RIPEMD-160",
-			.maintainer = "icecubetray"
-		},
+#ifdef __cplusplus
+}
+#endif
 
-		.ctx_size = sizeof(struct ls_ripemd160),
-		.block_size = LS_RIPEMD160_BLOCK_SIZE,
-		.digest_size = LS_RIPEMD160_DIGEST_SIZE,
 
-		.init = (lssig_hash_init)ls_ripemd160_init,
-		.clear = NULL,
-		.update = (lssig_hash_update)ls_ripemd160_update,
-		.finish = (lssig_hash_finish)ls_ripemd160_finish
-	}
-};
 
-const size_t __hash_registry_size = sizeof(__hash_registry);
-const size_t __hash_registry_count = (sizeof(__hash_registry) / sizeof(*__hash_registry));
+
+#endif

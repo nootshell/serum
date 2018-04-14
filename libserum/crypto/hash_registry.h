@@ -43,6 +43,7 @@
 
 
 #define LS_HASH_MD5							1
+#define LS_HASH_RIPEMD160					2
 
 
 
