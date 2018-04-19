@@ -70,6 +70,9 @@ lscst_launch() {
 	ls_result_t result = LS_E_SUCCESS;
 
 
+	ls_log_writeln(NULL, LS_LOG_LEVEL_INFO, LS_ANSI_WRAP("Performing CSTs.", LS_ANSI_FG_ORANGE, LS_ANSI_OPT_ITALIC));
+
+
 	uint64_t ns = 0;
 	ls_result_t st_result = LS_E_NOOP;
 
@@ -82,7 +85,7 @@ lscst_launch() {
 
 		if (meta->selftest == NULL) {
 			if (__logging) {
-				ls_log_writeln(NULL, LS_LOG_LEVEL_WARNING, "Hash algorithm #%" PRIuPTR " (%s) does not have a selftest entry set.", i, meta->name);
+				ls_log_writeln(NULL, LS_LOG_LEVEL_WARNING, LS_ANSI_WRAP(">", LS_ANSI_FG_MAGENTA) " " LS_ANSI_WRAP("%s", LS_ANSI_FG_WHITE) " (ai=%02" PRIXPTR "): " LS_ANSI_WRAP("no CST entrypoint set!", LS_ANSI_FG_YELLOW), meta->name, i);
 			}
 			continue;
 		}
@@ -101,11 +104,14 @@ lscst_launch() {
 			ls_log_writeln(
 				NULL,
 				((st_result == LS_E_SUCCESS) ? LS_LOG_LEVEL_INFO : LS_LOG_LEVEL_SEVERE),
-				"Cryptographic selftest for " LS_ANSI_WRAP(LS_ANSI_FG_WHITE, "%s") " (ai=%02" PRIXPTR ") %s, roughly " LS_ANSI_WRAP(LS_ANSI_FG_WHITE, "%" PRIu64) " nanoseconds were spent doing the test.",
-				meta->name, i, ((st_result == LS_E_SUCCESS) ? LS_ANSI_WRAP(LS_ANSI_FG_GREEN, "passed") : LS_ANSI_WRAP(LS_ANSI_FG_RED, "failed")), ns
+				LS_ANSI_WRAP(">", LS_ANSI_FG_TEAL) " " LS_ANSI_WRAP("%s", LS_ANSI_FG_WHITE) " (ai=%02" PRIXPTR "): %s, took ~" LS_ANSI_WRAP("%" PRIu64, LS_ANSI_FG_WHITE) " nanos",
+				meta->name, i, ((st_result == LS_E_SUCCESS) ? LS_ANSI_WRAP("passed", LS_ANSI_FG_GREEN) : LS_ANSI_WRAP("failed", LS_ANSI_FG_RED)), ns
 			);
 		}
 	}
+
+
+	ls_log_writeln(NULL, LS_LOG_LEVEL_INFO, LS_ANSI_WRAP("Done performing CSTs.", LS_ANSI_FG_ORANGE, LS_ANSI_OPT_ITALIC));
 
 
 	return result;
@@ -121,21 +127,21 @@ lscst_log(const ls_result_t result, const char *const algorithm, const size_t in
 		ls_log_writeln(
 			NULL,
 			level,
-			"%s (algo=\"%s\", ti=%02" PRIuPTR ", src=\"%s\")",
-			ls_result_string(result), algorithm, index, source
+			LS_ANSI_WRAP(">", LS_ANSI_FG_TEAL) " " LS_ANSI_WRAP("%s", LS_ANSI_FG_WHITE) ": " LS_ANSI_WRAP("%s", LS_ANSI_FG_RED) " (ti=%02" PRIuPTR ", src=\"%s\")",
+			algorithm, ls_result_string(result), index, source
 		);
 
 		if (data_expected != NULL && data_found != NULL && data_size > 0) {
 			ls_log_writeln(
 				NULL,
 				level,
-				" > Expected %s",
+				"   > Expected %s",
 				ls_memory_to_c_array(data_expected, data_size)
 			);
 			ls_log_writeln(
 				NULL,
 				level,
-				" > Found    %s",
+				"   > Found    %s",
 				ls_memory_to_c_array(data_found, data_size)
 			);
 		}

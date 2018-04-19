@@ -32,6 +32,11 @@
 
 
 
+#include "../core/setup/macros.h"
+
+
+
+
 #if (LS_ANSI_SUPPORT)
 #	define __LS_ANSI(x)						x
 #else
@@ -44,8 +49,13 @@
 #define LS_ANSI_ESCAPE_END					__LS_ANSI("m")
 
 
-#define LS_ANSI_OPT_CONCAT(n, ...)			__LS_ANSI_OPT_CC_ ## n (__VA_ARGS__)
+#define LS_ANSI_OPT_CONCAT(...)				__LS_ANSI_OPT_CC_NW(LS_NARG(__VA_ARGS__), __VA_ARGS__)
 
+#define __LS_ANSI_OPT_CC_NW(n, ...)			__LS_ANSI_OPT_CC_NI(n, __VA_ARGS__)
+#define __LS_ANSI_OPT_CC_NI(n, ...)			__LS_ANSI_OPT_CC_ ## n (__VA_ARGS__)
+
+#define __LS_ANSI_OPT_CC_0()
+#define __LS_ANSI_OPT_CC_1(a)				a
 #define __LS_ANSI_OPT_CC_2(a,b)				a LS_ANSI_ESCAPE_OPT b
 #define __LS_ANSI_OPT_CC_3(a,b,c)			a LS_ANSI_ESCAPE_OPT b LS_ANSI_ESCAPE_OPT c
 #define __LS_ANSI_OPT_CC_4(a,b,c,d)			a LS_ANSI_ESCAPE_OPT b LS_ANSI_ESCAPE_OPT c LS_ANSI_ESCAPE_OPT d
@@ -149,7 +159,8 @@
 
 
 #define LS_ANSI_WOPT(opt)					__LS_ANSI(LS_ANSI_ESCAPE_START "0" LS_ANSI_ESCAPE_OPT opt LS_ANSI_ESCAPE_END)
-#define LS_ANSI_WRAP(opt, x)				LS_ANSI_WOPT(opt) x LS_ANSI_WOPT("0")
+
+#define LS_ANSI_WRAP(x, ...)				LS_ANSI_WOPT(LS_ANSI_OPT_CONCAT(__VA_ARGS__)) x LS_ANSI_WOPT("0")
 
 
 

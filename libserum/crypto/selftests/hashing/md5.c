@@ -138,12 +138,14 @@ lscst_hashing_md5(const lsreg_meta_t *const meta) {
 
 		if (ls_md5_init(&ctx) != LS_E_SUCCESS) {
 			lscst_log(LS_E_INITIALIZATION, meta->name, i, vec->source, NULL, NULL, 0);
+			result = LS_E_FAILURE;
 			continue;
 		}
 
 		len = strlen(vec->data);
 		if (ls_md5_finish(&ctx, (const uint8_t *const)vec->data, len, digest) != LS_E_SUCCESS) {
 			lscst_log(LS_E_CONVERSION, meta->name, i, vec->source, NULL, NULL, 0);
+			result = LS_E_FAILURE;
 			continue;
 		}
 

@@ -35,8 +35,27 @@
 #define __LS_MKSTR(x)						#x
 #define LS_MKSTR(x)							__LS_MKSTR(x)
 
+
 #define __LS_MAYBE_EMPTY(x)					x ## 1
 #define LS_MAYBE_EMPTY(x)					__LS_MAYBE_EMPTY(x)
+
+
+
+
+#define __LS_NARG_S3						\
+	20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, \
+	 9,  8,  7,  6,  5,  4,  3,  2,  1,  0
+
+#define __LS_NARG_S2(						\
+	__00__, __01__, __02__, __03__, __04__, \
+	__05__, __06__, __07__, __08__, __09__, \
+	__10__, __11__, __12__, __13__, __14__, \
+	__15__, __16__, __17__, __18__, __19__, \
+	N, ...)									N
+
+#define __LS_NARG_S1(...)					__LS_NARG_S2(__VA_ARGS__)
+
+#define LS_NARG(...)						__LS_NARG_S1(__VA_ARGS__, __LS_NARG_S3)
 
 
 
