@@ -45,4 +45,9 @@ typedef bool ls_bool_t;
 
 
 
+typedef uint64_t ls_message_length_t;
+
+
+
+
 #endif

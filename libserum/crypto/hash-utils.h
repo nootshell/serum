@@ -41,7 +41,7 @@
 extern "C" {
 #endif
 
-	LSINT ls_result_t __ls_hash_finish_80_00_length64(void *const restrict context, lssig_hash_update f_update, const uint64_t length, uint8_t *const restrict block_buffer, const size_t block_size, const void *const restrict input, const size_t input_size);
+	LSINT ls_result_t __ls_hash_finish_80_00_length64(void *const restrict context, lssig_hash_update f_update, const ls_message_length_t length, uint8_t *const restrict block_buffer, const size_t block_size, const void *const restrict input, const size_t input_size);
 
 #ifdef __cplusplus
 }

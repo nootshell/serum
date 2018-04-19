@@ -44,7 +44,7 @@
 
 
 typedef struct ls_md5 {
-	size_t length;
+	ls_message_length_t length;
 	uint32_t state_A;
 	uint32_t state_B;
 	uint32_t state_C;
