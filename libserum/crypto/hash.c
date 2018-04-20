@@ -190,8 +190,8 @@ ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict dat
 	}
 
 
+	hash->buffer_index = sz_remaining;
 	if (sz_remaining > 0) {
-		hash->buffer_index = sz_remaining;
 		memcpy(hash->buffer, dptr, sz_remaining);
 	}
 
