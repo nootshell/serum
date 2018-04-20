@@ -104,8 +104,8 @@ lscst_launch() {
 			ls_log_writeln(
 				NULL,
 				((st_result == LS_E_SUCCESS) ? LS_LOG_LEVEL_INFO : LS_LOG_LEVEL_SEVERE),
-				LS_ANSI_WRAP(">", LS_ANSI_FG_TEAL) " " LS_ANSI_WRAP("%s", LS_ANSI_FG_WHITE) " (ai=%02" PRIXPTR "): %s, took ~" LS_ANSI_WRAP("%" PRIu64, LS_ANSI_FG_WHITE) " nanos",
-				meta->name, i, ((st_result == LS_E_SUCCESS) ? LS_ANSI_WRAP("passed", LS_ANSI_FG_GREEN) : LS_ANSI_WRAP("failed", LS_ANSI_FG_RED)), ns
+				LS_ANSI_WRAP(">", LS_ANSI_FG_TEAL) " " LS_ANSI_WRAP("%s", LS_ANSI_FG_WHITE) " (ai=%02" PRIXPTR "): %s, took ~" LS_ANSI_WRAP("%" PRIu64, LS_ANSI_FG_WHITE) " μs",
+				meta->name, i, ((st_result == LS_E_SUCCESS) ? LS_ANSI_WRAP("passed", LS_ANSI_FG_GREEN) : LS_ANSI_WRAP("failed", LS_ANSI_FG_RED)), (ns / 1000)
 			);
 		}
 	}

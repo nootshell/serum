@@ -29,9 +29,9 @@
 #include "./ripemd160.h"
 
 #include "../../../core/memory.h"
+#include "../assert.h"
 #include "../base.h"
 
-#include <stdio.h>
 #include <string.h>
 
 
@@ -126,32 +126,15 @@ lscst_hashing_ripemd160(const lsreg_meta_t *const meta) {
 	ls_ripemd160_t ctx;
 	ls_ripemd160_digest_t digest;
 
-	size_t len = 0;
 	struct vector *vec = NULL;
 	register size_t i;
 	for (i = 0; i < nvectors; ++i) {
 		vec = &vectors[i];
 
-		if (vec->iterations > 1) {
-			// TODO!
-			continue;
-		}
-
-		if (ls_ripemd160_init(&ctx) != LS_E_SUCCESS) {
-			lscst_log(LS_E_INITIALIZATION, meta->name, i, vec->source, NULL, NULL, 0);
-			continue;
-		}
-
-		len = strlen(vec->data);
-		if (ls_ripemd160_finish(&ctx, (const uint8_t *const)vec->data, len, digest) != LS_E_SUCCESS) {
-			lscst_log(LS_E_CONVERSION, meta->name, i, vec->source, NULL, NULL, 0);
-			continue;
-		}
-
-		if (memcmp(vec->digest, digest, sizeof(digest)) != 0) {
-			lscst_log(LS_E_DATA_MISMATCH, meta->name, i, vec->source, vec->digest, digest, sizeof(digest));
+		const ls_result_t res = lscst_hash_assert(LS_HASH_RIPEMD160, (const uint8_t *const)vec->data, strlen(vec->data), vec->iterations, vec->digest, digest, LS_RIPEMD160_DIGEST_SIZE);
+		if (res != LS_E_SUCCESS) {
 			result = LS_E_FAILURE;
-			continue;
+			lscst_log(res, meta->name, i, vec->source, vec->digest, digest, LS_RIPEMD160_DIGEST_SIZE);
 		}
 	}
 
