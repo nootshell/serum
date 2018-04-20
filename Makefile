@@ -61,10 +61,10 @@ TITLE = "done"
 
 
 ifeq (,$(wildcard ./debug))
-all: release
+all: release bin/test
 rebuild: clean release
 else
-all: rebuild
+all: rebuild bin/test
 rebuild: clean debug
 endif
 
