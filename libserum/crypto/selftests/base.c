@@ -132,18 +132,23 @@ lscst_log(const ls_result_t result, const char *const algorithm, const size_t in
 		);
 
 		if (data_expected != NULL && data_found != NULL && data_size > 0) {
+			char *digest_str = ls_memory_to_c_array(data_expected, data_size);
 			ls_log_writeln(
 				NULL,
 				level,
 				"   > Expected %s",
-				ls_memory_to_c_array(data_expected, data_size)
+				digest_str
 			);
+			digest_str = ls_memory_free(digest_str);
+
+			digest_str = ls_memory_to_c_array(data_found, data_size);
 			ls_log_writeln(
 				NULL,
 				level,
 				"   > Found    %s",
-				ls_memory_to_c_array(data_found, data_size)
+				digest_str
 			);
+			digest_str = ls_memory_free(digest_str);
 		}
 	}
 }
