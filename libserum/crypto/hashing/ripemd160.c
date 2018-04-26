@@ -28,7 +28,7 @@
 
 #include "./ripemd160.h"
 
-#include "../hash-utils.h"
+#include "../hash_utils.h"
 
 
 

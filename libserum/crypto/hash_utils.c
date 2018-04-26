@@ -26,7 +26,7 @@
 ******************************************************************************/
 
 
-#include "./hash-utils.h"
+#include "./hash_utils.h"
 
 #include "../core/memory.h"
 

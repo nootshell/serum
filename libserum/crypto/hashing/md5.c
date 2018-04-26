@@ -28,7 +28,7 @@
 
 #include "./md5.h"
 
-#include "../hash-utils.h"
+#include "../hash_utils.h"
 #include "../../core/memory.h"
 
 #include <string.h>
