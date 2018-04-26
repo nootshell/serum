@@ -26,59 +26,40 @@
 ******************************************************************************/
 
 
-#include "./hash_registry.h"
+#include "../registry.h"
 
-#include "./hashing/md5.h"
-#include "./selftests/hashing/md5.h"
-
-#include "./hashing/ripemd160.h"
-#include "./selftests/hashing/ripemd160.h"
+#include "../ciphers/salsa20.h"
+//#include "../selftests/ciphers/salsa20.h"
 
 
 
 
-FILEID("Registry of hash functions.");
+FILEID("Registry of ciphers.");
 
 
 
 
-const struct lsreg_hash __hash_registry[] = {
+const struct lsreg_cipher __cipher_registry[] = {
 	{ /* Fill up 0th index. */ },
 	{
 		.meta = {
-			.selftest = (lssig_cst_case)lscst_hashing_md5,
+			.selftest = NULL,
 			.flags = 0,
-			.name = "MD5",
+			.name = "Salsa20",
 			.maintainer = "icecubetray"
 		},
 
-		.ctx_size = sizeof(struct ls_md5),
-		.block_size = LS_MD5_BLOCK_SIZE,
-		.digest_size = LS_MD5_DIGEST_SIZE,
+		.ctx_size = sizeof(union ls_salsa20),
+		.block_size = LS_SALSA20_BLOCK_SIZE,
 
-		.init = (lssig_hash_init)ls_md5_init,
-		.clear = NULL,
-		.update = (lssig_hash_update)ls_md5_update,
-		.finish = (lssig_hash_finish)ls_md5_finish
-	},
-	{
-		.meta = {
-			.selftest = (lssig_cst_case)lscst_hashing_ripemd160,
-			.flags = 0,
-			.name = "RIPEMD-160",
-			.maintainer = "icecubetray"
-		},
-
-		.ctx_size = sizeof(struct ls_ripemd160),
-		.block_size = LS_RIPEMD160_BLOCK_SIZE,
-		.digest_size = LS_RIPEMD160_DIGEST_SIZE,
-
-		.init = (lssig_hash_init)ls_ripemd160_init,
-		.clear = NULL,
-		.update = (lssig_hash_update)ls_ripemd160_update,
-		.finish = (lssig_hash_finish)ls_ripemd160_finish
+		.f_init = (lssig_cipher_init)ls_salsa20_init,
+		.f_clear = NULL,
+		.f_rekey = (lssig_cipher_rekey)ls_salsa20_rekey,
+		.f_renonce = (lssig_cipher_renonce)ls_salsa20_renonce,
+		.f_block_encrypt = (lssig_cipher_block_encrypt)ls_salsa20_block_crypt,
+		.f_block_decrypt = (lssig_cipher_block_decrypt)ls_salsa20_block_crypt
 	}
 };
 
-const size_t __hash_registry_size = sizeof(__hash_registry);
-const size_t __hash_registry_count = (sizeof(__hash_registry) / sizeof(*__hash_registry));
+const size_t __cipher_registry_size = sizeof(__cipher_registry);
+const size_t __cipher_registry_count = (sizeof(__cipher_registry) / sizeof(*__cipher_registry));

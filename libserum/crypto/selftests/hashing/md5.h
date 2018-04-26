@@ -33,7 +33,7 @@
 
 
 #include "../../hashing/md5.h"
-#include "../../hash_registry.h"
+#include "../../registry.h"
 
 
 

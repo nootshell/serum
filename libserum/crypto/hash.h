@@ -34,7 +34,7 @@
 
 #include "../core/setup.h"
 
-#include "./hash_registry.h"
+#include "./registry.h"
 
 
 

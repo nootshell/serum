@@ -28,7 +28,7 @@
 
 #include "./base.h"
 
-#include "../hash_registry.h"
+#include "../registry.h"
 
 #include "../../core/memory.h"
 #include "../../data/time.h"

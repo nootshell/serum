@@ -26,67 +26,59 @@
 ******************************************************************************/
 
 
-#ifndef __LS_CRYPTO_HASH_REGISTRY_H
-#define __LS_CRYPTO_HASH_REGISTRY_H
+#include "../registry.h"
+
+#include "../hashing/md5.h"
+#include "../selftests/hashing/md5.h"
+
+#include "../hashing/ripemd160.h"
+#include "../selftests/hashing/ripemd160.h"
 
 
 
 
-#include "../core/signatures.h"
-
-#include "./selftests/base.h"
+FILEID("Registry of hash functions.");
 
 
 
 
-#define LS_HASH_ALGORITHM_VALID(algo)		(((algo) > 0) && ((algo < __hash_registry_count)))
+const struct lsreg_hash __hash_registry[] = {
+	{ /* Fill up 0th index. */ },
+	{
+		.meta = {
+			.selftest = (lssig_cst_case)lscst_hashing_md5,
+			.flags = 0,
+			.name = "MD5",
+			.maintainer = "icecubetray"
+		},
 
+		.ctx_size = sizeof(struct ls_md5),
+		.block_size = LS_MD5_BLOCK_SIZE,
+		.digest_size = LS_MD5_DIGEST_SIZE,
 
-#define LS_HASH_MD5							1
-#define LS_HASH_RIPEMD160					2
+		.f_init = (lssig_hash_init)ls_md5_init,
+		.f_clear = NULL,
+		.f_update = (lssig_hash_update)ls_md5_update,
+		.f_finish = (lssig_hash_finish)ls_md5_finish
+	},
+	{
+		.meta = {
+			.selftest = (lssig_cst_case)lscst_hashing_ripemd160,
+			.flags = 0,
+			.name = "RIPEMD-160",
+			.maintainer = "icecubetray"
+		},
 
+		.ctx_size = sizeof(struct ls_ripemd160),
+		.block_size = LS_RIPEMD160_BLOCK_SIZE,
+		.digest_size = LS_RIPEMD160_DIGEST_SIZE,
 
-
-
-typedef struct lsreg_meta lsreg_meta_t;
-
-typedef ls_result_t (*lssig_cst_case)(const lsreg_meta_t *const meta);
-
-struct lsreg_meta {
-	lssig_cst_case selftest;
-	uint32_t flags;
-	char name[12];
-	char maintainer[32];
+		.f_init = (lssig_hash_init)ls_ripemd160_init,
+		.f_clear = NULL,
+		.f_update = (lssig_hash_update)ls_ripemd160_update,
+		.f_finish = (lssig_hash_finish)ls_ripemd160_finish
+	}
 };
 
-typedef struct lsreg_hash {
-	// Metadata.
-	struct lsreg_meta meta;
-
-	// Properties.
-	size_t ctx_size;
-	size_t block_size;
-	size_t digest_size;
-
-	// Functions.
-	lssig_hash_init init;
-	lssig_hash_clear clear;
-	lssig_hash_update update;
-	lssig_hash_finish finish;
-} lsreg_hash_t;
-
-
-typedef ls_nword_t ls_hash_algo_t;
-
-
-
-
-extern const struct lsreg_hash __hash_registry[];
-
-extern const size_t __hash_registry_size;
-extern const size_t __hash_registry_count;
-
-
-
-
-#endif
+const size_t __hash_registry_size = sizeof(__hash_registry);
+const size_t __hash_registry_count = (sizeof(__hash_registry) / sizeof(*__hash_registry));

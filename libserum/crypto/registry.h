@@ -26,41 +26,97 @@
 ******************************************************************************/
 
 
-#include "./salsa20.h"
+#ifndef __LS_CRYPTO_HASH_REGISTRY_H
+#define __LS_CRYPTO_HASH_REGISTRY_H
 
 
 
 
-FILEID("Salsa20 implementation.");
+#include "../core/signatures.h"
+
+#include "./selftests/base.h"
 
 
 
 
-ls_result_t
-ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size, const uint64_t nonce) {
-	return LS_E_UNSUPPORTED;
-}
+typedef struct lsreg_meta lsreg_meta_t;
+
+typedef ls_result_t (*lssig_cst_case)(const lsreg_meta_t *const meta);
+
+struct lsreg_meta {
+	lssig_cst_case selftest;
+	uint32_t flags;
+	char name[12];
+	char maintainer[32];
+};
 
 
 
 
-ls_result_t
-ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size) {
-	return LS_E_UNSUPPORTED;
-}
+#define LS_HASH_ALGORITHM_VALID(algo)		(((algo) > 0) && ((algo < __hash_registry_count)))
+
+#define LS_HASH_MD5							1
+#define LS_HASH_RIPEMD160					2
+
+
+typedef struct lsreg_hash {
+	// Metadata.
+	struct lsreg_meta meta;
+
+	// Properties.
+	size_t ctx_size;
+	size_t block_size;
+	size_t digest_size;
+
+	// Functions.
+	lssig_hash_init f_init;
+	lssig_hash_clear f_clear;
+	lssig_hash_update f_update;
+	lssig_hash_finish f_finish;
+} lsreg_hash_t;
+
+typedef ls_nword_t ls_hash_algo_t;
+
+
+extern const struct lsreg_hash __hash_registry[];
+
+extern const size_t __hash_registry_size;
+extern const size_t __hash_registry_count;
 
 
 
 
-ls_result_t
-ls_salsa20_renonce(ls_salsa20_t *const context, const uint64_t nonce) {
-	return LS_E_UNSUPPORTED;
-}
+#define LS_CIPHER_ALGORITHM_VALID(algo)		(((algo) > 0) && ((algo < __cipher_registry_count)))
+
+#define LS_CIPHER_SALSA20					1
+
+
+typedef struct lsreg_cipher {
+	// Metadata.
+	struct lsreg_meta meta;
+
+	// Properties.
+	size_t ctx_size;
+	size_t block_size;
+
+	// Functions.
+	lssig_cipher_init f_init;
+	lssig_cipher_clear f_clear;
+	lssig_cipher_rekey f_rekey;
+	lssig_cipher_renonce f_renonce;
+	lssig_cipher_block_encrypt f_block_encrypt;
+	lssig_cipher_block_decrypt f_block_decrypt;
+} lsreg_cipher_t;
+
+typedef ls_nword_t ls_cipher_algo_t;
+
+
+extern const struct lsreg_cipher __cipher_registry[];
+
+extern const size_t __cipher_registry_size;
+extern const size_t __cipher_registry_count;
 
 
 
 
-ls_result_t
-ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, uint8_t block[LS_SALSA20_BLOCK_SIZE]) {
-	return LS_E_UNSUPPORTED;
-}
+#endif
