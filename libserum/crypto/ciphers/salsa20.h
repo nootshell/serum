@@ -39,6 +39,9 @@
 
 #define LS_SALSA20_BLOCK_SIZE				64
 
+#define LS_SALSA20_256						256
+#define LS_SALSA20_128						128
+
 
 
 
