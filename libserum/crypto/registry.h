@@ -90,6 +90,8 @@ extern const size_t __hash_registry_count;
 
 #define LS_CIPHER_SALSA20					1
 
+#define LS_CIPHER_STREAMABLE				1
+
 
 typedef struct lsreg_cipher {
 	// Metadata.
@@ -104,6 +106,7 @@ typedef struct lsreg_cipher {
 	lssig_cipher_clear f_clear;
 	lssig_cipher_rekey f_rekey;
 	lssig_cipher_renonce f_renonce;
+	lssig_cipher_get_stream_block f_get_stream_block;
 	lssig_cipher_block_encrypt f_block_encrypt;
 	lssig_cipher_block_decrypt f_block_decrypt;
 } lsreg_cipher_t;

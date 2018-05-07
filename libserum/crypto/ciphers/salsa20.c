@@ -119,6 +119,108 @@ ls_salsa20_renonce(ls_salsa20_t *const context, const uint64_t nonce) {
 
 
 ls_result_t
+ls_salsa20_get_stream_block_ex(ls_salsa20_t *const restrict context, uint8_t block[LS_SALSA20_BLOCK_SIZE], const ls_nword_t rounds) {
+	if (context == NULL || block == NULL) {
+		return LS_E_NULL;
+	}
+
+	if ((rounds & 1) != 0) {
+		return LS_E_SIZE;
+	}
+
+
+	uint32_t buffer[16];
+	memcpy(buffer, context->words, sizeof(buffer));
+
+	ls_nword_t i;
+	for (i = (rounds >> 1); i--;) {
+		buffer[ 4] ^= LS_ROTL32((buffer[ 0] + buffer[12]), 0x07);
+		buffer[ 8] ^= LS_ROTL32((buffer[ 4] + buffer[ 0]), 0x09);
+		buffer[12] ^= LS_ROTL32((buffer[ 8] + buffer[ 4]), 0x0D);
+		buffer[ 0] ^= LS_ROTL32((buffer[12] + buffer[ 8]), 0x12);
+
+		buffer[ 9] ^= LS_ROTL32((buffer[ 5] + buffer[ 1]), 0x07);
+		buffer[13] ^= LS_ROTL32((buffer[ 9] + buffer[ 5]), 0x09);
+		buffer[ 1] ^= LS_ROTL32((buffer[13] + buffer[ 9]), 0x0D);
+		buffer[ 5] ^= LS_ROTL32((buffer[ 1] + buffer[13]), 0x12);
+
+		buffer[14] ^= LS_ROTL32((buffer[10] + buffer[ 6]), 0x07);
+		buffer[ 2] ^= LS_ROTL32((buffer[14] + buffer[10]), 0x09);
+		buffer[ 6] ^= LS_ROTL32((buffer[ 2] + buffer[14]), 0x0D);
+		buffer[10] ^= LS_ROTL32((buffer[ 6] + buffer[ 2]), 0x12);
+
+		buffer[ 3] ^= LS_ROTL32((buffer[15] + buffer[11]), 0x07);
+		buffer[ 7] ^= LS_ROTL32((buffer[ 3] + buffer[15]), 0x09);
+		buffer[11] ^= LS_ROTL32((buffer[ 7] + buffer[ 3]), 0x0D);
+		buffer[15] ^= LS_ROTL32((buffer[11] + buffer[ 7]), 0x12);
+
+		buffer[ 1] ^= LS_ROTL32((buffer[ 0] + buffer[ 3]), 0x07);
+		buffer[ 2] ^= LS_ROTL32((buffer[ 1] + buffer[ 0]), 0x09);
+		buffer[ 3] ^= LS_ROTL32((buffer[ 2] + buffer[ 1]), 0x0D);
+		buffer[ 0] ^= LS_ROTL32((buffer[ 3] + buffer[ 2]), 0x12);
+
+		buffer[ 6] ^= LS_ROTL32((buffer[ 5] + buffer[ 4]), 0x07);
+		buffer[ 7] ^= LS_ROTL32((buffer[ 6] + buffer[ 5]), 0x09);
+		buffer[ 4] ^= LS_ROTL32((buffer[ 7] + buffer[ 6]), 0x0D);
+		buffer[ 5] ^= LS_ROTL32((buffer[ 4] + buffer[ 7]), 0x12);
+
+		buffer[11] ^= LS_ROTL32((buffer[10] + buffer[ 9]), 0x07);
+		buffer[ 8] ^= LS_ROTL32((buffer[11] + buffer[10]), 0x09);
+		buffer[ 9] ^= LS_ROTL32((buffer[ 8] + buffer[11]), 0x0D);
+		buffer[10] ^= LS_ROTL32((buffer[ 9] + buffer[ 8]), 0x12);
+
+		buffer[12] ^= LS_ROTL32((buffer[15] + buffer[14]), 0x07);
+		buffer[13] ^= LS_ROTL32((buffer[12] + buffer[15]), 0x09);
+		buffer[14] ^= LS_ROTL32((buffer[13] + buffer[12]), 0x0D);
+		buffer[15] ^= LS_ROTL32((buffer[14] + buffer[13]), 0x12);
+	}
+
+	uint32_t *const block32 = (uint32_t *const)block;
+	for (i = (sizeof(context->words) / sizeof(*context->words)); i--;) {
+		block32[i] = (buffer[i] + context->words[i]);
+	}
+
+
+	if (++context->words[8] == 0) {
+		if (++context->words[9] == 0) {
+			return LS_E_DEPLETED;
+		}
+	}
+
+
+	return LS_E_SUCCESS;
+}
+
+
+ls_result_t
+ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, uint8_t block[LS_SALSA20_BLOCK_SIZE]) {
+	return ls_salsa20_get_stream_block_ex(context, block, LS_SALSA20_ROUNDS);
+}
+
+
+
+
+ls_result_t
 ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, uint8_t block[LS_SALSA20_BLOCK_SIZE]) {
-	return LS_E_UNSUPPORTED;
+	if (context == NULL || block == NULL) {
+		return LS_E_NULL;
+	}
+
+
+	uint32_t buffer[(LS_SALSA20_BLOCK_SIZE / sizeof(uint32_t))];
+	const ls_result_t block_result = ls_salsa20_get_stream_block(context, (uint8_t *const)buffer);
+	if (block_result != LS_E_SUCCESS && block_result != LS_E_DEPLETED) {
+		return block_result;
+	}
+
+
+	uint32_t *const block32 = (uint32_t *const)block;
+
+	ls_nword_t i;
+	for (i = (sizeof(buffer) / sizeof(*buffer)); i--;) {
+		block32[i] ^= buffer[i];
+	}
+
+
+	return block_result;
 }

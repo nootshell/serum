@@ -39,6 +39,8 @@
 
 #define LS_SALSA20_BLOCK_SIZE				64
 
+#define LS_SALSA20_ROUNDS					20
+
 #define LS_SALSA20_256						256
 #define LS_SALSA20_128						128
 
@@ -70,7 +72,11 @@ extern "C" {
 	LSAPI ls_result_t ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size);
 	LSAPI ls_result_t ls_salsa20_renonce(ls_salsa20_t *const context, const uint64_t nonce);
 
+	LSAPI ls_result_t ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, uint8_t block[LS_SALSA20_BLOCK_SIZE]);
+
 	LSAPI ls_result_t ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, uint8_t block[LS_SALSA20_BLOCK_SIZE]);
+#	define ls_salsa20_block_encrypt ls_salsa20_block_crypt
+#	define ls_salsa20_block_decrypt ls_salsa20_block_crypt
 
 #ifdef __cplusplus
 }

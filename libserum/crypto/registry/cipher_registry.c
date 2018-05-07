@@ -44,7 +44,7 @@ const struct lsreg_cipher __cipher_registry[] = {
 	{
 		.meta = {
 			.selftest = NULL,
-			.flags = 0,
+			.flags = LS_CIPHER_STREAMABLE,
 			.name = "Salsa20",
 			.maintainer = "icecubetray"
 		},
@@ -56,8 +56,9 @@ const struct lsreg_cipher __cipher_registry[] = {
 		.f_clear = NULL,
 		.f_rekey = (lssig_cipher_rekey)ls_salsa20_rekey,
 		.f_renonce = (lssig_cipher_renonce)ls_salsa20_renonce,
-		.f_block_encrypt = (lssig_cipher_block_encrypt)ls_salsa20_block_crypt,
-		.f_block_decrypt = (lssig_cipher_block_decrypt)ls_salsa20_block_crypt
+		.f_get_stream_block = (lssig_cipher_get_stream_block)ls_salsa20_get_stream_block,
+		.f_block_encrypt = (lssig_cipher_block_encrypt)ls_salsa20_block_encrypt,
+		.f_block_decrypt = (lssig_cipher_block_decrypt)ls_salsa20_block_decrypt
 	}
 };
 

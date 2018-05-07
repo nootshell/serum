@@ -48,6 +48,7 @@ typedef ls_result_t (*lssig_cipher_init)(void *const restrict ctx, const ls_nwor
 typedef ls_result_t (*lssig_cipher_clear)(void *const ctx);
 typedef ls_result_t (*lssig_cipher_rekey)(void *const restrict ctx, const ls_nword_t key_size, const uint8_t *const restrict key);
 typedef ls_result_t (*lssig_cipher_renonce)(void *const restrict ctx, const uint8_t *const restrict nonce);
+typedef ls_result_t (*lssig_cipher_get_stream_block)(void *const restrict ctx, void *const restrict block);
 typedef ls_result_t (*lssig_cipher_block_encrypt)(void *const restrict ctx, void *const restrict block);
 typedef ls_result_t (*lssig_cipher_block_decrypt)(void *const restrict ctx, void *const restrict block);
 
