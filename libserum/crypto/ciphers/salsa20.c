@@ -119,7 +119,7 @@ ls_salsa20_renonce(ls_salsa20_t *const context, const uint64_t nonce) {
 
 
 ls_result_t
-ls_salsa20_get_stream_block_ex(ls_salsa20_t *const restrict context, uint8_t block[LS_SALSA20_BLOCK_SIZE], const ls_nword_t rounds) {
+ls_salsa20_get_stream_block_ex(ls_salsa20_t *const restrict context, ls_salsa20_block_t block, const ls_nword_t rounds) {
 	if (context == NULL || block == NULL) {
 		return LS_E_NULL;
 	}
@@ -193,7 +193,7 @@ ls_salsa20_get_stream_block_ex(ls_salsa20_t *const restrict context, uint8_t blo
 
 
 ls_result_t
-ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, uint8_t block[LS_SALSA20_BLOCK_SIZE]) {
+ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, ls_salsa20_block_t block) {
 	return ls_salsa20_get_stream_block_ex(context, block, LS_SALSA20_ROUNDS);
 }
 
@@ -201,7 +201,7 @@ ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, uint8_t block[
 
 
 ls_result_t
-ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, uint8_t block[LS_SALSA20_BLOCK_SIZE]) {
+ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block) {
 	if (context == NULL || block == NULL) {
 		return LS_E_NULL;
 	}

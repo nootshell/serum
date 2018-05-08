@@ -61,6 +61,8 @@ typedef union ls_salsa20 {
 	uint32_t words[16];
 } ls_salsa20_t;
 
+typedef uint8_t ls_salsa20_block_t[LS_SALSA20_BLOCK_SIZE];
+
 
 
 
@@ -72,9 +74,9 @@ extern "C" {
 	LSAPI ls_result_t ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size);
 	LSAPI ls_result_t ls_salsa20_renonce(ls_salsa20_t *const context, const uint64_t nonce);
 
-	LSAPI ls_result_t ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, uint8_t block[LS_SALSA20_BLOCK_SIZE]);
+	LSAPI ls_result_t ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
 
-	LSAPI ls_result_t ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, uint8_t block[LS_SALSA20_BLOCK_SIZE]);
+	LSAPI ls_result_t ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
 #	define ls_salsa20_block_encrypt ls_salsa20_block_crypt
 #	define ls_salsa20_block_decrypt ls_salsa20_block_crypt
 
