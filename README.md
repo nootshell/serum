@@ -1,8 +1,8 @@
 # Serum
 **Experimental** standalone toolkit, licensed under the [MIT license](./COPYING.md). Supposed to be cross-platform.
 
-[![Travis CI](https://travis-ci.org/icecubetray/serum.svg?branch=feature/13_add-salsa20-and-chacha20)](https://travis-ci.org/icecubetray/serum)
-[![GitLab CI](https://gitlab.com/icecubetray/serum/badges/feature/13_add-salsa20-and-chacha20/pipeline.svg)](https://gitlab.com/icecubetray/serum/commits/feature/13_add-salsa20-and-chacha20)
+[![Travis CI](https://travis-ci.org/icecubetray/serum.svg?branch=rewrite)](https://travis-ci.org/icecubetray/serum)
+[![GitLab CI](https://gitlab.com/icecubetray/serum/badges/rewrite/pipeline.svg)](https://gitlab.com/icecubetray/serum/commits/rewrite)
 
 <sup>*All shell examples assume you're in the root directory of the repo, unless otherwise specified.*</sup>
 
