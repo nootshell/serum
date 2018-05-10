@@ -39,6 +39,8 @@ libserum/crypto/selftests/assert.c
 libserum/crypto/selftests/assert.h
 libserum/crypto/selftests/base.c
 libserum/crypto/selftests/base.h
+libserum/crypto/selftests/ciphers/salsa20.c
+libserum/crypto/selftests/ciphers/salsa20.h
 libserum/crypto/selftests/hashing/md5.c
 libserum/crypto/selftests/hashing/md5.h
 libserum/crypto/selftests/hashing/ripemd160.c

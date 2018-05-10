@@ -26,41 +26,29 @@
 ******************************************************************************/
 
 
-#include "../registry.h"
-
-#include "../ciphers/salsa20.h"
-#include "../selftests/ciphers/salsa20.h"
+#ifndef __LS_CRYPTO_SELFTESTS_CIPHERS_SALSA20_H
+#define __LS_CRYPTO_SELFTESTS_CIPHERS_SALSA20_H
 
 
 
 
-FILEID("Registry of ciphers.");
+#include "../../ciphers/salsa20.h"
+#include "../../registry.h"
 
 
 
 
-const struct lsreg_cipher __cipher_registry[] = {
-	{ /* Fill up 0th index. */ },
-	{
-		.meta = {
-			.selftest = lscst_ciphers_salsa20,
-			.flags = LS_CIPHER_STREAMABLE,
-			.name = "Salsa20",
-			.maintainer = "icecubetray"
-		},
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-		.ctx_size = sizeof(union ls_salsa20),
-		.block_size = LS_SALSA20_BLOCK_SIZE,
+	LSAPI ls_result_t lscst_ciphers_salsa20(const lsreg_meta_t *const meta);
 
-		.f_init = (lssig_cipher_init)ls_salsa20_init,
-		.f_clear = NULL,
-		.f_rekey = (lssig_cipher_rekey)ls_salsa20_rekey,
-		.f_renonce = (lssig_cipher_renonce)ls_salsa20_renonce,
-		.f_get_stream_block = (lssig_cipher_get_stream_block)ls_salsa20_get_stream_block,
-		.f_block_encrypt = (lssig_cipher_block_encrypt)ls_salsa20_block_encrypt,
-		.f_block_decrypt = (lssig_cipher_block_decrypt)ls_salsa20_block_decrypt
-	}
-};
+#ifdef __cplusplus
+}
+#endif
 
-const size_t __cipher_registry_size = sizeof(__cipher_registry);
-const size_t __cipher_registry_count = (sizeof(__cipher_registry) / sizeof(*__cipher_registry));
+
+
+
+#endif
