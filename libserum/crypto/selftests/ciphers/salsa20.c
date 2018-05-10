@@ -1785,7 +1785,7 @@ lscst_ciphers_salsa20(const lsreg_meta_t * const meta) {
 	for (i = 0; i < nvectors; ++i) {
 		vec = &ecrypt_vectors[i];
 
-		if ((res = ls_salsa20_init(&salsa, vec->key, vec->key_size, vec->nonce)) != LS_E_SUCCESS) {
+		if ((res = ls_salsa20_init(&salsa, vec->key, vec->key_size, &vec->nonce)) != LS_E_SUCCESS) {
 			result = LS_E_FAILURE;
 			lscst_log(res, meta->name, i, source, NULL, NULL, 0);
 			continue;

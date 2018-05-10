@@ -45,7 +45,7 @@ static const char theta[16] = "expand 16-byte k";
 
 
 ls_result_t
-ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size, const uint64_t nonce) {
+ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size, const uint64_t *const restrict nonce) {
 	ls_result_t result;
 
 	result = ls_salsa20_rekey(context, key, key_size);
@@ -105,12 +105,13 @@ ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const rest
 
 
 ls_result_t
-ls_salsa20_renonce(ls_salsa20_t *const context, const uint64_t nonce) {
+ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint64_t *const restrict nonce) {
 	if (context == NULL) {
 		return LS_E_NULL;
 	}
 
-	context->layout.nonce = nonce;
+	context->layout.counter = 0;
+	context->layout.nonce = ((nonce == NULL) ? 0 : *nonce);
 
 	return LS_E_SUCCESS;
 }
