@@ -6,6 +6,8 @@ stages:
 
 build:
   stage: build
+  variables:
+    CI_EXTRA: "-DLSCST_SALSA20_FULL=1"
   script:
     - alpine-icy-info color
     - make clean release install
