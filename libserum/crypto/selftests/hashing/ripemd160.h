@@ -33,7 +33,7 @@
 
 
 #include "../../hashing/ripemd160.h"
-#include "../../hash_registry.h"
+#include "../../registry.h"
 
 
 

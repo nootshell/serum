@@ -71,8 +71,8 @@
 #	include "../io/log.h"
 #
 #	if (LS_DEBUG)
-#		define ls_debug(str)					ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u " str, __func__, __LINE__)
-#		define ls_debugf(fmt, ...)				ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u " fmt, __func__, __LINE__, __VA_ARGS__)
+#		define ls_debug(str)				ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u " str, __func__, __LINE__)
+#		define ls_debugf(fmt, ...)			ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u " fmt, __func__, __LINE__, __VA_ARGS__)
 #	else
 #		define ls_debug(str)
 #		define ls_debugf(fmt, ...)

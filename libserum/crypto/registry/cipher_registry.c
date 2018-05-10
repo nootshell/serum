@@ -26,67 +26,41 @@
 ******************************************************************************/
 
 
-#ifndef __LS_CRYPTO_HASH_REGISTRY_H
-#define __LS_CRYPTO_HASH_REGISTRY_H
+#include "../registry.h"
+
+#include "../ciphers/salsa20.h"
+#include "../selftests/ciphers/salsa20.h"
 
 
 
 
-#include "../core/signatures.h"
-
-#include "./selftests/base.h"
+FILEID("Registry of ciphers.");
 
 
 
 
-#define LS_HASH_ALGORITHM_VALID(algo)		(((algo) > 0) && ((algo < __hash_registry_count)))
+const struct lsreg_cipher __cipher_registry[] = {
+	{ /* Fill up 0th index. */ },
+	{
+		.meta = {
+			.selftest = lscst_ciphers_salsa20,
+			.flags = LS_CIPHER_STREAMABLE,
+			.name = "Salsa20",
+			.maintainer = "icecubetray"
+		},
 
+		.ctx_size = sizeof(union ls_salsa20),
+		.block_size = LS_SALSA20_BLOCK_SIZE,
 
-#define LS_HASH_MD5							1
-#define LS_HASH_RIPEMD160					2
-
-
-
-
-typedef struct lsreg_meta lsreg_meta_t;
-
-typedef ls_result_t (*lssig_cst_case)(const lsreg_meta_t *const meta);
-
-struct lsreg_meta {
-	lssig_cst_case selftest;
-	uint32_t flags;
-	char name[12];
-	char maintainer[32];
+		.f_init = (lssig_cipher_init)ls_salsa20_init,
+		.f_clear = NULL,
+		.f_rekey = (lssig_cipher_rekey)ls_salsa20_rekey,
+		.f_renonce = (lssig_cipher_renonce)ls_salsa20_renonce,
+		.f_get_stream_block = (lssig_cipher_get_stream_block)ls_salsa20_get_stream_block,
+		.f_block_encrypt = (lssig_cipher_block_encrypt)ls_salsa20_block_encrypt,
+		.f_block_decrypt = (lssig_cipher_block_decrypt)ls_salsa20_block_decrypt
+	}
 };
 
-typedef struct lsreg_hash {
-	// Metadata.
-	struct lsreg_meta meta;
-
-	// Properties.
-	size_t ctx_size;
-	size_t block_size;
-	size_t digest_size;
-
-	// Functions.
-	lssig_hash_init init;
-	lssig_hash_clear clear;
-	lssig_hash_update update;
-	lssig_hash_finish finish;
-} lsreg_hash_t;
-
-
-typedef ls_nword_t ls_hash_algo_t;
-
-
-
-
-extern const struct lsreg_hash __hash_registry[];
-
-extern const size_t __hash_registry_size;
-extern const size_t __hash_registry_count;
-
-
-
-
-#endif
+const size_t __cipher_registry_size = sizeof(__cipher_registry);
+const size_t __cipher_registry_count = (sizeof(__cipher_registry) / sizeof(*__cipher_registry));

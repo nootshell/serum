@@ -26,42 +26,14 @@
 ******************************************************************************/
 
 
-#ifndef __LS_CRYPTO_CIPHERS_SALSA20_H
-#define __LS_CRYPTO_CIPHERS_SALSA20_H
+#ifndef __LS_CRYPTO_SELFTESTS_CIPHERS_SALSA20_H
+#define __LS_CRYPTO_SELFTESTS_CIPHERS_SALSA20_H
 
 
 
 
-#include "../../core/setup.h"
-
-
-
-
-#define LS_SALSA20_BLOCK_SIZE				64
-
-#define LS_SALSA20_ROUNDS					20
-
-#define LS_SALSA20_256						256
-#define LS_SALSA20_128						128
-
-
-
-
-typedef union ls_salsa20 {
-	struct {
-		uint32_t c1;
-		uint32_t k1[4];
-		uint32_t c2;
-		uint64_t nonce;
-		uint64_t counter;
-		uint32_t c3;
-		uint32_t k2[4];
-		uint32_t c4;
-	} layout;
-	uint32_t words[16];
-} ls_salsa20_t;
-
-typedef uint8_t ls_salsa20_block_t[LS_SALSA20_BLOCK_SIZE];
+#include "../../ciphers/salsa20.h"
+#include "../../registry.h"
 
 
 
@@ -70,15 +42,7 @@ typedef uint8_t ls_salsa20_block_t[LS_SALSA20_BLOCK_SIZE];
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size, const uint64_t *const restrict nonce);
-	LSAPI ls_result_t ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size);
-	LSAPI ls_result_t ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint64_t *const restrict nonce);
-
-	LSAPI ls_result_t ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
-
-	LSAPI ls_result_t ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
-#	define ls_salsa20_block_encrypt ls_salsa20_block_crypt
-#	define ls_salsa20_block_decrypt ls_salsa20_block_crypt
+	LSAPI ls_result_t lscst_ciphers_salsa20(const lsreg_meta_t *const meta);
 
 #ifdef __cplusplus
 }

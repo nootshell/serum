@@ -73,10 +73,10 @@ ls_hash_init(ls_hash_t *const hash, ls_hash_algo_t algorithm) {
 	hash->buffer_size = reg_entry->block_size;
 	hash->buffer_index = 0;
 
-	hash->f_init = reg_entry->init;
-	hash->f_clear = reg_entry->clear;
-	hash->f_update = reg_entry->update;
-	hash->f_finish = reg_entry->finish;
+	hash->f_init = reg_entry->f_init;
+	hash->f_clear = reg_entry->f_clear;
+	hash->f_update = reg_entry->f_update;
+	hash->f_finish = reg_entry->f_finish;
 
 
 	if (hash->f_init(hash->context) != LS_E_SUCCESS) {

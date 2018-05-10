@@ -28,7 +28,7 @@
 
 #include "./base.h"
 
-#include "../hash_registry.h"
+#include "../registry.h"
 
 #include "../../core/memory.h"
 #include "../../data/time.h"
@@ -49,15 +49,51 @@ FILEID("Cryptographic selftesting (CST) base.");
 
 static ls_bool_t __logging = false;
 
-
-
-
 void
 lscst_set_logging(const ls_bool_t enabled) {
 	__logging = !!enabled;
 }
 
 
+
+
+void
+static __iterate_registry(const lsreg_meta_t *const restrict registry, const size_t registry_entry_size, const size_t registry_count, const char *const registry_name, ls_result_t *const restrict result) {
+	uint64_t ns = 0;
+	ls_result_t st_result = LS_E_NOOP;
+
+	register size_t i;
+	const lsreg_meta_t *meta = NULL;
+	for (i = 1; i < registry_count; ++i) {
+		meta = (const lsreg_meta_t *)((char*)registry + (i * registry_entry_size));
+
+		if (meta->selftest == NULL) {
+			if (__logging) {
+				ls_log_writeln(NULL, LS_LOG_LEVEL_WARNING, LS_ANSI_WRAP(">", LS_ANSI_FG_MAGENTA) " " LS_ANSI_WRAP("%s", LS_ANSI_FG_WHITE) " (%s, #%02" PRIXPTR "): " LS_ANSI_WRAP("no CST entrypoint set!", LS_ANSI_FG_RED), meta->name, registry_name, i);
+			}
+			continue;
+		}
+
+		if (__logging) {
+			ns = ls_time_nanos();
+		}
+
+		if ((st_result = meta->selftest(meta)) != LS_E_SUCCESS) {
+			*result = LS_E_FAILURE;
+		}
+
+		if (__logging) {
+			ns = (ls_time_nanos() - ns);
+
+			ls_log_writeln(
+				NULL,
+				((st_result == LS_E_SUCCESS) ? LS_LOG_LEVEL_INFO : LS_LOG_LEVEL_SEVERE),
+				LS_ANSI_WRAP(">", LS_ANSI_FG_TEAL) " " LS_ANSI_WRAP("%s", LS_ANSI_FG_WHITE) " (%s, #%02" PRIXPTR "): %s, took ~" LS_ANSI_WRAP("%" PRIu64, LS_ANSI_FG_WHITE) " μs",
+				meta->name, registry_name, i, ((st_result == LS_E_SUCCESS) ? LS_ANSI_WRAP("passed", LS_ANSI_FG_GREEN) : LS_ANSI_WRAP("failed", LS_ANSI_FG_RED)), (ns / 1000)
+			);
+		}
+	}
+}
 
 
 ls_result_t
@@ -72,44 +108,8 @@ lscst_launch() {
 
 	ls_log_writeln(NULL, LS_LOG_LEVEL_INFO, LS_ANSI_WRAP("Performing CSTs.", LS_ANSI_FG_ORANGE, LS_ANSI_OPT_ITALIC));
 
-
-	uint64_t ns = 0;
-	ls_result_t st_result = LS_E_NOOP;
-
-	register size_t i;
-	const lsreg_hash_t *hash = NULL;
-	const lsreg_meta_t *meta = NULL;
-	for (i = 1; i < __hash_registry_count; ++i) {
-		hash = &__hash_registry[i];
-		meta = &hash->meta;
-
-		if (meta->selftest == NULL) {
-			if (__logging) {
-				ls_log_writeln(NULL, LS_LOG_LEVEL_WARNING, LS_ANSI_WRAP(">", LS_ANSI_FG_MAGENTA) " " LS_ANSI_WRAP("%s", LS_ANSI_FG_WHITE) " (ai=%02" PRIXPTR "): " LS_ANSI_WRAP("no CST entrypoint set!", LS_ANSI_FG_YELLOW), meta->name, i);
-			}
-			continue;
-		}
-
-		if (__logging) {
-			ns = ls_time_nanos();
-		}
-
-		if ((st_result = meta->selftest(meta)) != LS_E_SUCCESS) {
-			result = LS_E_FAILURE;
-		}
-
-		if (__logging) {
-			ns = (ls_time_nanos() - ns);
-
-			ls_log_writeln(
-				NULL,
-				((st_result == LS_E_SUCCESS) ? LS_LOG_LEVEL_INFO : LS_LOG_LEVEL_SEVERE),
-				LS_ANSI_WRAP(">", LS_ANSI_FG_TEAL) " " LS_ANSI_WRAP("%s", LS_ANSI_FG_WHITE) " (ai=%02" PRIXPTR "): %s, took ~" LS_ANSI_WRAP("%" PRIu64, LS_ANSI_FG_WHITE) " μs",
-				meta->name, i, ((st_result == LS_E_SUCCESS) ? LS_ANSI_WRAP("passed", LS_ANSI_FG_GREEN) : LS_ANSI_WRAP("failed", LS_ANSI_FG_RED)), (ns / 1000)
-			);
-		}
-	}
-
+	__iterate_registry((const lsreg_meta_t *)__hash_registry, sizeof(*__hash_registry), __hash_registry_count, "hashing", &result);
+	__iterate_registry((const lsreg_meta_t *)__cipher_registry, sizeof(*__cipher_registry), __cipher_registry_count, "ciphers", &result);
 
 	ls_log_writeln(NULL, LS_LOG_LEVEL_INFO, LS_ANSI_WRAP("Done performing CSTs.", LS_ANSI_FG_ORANGE, LS_ANSI_OPT_ITALIC));
 

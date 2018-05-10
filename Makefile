@@ -47,7 +47,7 @@ CFLAGS = \
 	-DMAKEFILE=1 \
 	-DGIT_BRANCH="\"$(GIT_BRANCH)\"" -DGIT_TAG="\"$(GIT_TAG)\"" \
 	-DFILEPATH="\"$^\"" -DTIMESTAMP="\"$(TIMESTAMP)\"" -DKERNEL="\"$(KERNEL)\"" -DKERNEL_ARCH="\"$(KERNEL_ARCH)\"" \
-	-DLS_ANSI_SUPPORT=1
+	-DLS_ANSI_SUPPORT=1 $(CI_EXTRA)
 
 CFLAGS_DEBUG = -g -DLS_DEBUG=1
 CFLAGS_RELEASE = -Ofast
@@ -72,14 +72,16 @@ endif
 
 obj/%.o: %.c
 	@mkdir -p $(@D)
+	@echo -n "| $@";
 	@$(CC) $(CFLAGS) -DGIT_COMMIT="\"$(shell git log -n 1 --pretty=format:" ($(GIT_BRANCH) %H %aI)" -- $^)\"" -c $^ -o $@
-	@echo "| $@ (done)"
+	@echo " (done)"
 
 obj/libserum/core/main.o: CFLAGS += $(LS_ELF_INTERP) -Wno-unused-command-line-argument
 obj/libserum/core/main.o: libserum/core/main.c
 	@mkdir -p $(@D)
+	@echo -n "| $@";
 	@$(CC) $(CFLAGS) -DGIT_COMMIT="\"$(shell git log -n 1 --pretty=format:" ($(GIT_BRANCH) %H %aI)" -- $^)\"" -c $^ -o $@
-	@echo "| $@ (done)"
+	@echo " (done)"
 
 
 

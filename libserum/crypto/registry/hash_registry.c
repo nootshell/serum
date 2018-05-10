@@ -26,65 +26,59 @@
 ******************************************************************************/
 
 
-#ifndef __LS_CRYPTO_CIPHERS_SALSA20_H
-#define __LS_CRYPTO_CIPHERS_SALSA20_H
+#include "../registry.h"
+
+#include "../hashing/md5.h"
+#include "../selftests/hashing/md5.h"
+
+#include "../hashing/ripemd160.h"
+#include "../selftests/hashing/ripemd160.h"
 
 
 
 
-#include "../../core/setup.h"
+FILEID("Registry of hash functions.");
 
 
 
 
-#define LS_SALSA20_BLOCK_SIZE				64
+const struct lsreg_hash __hash_registry[] = {
+	{ /* Fill up 0th index. */ },
+	{
+		.meta = {
+			.selftest = (lssig_cst_case)lscst_hashing_md5,
+			.flags = 0,
+			.name = "MD5",
+			.maintainer = "icecubetray"
+		},
 
-#define LS_SALSA20_ROUNDS					20
+		.ctx_size = sizeof(struct ls_md5),
+		.block_size = LS_MD5_BLOCK_SIZE,
+		.digest_size = LS_MD5_DIGEST_SIZE,
 
-#define LS_SALSA20_256						256
-#define LS_SALSA20_128						128
+		.f_init = (lssig_hash_init)ls_md5_init,
+		.f_clear = NULL,
+		.f_update = (lssig_hash_update)ls_md5_update,
+		.f_finish = (lssig_hash_finish)ls_md5_finish
+	},
+	{
+		.meta = {
+			.selftest = (lssig_cst_case)lscst_hashing_ripemd160,
+			.flags = 0,
+			.name = "RIPEMD-160",
+			.maintainer = "icecubetray"
+		},
 
+		.ctx_size = sizeof(struct ls_ripemd160),
+		.block_size = LS_RIPEMD160_BLOCK_SIZE,
+		.digest_size = LS_RIPEMD160_DIGEST_SIZE,
 
+		.f_init = (lssig_hash_init)ls_ripemd160_init,
+		.f_clear = NULL,
+		.f_update = (lssig_hash_update)ls_ripemd160_update,
+		.f_finish = (lssig_hash_finish)ls_ripemd160_finish
+	}
+};
 
-
-typedef union ls_salsa20 {
-	struct {
-		uint32_t c1;
-		uint32_t k1[4];
-		uint32_t c2;
-		uint64_t nonce;
-		uint64_t counter;
-		uint32_t c3;
-		uint32_t k2[4];
-		uint32_t c4;
-	} layout;
-	uint32_t words[16];
-} ls_salsa20_t;
-
-typedef uint8_t ls_salsa20_block_t[LS_SALSA20_BLOCK_SIZE];
-
-
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	LSAPI ls_result_t ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size, const uint64_t *const restrict nonce);
-	LSAPI ls_result_t ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size);
-	LSAPI ls_result_t ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint64_t *const restrict nonce);
-
-	LSAPI ls_result_t ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
-
-	LSAPI ls_result_t ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
-#	define ls_salsa20_block_encrypt ls_salsa20_block_crypt
-#	define ls_salsa20_block_decrypt ls_salsa20_block_crypt
-
-#ifdef __cplusplus
-}
-#endif
-
-
-
-
-#endif
+const size_t __hash_registry_size = sizeof(__hash_registry);
+const size_t __hash_registry_count = (sizeof(__hash_registry) / sizeof(*__hash_registry));

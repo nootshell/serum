@@ -119,6 +119,9 @@
 /*! \brief Algorithm error. */
 #define LS_E_ALGORITHM						0x1A
 
+/*! \brief Counter depleted. */
+#define LS_E_DEPLETED						0x1B
+
 
 
 
