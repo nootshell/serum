@@ -108,8 +108,16 @@
 #define LS_ID_BIG_ENDIAN					2
 
 #ifndef LS_ID_ENDIAN
-#	if (defined(__BIG_ENDIAN__) || defined(__ARMEB__) || defined(__THUMBEB__) || defined(__AARCH64EB__) || defined(_MIPSEB) || defined(__MIPSEB) || defined(__MIPSEB__) || ((LS_WINDOWS && REG_DWORD != REG_DWORD_LITTLE_ENDIAN) || (!LS_WINDOWS && ((__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)))))
+#	if (defined(__BIG_ENDIAN__) || defined(__ARMEB__) || defined(__THUMBEB__) || defined(__AARCH64EB__) || defined(_MIPSEB) || defined(__MIPSEB) || defined(__MIPSEB__))
 #		define LS_ID_ENDIAN					LS_ID_BIG_ENDIAN
+#	elif (defined(__BYTE_ORDER__))
+#		if (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+#			define LS_ID_ENDIAN				LS_ID_BIG_ENDIAN
+#		elif (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+#			define LS_ID_ENDIAN				LS_ID_LITTLE_ENDIAN
+#		else
+#			error Unsupported endianness.
+#		endif
 #	else
 #		define LS_ID_ENDIAN					LS_ID_LITTLE_ENDIAN
 #	endif
