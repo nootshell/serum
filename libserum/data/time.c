@@ -123,7 +123,7 @@ ls_rdtsc() {
 #else
 	uint64_t tsc = 0;
 
-#	if ((LS_GCC || LS_LLVM) && (LS_X86 || LS_X64))
+#	if ((LS_GCC || LS_LLVM || LS_TCC) && (LS_X86 || LS_X64))
 	asm volatile (
 		"rdtsc\n\t"
 		"shl $32, %%rdx\n\t"

@@ -138,6 +138,7 @@
 #define LS_ID_LLVM							2
 #define LS_ID_MSC							3
 #define LS_ID_MINGW							4
+#define LS_ID_TCC							5
 
 #ifndef LS_ID_COMPILER
 #	if (defined(__llvm__) || defined(__clang__))
@@ -148,6 +149,8 @@
 #		define LS_ID_COMPILER				LS_ID_MINGW
 #	elif (defined(_MSC_VER))
 #		define LS_ID_COMPILER				LS_ID_MSC
+#	elif (defined(__TINYC__))
+#		define LS_ID_COMPILER				LS_ID_TCC
 #	endif
 #endif
 
@@ -161,6 +164,8 @@
 #	define LS_MINGW							1
 #elif (LS_ID_COMPILER == LS_ID_MSC)
 #	define LS_MSC							1
+#elif (LS_ID_COMPILER == LS_ID_TCC)
+#	define LS_TCC							1
 #endif
 
 #if (defined(_UCRT))

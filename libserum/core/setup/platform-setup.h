@@ -92,6 +92,33 @@
 #	define restrict							__restrict
 #
 #	include "./special-treatment-for-windows.h"
+#elif (LS_TCC)
+#	define __LS_ATTR(x)						__attribute__((x))
+#
+#	define LS_COMPILER_LOG(mesg)
+#
+#	if (LS_WINDOWS)
+#		define LS_EXPORT					__LS_ATTR(dllexport)
+#	else
+#		define LS_EXPORT
+#	endif
+#	define LS_IMPORT
+#	define LS_INTERNAL
+#
+#	define LS_ATTR_NONNULL
+#	define LS_ATTR_NONNULL_EX(...)
+#	define LS_ATTR_PURE						__LS_ATTR(pure)
+#	define LS_ATTR_CONST
+#	define LS_ATTR_USED						__LS_ATTR(used)
+#	define LS_ATTR_NORETURN
+#	define LS_ATTR_FORCE_INLINE				__always_inline
+#	define LS_ATTR_THREADLOCAL				__LS_ATTR(__thread)
+#
+#	define LS_FORCE_INLINE					inline LS_ATTR_FORCE_INLINE
+#
+#	ifdef __cplusplus
+#		define restrict						__restrict__
+#	endif
 #endif
 
 

@@ -38,7 +38,7 @@
 
 
 
-#if (LS_GCC || LS_LLVM)
+#if (LS_GCC || LS_LLVM || LS_TCC)
 #	define LS_STACK_ALLOC(type, var, sizeb)	type var[(sizeb)]
 #	define LS_STACK_FREE(var)
 #endif
