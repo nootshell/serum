@@ -7,11 +7,12 @@ stages:
 build:
   stage: build
   variables:
-    CFLAGS_EXTRA: "-DLSCST_SALSA20_FULL=1"
+    PROFILE: release
+    CC: gcc
   script:
     - alpine-icy-info color
-    - make clean PROFILE=release all install
-    - make clean bin/test
+    - make clean CFLAGS_EXTRA="-DLSCST_SALSA20_FULL=1" PROFILE="$PROFILE" CC="$CC" all install
+    - make clean PROFILE="$PROFILE" CC="$CC" bin/test
     - mv /usr/lib/libserum.so bin/libserum.so
   artifacts:
     paths:
@@ -20,6 +21,8 @@ build:
 
 test:
   stage: test
+  variables:
+    GIT_STRATEGY: none
   script:
     - mv bin/libserum.so /usr/lib/libserum.so
     - bin/test

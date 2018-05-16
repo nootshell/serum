@@ -6,11 +6,14 @@ services:
   - docker
 
 env:
-  - DOCKER_REPO_PATH="/repositories/$TRAVIS_REPO_SLUG" CI_EXTRA="-DLSCST_SALSA20_FULL=1"
+  - DOCKER_REPO_PATH="/repositories/$TRAVIS_REPO_SLUG" PROFILE=debug CC=gcc
+  - DOCKER_REPO_PATH="/repositories/$TRAVIS_REPO_SLUG" PROFILE=release CC=gcc
 
 script:
   - docker pull icecubetray/alpine-icy:latest
   - docker run -v "$(pwd)":"$DOCKER_REPO_PATH" -itd --name alpine-icy icecubetray/alpine-icy
   - docker exec alpine-icy alpine-icy-info color
-  - docker exec alpine-icy sh -c "cd '$DOCKER_REPO_PATH' && make clean CFLAGS_EXTRA='$CFLAGS_EXTRA' PROFILE=release all install && make clean bin/test test"
+  - docker exec alpine-icy sh -c "cd '$DOCKER_REPO_PATH' && make clean CFLAGS_EXTRA='-DLSCST_SALSA20_FULL=1' PROFILE='$PROFILE' CC='$CC' libserum install"
+  - docker exec alpine-icy sh -c "cd '$DOCKER_REPO_PATH' && make clean PROFILE='$PROFILE' CC='$CC' test"
+  - docker exec alpine-icy sh -c "cd '$DOCKER_REPO_PATH' && bin/test"
   - docker container rm --force alpine-icy
