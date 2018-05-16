@@ -26,6 +26,13 @@
 ******************************************************************************/
 
 
+#include "../../../core/setup/features.h"
+
+#if (LSCST_ENABLED)
+
+
+
+
 #include "./md5.h"
 
 #include "../../../core/memory.h"
@@ -140,3 +147,8 @@ lscst_hashing_md5(const lsreg_meta_t *const meta) {
 	ls_memory_clear(&ctx, sizeof(ctx));
 	return result;
 }
+
+
+
+
+#endif

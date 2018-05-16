@@ -28,7 +28,8 @@
 
 #include "../libserum/io/log.h"
 
-#include "../libserum/crypto/selftests/base.h"
+#include "../libserum/crypto/__selftests/base.h"
+#include "../libserum/crypto/registry.h"
 
 
 
@@ -39,5 +40,9 @@ int main(int argc, char *argv[], char *env[]) {
 	lscst_set_logging(true);
 	const ls_result_t cst_result = lscst_launch();
 
+#if (LSCST_ENABLED)
 	return ((cst_result == LS_E_SUCCESS) ? 0 : 1);
+#else
+	return ((cst_result == LS_E_UNSUPPORTED) ? 0 : 1);
+#endif
 }

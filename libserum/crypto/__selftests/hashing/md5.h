@@ -28,6 +28,7 @@
 
 #ifndef __LS_CRYPTO_SELFTESTS_HASHING_MD5_H
 #define __LS_CRYPTO_SELFTESTS_HASHING_MD5_H
+#if (LS_EXPORTING)
 
 
 
@@ -51,4 +52,5 @@ extern "C" {
 
 
 
+#endif
 #endif

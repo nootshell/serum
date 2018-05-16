@@ -26,15 +26,15 @@
 ******************************************************************************/
 
 
-#ifndef __LS_CRYPTO_SELFTESTS_ASSERT_H
-#define __LS_CRYPTO_SELFTESTS_ASSERT_H
+#ifndef __LS_CRYPTO_SELFTESTS_HASHING_RIPEMD160_H
+#define __LS_CRYPTO_SELFTESTS_HASHING_RIPEMD160_H
+#if (LS_EXPORTING)
 
 
 
 
-#include "../../core/setup.h"
-
-#include "../hash.h"
+#include "../../hashing/ripemd160.h"
+#include "../../registry.h"
 
 
 
@@ -43,7 +43,7 @@
 extern "C" {
 #endif
 
-	LSAPI ls_result_t lscst_hash_assert(ls_hash_algo_t algorithm, const uint8_t *const restrict data, const size_t data_size, const size_t iterations, const uint8_t *const restrict digest, uint8_t *const restrict out_digest, const size_t digest_size);
+	LSAPI ls_result_t lscst_hashing_ripemd160(const lsreg_meta_t *const meta);
 
 #ifdef __cplusplus
 }
@@ -52,4 +52,5 @@ extern "C" {
 
 
 
+#endif
 #endif

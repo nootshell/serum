@@ -33,15 +33,19 @@
 #
 
 SUBPROJECTS = libserum test
-PROFILE = debug
+PROFILE = debug-cst
 
-# debug
 CFLAGS_DEBUG = \
 	-g -DDEBUG=1
 
-# release
+CFLAGS_DEBUG_CST = \
+	$(CFLAGS_DEBUG) -DLSCST_ENABLED=1
+
 CFLAGS_RELEASE = \
 	-Ofast
+
+CFLAGS_RELEASE_CST = \
+	$(CFLAGS_RELEASE) -DLSCST_ENABLED=1
 
 
 
@@ -87,7 +91,7 @@ ifeq (,$(TITLE))
 	TITLE = $(PROFILE);
 endif
 
-tvn = $(shell echo "$1" | sed 's/[[:space:]]/_/g' | tr [:lower:] [:upper:] | sed 's/[^A-Za-z0-9_]//g')
+tvn = $(shell echo "$1" | sed 's/[[:space:]\-]/_/g' | tr [:lower:] [:upper:] | sed 's/[^A-Za-z0-9_]//g')
 getfiles = $(addprefix obj/, $(patsubst %.c, %.o, $(shell find $1 -type f -name '*.c')))
 ifoptavail = $(shell .make/cc/ifoptavail.sh $1 $2 $3 $4 $5)
 

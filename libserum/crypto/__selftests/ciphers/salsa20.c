@@ -26,6 +26,13 @@
 ******************************************************************************/
 
 
+#include "../../../core/setup/features.h"
+
+#if (LSCST_ENABLED)
+
+
+
+
 #include "./salsa20.h"
 
 #include <string.h>
@@ -1831,3 +1838,8 @@ __breakout:;
 
 	return result;
 }
+
+
+
+
+#endif

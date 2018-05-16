@@ -34,7 +34,7 @@
 #include "../runtime/concurrency/thread.h"
 #include "../runtime/event.h"
 
-#include "../crypto/selftests/base.h"
+#include "../crypto/__selftests/base.h"
 
 #include <stdio.h>
 #include <inttypes.h>

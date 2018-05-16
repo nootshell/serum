@@ -29,7 +29,7 @@
 #include "../registry.h"
 
 #include "../ciphers/salsa20.h"
-#include "../selftests/ciphers/salsa20.h"
+#include "../__selftests/ciphers/salsa20.h"
 
 
 
@@ -43,7 +43,11 @@ const struct lsreg_cipher __cipher_registry[] = {
 	{ /* Fill up 0th index. */ },
 	{
 		.meta = {
+#if (LSCST_ENABLED)
 			.selftest = lscst_ciphers_salsa20,
+#else
+			.selftest = NULL,
+#endif
 			.flags = LS_CIPHER_STREAMABLE,
 			.name = "Salsa20",
 			.maintainer = "icecubetray"

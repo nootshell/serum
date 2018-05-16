@@ -26,6 +26,13 @@
 ******************************************************************************/
 
 
+#include "../../../core/setup/features.h"
+
+#if (LSCST_ENABLED)
+
+
+
+
 #include "./ripemd160.h"
 
 #include "../../../core/memory.h"
@@ -141,3 +148,8 @@ lscst_hashing_ripemd160(const lsreg_meta_t *const meta) {
 	ls_memory_clear(&ctx, sizeof(ctx));
 	return result;
 }
+
+
+
+
+#endif

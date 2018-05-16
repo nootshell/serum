@@ -26,67 +26,82 @@
 ******************************************************************************/
 
 
-#include "../registry.h"
+#include "../../core/setup/features.h"
 
-#include "../hashing/md5.h"
-#include "../__selftests/hashing/md5.h"
-
-#include "../hashing/ripemd160.h"
-#include "../__selftests/hashing/ripemd160.h"
-
-
-
-
-FILEID("Registry of hash functions.");
-
-
-
-
-const struct lsreg_hash __hash_registry[] = {
-	{ /* Fill up 0th index. */ },
-	{
-		.meta = {
 #if (LSCST_ENABLED)
-			.selftest = lscst_hashing_md5,
-#else
-			.selftest = NULL,
-#endif
-			.flags = 0,
-			.name = "MD5",
-			.maintainer = "icecubetray"
-		},
 
-		.ctx_size = sizeof(struct ls_md5),
-		.block_size = LS_MD5_BLOCK_SIZE,
-		.digest_size = LS_MD5_DIGEST_SIZE,
 
-		.f_init = (lssig_hash_init)ls_md5_init,
-		.f_clear = NULL,
-		.f_update = (lssig_hash_update)ls_md5_update,
-		.f_finish = (lssig_hash_finish)ls_md5_finish
-	},
-	{
-		.meta = {
-#if (LSCST_ENABLED)
-			.selftest = lscst_hashing_ripemd160,
-#else
-			.selftest = NULL,
-#endif
-			.flags = 0,
-			.name = "RIPEMD-160",
-			.maintainer = "icecubetray"
-		},
 
-		.ctx_size = sizeof(struct ls_ripemd160),
-		.block_size = LS_RIPEMD160_BLOCK_SIZE,
-		.digest_size = LS_RIPEMD160_DIGEST_SIZE,
 
-		.f_init = (lssig_hash_init)ls_ripemd160_init,
-		.f_clear = NULL,
-		.f_update = (lssig_hash_update)ls_ripemd160_update,
-		.f_finish = (lssig_hash_finish)ls_ripemd160_finish
+#include "./assert.h"
+
+#include "../../core/memory.h"
+
+#include <string.h>
+
+
+
+
+FILEID("Assertion functions for CSTs.");
+
+
+
+
+ls_result_t
+lscst_hash_assert(ls_hash_algo_t algorithm, const uint8_t *const restrict data, const size_t data_size, const size_t iterations, const uint8_t *const restrict digest, uint8_t *const restrict out_digest, const size_t digest_size) {
+	if (!LS_HASH_ALGORITHM_VALID(algorithm)) {
+		return LS_E_ALGORITHM;
 	}
-};
 
-const size_t __hash_registry_size = sizeof(__hash_registry);
-const size_t __hash_registry_count = (sizeof(__hash_registry) / sizeof(*__hash_registry));
+	if (data == NULL || digest == NULL) {
+		return LS_E_NULL;
+	}
+
+	if (digest_size == 0) {
+		return LS_E_SIZE;
+	}
+
+	if (iterations == 0) {
+		return LS_E_NOOP;
+	}
+
+
+	ls_result_t result;
+	ls_hash_t hctx;
+
+
+	if ((result = ls_hash_init(&hctx, algorithm)) != LS_E_SUCCESS) {
+		return result;
+	}
+
+
+	if (data_size > 0) {
+		register size_t i;
+		for (i = iterations; i--;) {
+			if ((result = ls_hash_update(&hctx, data, data_size)) != LS_E_SUCCESS) {
+				ls_hash_clear(&hctx);
+				return result;
+			}
+		}
+	}
+
+
+	if ((result = ls_hash_finish(&hctx, out_digest)) != LS_E_SUCCESS) {
+		ls_hash_clear(&hctx);
+		return result;
+	}
+
+	if ((result = ls_hash_clear(&hctx)) != LS_E_SUCCESS) {
+		return result;
+	}
+
+	const ls_bool_t eq = (memcmp(out_digest, digest, digest_size) == 0);
+
+
+	return (eq ? LS_E_SUCCESS : LS_E_DATA_MISMATCH);
+}
+
+
+
+
+#endif

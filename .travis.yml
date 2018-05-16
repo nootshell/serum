@@ -10,7 +10,9 @@ os:
 
 env:
   - CC=gcc PROFILE=debug
+  - CC=gcc PROFILE=debug-cst
   - CC=gcc PROFILE=release
+  - CC=gcc PROFILE=release-cst
 
 
 

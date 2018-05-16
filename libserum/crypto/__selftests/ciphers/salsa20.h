@@ -28,6 +28,7 @@
 
 #ifndef __LS_CRYPTO_SELFTESTS_CIPHERS_SALSA20_H
 #define __LS_CRYPTO_SELFTESTS_CIPHERS_SALSA20_H
+#if (LS_EXPORTING)
 
 
 
@@ -51,4 +52,5 @@ extern "C" {
 
 
 
+#endif
 #endif

@@ -34,7 +34,7 @@
 
 #include "../core/signatures.h"
 
-#include "./selftests/base.h"
+#include "./__selftests/base.h"
 
 
 

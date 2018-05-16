@@ -35,6 +35,8 @@
 #include <stdlib.h>
 #include <errno.h>
 
+#include "./setup/features.h"
+
 #include "./setup/types.h"
 #include "./setup/platform-setup.h"
 

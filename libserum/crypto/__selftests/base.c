@@ -28,31 +28,35 @@
 
 #include "./base.h"
 
-#include "../registry.h"
-
-#include "../../core/memory.h"
-#include "../../data/time.h"
 #include "../../io/ansi-ctrl.h"
 #include "../../io/log.h"
 
-#include <stdio.h>
-#include <string.h>
-#include <inttypes.h>
 
 
 
+#if (LSCST_ENABLED)
+#	define CST_STATE						"enabled"
+#else
+#	define CST_STATE						"disabled"
+#endif
 
-FILEID("Cryptographic selftesting (CST) base.");
+FILEID("Cryptographic selftesting (CST) base (" CST_STATE ").");
 
 
 
 
 static ls_bool_t __logging = false;
 
-void
-lscst_set_logging(const ls_bool_t enabled) {
-	__logging = !!enabled;
-}
+
+
+
+#if (LSCST_ENABLED)
+#include "../registry.h"
+
+#include "../../core/memory.h"
+#include "../../data/time.h"
+
+#include <inttypes.h>
 
 
 
@@ -96,28 +100,6 @@ static __iterate_registry(const lsreg_meta_t *const restrict registry, const siz
 }
 
 
-ls_result_t
-lscst_launch() {
-	if (__hash_registry_count == 0) {
-		return LS_E_NOOP;
-	}
-
-
-	ls_result_t result = LS_E_SUCCESS;
-
-
-	ls_log_writeln(NULL, LS_LOG_LEVEL_INFO, LS_ANSI_WRAP("Performing CSTs.", LS_ANSI_FG_ORANGE, LS_ANSI_OPT_ITALIC));
-
-	__iterate_registry((const lsreg_meta_t *)__hash_registry, sizeof(*__hash_registry), __hash_registry_count, "hashing", &result);
-	__iterate_registry((const lsreg_meta_t *)__cipher_registry, sizeof(*__cipher_registry), __cipher_registry_count, "ciphers", &result);
-
-	ls_log_writeln(NULL, LS_LOG_LEVEL_INFO, LS_ANSI_WRAP("Done performing CSTs.", LS_ANSI_FG_ORANGE, LS_ANSI_OPT_ITALIC));
-
-
-	return result;
-}
-
-
 
 
 void
@@ -151,4 +133,45 @@ lscst_log(const ls_result_t result, const char *const algorithm, const size_t in
 			digest_str = ls_memory_free(digest_str);
 		}
 	}
+}
+#endif
+
+
+
+
+void
+lscst_set_logging(const ls_bool_t enabled) {
+	__logging = !!enabled;
+}
+
+
+
+
+ls_result_t
+lscst_launch() {
+#if (LSCST_ENABLED)
+	if (__hash_registry_count == 0) {
+		return LS_E_NOOP;
+	}
+
+
+	ls_result_t result = LS_E_SUCCESS;
+
+
+	ls_log_writeln(NULL, LS_LOG_LEVEL_INFO, LS_ANSI_WRAP("Performing CSTs.", LS_ANSI_FG_ORANGE, LS_ANSI_OPT_ITALIC));
+
+	__iterate_registry((const lsreg_meta_t *)__hash_registry, sizeof(*__hash_registry), __hash_registry_count, "hashing", &result);
+	__iterate_registry((const lsreg_meta_t *)__cipher_registry, sizeof(*__cipher_registry), __cipher_registry_count, "ciphers", &result);
+
+	ls_log_writeln(NULL, LS_LOG_LEVEL_INFO, LS_ANSI_WRAP("Done performing CSTs.", LS_ANSI_FG_ORANGE, LS_ANSI_OPT_ITALIC));
+
+
+	return result;
+#else
+	if (__logging) {
+		ls_log_writeln(NULL, LS_LOG_LEVEL_ERROR, LS_ANSI_WRAP("Cryptographic selftests were not compiled into this version of the library.", LS_ANSI_FG_RED, LS_ANSI_OPT_ITALIC));
+	}
+
+	return LS_E_UNSUPPORTED;
+#endif
 }
