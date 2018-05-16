@@ -38,11 +38,33 @@ FILEID("Utilities for collections.");
 
 void *const
 ls_pcollection_find(ls_pcollection_t collection, const void *const find, const size_t size) {
-	return ls_pcollection_find_inline(collection, find, size);
+	if (collection == NULL || size == 0) {
+		return NULL;
+	}
+
+	size_t i;
+	for (i = 0; i < size; ++i) {
+		if (collection[i] == find) {
+			return ((void *const)&collection[i]);
+		}
+	}
+
+	return NULL;
 }
 
 
 void *const
 ls_pcollection_rfind(ls_pcollection_t collection, const void *const find, const size_t size) {
-	return ls_pcollection_rfind_inline(collection, find, size);
+	if (collection == NULL || size == 0) {
+		return NULL;
+	}
+
+	size_t i;
+	for (i = size; i--;) {
+		if (collection[i] == find) {
+			return ((void *const)&collection[i]);
+		}
+	}
+
+	return NULL;
 }

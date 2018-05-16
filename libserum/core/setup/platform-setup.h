@@ -66,9 +66,7 @@
 #
 #	define LS_FORCE_INLINE					inline LS_ATTR_FORCE_INLINE
 #
-#	ifdef __cplusplus
-#		define restrict						__restrict__
-#	endif
+#	define restrict							__restrict__
 #elif (LS_MSC || LS_MINGW)
 #	define __LS_ATTR(x)						__declspec(x)
 #

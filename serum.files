@@ -2,7 +2,6 @@ COPYING.md
 libserum/collections/types.h
 libserum/collections/utilities.c
 libserum/collections/utilities.h
-libserum/collections/utilities-inline.h
 libserum/core/main.c
 libserum/core/memory.c
 libserum/core/memory.h

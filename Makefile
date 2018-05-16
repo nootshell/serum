@@ -57,8 +57,8 @@ ifeq ($(strip $(CC)),)
 endif
 
 CFLAGS = \
-	-Wall -Wpadded -fPIC -fstack-protector-strong -I. \
-	-DMAKEFILE=1 -DTIMESTAMP="\"$(shell date -Iseconds)\"" \
+	-Wall -Wpadded -fPIC $(call ifoptavail,$(CC),-fstack-protector-strong) -I. \
+	-DMAKEFILE=1 -DTIMESTAMP="\"$(shell date -u +'%Y-%m-%dT%H:%M:%S%:z')\"" \
 	-DGIT_BRANCH="\"$(GIT_BRANCH)\"" -DGIT_TAG="\"$(GIT_TAG)\"" \
 	-DFILEPATH="\"$^\"" -DKERNEL="\"$(KERNEL)\"" -DKERNEL_ARCH="\"$(KERNEL_ARCH)\"" \
 	-DLS_ANSI_SUPPORT=1 $(CFLAGS_EXTRA)
@@ -89,6 +89,7 @@ endif
 
 tvn = $(shell echo "$1" | sed 's/[[:space:]]/_/g' | tr [:lower:] [:upper:] | sed 's/[^A-Za-z0-9_]//g')
 getfiles = $(addprefix obj/, $(patsubst %.c, %.o, $(shell find $1 -type f -name '*.c')))
+ifoptavail = $(shell .make/cc/ifoptavail.sh $1 $2 $3 $4 $5)
 
 CFLAGS_PROFILE = $(CFLAGS_$(call tvn,$(PROFILE)))
 PROJECT_TARGETS = $(foreach proj,$(SUBPROJECTS),pre-$(proj) $(proj) post-$(proj))
@@ -116,7 +117,7 @@ default: all
 
 make-debug:
 	$(eval ECHO_BAK = $(ECHO_FLAG))
-	@echo $(ECHO_EOL);
+	@echo $(strip $(ECHO_EOL));
 	@echo "Section newline: $(shell if [ '$(ECHO_BAK)' = '-n' ]; then echo 'no'; else echo 'yup'; fi;)";
 	@echo "Projects: $(SUBPROJECTS)";
 	@echo " - Targets: $(PROJECT_TARGETS)";
@@ -138,7 +139,7 @@ make-debug:
 #
 
 clean:
-	@echo $(ECHO_EOL)
+	@echo $(strip $(ECHO_EOL))
 	@./.make/clean.sh $(strip $(SUBPROJECTS));
 
 
@@ -203,7 +204,7 @@ bin/test: $(call getfiles,test)
 
 
 pre-libserum:
-	@echo $(ECHO_EOL)
+	@echo $(strip $(ECHO_EOL))
 
 libserum: pre-libserum bin/libserum.so
 
@@ -211,7 +212,7 @@ libserum: pre-libserum bin/libserum.so
 
 
 pre-test:
-	@echo $(ECHO_EOL)
+	@echo $(strip $(ECHO_EOL))
 
 test: pre-test bin/test
 
@@ -219,7 +220,7 @@ test: pre-test bin/test
 
 
 install: libserum
-	@echo $(ECHO_EOL)
+	@echo $(strip $(ECHO_EOL))
 	@echo -n "> mv bin/libserum.so /usr/lib/libserum.so";
 	@mv bin/libserum.so /usr/lib/libserum.so;
 	@echo " (done)";
