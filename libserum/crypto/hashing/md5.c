@@ -81,9 +81,9 @@ ls_md5_update(ls_md5_t *const restrict context, const ls_md5_block_t block) {
 #else
 	uint32_t le_block[16];
 	for (a = (sizeof(le_block) / sizeof(*le_block)); a--;) {
-		le_block[a] = LS_ENSURE_LITTLE32(((typeof(block32))block)[a]);
+		le_block[a] = LS_ENSURE_LITTLE32(((const uint32_t *)block)[a]);
 	}
-	block32 = (typeof(block32))le_block;
+	block32 = (const uint32_t *)le_block;
 #endif
 
 	a_old = (
