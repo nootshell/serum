@@ -7,10 +7,10 @@ stages:
 build:
   stage: build
   variables:
-    CI_EXTRA: "-DLSCST_SALSA20_FULL=1"
+    CFLAGS_EXTRA: "-DLSCST_SALSA20_FULL=1"
   script:
     - alpine-icy-info color
-    - make clean release install
+    - make clean PROFILE=release all install
     - make clean bin/test
     - mv /usr/lib/libserum.so bin/libserum.so
   artifacts:

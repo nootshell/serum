@@ -28,107 +28,198 @@
 
 
 
-ifeq (,$(CC))
-	CC = gcc
+#
+#	Project variables
+#
+
+SUBPROJECTS = libserum test
+PROFILE = debug
+
+# debug
+CFLAGS_DEBUG = \
+	-g -DDEBUG=1
+
+# release
+CFLAGS_RELEASE = \
+	-Ofast
+
+
+
+
+#
+#	Compiler setup
+#
+
+CC =
+
+ifeq ($(strip $(CC)),)
+	CC = tcc
 endif
-
-LS_ELF_INTERP = $(shell sh ./sbin/elf_interp.sh)
-
-GIT_COMMIT_HEAD = $(shell git rev-parse HEAD)
-GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
-GIT_TAG = $(shell git describe --tags --abbrev=0 2> /dev/null || echo "0-dev")
-TIMESTAMP = $(shell date -Iseconds)
-KERNEL = $(shell uname -sr)
-KERNEL_ARCH = $(shell uname -m)
-REMAKE = $(shell touch libserum/core/main.c)
 
 CFLAGS = \
 	-Wall -Wpadded -fPIC -fstack-protector-strong -I. \
-	-DMAKEFILE=1 \
+	-DMAKEFILE=1 -DTIMESTAMP="\"$(shell date -Iseconds)\"" \
 	-DGIT_BRANCH="\"$(GIT_BRANCH)\"" -DGIT_TAG="\"$(GIT_TAG)\"" \
-	-DFILEPATH="\"$^\"" -DTIMESTAMP="\"$(TIMESTAMP)\"" -DKERNEL="\"$(KERNEL)\"" -DKERNEL_ARCH="\"$(KERNEL_ARCH)\"" \
-	-DLS_ANSI_SUPPORT=1 $(CI_EXTRA)
+	-DFILEPATH="\"$^\"" -DKERNEL="\"$(KERNEL)\"" -DKERNEL_ARCH="\"$(KERNEL_ARCH)\"" \
+	-DLS_ANSI_SUPPORT=1 $(CFLAGS_EXTRA)
 
-CFLAGS_DEBUG = -g -DLS_DEBUG=1
-CFLAGS_RELEASE = -Ofast
+#
+#	Versioning setup
+#
 
-TITLE = "done"
+GIT_COMMIT = $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+GIT_BRANCH = $(shell git rev-parse --short --abbrev-ref HEAD 2>/dev/null || echo "unknown")
+GIT_TAG = $(shell git describe --tags --abbrev=0 2>/dev/null || echo "tagless")
+
+INCR_NUM = $(eval INCR_NUM_VAL = $(shell if [ -z "$(INCR_NUM_VAL)" ]; then ./.make/incr.sh; else echo "$(INCR_NUM_VAL)"; fi))$(INCR_NUM_VAL)
 
 
 
-.PHONY: all clean debug release rebuild valgrind test install
 
+#
+#	Internal variables
+#
 
+ECHO_FLAG = -n
+ECHO_EOL = "$(ECHO_FLAG)$(eval ECHO_FLAG =)"
 
-ifeq (,$(wildcard ./debug))
-all: release bin/test
-rebuild: clean release
-else
-all: rebuild bin/test
-rebuild: clean debug
+ifeq (,$(TITLE))
+	TITLE = $(PROFILE);
 endif
 
+tvn = $(shell echo "$1" | sed 's/[[:space:]]/_/g' | tr [:lower:] [:upper:] | sed 's/[^A-Za-z0-9_]//g')
+getfiles = $(addprefix obj/, $(patsubst %.c, %.o, $(shell find $1 -type f -name '*.c')))
 
+CFLAGS_PROFILE = $(CFLAGS_$(call tvn,$(PROFILE)))
+PROJECT_TARGETS = $(foreach proj,$(SUBPROJECTS),pre-$(proj) $(proj) post-$(proj))
+
+
+
+
+#
+#	Phonies
+#		make-debug: To debug this Makefile.
+#		clean: To clean up bin/ and obj/.
+#		all: Default built target to build everything.
+#
+
+.PHONY: make-debug clean all default reset-incr $(PROJECT_TARGETS)
+
+default: all
+
+
+
+
+#
+#	Target: make-debug
+#
+
+make-debug:
+	$(eval ECHO_BAK = $(ECHO_FLAG))
+	@echo $(ECHO_EOL);
+	@echo "Section newline: $(shell if [ '$(ECHO_BAK)' = '-n' ]; then echo 'no'; else echo 'yup'; fi;)";
+	@echo "Projects: $(SUBPROJECTS)";
+	@echo " - Targets: $(PROJECT_TARGETS)";
+	@echo "Profile: $(PROFILE) (CFLAGS_$(call tvn,$(PROFILE)))";
+	@echo "Compiler: $(CC)";
+	@echo "Flags: $(CFLAGS)";
+	@echo " - Profile: $(CFLAGS_PROFILE)";
+	@echo "Git:";
+	@echo " - Tag: $(GIT_TAG)";
+	@echo " - Commit: $(GIT_COMMIT)";
+	@echo " - Branch: $(GIT_BRANCH)";
+	@echo "Incremental num.: $(INCR_NUM)";
+
+
+
+
+#
+#	Target: clean
+#
+
+clean:
+	@echo $(ECHO_EOL)
+	@./.make/clean.sh $(strip $(SUBPROJECTS));
+
+
+
+
+#
+#	Target: all
+#
+
+all: $(foreach proj,$(SUBPROJECTS),$(proj))
+
+
+
+
+#
+#	Target: reset-incr
+#
+
+reset-incr:
+	@rm -f ./.make/incr
+
+
+
+
+#
+#	Target: glob
+#
 
 obj/%.o: %.c
-	@mkdir -p $(@D)
-	@echo -n "| $@";
-	@$(CC) $(CFLAGS) -DGIT_COMMIT="\"$(shell git log -n 1 --pretty=format:" ($(GIT_BRANCH) %H %aI)" -- $^)\"" -c $^ -o $@
-	@echo " (done)"
+	@mkdir -p $(@D);
+	@echo -n "> $(CC) $^";
+	@$(CC) -o $@ $(CFLAGS) $(CFLAGS_PROFILE) -c $^;
+	@echo " (done)";
 
-obj/libserum/core/main.o: CFLAGS += $(LS_ELF_INTERP) -Wno-unused-command-line-argument
-obj/libserum/core/main.o: libserum/core/main.c
-	@mkdir -p $(@D)
-	@echo -n "| $@";
-	@$(CC) $(CFLAGS) -DGIT_COMMIT="\"$(shell git log -n 1 --pretty=format:" ($(GIT_BRANCH) %H %aI)" -- $^)\"" -c $^ -o $@
-	@echo " (done)"
+
+
+
+#
+#	Implement your projects below here.
+#
+
+###############################################################################
+
 
 
 
 bin/libserum.so: CFLAGS += -DLS_EXPORTING=1
-bin/libserum.so: obj/libserum/core/main.o $(addprefix obj/, $(patsubst %.c, %.o, $(shell find libserum -type f -name '*.c' ! -wholename libserum/core/main.c)))
-	@echo -n "+-> $@"
-	@mkdir -p $(@D)
-	@$(CC) -o $@ -shared -pthread $(LS_ELF_INTERP) $^
-	@echo -n " ($(TITLE))"
-	@echo
-
-bin/test: CFLAGS += $(CFLAGS_DEBUG)
-bin/test: $(addprefix obj/, $(patsubst %.c, %.o, $(shell find test -type f -name '*.c')))
-	@echo -n "+-> $@"
-	@mkdir -p $(@D)
-	@$(CC) -o $@ $^ $(shell ((test -f bin/libserum.so && realpath bin/libserum.so) || echo '-lserum'))
-	@echo " ($(TITLE))"
-	@echo
+bin/libserum.so: $(call getfiles,libserum)
+	@echo -n "=> $@";
+	@mkdir -p $(@D);
+	@$(CC) -o $@ -shared $^ -lpthread
+	@echo " (done)";
 
 
 
-install: bin/libserum.so
-	@cp bin/libserum.so /usr/lib/libserum.so
+bin/test: $(call getfiles,test)
+	@echo -n "=> $@";
+	@mkdir -p $(@D);
+	@$(CC) -o $@ $^ $(shell ((test -f bin/libserum.so && realpath bin/libserum.so) || echo '-lserum'));
+	@echo " (done)";
 
 
 
-clean:
-	@rm -f bin/libserum.so
-	@rm -f bin/test
-	@echo "- Removed binaries."
-	@rm -Rf obj/libserum
-	@rm -Rf obj/test
-	@echo "- Removed object files."
+pre-libserum:
+	@echo $(ECHO_EOL)
 
-debug: TITLE = "debug"
-debug: CFLAGS += $(CFLAGS_DEBUG)
-debug: bin/libserum.so
+libserum: pre-libserum bin/libserum.so
 
-release: $(REMAKE)
-release: TITLE = "release"
-release: CFLAGS += $(CFLAGS_RELEASE) -DRELEASE
-release: bin/libserum.so
 
-valgrind: TITLE = "valgrind"
-valgrind: CFLAGS += $(CFLAGS_DEBUG) -DLS_VALGRIND=1
-valgrind: clean bin/libserum.so bin/test
 
-test: TITLE = "test"
-test: bin/test
-	@bin/test
+
+pre-test:
+	@echo $(ECHO_EOL)
+
+test: pre-test bin/test
+
+
+
+
+install: libserum
+	@echo $(ECHO_EOL)
+	@echo -n "> mv bin/libserum.so /usr/lib/libserum.so";
+	@mv bin/libserum.so /usr/lib/libserum.so;
+	@echo " (done)";
