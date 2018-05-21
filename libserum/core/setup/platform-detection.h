@@ -61,6 +61,30 @@
 #		define LS_ID_ARCH					LS_ID_X64
 #	elif (defined(__arm) || defined(__arm__) || defined(__thumb__) || defined(_ARM) || defined(_M_ARM) || defined(_M_ARMT) || defined(__ARMCC_VERSION) || defined(__CC_ARM))
 #		define LS_ID_ARCH					LS_ID_ARM
+
+#		if (defined(__ARM_ARCH_2__))
+#			define LS_ARCH_ARM_VERSION		2
+#		elif (defined(__ARM_ARCH_3__))
+#			define LS_ARCH_ARM_VERSION		3
+#		elif (defined(__ARM_ARCH_4__))
+#			define LS_ARCH_ARM_VERSION		4
+#		elif (defined(__ARM_ARCH_5__))
+#			define LS_ARCH_ARM_VERSION		5
+#		elif (defined(__ARM_ARCH_6__))
+#			define LS_ARCH_ARM_VERSION		6
+#		elif (defined(__ARM_ARCH_7__))
+#			define LS_ARCH_ARM_VERSION		7
+#		elif (defined(__ARM_ARCH_8__))
+#			define LS_ARCH_ARM_VERSION		8
+#		elif (defined(__ARM_ARCH))
+#			define LS_ARCH_ARM_VERSION		__ARM_ARCH
+#		endif
+
+#		if (defined(__aarch64__))
+#			define LS_ARCH_BITS				64
+#		else
+#			define LS_ARCH_BITS				32
+#		endif
 #	endif
 #endif
 

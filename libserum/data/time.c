@@ -124,6 +124,7 @@ ls_rdtsc() {
 	uint64_t tsc = 0;
 
 #	if ((LS_GCC || LS_LLVM || LS_TCC) && (LS_X86 || LS_X64))
+#		define LS_GOT_RDTSC					1
 	asm volatile (
 		"rdtsc\n\t"
 		"shl $32, %%rdx\n\t"
@@ -133,6 +134,7 @@ ls_rdtsc() {
 		: "rdx"
 	);
 #	elif ((LS_MSC || LS_MINGW) && LS_X86)
+#		define LS_GOT_RDTSC					1
 	__asm {
 		rdtsc
 
@@ -144,7 +146,43 @@ ls_rdtsc() {
 		mov dword ptr [tsc + 0], eax
 #		endif
 	};
-#	elif (!defined(LS_IGNORE_RDTSC))
+#	elif (LS_ARM)
+#		if defined(LS_ARCH_ARM_VERSION)
+#			if (LS_ARCH_ARM_VERSION == 8)
+#				define LS_GOT_RDTSC			1
+	asm volatile (
+		"mrs %0, cntvct_e10"
+		: "=r" (tsc)
+	);
+#			elif (LS_ARCH_ARM_VERSION >= 6)
+#				define LS_GOT_RDTSC			1
+	uint32_t f = 0;
+
+	asm volatile (
+		"mrc p15, 0, %0, c9, c14, 0"
+		: "=r" (f)
+	);
+
+	if (LS_FLAG(f, 0x00000001)) {
+		asm volatile (
+			"mrc p15, 0, %0, c9, c12, 1"
+			: "=r" (f)
+		);
+
+		if (LS_FLAG(f, 0x80000000)) {
+			asm volatile (
+				"mrc p15, 0, %0, c9, c13, 0"
+				: "=r" (f)
+			);
+
+			tsc = (((uint64_t)f) << 6);
+		}
+	}
+#			endif
+#		endif
+#	endif
+
+#	if (!defined(LS_INTRINSICS_GOT_RDTSC) && !defined(LS_GOT_RDTSC) && !defined(LS_IGNORE_RDTSC))
 #		error Missing RDTSC implementation.
 #	endif
 

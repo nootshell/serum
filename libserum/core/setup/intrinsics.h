@@ -37,7 +37,7 @@
 
 
 
-#if (LS_GCC || LS_LLVM)
+#if ((LS_GCC || LS_LLVM) && (LS_X86 || LS_X64))
 #	include <x86intrin.h>
 #	define LS_INTRINSICS					1
 #elif (LS_MSC || LS_MINGW)
@@ -51,6 +51,7 @@
 #undef LS_INTRINSICS_GOT_ROTL
 #undef LS_INTRINSICS_GOT_ROTR
 #undef LS_INTRINSICS_GOT_RDTSC
+
 
 #if (LS_INTRINSICS)
 #	if (LS_MSC || LS_MINGW)
@@ -70,12 +71,7 @@
 #			define LS_RDTSC					__rdtsc
 #			define LS_INTRINSICS_GOT_RDTSC	1
 #		endif
-#	elif (LS_GCC || LS_LLVM)
-		// GCC and LLVM should be optimizing our fallback implementations nicely.
-#		define LS_INTRINSICS_IGNORE_ROTL	1
-#		define LS_INTRINSICS_IGNORE_ROTR	1
 #	endif
-
 
 #	if (LS_GCC || LS_LLVM)
 #		define LS_SWAP_16(x)				__builtin_bswap16(x)
@@ -90,6 +86,13 @@
 
 #		define LS_INTRINSICS_GOT_SWAP		1
 #	endif
+#endif
+
+
+#if (LS_GCC || LS_LLVM)
+	// GCC and LLVM should be optimizing our fallback implementations nicely.
+#	define LS_INTRINSICS_IGNORE_ROTL	1
+#	define LS_INTRINSICS_IGNORE_ROTR	1
 #endif
 
 
