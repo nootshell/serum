@@ -45,7 +45,7 @@ static const char theta[16] = "expand 16-byte k";
 
 
 ls_result_t
-ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size, const uint64_t *const restrict nonce) {
+ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const size_t key_size, const uint8_t *const restrict nonce, const size_t nonce_size) {
 	ls_result_t result;
 
 	result = ls_salsa20_rekey(context, key, key_size);
@@ -53,7 +53,7 @@ ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restr
 		return result;
 	}
 
-	result = ls_salsa20_renonce(context, nonce);
+	result = ls_salsa20_renonce(context, nonce, nonce_size);
 	if (result != LS_E_SUCCESS) {
 		return result;
 	}
@@ -65,7 +65,7 @@ ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restr
 
 
 ls_result_t
-ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size) {
+ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const size_t key_size) {
 	if (context == NULL || key == NULL) {
 		return LS_E_NULL;
 	}
@@ -74,9 +74,9 @@ ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const rest
 		return LS_E_SIZE;
 	}
 
+
 	const uint32_t *key32 = (const uint32_t *)key;
 	memcpy(context->layout.k1, key32, sizeof(context->layout.k1));
-
 	{
 		const uint32_t *constant = NULL;
 
@@ -94,10 +94,11 @@ ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const rest
 		context->layout.c3 = LS_ENSURE_LITTLE32(constant[2]);
 		context->layout.c4 = LS_ENSURE_LITTLE32(constant[3]);
 	}
-
 	memcpy(context->layout.k2, key32, sizeof(context->layout.k2));
 
 	context->layout.counter = 0;
+
+
 	return LS_E_SUCCESS;
 }
 
@@ -105,13 +106,19 @@ ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const rest
 
 
 ls_result_t
-ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint64_t *const restrict nonce) {
+ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint8_t *const restrict nonce, const size_t nonce_size) {
 	if (context == NULL) {
 		return LS_E_NULL;
 	}
 
+	if (nonce_size != 8) {
+		return LS_E_SIZE;
+	}
+
+
 	context->layout.counter = 0;
-	context->layout.nonce = ((nonce == NULL) ? 0 : *nonce);
+	context->layout.nonce = ((nonce == NULL) ? 0 : *(uint64_t *const)nonce);
+
 
 	return LS_E_SUCCESS;
 }

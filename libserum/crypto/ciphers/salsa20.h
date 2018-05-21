@@ -41,8 +41,8 @@
 
 #define LS_SALSA20_ROUNDS					20
 
-#define LS_SALSA20_256						256
-#define LS_SALSA20_128						128
+#define LS_SALSA20_256						32
+#define LS_SALSA20_128						16
 
 
 
@@ -70,9 +70,9 @@ typedef uint8_t ls_salsa20_block_t[LS_SALSA20_BLOCK_SIZE];
 extern "C" {
 #endif
 
-	LSAPI ls_result_t ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size, const uint64_t *const restrict nonce);
-	LSAPI ls_result_t ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const ls_nword_t key_size);
-	LSAPI ls_result_t ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint64_t *const restrict nonce);
+	LSAPI ls_result_t ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const size_t key_size, const uint8_t *const restrict nonce, const size_t nonce_size);
+	LSAPI ls_result_t ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const size_t key_size);
+	LSAPI ls_result_t ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint8_t *const restrict nonce, const size_t nonce_size);
 
 	LSAPI ls_result_t ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
 
