@@ -60,6 +60,7 @@ LS_ATTR_NONNULL
 static __socket_clear_struct(ls_socket_t *const pstruct) {
 	memset(pstruct, 0, sizeof(*pstruct));
 	pstruct->descriptor = LS_INVALID_SOCKFD;
+	pstruct->flags |= LS_SOCKET_INITIALIZED;
 }
 
 
@@ -184,9 +185,9 @@ static __socket_init(ls_sockfd_t *const restrict out_descriptor, struct addrinfo
 
 
 	struct addrinfo *root = NULL;
-	const uint32_t err = getaddrinfo(node, service, &hints, &root);
-	if (err) {
-		ls_debugfe("getaddrinfo() returned %u", err);
+	int result = getaddrinfo(node, service, &hints, &root);
+	if (result) {
+		ls_debugfe("getaddrinfo() returned %i %i", result, errno);
 		__socket_decr();
 		return_e(LS_E_FAILURE);
 	}
@@ -200,7 +201,6 @@ static __socket_init(ls_sockfd_t *const restrict out_descriptor, struct addrinfo
 	const uint16_t nbo_port = htons(port);
 
 
-	int result;
 	struct addrinfo *ai_ptr;
 	for (ai_ptr = root; ai_ptr != NULL; ai_ptr = ai_ptr->ai_next) {
 		if (hard_set_port) {
@@ -341,7 +341,7 @@ ls_socket_clear(ls_socket_t *const socket) {
 		__socket_clear_struct(socket);
 		return LS_E_SUCCESS;
 	} else {
-		return_e(result);
+		return result;
 	}
 }
 
@@ -396,13 +396,13 @@ ls_socket_accept_ex(ls_socket_t *const restrict socket, ls_socket_t *const restr
 
 	ls_result_t result = ls_socket_accept_fd_ex(socket, &sockfd, out_sockaddr, inout_sockaddrlen);
 	if (result != LS_E_SUCCESS) {
-		return_e(result);
+		return result;
 	}
 
 	result = ls_socket_init_fd(out_client, sockfd);
 	if (result != LS_E_SUCCESS) {
 		ls_socket_clear(out_client);
-		return_e(result);
+		return result;
 	}
 
 	return LS_E_SUCCESS;
@@ -428,13 +428,19 @@ ls_socket_start_tcp(ls_socket_t *const restrict socket, const char *const restri
 	}
 
 
-	return __socket_init(
+	const ls_result_t result = __socket_init(
 		&socket->descriptor,
 		&socket->ai_root,
 		&socket->ai_selected,
 		node, service, port,
 		((socket->flags & ~LS_SOCKET_FMASK_SOCKTYPE) | LS_SOCKET_TCP)
 	);
+
+	if (result == LS_E_SUCCESS) {
+		socket->flags |= LS_SOCKET_READY;
+	}
+
+	return result;
 }
 
 

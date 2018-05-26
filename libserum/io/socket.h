@@ -52,12 +52,13 @@ typedef int ls_sockfd_t;
 #define LS_INVALID_SOCKFD					~((ls_sockfd_t)0)
 
 
-#define LS_SOCKET_READY						0x00000001
+#define LS_SOCKET_INITIALIZED				0x00000001
+#define LS_SOCKET_READY						0x00000002
 
-#define LS_SOCKET_TCP						0x80000000
-#define LS_SOCKET_UDP						0x40000000
+#define LS_SOCKET_SERVER					0x00000008
 
-#define LS_SOCKET_SERVER					0x00008000
+#define LS_SOCKET_TCP						0x00000100
+#define LS_SOCKET_UDP						0x00000200
 
 
 
@@ -90,7 +91,7 @@ extern "C" {
 	LSAPI ls_result_t ls_socket_accept(ls_socket_t *const restrict socket, ls_socket_t *const restrict out_client);
 
 	LSAPI ls_result_t ls_socket_write(ls_socket_t *const restrict socket, const void *const restrict data, const size_t length);
-	LSAPI ls_result_t ls_socket_read(ls_socket_t *const restrict socket, uint8_t *const restrict buffer, const size_t max_length);
+	LSAPI ls_result_t ls_socket_read(ls_socket_t *const restrict socket, void *const restrict buffer, const size_t max_length, size_t *const out_size);
 
 #ifdef __cplusplus
 }

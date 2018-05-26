@@ -38,6 +38,13 @@
 
 
 
+#ifndef SSIZE_MAX
+#	define SSIZE_MAX						(SIZE_MAX / 2)
+#endif
+
+
+
+
 typedef unsigned int ls_nword_t;
 
 typedef bool ls_bool_t;
