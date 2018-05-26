@@ -51,6 +51,8 @@ libserum/data/time.h
 libserum/io/ansi-ctrl.h
 libserum/io/log.c
 libserum/io/log.h
+libserum/io/socket.c
+libserum/io/socket.h
 libserum/runtime/concurrency/mutex.c
 libserum/runtime/concurrency/mutex.h
 libserum/runtime/concurrency/state.c
