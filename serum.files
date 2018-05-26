@@ -9,6 +9,7 @@ libserum/core/result.c
 libserum/core/result.h
 libserum/core/setup/bitops.h
 libserum/core/setup/bitops-inline.h
+libserum/core/setup/debug.h
 libserum/core/setup/features.h
 libserum/core/setup/fileid.h
 libserum/core/setup.h

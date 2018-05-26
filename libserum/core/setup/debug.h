@@ -26,47 +26,33 @@
 ******************************************************************************/
 
 
-#ifndef __LS_CORE_SETUP_H
-#define __LS_CORE_SETUP_H
+#ifndef __LS_CORE_SETUP_DEBUG_H
+#define __LS_CORE_SETUP_DEBUG_H
+#if (LS_EXPORTING && LS_DEBUG)
 
 
 
 
-#include <stdlib.h>
-#include <errno.h>
-
-#include "./setup/features.h"
-
-#include "./setup/types.h"
-#include "./setup/platform-setup.h"
+#include "../../io/log.h"
 
 
-#if (!LS_WINDOWS || LS_THREADING_PTHREADS)
-#	define LS_PTHREADS						1
-#elif (LS_WINDOWS)
-#	define LS_WTHREADS						1
+
+
+#define ls_debug(str)						ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u " str, __func__, __LINE__)
+#define ls_debugf(fmt, ...)					ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u " fmt, __func__, __LINE__, __VA_ARGS__)
+#define ls_debugfe(fmt, ...)				ls_log_write(NULL, LS_LOG_LEVEL_ERROR, "%s:%u " fmt, __func__, __LINE__, __VA_ARGS__)
+
+#define ls_error(err)						ls_log_write(NULL, LS_LOG_LEVEL_ERROR, "%s:%u [%u] %s", __func__, __LINE__, (err), ls_result_string((err)))
+#define return_e(err)						ls_error(err); return (err)
+
+
+
+
+#else
+#	define ls_debug(x)
+#	define ls_debugf(x, ...)
+#	define ls_debugfe(x, ...)
+#	define ls_error(x)
+#	define return_e(err)					return (err)
 #endif
-
-#ifndef LS_PTHREADS
-#	define LS_PTHREADS						0
-#endif
-
-#ifndef LS_WTHREADS
-#	define LS_WTHREADS						0
-#endif
-
-
-#include "./result.h"
-#include "./signatures.h"
-
-#if (LS_EXPORTING)
-#	include "./setup/debug.h"
-#	include "./setup/fileid.h"
-#	include "./setup/magic.h"
-#	include "./setup/bitops.h"
-#endif
-
-
-
-
 #endif
