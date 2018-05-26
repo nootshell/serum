@@ -309,6 +309,19 @@ static __socket_clear(ls_sockfd_t *const restrict descriptor, struct addrinfo **
 /* NON-STATIC */
 
 ls_result_t
+ls_socket_init_fd(ls_socket_t *const socket, const ls_sockfd_t descriptor) {
+	if (socket == NULL) {
+		return_e(LS_E_NULL);
+	}
+
+	__socket_clear_struct(socket);
+	socket->descriptor = descriptor;
+
+	return LS_E_SUCCESS;
+}
+
+
+ls_result_t
 ls_socket_init(ls_socket_t *const socket) {
 	if (socket == NULL) {
 		return_e(LS_E_NULL);
@@ -330,6 +343,79 @@ ls_socket_clear(ls_socket_t *const socket) {
 	} else {
 		return_e(result);
 	}
+}
+
+
+
+
+ls_result_t
+ls_socket_accept_fd_ex(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict out_descriptor, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen) {
+	if (socket == NULL || out_descriptor == NULL) {
+		return_e(LS_E_NULL);
+	}
+
+	if (socket->descriptor == LS_INVALID_SOCKFD) {
+		return_e(LS_E_UNINITIALIZED);
+	}
+
+	if (!LS_FLAG(socket->flags, LS_SOCKET_SERVER)) {
+		return_e(LS_E_INVALID);
+	}
+
+	if (!LS_FLAG(socket->flags, LS_SOCKET_READY)) {
+		return_e(LS_E_STATE);
+	}
+
+
+	ls_sockfd_t sockfd = accept(socket->descriptor, out_sockaddr, inout_sockaddrlen);
+	if (!__socket_validate_fd(&sockfd)) {
+		const int result = errno;
+		ls_debugfe("Failed to accept connection: %i", result);
+		return_e(LS_E_FAILURE);
+	}
+
+
+	*out_descriptor = sockfd;
+	return LS_E_SUCCESS;
+}
+
+ls_result_t
+ls_socket_accept_fd(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict out_descriptor) {
+	return ls_socket_accept_fd_ex(
+		socket,
+		out_descriptor,
+		NULL,
+		NULL
+	);
+}
+
+
+ls_result_t
+ls_socket_accept_ex(ls_socket_t *const restrict socket, ls_socket_t *const restrict out_client, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen) {
+	ls_sockfd_t sockfd;
+
+	ls_result_t result = ls_socket_accept_fd_ex(socket, &sockfd, out_sockaddr, inout_sockaddrlen);
+	if (result != LS_E_SUCCESS) {
+		return_e(result);
+	}
+
+	result = ls_socket_init_fd(out_client, sockfd);
+	if (result != LS_E_SUCCESS) {
+		ls_socket_clear(out_client);
+		return_e(result);
+	}
+
+	return LS_E_SUCCESS;
+}
+
+ls_result_t
+ls_socket_accept(ls_socket_t *const restrict socket, ls_socket_t *const restrict out_client) {
+	return ls_socket_accept_ex(
+		socket,
+		out_client,
+		NULL,
+		NULL
+	);
 }
 
 
