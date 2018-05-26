@@ -52,10 +52,12 @@ typedef int ls_sockfd_t;
 #define LS_INVALID_SOCKFD					~((ls_sockfd_t)0)
 
 
-#define LS_SOCKET_SERVER					0x00000001
+#define LS_SOCKET_READY						0x00000001
 
 #define LS_SOCKET_TCP						0x80000000
 #define LS_SOCKET_UDP						0x40000000
+
+#define LS_SOCKET_SERVER					0x00008000
 
 
 
@@ -75,13 +77,18 @@ typedef struct ls_socket {
 extern "C" {
 #endif
 
+	LSAPI ls_result_t ls_socket_init_fd(ls_socket_t *const socket, const ls_sockfd_t descriptor);
 	LSAPI ls_result_t ls_socket_init(ls_socket_t *const socket);
 	LSAPI ls_result_t ls_socket_clear(ls_socket_t *const socket);
 
 	LSAPI ls_result_t ls_socket_start_tcp(ls_socket_t *const restrict socket, const char *const restrict node, const char *const restrict service, const uint16_t port);
 	LSAPI ls_result_t ls_socket_stop(ls_socket_t *const socket);
 
+	LSAPI ls_result_t ls_socket_accept_fd_ex(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict out_descriptor, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen);
+	LSAPI ls_result_t ls_socket_accept_fd(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict out_descriptor);
+	LSAPI ls_result_t ls_socket_accept_ex(ls_socket_t *const restrict socket, ls_socket_t *const restrict out_client, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen);
 	LSAPI ls_result_t ls_socket_accept(ls_socket_t *const restrict socket, ls_socket_t *const restrict out_client);
+
 	LSAPI ls_result_t ls_socket_write(ls_socket_t *const restrict socket, const void *const restrict data, const size_t length);
 	LSAPI ls_result_t ls_socket_read(ls_socket_t *const restrict socket, uint8_t *const restrict buffer, const size_t max_length);
 
