@@ -301,6 +301,40 @@ static __socket_clear(ls_sockfd_t *const restrict descriptor, struct addrinfo **
 	return LS_E_SUCCESS;
 }
 
+
+ls_bool_t
+LS_ATTR_NONNULL
+static __socket_check_initialized(const ls_socket_t *const socket) {
+	if (socket->ai_root == NULL || socket->ai_selected == NULL) {
+		return false;
+	}
+
+	if (socket->descriptor == LS_INVALID_SOCKFD) {
+		return false;
+	}
+
+	if (!LS_FLAG(socket->flags, LS_SOCKET_INITIALIZED)) {
+		return false;
+	}
+
+	return true;
+}
+
+
+ls_bool_t
+LS_ATTR_NONNULL
+static __socket_check_active(const ls_socket_t *const socket, const ls_bool_t check_initialized) {
+	if (check_initialized && !__socket_check_initialized(socket)) {
+		return false;
+	}
+
+	if (!LS_FLAG(socket->flags, LS_SOCKET_READY)) {
+		return false;
+	}
+
+	return true;
+}
+
 /* END STATIC */
 
 
@@ -457,6 +491,98 @@ ls_socket_stop(ls_socket_t *const socket) {
 		&socket->ai_selected,
 		socket->flags
 	);
+}
+
+
+
+
+ls_result_t
+ls_socket_write(ls_socket_t *const restrict socket, const void *const restrict data, const size_t length) {
+	if (socket == NULL || data == NULL) {
+		return_e(LS_E_NULL);
+	}
+
+	if (length == 0) {
+		// TODO: ping?
+		return_e(LS_E_NOOP);
+	}
+
+	if (length > SSIZE_MAX) {
+		return_e(LS_E_SIZE);
+	}
+
+	if (!__socket_check_active(socket, true)) {
+		return_e(LS_E_STATE);
+	}
+
+
+	const size_t mtu = socket->mtu;
+	ssize_t result;
+	size_t sent = 0, msglen = 0;
+	do {
+		msglen = (length - sent);
+		if (mtu != 0 && msglen > mtu) {
+			msglen = mtu;
+		}
+
+		ls_debugf("Socket write: mtu=[%" PRIuPTR "] buff=[%" PRIXPTR "] len=[%" PRIuPTR "] offset=[%" PRIuPTR "] msglen=[%" PRIuPTR "]", mtu, data, length, sent, msglen);
+
+		result = send(socket->descriptor, (((char*)data) + sent), msglen, 0);
+		if (result < 0) {
+			// Error
+
+			ls_debugfe("Socket write failed: %" PRIiPTR " %i", result, errno);
+
+			// TODO: retry?
+			return_e(LS_E_FAILURE);
+		}
+#if (LS_DEBUG)
+		else if (result == 0) {
+			ls_debug("send() returned 0");
+		}
+#endif
+
+		sent += result;
+	} while (sent < length);
+
+
+	return LS_E_SUCCESS;
+}
+
+
+ls_result_t
+ls_socket_read(ls_socket_t *const restrict socket, void *const restrict buffer, const size_t max_length, size_t *const out_size) {
+	if (socket == NULL || buffer == NULL) {
+		return_e(LS_E_NULL);
+	}
+
+	if (max_length == 0) {
+		return_e(LS_E_SIZE);
+	}
+
+	if (!__socket_check_active(socket, true)) {
+		return_e(LS_E_STATE);
+	}
+
+
+	ssize_t received = recv(socket->descriptor, buffer, max_length, 0);
+	if (received < 0) {
+		// Error
+
+		if (out_size != NULL) {
+			*out_size = 0;
+		}
+
+		ls_debugfe("Socket read failed; %" PRIiPTR " %i", received, errno);
+		return_e(LS_E_FAILURE);
+	}
+
+	if (out_size != NULL) {
+		*out_size = (size_t)received;
+	}
+
+
+	return LS_E_SUCCESS;
 }
 
 /* END NON-STATIC */
