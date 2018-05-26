@@ -36,7 +36,7 @@ SUBPROJECTS = libserum test
 PROFILE = debug-cst
 
 CFLAGS_DEBUG = \
-	-g -DDEBUG=1
+	-g -DLS_DEBUG=1
 
 CFLAGS_DEBUG_CST = \
 	$(CFLAGS_DEBUG) -DLSCST_ENABLED=1
