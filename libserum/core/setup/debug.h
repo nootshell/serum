@@ -38,11 +38,13 @@
 
 
 
-#define ls_debug(str)						ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u " str, __func__, __LINE__)
-#define ls_debugf(fmt, ...)					ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u " fmt, __func__, __LINE__, __VA_ARGS__)
-#define ls_debugfe(fmt, ...)				ls_log_write(NULL, LS_LOG_LEVEL_ERROR, "%s:%u " fmt, __func__, __LINE__, __VA_ARGS__)
+#define LS_PRIPTR							PRIXPTR
 
-#define ls_error(err)						ls_log_write(NULL, LS_LOG_LEVEL_ERROR, "%s:%u [%u] %s", __func__, __LINE__, (err), ls_result_string((err)))
+#define ls_debug(str)						ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u\t" str, __func__, __LINE__)
+#define ls_debugf(fmt, ...)					ls_log_write(NULL, LS_LOG_LEVEL_DEBUG, "%s:%u\t" fmt, __func__, __LINE__, __VA_ARGS__)
+#define ls_debugfe(fmt, ...)				ls_log_write(NULL, LS_LOG_LEVEL_ERROR, "%s:%u\t" fmt, __func__, __LINE__, __VA_ARGS__)
+
+#define ls_error(err)						ls_log_write(NULL, LS_LOG_LEVEL_ERROR, "%s:%u\t[%u] %s", __func__, __LINE__, (err), ls_result_string((err)))
 #define return_e(err)						ls_error(err); return (err)
 
 

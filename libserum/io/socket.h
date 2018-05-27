@@ -60,6 +60,9 @@ typedef int ls_sockfd_t;
 #define LS_SOCKET_TCP						0x00000100
 #define LS_SOCKET_UDP						0x00000200
 
+#define LS_SOCKOPT_REUSEADDR				0x00010000
+#define LS_SOCKOPT_REUSEPORT				0x00020000
+
 
 
 

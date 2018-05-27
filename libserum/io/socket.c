@@ -35,6 +35,7 @@
 #endif
 
 #include <string.h>
+#include <stdio.h>
 
 
 
@@ -139,7 +140,7 @@ static __socket_close(const ls_sockfd_t fd) {
 
 
 ls_result_t
-static __socket_init(ls_sockfd_t *const restrict out_descriptor, struct addrinfo **const restrict ai_root, struct addrinfo **const restrict ai_selected, const char *const restrict node, const char *const restrict service, const uint16_t port, const uint32_t flags) {
+static __socket_init(ls_sockfd_t *const restrict out_descriptor, struct addrinfo **const restrict ai_root, struct addrinfo **const restrict ai_selected, const char *const restrict node, const char *restrict service, const uint16_t port, uint32_t *const restrict flags) {
 	if (out_descriptor == NULL || ai_root == NULL) {
 		return_e(LS_E_NULL);
 	}
@@ -154,9 +155,11 @@ static __socket_init(ls_sockfd_t *const restrict out_descriptor, struct addrinfo
 	}
 
 
-	const ls_bool_t
-		hard_set_port = (service == NULL),
-		want_serve = LS_FLAG(flags, LS_SOCKET_SERVER);
+	uint32_t __flags = ((flags != NULL) ? *flags : 0);
+
+
+	const ls_bool_t want_serve = LS_FLAG(__flags, LS_SOCKET_SERVER);
+	const uint32_t enabled = 1;
 
 
 	// TODO: base on configuration (flags)
@@ -165,9 +168,9 @@ static __socket_init(ls_sockfd_t *const restrict out_descriptor, struct addrinfo
 		ai_socktype = SOCK_STREAM,
 		ai_protocol = IPPROTO_TCP;
 
-	if (LS_FLAG(flags, LS_SOCKET_TCP)) {
+	if (LS_FLAG(__flags, LS_SOCKET_TCP)) {
 		// Default
-	} else if (LS_FLAG(flags, LS_SOCKET_UDP)) {
+	} else if (LS_FLAG(__flags, LS_SOCKET_UDP)) {
 		ai_socktype = SOCK_DGRAM;
 		ai_protocol = IPPROTO_UDP;
 	} else {
@@ -184,6 +187,17 @@ static __socket_init(ls_sockfd_t *const restrict out_descriptor, struct addrinfo
 	hints.ai_protocol = ai_protocol;
 
 
+	char svcbuf[6];
+	if (service == NULL) {
+		if (snprintf(svcbuf, sizeof(svcbuf), "%u", port) < 0) {
+			return_e(LS_E_CONVERSION);
+		}
+
+		service = svcbuf;
+		hints.ai_flags |= AI_NUMERICSERV;
+	}
+
+
 	struct addrinfo *root = NULL;
 	int result = getaddrinfo(node, service, &hints, &root);
 	if (result) {
@@ -198,58 +212,78 @@ static __socket_init(ls_sockfd_t *const restrict out_descriptor, struct addrinfo
 #endif
 
 	ls_sockfd_t sockfd = LS_INVALID_SOCKFD;
-	const uint16_t nbo_port = htons(port);
 
 
 	struct addrinfo *ai_ptr;
 	for (ai_ptr = root; ai_ptr != NULL; ai_ptr = ai_ptr->ai_next) {
-		if (hard_set_port) {
-			((struct sockaddr_in*)ai_ptr->ai_addr)->sin_port = nbo_port;
-		}
-
 #if (LS_DEBUG)
 		inet_ntop(ai_ptr->ai_family, ai_ptr->ai_addr, dbg_addr, ai_ptr->ai_addrlen);
+		ls_debugf("Trying address: host=[%s] %s=[%s]", dbg_addr, ((service == svcbuf) ? "port" : "serv"), service);
 #endif
 
 		sockfd = socket(ai_ptr->ai_family, ai_ptr->ai_socktype, ai_ptr->ai_protocol);
 		if (!__socket_validate_fd(&sockfd)) {
-			result = errno;
-			ls_debugfe("Failed to create socket: address=[%s] result=%i", dbg_addr, result);
+			ls_debugfe("Failed to create socket: errno=[%i]", errno);
 			continue;
 		}
 
 		result = 0;
 		if (want_serve) {
+			/* Set socket options before binding. */
+
+#ifdef SO_REUSEADDR
+			if (LS_FLAG(__flags, LS_SOCKOPT_REUSEADDR)) {
+				if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &enabled, sizeof(enabled)) != 0) {
+					ls_debugfe("Failed to set socket option: fd=[%i] opt=[%" PRIX32 "] errno=[%i]", sockfd, LS_SOCKOPT_REUSEADDR, errno);
+					__flags &= ~LS_SOCKOPT_REUSEADDR;
+				}
+			}
+#else
+			LS_COMPILER_LOG("LS_SOCKOPT_REUSEADDR unavailable");
+#endif
+
+#ifdef SO_REUSEPORT
+			if (LS_FLAG(__flags, LS_SOCKOPT_REUSEPORT)) {
+				if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEPORT, &enabled, sizeof(enabled)) != 0) {
+					ls_debugfe("Failed to set socket option: fd=[%i] opt=[%" PRIX32 "] errno=[%i]", sockfd, LS_SOCKOPT_REUSEPORT, errno);
+					__flags &= ~LS_SOCKOPT_REUSEPORT;
+				}
+			}
+#else
+			LS_COMPILER_LOG("LS_SOCKOPT_REUSEPORT unavailable");
+#endif
+
+			/* Bind, and listen. */
 			result = bind(sockfd, ai_ptr->ai_addr, ai_ptr->ai_addrlen);
 			if (result == 0) {
 				result = listen(sockfd, SOMAXCONN); // TODO: SOMAXCONN configurable
 				if (result == 0) {
 					// Success
-					ls_debugf("Started listening as server: address=[%s]", dbg_addr);
+					ls_debug("Started listening as server");
 					break;
 				} else {
-					ls_debugfe("Failed to listen: %i", result);
+					ls_debugfe("Failed to listen: result=[%i] errno=[%i]", result, errno);
 				}
 			} else {
-				ls_debugfe("Failed to bind: %i", result);
+				ls_debugfe("Failed to bind: result=[%i] errno=[%i]", result, errno);
 			}
 		} else {
 			result = connect(sockfd, ai_ptr->ai_addr, ai_ptr->ai_addrlen);
 			if (result == 0) {
 				// Success
-				ls_debugf("Connected as client: address=[%s]", dbg_addr);
+				ls_debug("Connected as client");
 				break;
 			} else {
-				ls_debugfe("Failed to connect: %i", result);
+				ls_debugfe("Failed to connect: result=[%i] errno=[%i]", result, errno);
 			}
 		}
 
 		result = __socket_close(sockfd);
 		if (result != 0) {
-			ls_debugfe("Failed to close socket: %i", result);
+			ls_debugfe("Failed to close socket: result=[%i] errno=[%i]", result, errno);
 		}
 
-		ls_debugfe("Failed to set up: address=[%s]", dbg_addr);
+		ls_debugfe("Failed to set up on address", 0);
 	}
 
 
@@ -259,8 +293,12 @@ static __socket_init(ls_sockfd_t *const restrict out_descriptor, struct addrinfo
 		*out_descriptor = sockfd;
 		*ai_root = root;
 
-		if (ai_selected) {
+		if (ai_selected != NULL) {
 			*ai_selected = ai_ptr;
+		}
+
+		if (flags != NULL) {
+			*flags = __flags;
 		}
 
 		return LS_E_SUCCESS;
@@ -284,7 +322,7 @@ static __socket_clear(ls_sockfd_t *const restrict descriptor, struct addrinfo **
 		if (result == 0) {
 			*descriptor = LS_INVALID_SOCKFD;
 		} else {
-			ls_debugfe("Failed to close socket: %i", result);
+			ls_debugfe("Failed to close socket: result=[%i] errno=[%i]", result, errno);
 		}
 	}
 
@@ -305,10 +343,6 @@ static __socket_clear(ls_sockfd_t *const restrict descriptor, struct addrinfo **
 ls_bool_t
 LS_ATTR_NONNULL
 static __socket_check_initialized(const ls_socket_t *const socket) {
-	if (socket->ai_root == NULL || socket->ai_selected == NULL) {
-		return false;
-	}
-
 	if (socket->descriptor == LS_INVALID_SOCKFD) {
 		return false;
 	}
@@ -325,10 +359,12 @@ ls_bool_t
 LS_ATTR_NONNULL
 static __socket_check_active(const ls_socket_t *const socket, const ls_bool_t check_initialized) {
 	if (check_initialized && !__socket_check_initialized(socket)) {
+		ls_debugfe("Socket not initialized: loc=[%" LS_PRIPTR "]", socket);
 		return false;
 	}
 
 	if (!LS_FLAG(socket->flags, LS_SOCKET_READY)) {
+		ls_debugfe("Socket not ready: loc=[%" LS_PRIPTR "]", socket);
 		return false;
 	}
 
@@ -403,8 +439,7 @@ ls_socket_accept_fd_ex(ls_socket_t *const restrict socket, ls_sockfd_t *const re
 
 	ls_sockfd_t sockfd = accept(socket->descriptor, out_sockaddr, inout_sockaddrlen);
 	if (!__socket_validate_fd(&sockfd)) {
-		const int result = errno;
-		ls_debugfe("Failed to accept connection: %i", result);
+		ls_debugfe("Failed to accept connection: errno=[%i]", errno);
 		return_e(LS_E_FAILURE);
 	}
 
@@ -439,6 +474,8 @@ ls_socket_accept_ex(ls_socket_t *const restrict socket, ls_socket_t *const restr
 		return result;
 	}
 
+	out_client->flags |= LS_SOCKET_READY;
+
 	return LS_E_SUCCESS;
 }
 
@@ -462,12 +499,14 @@ ls_socket_start_tcp(ls_socket_t *const restrict socket, const char *const restri
 	}
 
 
+	socket->flags = ((socket->flags & ~LS_SOCKET_FMASK_SOCKTYPE) | LS_SOCKET_TCP);
+
 	const ls_result_t result = __socket_init(
 		&socket->descriptor,
 		&socket->ai_root,
 		&socket->ai_selected,
 		node, service, port,
-		((socket->flags & ~LS_SOCKET_FMASK_SOCKTYPE) | LS_SOCKET_TCP)
+		&socket->flags
 	);
 
 	if (result == LS_E_SUCCESS) {
@@ -525,13 +564,13 @@ ls_socket_write(ls_socket_t *const restrict socket, const void *const restrict d
 			msglen = mtu;
 		}
 
-		ls_debugf("Socket write: mtu=[%" PRIuPTR "] buff=[%" PRIXPTR "] len=[%" PRIuPTR "] offset=[%" PRIuPTR "] msglen=[%" PRIuPTR "]", mtu, data, length, sent, msglen);
+		ls_debugf("Socket write: fd=[%i] buff=[%" PRIXPTR "] len=[%" PRIuPTR "] offset=[%" PRIuPTR "] msglen=[%" PRIuPTR "] mtu=[%" PRIuPTR "]", socket->descriptor, data, length, sent, msglen, mtu);
 
 		result = send(socket->descriptor, (((char*)data) + sent), msglen, 0);
 		if (result < 0) {
 			// Error
 
-			ls_debugfe("Socket write failed: %" PRIiPTR " %i", result, errno);
+			ls_debugfe("Socket write failed: result=[%" PRIiPTR "] errno=[%i]", result, errno);
 
 			// TODO: retry?
 			return_e(LS_E_FAILURE);
@@ -573,9 +612,11 @@ ls_socket_read(ls_socket_t *const restrict socket, void *const restrict buffer, 
 			*out_size = 0;
 		}
 
-		ls_debugfe("Socket read failed; %" PRIiPTR " %i", received, errno);
+		ls_debugfe("Socket read failed: fd=[%i] recv=[%" PRIiPTR "] errno=[%i]", socket->descriptor, received, errno);
 		return_e(LS_E_FAILURE);
 	}
+
+	ls_debugf("Socket read: fd=[%i] buff=[%" PRIXPTR "] mlen=[%" PRIuPTR "] msglen=[%" PRIuPTR "]", socket->descriptor, buffer, max_length, received);
 
 	if (out_size != NULL) {
 		*out_size = (size_t)received;
