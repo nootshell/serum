@@ -226,5 +226,5 @@ test: pre-test bin/test
 install: libserum
 	@echo $(strip $(ECHO_EOL))
 	@echo -n "> mv bin/libserum.so /usr/lib/libserum.so";
-	@mv bin/libserum.so /usr/lib/libserum.so;
+	@cp bin/libserum.so /usr/lib/libserum.so;
 	@echo " (done)";
