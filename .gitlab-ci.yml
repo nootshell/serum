@@ -25,4 +25,4 @@ test:
     GIT_STRATEGY: none
   script:
     - mv bin/libserum.so /usr/lib/libserum.so
-    - bin/test
+    - bin/test run-cst
