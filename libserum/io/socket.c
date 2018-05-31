@@ -524,12 +524,18 @@ ls_socket_stop(ls_socket_t *const socket) {
 	}
 
 
-	return __socket_clear(
+	const ls_result_t result = __socket_clear(
 		&socket->descriptor,
 		&socket->ai_root,
 		&socket->ai_selected,
 		socket->flags
 	);
+
+	if (result == LS_E_SUCCESS) {
+		socket->flags |= LS_SOCKET_CLOSED;
+	}
+
+	return result;
 }
 
 
@@ -614,6 +620,15 @@ ls_socket_read(ls_socket_t *const restrict socket, void *const restrict buffer, 
 
 		ls_debugfe("Socket read failed: fd=[%i] recv=[%" PRIiPTR "] errno=[%i]", socket->descriptor, received, errno);
 		return_e(LS_E_FAILURE);
+	} else if (received == 0) {
+		ls_debugfe("Socket closed: fd=[%i] errno=[%i]", socket->descriptor, errno);
+
+		ls_socket_stop(socket);
+
+		// Always specify LS_SOCKET_CLOSED on shutdown.
+		socket->flags |= LS_SOCKET_CLOSED;
+
+		return_e(LS_E_IO_CLOSE);
 	}
 
 	ls_debugf("Socket read: fd=[%i] buff=[%" PRIXPTR "] mlen=[%" PRIuPTR "] msglen=[%" PRIuPTR "]", socket->descriptor, buffer, max_length, received);
