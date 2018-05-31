@@ -64,7 +64,11 @@ main(int argc, char *argv[], char *env[]) {
 	}
 
 
-	ls_log_level_set(NULL, LS_LOG_LEVEL_DEFAULT);
+#if (LS_DEBUG)
+	ls_log_level_set(NULL, LS_LOG_LEVEL_DEBUG);
+#else
+	ls_log_level_set(NULL, LS_LOG_LEVEL_INFO);
+#endif
 
 
 	const struct {
