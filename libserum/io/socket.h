@@ -54,6 +54,7 @@ typedef int ls_sockfd_t;
 
 #define LS_SOCKET_INITIALIZED				0x00000001
 #define LS_SOCKET_READY						0x00000002
+#define LS_SOCKET_CLOSED					0x00000004
 
 #define LS_SOCKET_SERVER					0x00000008
 
