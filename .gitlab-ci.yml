@@ -11,8 +11,8 @@ build:
     CC: gcc
   script:
     - alpine-icy-info color
-    - make clean CFLAGS_EXTRA="-DLSCST_SALSA20_FULL=1" PROFILE="$PROFILE" CC="$CC" all install
-    - make clean PROFILE="$PROFILE" CC="$CC" bin/test
+    - make clean CFLAGS_EXTRA="-DLSCST_SALSA20_FULL=1" PROFILE="$PROFILE" CC="$CC" libserum install
+    - make clean PROFILE="$PROFILE" CC="$CC" test
     - mv /usr/lib/libserum.so bin/libserum.so
   artifacts:
     paths:
