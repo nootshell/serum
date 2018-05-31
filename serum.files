@@ -1,3 +1,5 @@
+test/siot/server.c
+test/siot/client.c
 COPYING.md
 libserum/collections/types.h
 libserum/collections/utilities.c

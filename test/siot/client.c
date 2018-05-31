@@ -28,83 +28,64 @@
 
 #undef LS_EXPORTING
 
-#include "../libserum/io/log.h"
+#include "../../libserum/io/log.h"
+#include "../../libserum/io/socket.h"
 
-#include "../libserum/crypto/__selftests/base.h"
-#include "../libserum/crypto/registry.h"
-
+#include <stdlib.h>
 #include <string.h>
 
 
 
 
-int __run_siot_server();
-int __run_siot_client();
-
-
 int
-__run_cst() {
-	lscst_set_logging(true);
-	const ls_result_t cst_result = lscst_launch();
+__run_siot_client() {
+	ls_socket_t sock;
 
-#if (LSCST_ENABLED)
-	return ((cst_result == LS_E_SUCCESS) ? 0 : 1);
-#else
-	return ((cst_result == LS_E_UNSUPPORTED) ? 0 : 1);
-#endif
-}
+	if (ls_socket_init(&sock) != LS_E_SUCCESS) {
+		ls_log_writeln(NULL, LS_LOG_LEVEL_ERROR, "Failed to initialize socket");
+		return 1;
+	}
 
-
-
-
-int
-main(int argc, char *argv[], char *env[]) {
-	if (argc < 2) {
+	if (ls_socket_start_tcp(&sock, "::1", NULL, 12345) != LS_E_SUCCESS) {
+		ls_log_writeln(NULL, LS_LOG_LEVEL_ERROR, "Failed to start socket");
 		return 1;
 	}
 
 
-	ls_log_level_set(NULL, LS_LOG_LEVEL_DEFAULT);
+	char msgbuf[256];
 
-
-	const struct {
-		char param[32];
-		int (*function)();
-	} __paramtable[] = {
-		{
-			.param = "run-cst",
-			.function = __run_cst
-		},
-		{
-			.param = "siot-server",
-			.function = __run_siot_server
-		},
-		{
-			.param = "siot-client",
-			.function = __run_siot_client
-		}
-	};
-	const size_t __paramtable_count = (sizeof(__paramtable) / sizeof(*__paramtable));
-
-
-	const size_t param_len = strlen(argv[1]);
-	typeof(*__paramtable) *ptmp;
-
-	size_t i;
-	for (i = __paramtable_count; i--;) {
-		ptmp = &__paramtable[i];
-
-		if (strlen(ptmp->param) != param_len) {
-			continue;
+	size_t size, sztotal, szcursor;
+	ls_bool_t running = true;
+	do {
+		if (fgets(msgbuf, sizeof(msgbuf), stdin) == NULL) {
+			abort();
 		}
 
-		if (memcmp(ptmp->param, argv[1], param_len) != 0) {
-			continue;
+		size = strlen(msgbuf);
+		if (ls_socket_write(&sock, msgbuf, size) != LS_E_SUCCESS) {
+			abort();
 		}
 
-		return ptmp->function();
-	}
+		sztotal = size;
+		szcursor = 0;
 
+		do {
+			const ls_result_t result = ls_socket_read(&sock, (msgbuf + szcursor), (sizeof(msgbuf) - szcursor), &size);
+			if (result != LS_E_SUCCESS) {
+				if (result == LS_E_IO_CLOSE) {
+					goto __jmp_ret;
+				} else {
+					abort();
+				}
+			}
 
-	return 2;
+			szcursor += size;
+		} while (szcursor < sztotal);
+
+		msgbuf[sztotal - LS_EOL_SIZE] = '\0';
+		puts(msgbuf);
+	} while (running);
+
+__jmp_ret:
+	return 0;
 }

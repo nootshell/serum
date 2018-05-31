@@ -29,4 +29,4 @@ before_script:
   - make clean PROFILE="$PROFILE" CC="$CC" test
 
 script:
-  - bin/test
+  - bin/test run-cst
