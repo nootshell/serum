@@ -58,10 +58,10 @@ static size_t __n_init_socks = 0;
 
 void
 LS_ATTR_NONNULL
-static __socket_clear_struct(ls_socket_t *const pstruct) {
+static __socket_clear_struct(ls_socket_t *const pstruct, const uint32_t flags) {
 	memset(pstruct, 0, sizeof(*pstruct));
 	pstruct->descriptor = LS_INVALID_SOCKFD;
-	pstruct->flags |= LS_SOCKET_INITIALIZED;
+	pstruct->flags = (flags | LS_SOCKET_INITIALIZED);
 }
 
 
@@ -256,7 +256,9 @@ static __socket_init(ls_sockfd_t *const restrict out_descriptor, struct addrinfo
 			/* Bind, and listen. */
 			result = bind(sockfd, ai_ptr->ai_addr, ai_ptr->ai_addrlen);
 			if (result == 0) {
-				result = listen(sockfd, SOMAXCONN); // TODO: SOMAXCONN configurable
+				if (ai_protocol != IPPROTO_UDP) {
+					result = listen(sockfd, SOMAXCONN); // TODO: SOMAXCONN configurable
+				}
 				if (result == 0) {
 					// Success
 					ls_debug("Started listening as server");
@@ -384,7 +386,7 @@ ls_socket_init_fd(ls_socket_t *const socket, const ls_sockfd_t descriptor) {
 		return_e(LS_E_NULL);
 	}
 
-	__socket_clear_struct(socket);
+	__socket_clear_struct(socket, 0);
 	socket->descriptor = descriptor;
 
 	return LS_E_SUCCESS;
@@ -392,12 +394,12 @@ ls_socket_init_fd(ls_socket_t *const socket, const ls_sockfd_t descriptor) {
 
 
 ls_result_t
-ls_socket_init(ls_socket_t *const socket) {
+ls_socket_init(ls_socket_t *const socket, const uint32_t flags) {
 	if (socket == NULL) {
 		return_e(LS_E_NULL);
 	}
 
-	__socket_clear_struct(socket);
+	__socket_clear_struct(socket, flags);
 
 	return LS_E_SUCCESS;
 }
@@ -408,7 +410,7 @@ ls_socket_clear(ls_socket_t *const socket) {
 	const ls_result_t result = ls_socket_stop(socket);
 
 	if (result == LS_E_SUCCESS || result == LS_E_ALREADY) {
-		__socket_clear_struct(socket);
+		__socket_clear_struct(socket, 0);
 		return LS_E_SUCCESS;
 	} else {
 		return result;
@@ -493,13 +495,11 @@ ls_socket_accept(ls_socket_t *const restrict socket, ls_socket_t *const restrict
 
 
 ls_result_t
-ls_socket_start_tcp(ls_socket_t *const restrict socket, const char *const restrict node, const char *const restrict service, const uint16_t port) {
+ls_socket_start(ls_socket_t *const restrict socket, const char *const restrict node, const char *const restrict service, const uint16_t port) {
 	if (socket == NULL) {
 		return_e(LS_E_NULL);
 	}
 
-
-	socket->flags = ((socket->flags & ~LS_SOCKET_FMASK_SOCKTYPE) | LS_SOCKET_TCP);
 
 	const ls_result_t result = __socket_init(
 		&socket->descriptor,
@@ -512,6 +512,7 @@ ls_socket_start_tcp(ls_socket_t *const restrict socket, const char *const restri
 	if (result == LS_E_SUCCESS) {
 		socket->flags |= LS_SOCKET_READY;
 	}
+
 
 	return result;
 }

@@ -41,12 +41,14 @@ int
 __run_siot_client() {
 	ls_socket_t sock;
 
-	if (ls_socket_init(&sock) != LS_E_SUCCESS) {
+	if (ls_socket_init(&sock, LS_SOCKET_TCP) != LS_E_SUCCESS) {
 		ls_log_writeln(NULL, LS_LOG_LEVEL_ERROR, "Failed to initialize socket");
 		return 1;
 	}
 
-	if (ls_socket_start_tcp(&sock, "::1", NULL, 12345) != LS_E_SUCCESS) {
+	sock.mtu = 4;
+
+	if (ls_socket_start(&sock, "::1", NULL, 12345) != LS_E_SUCCESS) {
 		ls_log_writeln(NULL, LS_LOG_LEVEL_ERROR, "Failed to start socket");
 		return 1;
 	}
