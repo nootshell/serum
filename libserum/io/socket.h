@@ -83,10 +83,10 @@ extern "C" {
 #endif
 
 	LSAPI ls_result_t ls_socket_init_fd(ls_socket_t *const socket, const ls_sockfd_t descriptor);
-	LSAPI ls_result_t ls_socket_init(ls_socket_t *const socket);
+	LSAPI ls_result_t ls_socket_init(ls_socket_t *const socket, const uint32_t flags);
 	LSAPI ls_result_t ls_socket_clear(ls_socket_t *const socket);
 
-	LSAPI ls_result_t ls_socket_start_tcp(ls_socket_t *const restrict socket, const char *const restrict node, const char *const restrict service, const uint16_t port);
+	LSAPI ls_result_t ls_socket_start(ls_socket_t *const restrict socket, const char *const restrict node, const char *const restrict service, const uint16_t port);
 	LSAPI ls_result_t ls_socket_stop(ls_socket_t *const socket);
 
 	LSAPI ls_result_t ls_socket_accept_fd_ex(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict out_descriptor, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen);

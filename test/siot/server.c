@@ -41,16 +41,12 @@ int
 __run_siot_server() {
 	ls_socket_t sock;
 
-	if (ls_socket_init(&sock) != LS_E_SUCCESS) {
+	if (ls_socket_init(&sock, (LS_SOCKET_TCP | LS_SOCKET_SERVER | LS_SOCKOPT_REUSEADDR | LS_SOCKOPT_REUSEPORT)) != LS_E_SUCCESS) {
 		ls_log_writeln(NULL, LS_LOG_LEVEL_ERROR, "Failed to initialize socket");
 		return 1;
 	}
 
-	// TODO: interface for config
-	sock.flags |= LS_SOCKET_SERVER;
-	sock.flags |= (LS_SOCKOPT_REUSEADDR | LS_SOCKOPT_REUSEPORT);
-
-	if (ls_socket_start_tcp(&sock, "::1", NULL, 12345) != LS_E_SUCCESS) {
+	if (ls_socket_start(&sock, "::1", NULL, 12345) != LS_E_SUCCESS) {
 		ls_log_writeln(NULL, LS_LOG_LEVEL_ERROR, "Failed to start socket");
 		return 1;
 	}
@@ -79,7 +75,7 @@ __run_siot_server() {
 		while (((result = ls_socket_read(&client, buffer, sizeof(buffer), &size)) == LS_E_SUCCESS) && size > 0) {
 			ls_log_writeln(NULL, LS_LOG_LEVEL_INFO, "Read %" PRIuPTR " bytes from client", size);
 
-			if (size > 4) {
+			if (size >= 4) {
 				if (strncmp("exit", buffer, 4) == 0) {
 					ls_log_writeln(NULL, LS_LOG_LEVEL_WARNING, "Exiting");
 					running = false;
