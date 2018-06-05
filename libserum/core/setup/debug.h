@@ -28,7 +28,7 @@
 
 #ifndef __LS_CORE_SETUP_DEBUG_H
 #define __LS_CORE_SETUP_DEBUG_H
-#if (LS_EXPORTING && LS_DEBUG)
+#if (LS_DEBUG)
 
 
 
