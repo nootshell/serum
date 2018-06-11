@@ -217,7 +217,7 @@ static __socket_init(ls_sockfd_t *const restrict out_descriptor, struct addrinfo
 	struct addrinfo *ai_ptr;
 	for (ai_ptr = root; ai_ptr != NULL; ai_ptr = ai_ptr->ai_next) {
 #if (LS_DEBUG)
-		inet_ntop(ai_ptr->ai_family, ai_ptr->ai_addr, dbg_addr, ai_ptr->ai_addrlen);
+		inet_ntop(ai_ptr->ai_family, &((const struct sockaddr_in *const)ai_ptr->ai_addr)->sin_addr, dbg_addr, ai_ptr->ai_addrlen);
 		ls_debugf("Trying address: host=[%s] %s=[%s]", dbg_addr, ((service == svcbuf) ? "port" : "serv"), service);
 #endif
 
