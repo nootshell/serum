@@ -53,6 +53,9 @@ extern "C" {
 
 	LSAPI uint64_t ls_rdtsc();
 
+	LSAPI void ls_sleep_nanos(const uint64_t nanos);
+	LSAPI void ls_sleep_millis(const uint32_t millis);
+
 #ifdef __cplusplus
 }
 #endif

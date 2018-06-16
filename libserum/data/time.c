@@ -189,3 +189,31 @@ ls_rdtsc() {
 	return tsc;
 #endif
 }
+
+
+
+
+void
+ls_sleep_nanos(const uint64_t nanos) {
+#if (LS_WINDOWS)
+#	error Pending implementation
+#else
+#	define NSEC_IN_SEC	1000000000
+	const uint64_t sec = (nanos / NSEC_IN_SEC);
+
+	struct timespec spec = {
+		.tv_sec = sec,
+		.tv_nsec = (nanos - (sec * NSEC_IN_SEC))
+	};
+
+	while (nanosleep(&spec, &spec) == -1) {
+		; /* NOP */
+	}
+#endif
+}
+
+
+void
+ls_sleep_millis(const uint32_t millis) {
+	ls_sleep_nanos(millis * 1000000);
+}
