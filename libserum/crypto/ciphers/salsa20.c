@@ -67,11 +67,11 @@ ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restr
 ls_result_t
 ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const size_t key_size) {
 	if (context == NULL || key == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (key_size != LS_SALSA20_256 && key_size != LS_SALSA20_128) {
-		return LS_E_SIZE;
+		return_e(LS_E_SIZE);
 	}
 
 
@@ -86,7 +86,7 @@ ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const rest
 		} else if (key_size == LS_SALSA20_128) {
 			constant = (const uint32_t *const)theta;
 		} else {
-			return LS_E_FAILURE;
+			return_e(LS_E_FAILURE);
 		}
 
 		context->layout.c1 = LS_ENSURE_LITTLE32(constant[0]);
@@ -108,11 +108,11 @@ ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const rest
 ls_result_t
 ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint8_t *const restrict nonce, const size_t nonce_size) {
 	if (context == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (nonce_size != 8) {
-		return LS_E_SIZE;
+		return_e(LS_E_SIZE);
 	}
 
 
@@ -129,11 +129,11 @@ ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint8_t *const re
 ls_result_t
 ls_salsa20_get_stream_block_ex(ls_salsa20_t *const restrict context, ls_salsa20_block_t block, const ls_nword_t rounds) {
 	if (context == NULL || block == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if ((rounds & 1) != 0) {
-		return LS_E_SIZE;
+		return_e(LS_E_SIZE);
 	}
 
 
@@ -191,7 +191,7 @@ ls_salsa20_get_stream_block_ex(ls_salsa20_t *const restrict context, ls_salsa20_
 
 	if (++context->words[8] == 0) {
 		if (++context->words[9] == 0) {
-			return LS_E_DEPLETED;
+			return_e(LS_E_DEPLETED);
 		}
 	}
 
@@ -211,7 +211,7 @@ ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, ls_salsa20_blo
 ls_result_t
 ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block) {
 	if (context == NULL || block == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 

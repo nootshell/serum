@@ -51,7 +51,7 @@ FILEID("Logging routines.");
 	GET_LOGPTR((logp));								\
 	if (!LS_MAGIC32_VALID((logp)->__flags)) {		\
 		if (!global) {								\
-			return LS_E_MAGIC;						\
+			return_e(LS_E_MAGIC);						\
 		}											\
 		post_magic;									\
 		const ls_result_t result = ls_log_init_ex(	\
@@ -79,13 +79,13 @@ static const char log_prefix[] = "[%04u-%02u-%02u %02u:%02u:%02u %u %05u %05u] "
 ls_result_t
 ls_log_init_ex(ls_log_t *restrict log, const uint32_t flags, const ls_log_level_t level, FILE *const restrict std_stream) {
 	if (std_stream == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	GET_LOGPTR(log);
 
 	if (LS_MAGIC32_VALID(log->__flags)) {
-		return LS_E_MAGIC;
+		return_e(LS_E_MAGIC);
 	}
 
 
@@ -95,7 +95,7 @@ ls_log_init_ex(ls_log_t *restrict log, const uint32_t flags, const ls_log_level_
 		// <lvl>: null-for-std/<stream>
 		FILE **const p = (FILE **const)calloc((LS_LOG_LEVEL_COUNT + 1), sizeof(std_stream));
 		if (p == NULL) {
-			return LS_E_MEMORY;
+			return_e(LS_E_MEMORY);
 		}
 
 		p[0] = std_stream;
@@ -123,7 +123,7 @@ ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams) {
 	GET_LOGPTR(log);
 
 	if (!LS_MAGIC32_VALID(log->__flags)) {
-		return LS_E_MAGIC;
+		return_e(LS_E_MAGIC);
 	}
 
 	const uint32_t flags = log->__flags;
@@ -155,7 +155,7 @@ ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams) {
 			free(log->__outf);
 			log->__outf = NULL;
 		} else {
-			return LS_E_IO_CLOSE;
+			return_e(LS_E_IO_CLOSE);
 		}
 	}
 
@@ -169,7 +169,7 @@ ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams) {
 ls_result_t
 ls_log_level_set(ls_log_t *log, const ls_log_level_t level) {
 	if (level < 0 || level > LS_LOG_LEVEL_COUNT) {
-		return LS_E_INVALID;
+		return_e(LS_E_INVALID);
 	}
 
 	// When appropriate, returns an error or initializes the global log.
@@ -185,7 +185,7 @@ ls_log_level_set(ls_log_t *log, const ls_log_level_t level) {
 ls_result_t
 ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream, const ls_bool_t close_stream) {
 	if (level < 0 || level > LS_LOG_LEVEL_COUNT) {
-		return LS_E_INVALID;
+		return_e(LS_E_INVALID);
 	}
 
 
@@ -204,7 +204,7 @@ ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *c
 
 		if (stream != stdin && stream != stdout && stream != stderr) {
 			if (fclose(stream) != 0) {
-				return LS_E_IO_CLOSE;
+				return_e(LS_E_IO_CLOSE);
 			}
 		}
 	}
@@ -221,7 +221,7 @@ ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *c
 ls_result_t
 ls_log_vwrite_ex(ls_log_t *restrict log, const ls_log_level_t level, const ls_bool_t eol, const char *const restrict format, va_list vl) {
 	if (format == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 
@@ -229,7 +229,7 @@ ls_log_vwrite_ex(ls_log_t *restrict log, const ls_log_level_t level, const ls_bo
 	GET_LOG(log,);
 
 	if (level > log->level) {
-		return LS_E_NOOP;
+		return_e(LS_E_NOOP);
 	}
 
 
@@ -261,7 +261,7 @@ ls_log_vwrite_ex(ls_log_t *restrict log, const ls_log_level_t level, const ls_bo
 	}
 
 	if (stream == NULL) {
-		return LS_E_IO_TARGET;
+		return_e(LS_E_IO_TARGET);
 	}
 
 
@@ -270,7 +270,7 @@ ls_log_vwrite_ex(ls_log_t *restrict log, const ls_log_level_t level, const ls_bo
 
 	struct tm tm = { 0 };
 	if (ls_localtime_now((struct tm *const)&tm) != LS_E_SUCCESS) {
-		return LS_E_FAILURE;
+		return_e(LS_E_FAILURE);
 	}
 
 

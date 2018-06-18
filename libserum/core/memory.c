@@ -46,15 +46,15 @@ static const char fmt_ansi[] = "\033[0;36m%0*"PRIXPTR"\033[0m: \033[0;37m";
 ls_result_t
 ls_memory_dump_ex(const void *const src, const size_t size, const ls_nword_t columns, const ls_nword_t columnsize, FILE *const dest, const ls_bool_t ansi) {
 	if (dest == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (columns < 1 || columnsize < 1) {
-		return LS_E_INVALID;
+		return_e(LS_E_INVALID);
 	}
 
 	if (size < 1) {
-		return LS_E_NOOP;
+		return_e(LS_E_NOOP);
 	}
 
 
@@ -101,17 +101,17 @@ ls_memory_dump_ex(const void *const src, const size_t size, const ls_nword_t col
 
 
 	if (ansi && fputs("\033[0m", dest) == EOF) {
-		return LS_E_IO_WRITE;
+		return_e(LS_E_IO_WRITE);
 	}
 
 	if (word != 0 || column != 0) {
 		if (fputs(LS_EOL, dest) == EOF) {
-			return LS_E_IO_WRITE;
+			return_e(LS_E_IO_WRITE);
 		}
 	}
 
 	if (fflush(dest) != 0) {
-		return LS_E_IO_FLUSH;
+		return_e(LS_E_IO_FLUSH);
 	}
 
 

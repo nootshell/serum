@@ -81,23 +81,23 @@ ls_result_t
 ls_thread_init_ex(ls_thread_t *const thread, const ls_thread_entry_t entrypoint, const uint32_t flags) {
 	if (thread == NULL || entrypoint == NULL) {
 		ls_debug("NULL encountered.");
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (LS_MAGIC32_VALID(thread->__flags)) {
-		return LS_E_MAGIC;
+		return_e(LS_E_MAGIC);
 	}
 
 	if (ls_mutex_init(&thread->__lock) != LS_E_SUCCESS) {
-		return LS_E_LOCK;
+		return_e(LS_E_LOCK);
 	}
 
 	if (ls_state_init(&thread->__state) != LS_E_SUCCESS) {
-		return LS_E_STATE;
+		return_e(LS_E_STATE);
 	}
 
 	if (ls_event_init(&thread->on_stopped) != LS_E_SUCCESS) {
-		return LS_E_FAILURE;
+		return_e(LS_E_FAILURE);
 	}
 
 	thread->entrypoint = entrypoint;
@@ -111,34 +111,34 @@ ls_result_t
 ls_thread_clear(ls_thread_t *const thread) {
 	if (thread == NULL) {
 		ls_debug("NULL encountered.");
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (!LS_MAGIC32_VALID(thread->__flags)) {
-		return LS_E_MAGIC;
+		return_e(LS_E_MAGIC);
 	}
 
 	if (ls_mutex_clear(&thread->__lock) != LS_E_SUCCESS) {
-		return LS_E_LOCK;
+		return_e(LS_E_LOCK);
 	}
 
 	if (ls_state_clear(&thread->__state) != LS_E_SUCCESS) {
-		return LS_E_STATE;
+		return_e(LS_E_STATE);
 	}
 
 	if (ls_event_clear(&thread->on_stopped) != LS_E_SUCCESS) {
-		return LS_E_FAILURE;
+		return_e(LS_E_FAILURE);
 	}
 
 #if (LS_PTHREADS)
 	/*if (pthread_destroy(&thread->__thread) != 0) {
-		return LS_E_FAILURE;
+		return_e(LS_E_FAILURE);
 	}*/
 #elif (LS_WTHREADS)
 #	error TODO
 #else
 	LS_COMPILER_LOG("Threading unsupported.");
-	return LS_E_UNSUPPORTED;
+	return_e(LS_E_UNSUPPORTED);
 #endif
 
 	thread->__flags = 0;
@@ -152,15 +152,15 @@ ls_result_t
 static __ls_thread_start_internal(ls_thread_t *const thread, const size_t stacksize) {
 	if (thread->entrypoint == NULL) {
 		ls_debug("NULL encountered.");
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (!LS_MAGIC32_VALID(thread->__flags)) {
-		return LS_E_MAGIC;
+		return_e(LS_E_MAGIC);
 	}
 
 	if (ls_state_set(&thread->__state, LS_THREAD_INITIALIZING) != LS_E_SUCCESS) {
-		return LS_E_STATE;
+		return_e(LS_E_STATE);
 	}
 
 #if (LS_PTHREADS)
@@ -169,23 +169,23 @@ static __ls_thread_start_internal(ls_thread_t *const thread, const size_t stacks
 
 	if (stacksize > 0) {
 		if (pthread_attr_init(&attr) != 0) {
-			return LS_E_FAILURE;
+			return_e(LS_E_FAILURE);
 		}
 
 		if (pthread_attr_setstacksize(&attr, stacksize) != 0) {
-			return LS_E_FAILURE;
+			return_e(LS_E_FAILURE);
 		}
 
 		p_attr = &attr;
 	}
 
 	if (pthread_create(&thread->__obj, p_attr, &__ls_thread_entry, thread) != 0) {
-		return LS_E_FAILURE;
+		return_e(LS_E_FAILURE);
 	}
 #elif (LS_WTHREADS)
 #	error TODO
 #else
-	return LS_E_UNSUPPORTED;
+	return_e(LS_E_UNSUPPORTED);
 #endif
 
 	return LS_E_SUCCESS;
@@ -198,7 +198,7 @@ ls_result_t
 ls_thread_start_ex(ls_thread_t *const thread, const size_t stacksize) {
 	if (thread == NULL) {
 		ls_debug("NULL encountered.");
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	LS_MUTEX_ACQUIRE_OR_ERROR(&thread->__lock);
@@ -215,7 +215,7 @@ ls_result_t
 ls_thread_start_ex_await(ls_thread_t *const thread, const size_t stacksize) {
 	if (thread == NULL) {
 		ls_debug("NULL encountered.");
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	LS_MUTEX_ACQUIRE_OR_ERROR(&thread->__lock);
@@ -250,24 +250,24 @@ ls_result_t
 ls_thread_stop(ls_thread_t *const thread) {
 	if (thread == NULL) {
 		ls_debug("NULL encountered.");
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (!LS_MAGIC32_VALID(thread->__flags)) {
-		return LS_E_MAGIC;
+		return_e(LS_E_MAGIC);
 	}
 
 	ls_nword_t state;
 	if (ls_state_get(&thread->__state, &state) != LS_E_SUCCESS) {
-		return LS_E_FAILURE;
+		return_e(LS_E_FAILURE);
 	}
 
 	if (state != LS_THREAD_RUNNING) {
-		return LS_E_STATE;
+		return_e(LS_E_STATE);
 	}
 
 	if (ls_state_set(&thread->__state, LS_THREAD_STOPPING) != LS_E_SUCCESS) {
-		return LS_E_FAILURE;
+		return_e(LS_E_FAILURE);
 	}
 
 	return LS_E_SUCCESS;
@@ -301,13 +301,13 @@ ls_thread_stop_await(ls_thread_t *const thread) {
 
 ls_result_t
 ls_thread_suspend(ls_thread_t *const thread) {
-	return LS_E_UNSUPPORTED;
+	return_e(LS_E_UNSUPPORTED);
 }
 
 
 ls_result_t
 ls_thread_resume(ls_thread_t *const thread) {
-	return LS_E_UNSUPPORTED;
+	return_e(LS_E_UNSUPPORTED);
 }
 
 

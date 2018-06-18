@@ -151,7 +151,7 @@ ls_result_t
 lscst_launch() {
 #if (LSCST_ENABLED)
 	if (__hash_registry_count == 0) {
-		return LS_E_NOOP;
+		return_e(LS_E_NOOP);
 	}
 
 
@@ -172,6 +172,6 @@ lscst_launch() {
 		ls_log_writeln(NULL, LS_LOG_LEVEL_ERROR, LS_ANSI_WRAP("Cryptographic selftests were not compiled into this version of the library.", LS_ANSI_FG_RED, LS_ANSI_OPT_ITALIC));
 	}
 
-	return LS_E_UNSUPPORTED;
+	return_e(LS_E_UNSUPPORTED);
 #endif
 }

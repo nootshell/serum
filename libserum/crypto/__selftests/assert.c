@@ -50,19 +50,19 @@ FILEID("Assertion functions for CSTs.");
 ls_result_t
 lscst_hash_assert(ls_hash_algo_t algorithm, const uint8_t *const restrict data, const size_t data_size, const size_t iterations, const uint8_t *const restrict digest, uint8_t *const restrict out_digest, const size_t digest_size) {
 	if (!LS_HASH_ALGORITHM_VALID(algorithm)) {
-		return LS_E_ALGORITHM;
+		return_e(LS_E_ALGORITHM);
 	}
 
 	if (data == NULL || digest == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (digest_size == 0) {
-		return LS_E_SIZE;
+		return_e(LS_E_SIZE);
 	}
 
 	if (iterations == 0) {
-		return LS_E_NOOP;
+		return_e(LS_E_NOOP);
 	}
 
 

@@ -43,11 +43,11 @@ FILEID("Luxury hash function wrapper.");
 ls_result_t
 ls_hash_init(ls_hash_t *const hash, ls_hash_algo_t algorithm) {
 	if (hash == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (!LS_HASH_ALGORITHM_VALID(algorithm)) {
-		return LS_E_ALGORITHM;
+		return_e(LS_E_ALGORITHM);
 	}
 
 
@@ -57,14 +57,14 @@ ls_hash_init(ls_hash_t *const hash, ls_hash_algo_t algorithm) {
 
 	ptr = malloc(reg_entry->ctx_size);
 	if (ptr == NULL) {
-		return LS_E_MEMORY;
+		return_e(LS_E_MEMORY);
 	}
 	hash->context = ptr;
 
 	ptr = malloc(reg_entry->block_size);
 	if (ptr == NULL) {
 		hash->context = ls_memory_free(hash->context);
-		return LS_E_MEMORY;
+		return_e(LS_E_MEMORY);
 	}
 	hash->buffer = ptr;
 
@@ -81,7 +81,7 @@ ls_hash_init(ls_hash_t *const hash, ls_hash_algo_t algorithm) {
 
 	if (hash->f_init(hash->context) != LS_E_SUCCESS) {
 		ls_hash_clear(hash);
-		return LS_E_INITIALIZATION;
+		return_e(LS_E_INITIALIZATION);
 	}
 
 
@@ -92,7 +92,7 @@ ls_hash_init(ls_hash_t *const hash, ls_hash_algo_t algorithm) {
 ls_result_t
 ls_hash_clear(ls_hash_t *const hash) {
 	if (hash == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (hash->context != NULL) {
@@ -114,11 +114,11 @@ ls_hash_clear(ls_hash_t *const hash) {
 ls_result_t
 ls_hash_reinit(ls_hash_t *const hash) {
 	if (hash == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (hash->f_clear != NULL && hash->f_clear(hash->context) != LS_E_SUCCESS) {
-		return LS_E_FAILURE;
+		return_e(LS_E_FAILURE);
 	}
 
 	return hash->f_init(hash->context);
@@ -130,11 +130,11 @@ ls_hash_reinit(ls_hash_t *const hash) {
 ls_result_t
 ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict data, const size_t size) {
 	if (hash == NULL || data == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (size == 0) {
-		return LS_E_NOOP;
+		return_e(LS_E_NOOP);
 	}
 
 
@@ -175,7 +175,7 @@ ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict dat
 		if (hash->f_update(context, cache) != LS_E_SUCCESS) {
 			// TODO: HCF
 			LS_STACK_FREE(cache);
-			return LS_E_FAILURE;
+			return_e(LS_E_FAILURE);
 		}
 		sz_remaining -= buffer_size;
 
@@ -204,7 +204,7 @@ ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict dat
 ls_result_t
 ls_hash_finish(ls_hash_t *const restrict hash, uint8_t *const restrict out_digest) {
 	if (hash == NULL || out_digest == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	return hash->f_finish(hash->context, hash->buffer, hash->buffer_index, out_digest);

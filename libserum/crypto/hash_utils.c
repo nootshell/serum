@@ -43,11 +43,11 @@ FILEID("Utilities for hash functions.");
 ls_result_t
 __ls_hash_finish_80_00_length64(void *const restrict context, lssig_hash_update f_update, const ls_message_length_t length, uint8_t *const restrict block_buffer, const size_t block_size, const void *const restrict input, const size_t input_size) {
 	if (context == NULL || f_update == NULL || block_buffer == NULL || (input_size > 0 && input == NULL)) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (block_size == 0) {
-		return LS_E_SIZE;
+		return_e(LS_E_SIZE);
 	}
 
 
@@ -73,7 +73,7 @@ __ls_hash_finish_80_00_length64(void *const restrict context, lssig_hash_update 
 		}
 
 		if (f_update(context, block_buffer) != LS_E_SUCCESS) {
-			return LS_E_FAILURE;
+			return_e(LS_E_FAILURE);
 		}
 
 		pad_size = 0;
@@ -89,7 +89,7 @@ __ls_hash_finish_80_00_length64(void *const restrict context, lssig_hash_update 
 	// final transform.
 	*((uint64_t*)(block_buffer + (block_size - 8))) = LS_ENSURE_LITTLE64(length);
 	if (f_update(context, block_buffer) != LS_E_SUCCESS) {
-		return LS_E_FAILURE;
+		return_e(LS_E_FAILURE);
 	}
 
 

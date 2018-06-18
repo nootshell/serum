@@ -40,7 +40,7 @@ ls_result_t
 ls_state_init_ex(ls_state_t *const state, const ls_nword_t value) {
 	if (state == NULL) {
 		ls_debug("NULL encountered.");
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	const ls_result_t result = ls_mutex_init(&state->__lock);
@@ -50,13 +50,13 @@ ls_state_init_ex(ls_state_t *const state, const ls_nword_t value) {
 
 #if (LS_PTHREADS)
 	if (pthread_cond_init(&state->__cond, NULL) != 0) {
-		return LS_E_FAILURE;
+		return_e(LS_E_FAILURE);
 	}
 #elif (LS_WTHREADS)
 #	error TODO
 #else
 	LS_COMPILER_LOG("State unsupported.");
-	return LS_E_UNSUPPORTED;
+	return_e(LS_E_UNSUPPORTED);
 #endif
 
 	state->value = value;
@@ -68,7 +68,7 @@ ls_result_t
 ls_state_clear(ls_state_t *const state) {
 	if (state == NULL) {
 		ls_debug("NULL encountered.");
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	const ls_result_t result = ls_mutex_clear(&state->__lock);
@@ -78,12 +78,12 @@ ls_state_clear(ls_state_t *const state) {
 
 #if (LS_PTHREADS)
 	if (pthread_cond_destroy(&state->__cond) != 0) {
-		return LS_E_FAILURE;
+		return_e(LS_E_FAILURE);
 	}
 #elif (LS_WTHREADS)
 #	error TODO
 #else
-	return LS_E_UNSUPPORTED;
+	return_e(LS_E_UNSUPPORTED);
 #endif
 
 	state->value = 0;
@@ -97,7 +97,7 @@ ls_result_t
 ls_state_set(ls_state_t *const state, const ls_nword_t value) {
 	if (state == NULL) {
 		ls_debug("NULL encountered.");
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	LS_MUTEX_ACQUIRE_OR_ERROR(&state->__lock);
@@ -112,7 +112,7 @@ ls_result_t
 ls_state_get(ls_state_t *const restrict state, ls_nword_t *const restrict out_value) {
 	if (state == NULL) {
 		ls_debug("NULL encountered.");
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	LS_MUTEX_ACQUIRE_OR_ERROR(&state->__lock);

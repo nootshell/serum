@@ -41,7 +41,7 @@ FILEID("RIPEMD-160 implementation.");
 ls_result_t
 ls_ripemd160_init(ls_ripemd160_t *const context) {
 	if (context == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	context->length = 0;
@@ -79,7 +79,7 @@ ls_ripemd160_init(ls_ripemd160_t *const context) {
 ls_result_t
 ls_ripemd160_update(ls_ripemd160_t *const context, const ls_ripemd160_block_t block) {
 	if (context == NULL || block == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 
@@ -315,11 +315,11 @@ ls_ripemd160_update(ls_ripemd160_t *const context, const ls_ripemd160_block_t bl
 ls_result_t
 ls_ripemd160_finish(ls_ripemd160_t *const restrict context, const uint8_t *const restrict input, const size_t input_size, ls_ripemd160_digest_t out_digest) {
 	if (context == NULL || (input_size > 0 && input == NULL) || out_digest == NULL) {
-		return LS_E_NULL;
+		return_e(LS_E_NULL);
 	}
 
 	if (input_size > LS_RIPEMD160_BLOCK_SIZE) {
-		return LS_E_SIZE;
+		return_e(LS_E_SIZE);
 	}
 
 	/* Pad the message, and perform the final transformation. */
