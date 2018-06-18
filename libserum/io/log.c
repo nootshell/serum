@@ -58,7 +58,7 @@ FILEID("Logging routines.");
 			(logp),									\
 			0,										\
 			LS_LOG_LEVEL_DEFAULT,					\
-			LS_LOG_STREAM_DEFAULT					\
+			stdout									\
 		);											\
 		if (result != LS_E_SUCCESS) {				\
 			return result;							\
@@ -241,7 +241,20 @@ ls_log_vwrite_ex(ls_log_t *restrict log, const ls_log_level_t level, const ls_bo
 		if (streams[level] != NULL) {
 			stream = streams[level];
 		} else {
-			stream = streams[0];
+			/* No stream for the specified level, check if any more severe levels
+			 * have a stream set. */
+			ls_log_level_t __level;
+			for (__level = level; __level++ < LS_LOG_LEVEL_COUNT;) {
+				if (streams[__level] != NULL) {
+					stream = streams[__level];
+					break;
+				}
+			}
+
+			/* If not, fall back to the default. */
+			if (stream == NULL) {
+				stream = streams[0];
+			}
 		}
 	} else {
 		stream = log->__outf;

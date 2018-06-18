@@ -45,10 +45,8 @@
 
 #if (LS_DEBUG)
 #	define LS_LOG_LEVEL_DEFAULT				LS_LOG_LEVEL_DEBUG
-#	define LS_LOG_STREAM_DEFAULT			stdout
 #else
 #	define LS_LOG_LEVEL_DEFAULT				LS_LOG_LEVEL_SEVERE
-#	define LS_LOG_STREAM_DEFAULT			stderr
 #endif
 
 #define LS_LOG_MULTI						0x0001
