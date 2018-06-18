@@ -1,0 +1,3 @@
+Hello World!
+This is some testing text, as input for the client.
+The cake is a lie.

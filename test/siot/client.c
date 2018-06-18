@@ -48,7 +48,7 @@ __run_siot_client() {
 
 	sock.mtu = 4;
 
-	if (ls_socket_start(&sock, "::1", NULL, 12345) != LS_E_SUCCESS) {
+	if (ls_socket_start(&sock, "127.0.0.1", NULL, 61127) != LS_E_SUCCESS) {
 		ls_log_writeln(NULL, LS_LOG_LEVEL_ERROR, "Failed to start socket");
 		return 1;
 	}

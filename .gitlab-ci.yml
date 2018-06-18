@@ -26,3 +26,4 @@ test:
   script:
     - mv bin/libserum.so /usr/lib/libserum.so
     - bin/test run-cst
+    - bash sbin/test-siot.sh
