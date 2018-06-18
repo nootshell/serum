@@ -60,7 +60,8 @@ __run_siot_client() {
 	ls_bool_t running = true;
 	do {
 		if (fgets(msgbuf, sizeof(msgbuf), stdin) == NULL) {
-			abort();
+			running = false;
+			break;
 		}
 
 		size = strlen(msgbuf);
