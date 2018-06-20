@@ -24,7 +24,7 @@ build:
 test:
   stage: test
   variables:
-  	GIT_STRATEGY: none
+    GIT_STRATEGY: none
   script:
     - mv bin/libserum.so /usr/lib/libserum.so
     - bin/test run-cst
