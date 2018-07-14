@@ -20,6 +20,7 @@ master/
 # Include these build files.
 !Doxyfile
 !Makefile
+!Makefile.*
 !Dockerfile
 
 # Include these project files.

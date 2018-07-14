@@ -1,0 +1,43 @@
+CFLAGS_EXTRA = \
+	-DGIT_BRANCH="\"$(GIT_BRANCH)\"" -DGIT_TAG="\"$(GIT_TAG)\"" \
+	-DKERNEL="\"$(KERNEL)\"" -DKERNEL_ARCH="\"$(KERNEL_ARCH)\"" \
+	-DLS_ANSI_SUPPORT=1
+
+CFLAGS_DEBUG = \
+	-g -DLS_DEBUG=1
+
+CFLAGS_DEBUG_CST = \
+	$(CFLAGS_DEBUG) -DLSCST_ENABLED=1
+
+CFLAGS_RELEASE = \
+	-Ofast
+
+CFLAGS_RELEASE_CST = \
+	$(CFLAGS_RELEASE) -DLSCST_ENABLED=1
+
+
+
+PROFILE = debug-cst
+
+
+
+
+bin/libserum.so: CFLAGS += -DLS_EXPORTING=1
+bin/libserum.so: $(call getfiles,libserum)
+	@echo -n "=> $@";
+	@mkdir -p $(@D);
+	@$(CC) -o $@ -shared $^ -lpthread
+	@echo " (done)";
+
+
+pre-libserum:
+	@echo $(strip $(ECHO_EOL))
+
+libserum: pre-libserum bin/libserum.so
+
+
+install: libserum
+	@echo $(strip $(ECHO_EOL))
+	@echo -n "> cp bin/libserum.so /usr/lib/libserum.so";
+	@cp bin/libserum.so /usr/lib/libserum.so;
+	@echo " (done)";
