@@ -1,4 +1,4 @@
-[submodule "master"]
-	path = master
+[submodule "submodules/master"]
+	path = submodules/master
 	url = ./
 	branch = master
