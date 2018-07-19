@@ -33,7 +33,7 @@ stages:
   script:
     - mv bin/$PROFILE/libserum.so /usr/lib/libserum.so
     - bin/$PROFILE/test run-cst
-    - sbin/test-siot.sh
+    - sbin/test-siot.sh "bin/$PROFILE/test"
 
 
 
