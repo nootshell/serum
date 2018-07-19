@@ -1,32 +1,97 @@
 image: icecubetray/alpine-icy:latest
 
+
 stages:
+  - prepare
   - build
   - test
 
-build:
+
+
+
+.build_template: &build_template
   stage: build
-  variables:
-    GIT_SUBMODULE_STRATEGY: recursive
-    PROFILE: debug-cst
-    CC: gcc
   script:
     - alpine-icy-info color
     - make clean CFLAGS_EXTRA="-DLSCST_SALSA20_FULL=1" PROFILE="$PROFILE" CC="$CC" libserum install
     - make clean PROFILE="$PROFILE" CC="$CC" test
-    - mv /usr/lib/libserum.so bin/libserum.so
+    - mkdir bin/$PROFILE
+    - mv /usr/lib/libserum.so bin/$PROFILE/libserum.so
+    - mv bin/test bin/$PROFILE/test
   artifacts:
     paths:
-      - bin/libserum.so
-      - bin/test
+      - bin/$PROFILE/libserum.so
+      - bin/$PROFILE/test
       - sbin/test-*.sh
       - test/siot/*.txt
 
-test:
+
+.test_template: &test_template
   stage: test
   variables:
     GIT_STRATEGY: none
   script:
-    - mv bin/libserum.so /usr/lib/libserum.so
-    - bin/test run-cst
+    - mv bin/$PROFILE/libserum.so /usr/lib/libserum.so
+    - bin/$PROFILE/test run-cst
     - sbin/test-siot.sh
+
+
+
+
+prepare:
+  stage: prepare
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  artifacts:
+    paths:
+      - submodules/make
+      - sbin/test-*.sh
+      - test/siot/*.txt
+  script:
+    - echo Preparing to build.
+
+
+build-debug:
+  <<: *build_template
+  variables:
+    PROFILE: debug
+    CC: gcc
+
+build-debug-cst:
+  <<: *build_template
+  variables:
+    PROFILE: debug-cst
+    CC: gcc
+
+build-release:
+  <<: *build_template
+  variables:
+    PROFILE: release
+    CC: gcc
+
+build-release-cst:
+  <<: *build_template
+  variables:
+    PROFILE: release-cst
+    CC: gcc
+
+
+test-debug:
+  <<: *test_template
+  variables:
+    PROFILE: debug
+
+test-debug-cst:
+  <<: *test_template
+  variables:
+    PROFILE: debug-cst
+
+test-release:
+  <<: *test_template
+  variables:
+    PROFILE: release
+
+test-release-cst:
+  <<: *test_template
+  variables:
+    PROFILE: release-cst
