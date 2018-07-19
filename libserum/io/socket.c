@@ -561,6 +561,7 @@ ls_socket_write(ls_socket_t *const restrict socket, const void *const restrict d
 	}
 
 
+	ls_nword_t retry_counter = 0;
 	const size_t mtu = socket->mtu;
 	ssize_t result;
 	size_t sent = 0, msglen = 0;
@@ -572,14 +573,21 @@ ls_socket_write(ls_socket_t *const restrict socket, const void *const restrict d
 
 		ls_debugf("Socket write: fd=[%i] buff=[%" PRIXPTR "] len=[%" PRIuPTR "] offset=[%" PRIuPTR "] msglen=[%" PRIuPTR "] mtu=[%" PRIuPTR "]", socket->descriptor, data, length, sent, msglen, mtu);
 
+		retry_counter = 0;
+__retry:
 		result = send(socket->descriptor, (((char*)data) + sent), msglen, 0);
 		if (result < 0) {
-			// Error
+			/* send() returns negative values on errors, we caught one. */
 
 			ls_debugfe("Socket write failed: result=[%" PRIiPTR "] errno=[%i]", result, errno);
 
-			// TODO: retry?
-			return_e(LS_E_FAILURE);
+			if (++retry_counter > LS_SOCKET_MAX_WRITE_RETRY) {
+				/* We retried more than or as many times as we permit retrying: don't bother retrying anymore, fail. */
+				return_e(LS_E_FAILURE);
+			} else {
+				/* We're retrying, jump to the send() call. */
+				goto __retry;
+			}
 		}
 #if (LS_DEBUG)
 		else if (result == 0) {

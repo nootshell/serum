@@ -49,7 +49,8 @@ typedef int ls_sockfd_t;
 
 
 
-#define LS_INVALID_SOCKFD					~((ls_sockfd_t)0)
+#define LS_INVALID_SOCKFD					~((ls_sockfd_t)0)					///< \brief Describes an invalid socket descriptor.
+#define LS_SOCKET_MAX_WRITE_RETRY			10
 
 
 #define LS_SOCKET_INITIALIZED				0x00000001
