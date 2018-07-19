@@ -106,6 +106,11 @@ ls_thread_init_ex(ls_thread_t *const thread, const ls_thread_entry_t entrypoint,
 	return LS_E_SUCCESS;
 }
 
+ls_result_t
+ls_thread_init(ls_thread_t *const thread, const ls_thread_entry_t entrypoint) {
+	return ls_thread_init_ex(thread, entrypoint, 0);
+}
+
 
 ls_result_t
 ls_thread_clear(ls_thread_t *const thread) {
@@ -210,6 +215,11 @@ ls_thread_start_ex(ls_thread_t *const thread, const size_t stacksize) {
 	return result;
 }
 
+ls_result_t
+ls_thread_start(ls_thread_t *const thread) {
+	return ls_thread_start_ex(thread, 0);
+}
+
 
 ls_result_t
 ls_thread_start_ex_await(ls_thread_t *const thread, const size_t stacksize) {
@@ -241,6 +251,11 @@ ls_thread_start_ex_await(ls_thread_t *const thread, const size_t stacksize) {
 	LS_MUTEX_RELEASE_OR_ERROR(&thread->__lock);
 
 	return ((state == LS_THREAD_RUNNING) ? LS_E_SUCCESS : LS_E_FAILURE);
+}
+
+ls_result_t
+ls_thread_start_await(ls_thread_t *const thread) {
+	return ls_thread_start_ex_await(thread, 0);
 }
 
 

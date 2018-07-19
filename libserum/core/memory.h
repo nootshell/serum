@@ -60,10 +60,7 @@ extern "C" {
 #endif
 
 	LSAPI ls_result_t ls_memory_dump_ex(const void *const src, const size_t size, const ls_nword_t columns, const ls_nword_t columnsize, FILE *const dest, const ls_bool_t ansi);
-
-	static ls_result_t inline ls_memory_dump(const void *const src, const size_t size) {
-		return ls_memory_dump_ex(src, size, 16, 1, stdout, true);
-	}
+	LSAPI ls_result_t ls_memory_dump(const void *const src, const size_t size);
 
 	LSAPI char* ls_memory_to_c_array(const void *const data, const size_t size);
 

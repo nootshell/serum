@@ -93,23 +93,17 @@ extern "C" {
 
 	LSAPI ls_result_t ls_thread_init_ex(ls_thread_t *const thread, const ls_thread_entry_t entrypoint, const uint32_t flags);
 
-	static ls_result_t inline ls_thread_init(ls_thread_t *const thread, const ls_thread_entry_t entrypoint) {
-		return ls_thread_init_ex(thread, entrypoint, 0);
-	}
+	LSAPI ls_result_t ls_thread_init(ls_thread_t *const thread, const ls_thread_entry_t entrypoint);
 
 	LSAPI ls_result_t ls_thread_clear(ls_thread_t *const thread);
 
 	LSAPI ls_result_t ls_thread_start_ex(ls_thread_t *const thread, const size_t stacksize);
 
-	static ls_result_t inline ls_thread_start(ls_thread_t *const thread) {
-		return ls_thread_start_ex(thread, 0);
-	}
+	LSAPI ls_result_t ls_thread_start(ls_thread_t *const thread);
 
 	LSAPI ls_result_t ls_thread_start_ex_await(ls_thread_t *const thread, const size_t stacksize);
 
-	static ls_result_t inline ls_thread_start_await(ls_thread_t *const thread) {
-		return ls_thread_start_ex_await(thread, 0);
-	}
+	LSAPI ls_result_t ls_thread_start_await(ls_thread_t *const thread);
 
 	LSAPI ls_result_t ls_thread_stop(ls_thread_t *const thread);
 

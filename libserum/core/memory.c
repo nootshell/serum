@@ -119,6 +119,12 @@ ls_memory_dump_ex(const void *const src, const size_t size, const ls_nword_t col
 }
 
 
+ls_result_t
+ls_memory_dump(const void *const src, const size_t size) {
+	return ls_memory_dump_ex(src, size, 16, 1, stdout, true);
+}
+
+
 
 
 char*

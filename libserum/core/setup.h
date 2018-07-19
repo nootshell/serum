@@ -35,10 +35,12 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#include "./setup/features.h"
-
 #include "./setup/types.h"
+#include "./result.h"
+
+#include "./setup/features.h"
 #include "./setup/platform-setup.h"
+#include "./setup/signatures.h"
 
 
 #if (!LS_WINDOWS || LS_THREADING_PTHREADS)
@@ -56,8 +58,6 @@
 #endif
 
 
-#include "./result.h"
-#include "./signatures.h"
 
 #if (LS_EXPORTING)
 #	include "./setup/debug.h"

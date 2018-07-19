@@ -45,8 +45,7 @@
 
 
 
-/* STATIC */
-
+/* Windows is a special cookie. */
 #if (LS_WINDOWS)
 static WSADATA __wsa_data;
 #endif

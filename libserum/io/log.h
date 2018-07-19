@@ -84,50 +84,23 @@ extern "C" {
 
 	LSAPI ls_result_t ls_log_init_ex(ls_log_t *restrict log, const uint32_t flags, const ls_log_level_t level, FILE *const restrict std_stream);
 
-	static ls_result_t inline ls_log_init(ls_log_t *log, const uint32_t flags, const ls_log_level_t level) {
-		return ls_log_init_ex(log, flags, level, stdout);
-	}
+	LSAPI ls_result_t ls_log_init(ls_log_t *log, const uint32_t flags, const ls_log_level_t level);
 
 	LSAPI ls_result_t ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams);
 
-	static ls_result_t inline ls_log_clear(ls_log_t *log) {
-		return ls_log_clear_ex(log, true);
-	}
+	LSAPI ls_result_t ls_log_clear(ls_log_t *log);
 
 	LSAPI ls_result_t ls_log_level_set(ls_log_t *log, const ls_log_level_t level);
 
 	LSAPI ls_result_t ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream, const ls_bool_t close_stream);
 
-	static ls_result_t inline ls_log_set_stream(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream) {
-		return ls_log_set_stream_ex(log, level, stream, true);
-	}
+	LSAPI ls_result_t ls_log_set_stream(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream);
 
 	LSAPI ls_result_t ls_log_vwrite_ex(ls_log_t *restrict log, const ls_log_level_t level, const ls_bool_t eol, const char *const restrict format, va_list vl);
 
-	static ls_result_t inline ls_log_writeln(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...) {
-		va_list vl;
-		va_start(vl, format);
+	LSAPI ls_result_t ls_log_writeln(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...);
 
-		const ls_result_t result = ls_log_vwrite_ex(log, level, true, format, vl);
-
-		va_end(vl);
-
-
-		return result;
-	}
-
-	static ls_result_t inline ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...) {
-		va_list vl;
-		va_start(vl, format);
-
-		//const ls_result_t result = ls_log_vwrite_ex(log, level, false, format, vl);
-		const ls_result_t result = ls_log_vwrite_ex(log, level, true, format, vl); // < REMOVE AFTER STAMP FIX
-
-		va_end(vl);
-
-
-		return result;
-	}
+	LSAPI ls_result_t ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...);
 
 #ifdef __cplusplus
 }

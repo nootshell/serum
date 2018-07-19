@@ -21,9 +21,9 @@ libserum/core/setup/macros.h
 libserum/core/setup/magic.h
 libserum/core/setup/platform-detection.h
 libserum/core/setup/platform-setup.h
+libserum/core/setup/signatures.h
 libserum/core/setup/special-treatment-for-windows.h
 libserum/core/setup/types.h
-libserum/core/signatures.h
 libserum/crypto/ciphers/salsa20.c
 libserum/crypto/ciphers/salsa20.h
 libserum/crypto/hash.c

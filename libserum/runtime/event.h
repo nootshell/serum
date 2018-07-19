@@ -62,9 +62,7 @@ extern "C" {
 
 	LSAPI ls_result_t ls_event_init_ex(ls_event_t *const event, const uint32_t flags, const size_t initial_capacity);
 
-	static ls_result_t inline ls_event_init(ls_event_t *const event) {
-		return ls_event_init_ex(event, 0, 0);
-	}
+	LSAPI ls_result_t ls_event_init(ls_event_t *const event);
 
 	LSAPI ls_result_t ls_event_clear(ls_event_t *const event);
 
@@ -74,9 +72,7 @@ extern "C" {
 
 	LSAPI ls_result_t ls_event_fire_ex(ls_event_t *const restrict event, void *const restrict data);
 
-	static ls_result_t inline ls_event_fire(ls_event_t *const event) {
-		return ls_event_fire_ex(event, NULL);
-	}
+	LSAPI ls_result_t ls_event_fire(ls_event_t *const event);
 
 #ifdef __cplusplus
 }

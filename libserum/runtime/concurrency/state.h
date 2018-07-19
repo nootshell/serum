@@ -70,9 +70,7 @@ extern "C" {
 
 	LSAPI ls_result_t ls_state_init_ex(ls_state_t *const state, const ls_nword_t value);
 
-	static ls_result_t inline ls_state_init(ls_state_t *const state) {
-		return ls_state_init_ex(state, 0);
-	}
+	LSAPI ls_result_t ls_state_init(ls_state_t *const state);
 
 	LSAPI ls_result_t ls_state_clear(ls_state_t *const state);
 

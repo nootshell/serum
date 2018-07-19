@@ -117,6 +117,11 @@ ls_log_init_ex(ls_log_t *restrict log, const uint32_t flags, const ls_log_level_
 	return LS_E_SUCCESS;
 }
 
+ls_result_t
+ls_log_init(ls_log_t *log, const uint32_t flags, const ls_log_level_t level) {
+	return ls_log_init_ex(log, flags, level, stdout);
+}
+
 
 ls_result_t
 ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams) {
@@ -161,6 +166,11 @@ ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams) {
 
 	log->__flags = 0;
 	return LS_E_SUCCESS;
+}
+
+ls_result_t
+ls_log_clear(ls_log_t *log) {
+	return ls_log_clear_ex(log, true);
 }
 
 
@@ -213,6 +223,11 @@ ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *c
 
 
 	return LS_E_SUCCESS;
+}
+
+ls_result_t
+ls_log_set_stream(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream) {
+	return ls_log_set_stream_ex(log, level, stream, true);
 }
 
 
@@ -330,5 +345,34 @@ __cleanup:
 	}
 
 	LS_STACK_FREE(prefix);
+	return result;
+}
+
+
+ls_result_t
+ls_log_writeln(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...) {
+	va_list vl;
+	va_start(vl, format);
+
+	const ls_result_t result = ls_log_vwrite_ex(log, level, true, format, vl);
+
+	va_end(vl);
+
+
+	return result;
+}
+
+
+ls_result_t
+ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...) {
+	va_list vl;
+	va_start(vl, format);
+
+	//const ls_result_t result = ls_log_vwrite_ex(log, level, false, format, vl);
+	const ls_result_t result = ls_log_vwrite_ex(log, level, true, format, vl); // < REMOVE AFTER STAMP FIX
+
+	va_end(vl);
+
+
 	return result;
 }

@@ -73,6 +73,11 @@ ls_event_init_ex(ls_event_t *const event, const uint32_t flags, const size_t ini
 	return LS_E_SUCCESS;
 }
 
+ls_result_t
+ls_event_init(ls_event_t *const event) {
+	return ls_event_init_ex(event, 0, 0);
+}
+
 
 ls_result_t
 ls_event_clear(ls_event_t *const event) {
@@ -199,4 +204,9 @@ ls_event_fire_ex(ls_event_t *const restrict event, void *const restrict data) {
 	LS_MUTEX_RELEASE_OR_ERROR(&event->__lock);
 
 	return LS_E_SUCCESS;
+}
+
+ls_result_t
+ls_event_fire(ls_event_t *const event) {
+	return ls_event_fire_ex(event, NULL);
 }

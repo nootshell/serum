@@ -32,7 +32,7 @@
 
 
 
-#include "./setup.h"
+#include "../setup.h"
 
 
 
