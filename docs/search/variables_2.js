@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['b',['b',['../de/d27/structls__isaac.html#a0097fbc67e2ae363187abc5839b9dcee',1,'ls_isaac']]],
-  ['basepoint',['basepoint',['../de/d12/structls__x25519.html#ac96475c5236bb2990b29e20085037b04',1,'ls_x25519']]],
-  ['block_5fsize',['block_size',['../dd/d75/structls__cbc.html#a50bfe567b56bed2638ad880937586e02',1,'ls_cbc']]],
-  ['buffer',['buffer',['../da/d55/structls__device.html#a4fe098634a5002c82b01268a04698aca',1,'ls_device']]],
-  ['buffer_5fsize',['buffer_size',['../da/d55/structls__device.html#a7b1b361e4dd5415700c1f964d5f98ec6',1,'ls_device']]]
+  ['block_5fsize',['block_size',['../d8/dd2/structlsreg__hash.html#a2c30c8a328382aaf3ac23f6e8ea7fce9',1,'lsreg_hash::block_size()'],['../d7/db3/structlsreg__cipher.html#abd6dc62a7a96b47181963304c5e76b67',1,'lsreg_cipher::block_size()']]],
+  ['buffer',['buffer',['../de/d9d/structls__hash.html#a85f6f2d2e2ffbf9693c40b80d2da9e11',1,'ls_hash']]],
+  ['buffer_5findex',['buffer_index',['../de/d9d/structls__hash.html#a6931839f61a9e6972b02d63c735db408',1,'ls_hash']]],
+  ['buffer_5fsize',['buffer_size',['../de/d9d/structls__hash.html#a9bca236cae64b0e3f652aed4220907a7',1,'ls_hash']]]
 ];

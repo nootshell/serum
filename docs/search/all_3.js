@@ -1,20 +1,13 @@
 var searchData=
 [
-  ['c',['c',['../de/d27/structls__isaac.html#a18fa00780e9b59b4be5e0f41a0d62f9f',1,'ls_isaac']]],
-  ['c1',['c1',['../d7/d50/structls__salsa20__layout.html#af26b89d001649903198c88bf71390d1d',1,'ls_salsa20_layout']]],
-  ['c2',['c2',['../d7/d50/structls__salsa20__layout.html#ad7142648837c34662bcb380404ec8ccb',1,'ls_salsa20_layout']]],
-  ['c3',['c3',['../d7/d50/structls__salsa20__layout.html#a33fbcf376f1dccec256e0415ab9e9fa7',1,'ls_salsa20_layout']]],
-  ['c4',['c4',['../d7/d50/structls__salsa20__layout.html#ad78477c68b3935e62529f8f258a45c5a',1,'ls_salsa20_layout']]],
-  ['cache',['cache',['../df/da4/structls__salsa20.html#a7cb877f3eba7cf02521d0c9ec3fb7d21',1,'ls_salsa20']]],
-  ['cache_5foffset',['cache_offset',['../df/da4/structls__salsa20.html#a7af557072e1a5aa03d714f94fd46ca0e',1,'ls_salsa20']]],
-  ['callback',['callback',['../d0/dd8/structls__packet__decoder.html#ae912d990c80745952bb9ca9e73df603a',1,'ls_packet_decoder']]],
-  ['cbc',['cbc',['../d2/d1a/structls__rijndael__cbc.html#afaee07270ff7d12019209171ab293063',1,'ls_rijndael_cbc']]],
-  ['cbc_2eh',['cbc.h',['../d0/d5e/cbc_8h.html',1,'']]],
-  ['code',['code',['../de/d21/structls__result.html#a4c92fb67758f5bfb55f2e9839b3d7f35',1,'ls_result']]],
-  ['command',['command',['../d7/d3b/structls__packet.html#a3d12d902c2183e0e5784ca69d049a65a',1,'ls_packet']]],
-  ['count',['count',['../de/d27/structls__isaac.html#a4c183137b461e3c230ccd1227b6ca6e5',1,'ls_isaac']]],
-  ['counter',['counter',['../d7/d50/structls__salsa20__layout.html#aa7e5a8abd35b08af4fcf97cddc35d142',1,'ls_salsa20_layout']]],
-  ['critical',['critical',['../de/d21/structls__result.html#a4bc8f9a27bfd6ca070fddd81435ea0f8',1,'ls_result']]],
-  ['curve25519_2eh',['curve25519.h',['../d6/d02/curve25519_8h.html',1,'']]],
-  ['cv',['cv',['../dd/d75/structls__cbc.html#a8ca12c24c0440baa588c026c368f5d5f',1,'ls_cbc']]]
+  ['c1',['c1',['../da/d36/unionls__salsa20.html#ae6725a29dee59765225a4f261cdb2e36',1,'ls_salsa20']]],
+  ['c2',['c2',['../da/d36/unionls__salsa20.html#a79ac570e657a5d1705b7b70319d019ef',1,'ls_salsa20']]],
+  ['c3',['c3',['../da/d36/unionls__salsa20.html#a9bfcec3c48d80999552447ae7f0378fd',1,'ls_salsa20']]],
+  ['c4',['c4',['../da/d36/unionls__salsa20.html#a9b262e43b18c221268cb3d05baeb1b38',1,'ls_salsa20']]],
+  ['const_5fpthreads',['CONST_PTHREADS',['../d0/df8/mutex_8h.html#a199d52a628848b949604c39bd5ef0601',1,'mutex.h']]],
+  ['const_5fwthreads',['CONST_WTHREADS',['../d0/df8/mutex_8h.html#a7ca80533c80cacacf3de487510998d70',1,'mutex.h']]],
+  ['context',['context',['../de/d9d/structls__hash.html#a3be4389a4ef21d7b18e5afae99853fef',1,'ls_hash']]],
+  ['context_5fsize',['context_size',['../de/d9d/structls__hash.html#af52b932fae5fbf4b010aa86107205161',1,'ls_hash']]],
+  ['counter',['counter',['../da/d36/unionls__salsa20.html#ad6f237e2e6deb02311d276d204874489',1,'ls_salsa20']]],
+  ['ctx_5fsize',['ctx_size',['../d8/dd2/structlsreg__hash.html#a0e5c355a750b355a5473be189cd8cf8a',1,'lsreg_hash::ctx_size()'],['../d7/db3/structlsreg__cipher.html#a3da7b651f86896683d8589e4b31e10a6',1,'lsreg_cipher::ctx_size()']]]
 ];

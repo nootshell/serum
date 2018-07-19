@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['layout',['layout',['../dc/d18/unionls__salsa20__data.html#aded0e624513c05a5869cb4ff6e8e243f',1,'ls_salsa20_data']]],
-  ['lo',['lo',['../d8/d5e/structls__md5.html#abd520e36b7388c6e4ffc6dcf6744895b',1,'ls_md5']]],
-  ['lock',['lock',['../d7/dc2/structls__mutex.html#a5d2560cadc807b753583cd4a0770758f',1,'ls_mutex']]]
+  ['name',['name',['../dd/d72/structlsreg__meta.html#ab1587ac82e6ef0a166116df3e39210be',1,'lsreg_meta']]],
+  ['nonce',['nonce',['../da/d36/unionls__salsa20.html#a15171e2654c10218514ba8f436901a8e',1,'ls_salsa20']]]
 ];

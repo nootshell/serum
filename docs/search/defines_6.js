@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['has_5fflag',['HAS_FLAG',['../df/db9/bits_8h.html#a109767416fe843afc88831b8190a2410',1,'bits.h']]]
+  ['win32_5flean_5fand_5fmean',['WIN32_LEAN_AND_MEAN',['../df/d5e/special-treatment-for-windows_8h.html#ac7bef5d85e3dcd73eef56ad39ffc84a9',1,'special-treatment-for-windows.h']]]
 ];

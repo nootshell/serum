@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Serum: master/libserum/core/logging/log.h File Reference</title>
+<title>Serum: submodules/master/libserum/io/log.h File Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('d7/d7f/log_8h.html','../../');});
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
@@ -95,222 +96,102 @@ $(document).ready(function(){initNavTree('d7/d7f/log_8h.html','../../');});
 <div class="title">log.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="../../de/d98/stdincl_8h_source.html">../stdincl.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="../../d7/dae/ansi_8h_source.html">./ansi.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="../../d4/d5d/detect__platform_8h_source.html">../detect_platform.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="../../d7/df7/setup_8h_source.html">../core/setup.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d0/df8/mutex_8h_source.html">../runtime/concurrency/mutex.h</a>&quot;</code><br />
+<code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;stdarg.h&gt;</code><br />
 <code>#include &lt;inttypes.h&gt;</code><br />
 </div>
 <p><a href="../../d7/d7f/log_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/df1/structls__log.html">ls_log</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a0691bbb961fe459207b77a05ec035a5e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a0691bbb961fe459207b77a05ec035a5e">LS_PRIPTR</a>&#160;&#160;&#160;&quot;08&quot; PRIXPTR</td></tr>
-<tr class="separator:a0691bbb961fe459207b77a05ec035a5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29b91cf0bc3f0e58afea9efb08daef80"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a29b91cf0bc3f0e58afea9efb08daef80">LS_FMT_U8_TO_BINARY</a>&#160;&#160;&#160;&quot;%c%c%c%c%c%c%c%c&quot;</td></tr>
-<tr class="separator:a29b91cf0bc3f0e58afea9efb08daef80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfbe4ccc734b7d657c652343836c2461"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#adfbe4ccc734b7d657c652343836c2461">LS_FMT_U8_TO_BINARY_ARGS</a>(v)&#160;&#160;&#160;(((v) &amp; 0x80) ? '1' : '0'), (((v) &amp; 0x40) ? '1' : '0'), (((v) &amp; 0x20) ? '1' : '0'), (((v) &amp; 0x10) ? '1' : '0'), (((v) &amp; 0x08) ? '1' : '0'), (((v) &amp; 0x04) ? '1' : '0'), (((v) &amp; 0x02) ? '1' : '0'), (((v) &amp; 0x01) ? '1' : '0')</td></tr>
-<tr class="separator:adfbe4ccc734b7d657c652343836c2461"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39b1e7978f7a660956d46a524666b977"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a39b1e7978f7a660956d46a524666b977">LS_FMT_U16_TO_BINARY</a>&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#a29b91cf0bc3f0e58afea9efb08daef80">LS_FMT_U8_TO_BINARY</a> &quot;&quot; LS_FMT_BINARY_SPACING &quot;&quot; <a class="el" href="../../d7/d7f/log_8h.html#a29b91cf0bc3f0e58afea9efb08daef80">LS_FMT_U8_TO_BINARY</a></td></tr>
-<tr class="separator:a39b1e7978f7a660956d46a524666b977"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9c2c376ea781b322b7b68c7aa2b4bbf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#ac9c2c376ea781b322b7b68c7aa2b4bbf">LS_FMT_U16_TO_BINARY_ARGS</a>(v)&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#adfbe4ccc734b7d657c652343836c2461">LS_FMT_U8_TO_BINARY_ARGS</a>(((v) &gt;&gt; 8)), <a class="el" href="../../d7/d7f/log_8h.html#adfbe4ccc734b7d657c652343836c2461">LS_FMT_U8_TO_BINARY_ARGS</a>((v))</td></tr>
-<tr class="separator:ac9c2c376ea781b322b7b68c7aa2b4bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8bea7e81fc214dae9fac438358aac03"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#ae8bea7e81fc214dae9fac438358aac03">LS_FMT_U32_TO_BINARY</a>&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#a39b1e7978f7a660956d46a524666b977">LS_FMT_U16_TO_BINARY</a> &quot;&quot; LS_FMT_BINARY_SPACING &quot;&quot; <a class="el" href="../../d7/d7f/log_8h.html#a39b1e7978f7a660956d46a524666b977">LS_FMT_U16_TO_BINARY</a></td></tr>
-<tr class="separator:ae8bea7e81fc214dae9fac438358aac03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2f8864c0ec30afa27546a972ad06393"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#ae2f8864c0ec30afa27546a972ad06393">LS_FMT_U32_TO_BINARY_ARGS</a>(v)&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#ac9c2c376ea781b322b7b68c7aa2b4bbf">LS_FMT_U16_TO_BINARY_ARGS</a>(((v) &gt;&gt; 16)), <a class="el" href="../../d7/d7f/log_8h.html#ac9c2c376ea781b322b7b68c7aa2b4bbf">LS_FMT_U16_TO_BINARY_ARGS</a>((v))</td></tr>
-<tr class="separator:ae2f8864c0ec30afa27546a972ad06393"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa474ab94b8264ceb2d5585c1c0ae409d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#aa474ab94b8264ceb2d5585c1c0ae409d">LS_FMT_U64_TO_BINARY</a>&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#ae8bea7e81fc214dae9fac438358aac03">LS_FMT_U32_TO_BINARY</a> &quot;&quot; LS_FMT_BINARY_SPACING &quot;&quot; <a class="el" href="../../d7/d7f/log_8h.html#ae8bea7e81fc214dae9fac438358aac03">LS_FMT_U32_TO_BINARY</a></td></tr>
-<tr class="separator:aa474ab94b8264ceb2d5585c1c0ae409d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5e1a50e519734c553e9b1932df395ce"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#ac5e1a50e519734c553e9b1932df395ce">LS_FMT_U64_TO_BINARY_ARGS</a>(v)&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#ae2f8864c0ec30afa27546a972ad06393">LS_FMT_U32_TO_BINARY_ARGS</a>(((v) &gt;&gt; 32)), <a class="el" href="../../d7/d7f/log_8h.html#ae2f8864c0ec30afa27546a972ad06393">LS_FMT_U32_TO_BINARY_ARGS</a>((v))</td></tr>
-<tr class="separator:ac5e1a50e519734c553e9b1932df395ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22b40a19ff14729cc130908b08b5c4df"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a22b40a19ff14729cc130908b08b5c4df">LS_LOG_LEVEL_DEFAULT</a>&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faa5b5e2774f8f6dec00191f43c1250c7c2">LS_LOG_LEVEL_SEVERE</a></td></tr>
+<tr class="separator:a22b40a19ff14729cc130908b08b5c4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af126f20181ada3fe8d48994ff0a371a5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#af126f20181ada3fe8d48994ff0a371a5">LS_LOG_MULTI</a>&#160;&#160;&#160;0x0001</td></tr>
+<tr class="separator:af126f20181ada3fe8d48994ff0a371a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a5f13afb06c38462ff8dd25fadd1a9b06"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51fa">ls_log_level</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a></td></tr>
 <tr class="separator:a5f13afb06c38462ff8dd25fadd1a9b06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89547f861d7076adbe6d61ef20836468"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="../../d7/df1/structls__log.html">ls_log</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a></td></tr>
+<tr class="separator:a89547f861d7076adbe6d61ef20836468"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a03db25acdbcd5b20d9d17486241e51fa"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51fa">ls_log_level</a> { <br />
-&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faa06c5e371b5d4fb8c1988febad88c987d">LS_LOG_SILENT</a> = 0, 
-<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faa6835facf117b8deb64926d8d8be643ac">LS_LOG_ERROR</a> = 1, 
-<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faac7470fdf2c70aadcb4065ddc6ffcea8b">LS_LOG_WARNING</a> = 2, 
-<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faa423d31c8a26597ea6eb60e55c9e51e89">LS_LOG_INFO</a> = 3, 
+&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faa64e46a87f434989d1c6cb30397f12d73">LS_LOG_LEVEL_UNKNOWN</a> = 0, 
+<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faa5b5e2774f8f6dec00191f43c1250c7c2">LS_LOG_LEVEL_SEVERE</a> = 1, 
+<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faac0d0eea0e7da3b83c2da0c8df23072bd">LS_LOG_LEVEL_ERROR</a> = 2, 
+<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faaa78836b4cf5cd80daa2234eda56877b3">LS_LOG_LEVEL_WARNING</a> = 3, 
 <br />
-&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faa67a498784ae00b590d1f2b7bc0ec33da">LS_LOG_VERBOSE</a> = 4, 
-<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faa9d0f1786eceba2d504e6fc17a2a38df7">LS_LOG_DEBUG</a> = 5
+&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faad6359e6f12cbabfbae97c7e44cfe4801">LS_LOG_LEVEL_INFO</a> = 4, 
+<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faa056f93d3b545bbf2cbc331d1249614f1">LS_LOG_LEVEL_VERBOSE</a> = 5, 
+<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faae9d2dd2c3211b0a654f60b68cc9424e2">LS_LOG_LEVEL_DEBUG</a> = 6, 
+<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faa8aa2ff2aaaa8765d091a6ff547556e72">LS_LOG_LEVEL_COUNT</a> = (LS_LOG_LEVEL_DEBUG)
 <br />
  }</td></tr>
 <tr class="separator:a03db25acdbcd5b20d9d17486241e51fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a909531659cce8ee6f56fc9bca7f13619"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a909531659cce8ee6f56fc9bca7f13619">ls_log</a> (<a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a> level, const char *fmt,...)</td></tr>
-<tr class="separator:a909531659cce8ee6f56fc9bca7f13619"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab592cbbb0b722933997a040ce813738"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#aab592cbbb0b722933997a040ce813738">ls_log_set_level</a> (<a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a> level)</td></tr>
-<tr class="separator:aab592cbbb0b722933997a040ce813738"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a650c2f68b3b22034fb169b7f9bc91641"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a650c2f68b3b22034fb169b7f9bc91641">ls_log_get_level</a> ()</td></tr>
-<tr class="separator:a650c2f68b3b22034fb169b7f9bc91641"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1277975f7c4764a4a9a244afd4c2ff14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d77/bool_8h.html#a9985bd22e16f85dbf0eef96673d85dc9">ls_bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a1277975f7c4764a4a9a244afd4c2ff14">ls_can_log</a> (<a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a> level)</td></tr>
-<tr class="separator:a1277975f7c4764a4a9a244afd4c2ff14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f541dcf808d011baa002f79af8a36c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a2f541dcf808d011baa002f79af8a36c2">ls_log_init_ex</a> (<a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *restrict log, const uint32_t flags, const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a> level, FILE *const restrict std_stream)</td></tr>
+<tr class="separator:a2f541dcf808d011baa002f79af8a36c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a6a0e5ee701db4fb1e9912cf94d8726"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a5a6a0e5ee701db4fb1e9912cf94d8726">ls_log_init</a> (<a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *log, const uint32_t flags, const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a> level)</td></tr>
+<tr class="separator:a5a6a0e5ee701db4fb1e9912cf94d8726"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad76fe1b3988be0001e3b5fbe82383db0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#ad76fe1b3988be0001e3b5fbe82383db0">ls_log_clear_ex</a> (<a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *log, const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#ae5044b3a324ed15fd2eec225cf945da5">ls_bool_t</a> close_streams)</td></tr>
+<tr class="separator:ad76fe1b3988be0001e3b5fbe82383db0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6808ea3ebeccbda4c9e36bc10488a25c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a6808ea3ebeccbda4c9e36bc10488a25c">ls_log_clear</a> (<a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *log)</td></tr>
+<tr class="separator:a6808ea3ebeccbda4c9e36bc10488a25c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abea3d20e5ef108ec8bf47807debb082e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#abea3d20e5ef108ec8bf47807debb082e">ls_log_level_set</a> (<a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *log, const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a> level)</td></tr>
+<tr class="separator:abea3d20e5ef108ec8bf47807debb082e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af685e1a9946b3a5342b921d05cad5b86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#af685e1a9946b3a5342b921d05cad5b86">ls_log_set_stream_ex</a> (<a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *restrict log, const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a> level, FILE *const restrict stream, const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#ae5044b3a324ed15fd2eec225cf945da5">ls_bool_t</a> close_stream)</td></tr>
+<tr class="separator:af685e1a9946b3a5342b921d05cad5b86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4d3947908d5138ffc035da23eb5ddf8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#ac4d3947908d5138ffc035da23eb5ddf8">ls_log_set_stream</a> (<a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *restrict log, const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a> level, FILE *const restrict stream)</td></tr>
+<tr class="separator:ac4d3947908d5138ffc035da23eb5ddf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28599f7a83045119d85981bec6a2f8e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a28599f7a83045119d85981bec6a2f8e0">ls_log_vwrite_ex</a> (<a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *restrict log, const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a> level, const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#ae5044b3a324ed15fd2eec225cf945da5">ls_bool_t</a> eol, const char *const restrict format, va_list vl)</td></tr>
+<tr class="separator:a28599f7a83045119d85981bec6a2f8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a175723fa1eee0b642670ba1ff8cddbd6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a175723fa1eee0b642670ba1ff8cddbd6">ls_log_writeln</a> (<a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *restrict log, const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a> level, const char *const restrict format,...)</td></tr>
+<tr class="separator:a175723fa1eee0b642670ba1ff8cddbd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43462c35e2e5e8559be028cd92cb9966"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/log_8h.html#a43462c35e2e5e8559be028cd92cb9966">ls_log_write</a> (<a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *restrict log, const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a> level, const char *const restrict format,...)</td></tr>
+<tr class="separator:a43462c35e2e5e8559be028cd92cb9966"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a0691bbb961fe459207b77a05ec035a5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0691bbb961fe459207b77a05ec035a5e">&#9670;&nbsp;</a></span>LS_PRIPTR</h2>
+<a id="a22b40a19ff14729cc130908b08b5c4df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22b40a19ff14729cc130908b08b5c4df">&#9670;&nbsp;</a></span>LS_LOG_LEVEL_DEFAULT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_PRIPTR&#160;&#160;&#160;&quot;08&quot; PRIXPTR</td>
+          <td class="memname">#define LS_LOG_LEVEL_DEFAULT&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51faa5b5e2774f8f6dec00191f43c1250c7c2">LS_LOG_LEVEL_SEVERE</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00044">44</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00049">49</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
 
 </div>
 </div>
-<a id="a29b91cf0bc3f0e58afea9efb08daef80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29b91cf0bc3f0e58afea9efb08daef80">&#9670;&nbsp;</a></span>LS_FMT_U8_TO_BINARY</h2>
+<a id="af126f20181ada3fe8d48994ff0a371a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af126f20181ada3fe8d48994ff0a371a5">&#9670;&nbsp;</a></span>LS_LOG_MULTI</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_FMT_U8_TO_BINARY&#160;&#160;&#160;&quot;%c%c%c%c%c%c%c%c&quot;</td>
+          <td class="memname">#define LS_LOG_MULTI&#160;&#160;&#160;0x0001</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00054">54</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
-
-</div>
-</div>
-<a id="adfbe4ccc734b7d657c652343836c2461"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adfbe4ccc734b7d657c652343836c2461">&#9670;&nbsp;</a></span>LS_FMT_U8_TO_BINARY_ARGS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define LS_FMT_U8_TO_BINARY_ARGS</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">v</td><td>)</td>
-          <td>&#160;&#160;&#160;(((v) &amp; 0x80) ? '1' : '0'), (((v) &amp; 0x40) ? '1' : '0'), (((v) &amp; 0x20) ? '1' : '0'), (((v) &amp; 0x10) ? '1' : '0'), (((v) &amp; 0x08) ? '1' : '0'), (((v) &amp; 0x04) ? '1' : '0'), (((v) &amp; 0x02) ? '1' : '0'), (((v) &amp; 0x01) ? '1' : '0')</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00055">55</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
-
-</div>
-</div>
-<a id="a39b1e7978f7a660956d46a524666b977"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39b1e7978f7a660956d46a524666b977">&#9670;&nbsp;</a></span>LS_FMT_U16_TO_BINARY</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define LS_FMT_U16_TO_BINARY&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#a29b91cf0bc3f0e58afea9efb08daef80">LS_FMT_U8_TO_BINARY</a> &quot;&quot; LS_FMT_BINARY_SPACING &quot;&quot; <a class="el" href="../../d7/d7f/log_8h.html#a29b91cf0bc3f0e58afea9efb08daef80">LS_FMT_U8_TO_BINARY</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00056">56</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
-
-</div>
-</div>
-<a id="ac9c2c376ea781b322b7b68c7aa2b4bbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9c2c376ea781b322b7b68c7aa2b4bbf">&#9670;&nbsp;</a></span>LS_FMT_U16_TO_BINARY_ARGS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define LS_FMT_U16_TO_BINARY_ARGS</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">v</td><td>)</td>
-          <td>&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#adfbe4ccc734b7d657c652343836c2461">LS_FMT_U8_TO_BINARY_ARGS</a>(((v) &gt;&gt; 8)), <a class="el" href="../../d7/d7f/log_8h.html#adfbe4ccc734b7d657c652343836c2461">LS_FMT_U8_TO_BINARY_ARGS</a>((v))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00057">57</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
-
-</div>
-</div>
-<a id="ae8bea7e81fc214dae9fac438358aac03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8bea7e81fc214dae9fac438358aac03">&#9670;&nbsp;</a></span>LS_FMT_U32_TO_BINARY</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define LS_FMT_U32_TO_BINARY&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#a39b1e7978f7a660956d46a524666b977">LS_FMT_U16_TO_BINARY</a> &quot;&quot; LS_FMT_BINARY_SPACING &quot;&quot; <a class="el" href="../../d7/d7f/log_8h.html#a39b1e7978f7a660956d46a524666b977">LS_FMT_U16_TO_BINARY</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00058">58</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
-
-</div>
-</div>
-<a id="ae2f8864c0ec30afa27546a972ad06393"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2f8864c0ec30afa27546a972ad06393">&#9670;&nbsp;</a></span>LS_FMT_U32_TO_BINARY_ARGS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define LS_FMT_U32_TO_BINARY_ARGS</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">v</td><td>)</td>
-          <td>&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#ac9c2c376ea781b322b7b68c7aa2b4bbf">LS_FMT_U16_TO_BINARY_ARGS</a>(((v) &gt;&gt; 16)), <a class="el" href="../../d7/d7f/log_8h.html#ac9c2c376ea781b322b7b68c7aa2b4bbf">LS_FMT_U16_TO_BINARY_ARGS</a>((v))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00059">59</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
-
-</div>
-</div>
-<a id="aa474ab94b8264ceb2d5585c1c0ae409d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa474ab94b8264ceb2d5585c1c0ae409d">&#9670;&nbsp;</a></span>LS_FMT_U64_TO_BINARY</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define LS_FMT_U64_TO_BINARY&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#ae8bea7e81fc214dae9fac438358aac03">LS_FMT_U32_TO_BINARY</a> &quot;&quot; LS_FMT_BINARY_SPACING &quot;&quot; <a class="el" href="../../d7/d7f/log_8h.html#ae8bea7e81fc214dae9fac438358aac03">LS_FMT_U32_TO_BINARY</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00060">60</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
-
-</div>
-</div>
-<a id="ac5e1a50e519734c553e9b1932df395ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5e1a50e519734c553e9b1932df395ce">&#9670;&nbsp;</a></span>LS_FMT_U64_TO_BINARY_ARGS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define LS_FMT_U64_TO_BINARY_ARGS</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">v</td><td>)</td>
-          <td>&#160;&#160;&#160;<a class="el" href="../../d7/d7f/log_8h.html#ae2f8864c0ec30afa27546a972ad06393">LS_FMT_U32_TO_BINARY_ARGS</a>(((v) &gt;&gt; 32)), <a class="el" href="../../d7/d7f/log_8h.html#ae2f8864c0ec30afa27546a972ad06393">LS_FMT_U32_TO_BINARY_ARGS</a>((v))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00061">61</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00052">52</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
 
 </div>
 </div>
@@ -323,6 +204,20 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">typedef enum <a class="el" href="../../d7/d7f/log_8h.html#a03db25acdbcd5b20d9d17486241e51fa">ls_log_level</a>  <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a89547f861d7076adbe6d61ef20836468"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89547f861d7076adbe6d61ef20836468">&#9670;&nbsp;</a></span>ls_log_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="../../d7/df1/structls__log.html">ls_log</a>  <a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -342,36 +237,312 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faa06c5e371b5d4fb8c1988febad88c987d"></a>LS_LOG_SILENT&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faa6835facf117b8deb64926d8d8be643ac"></a>LS_LOG_ERROR&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faac7470fdf2c70aadcb4065ddc6ffcea8b"></a>LS_LOG_WARNING&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faa423d31c8a26597ea6eb60e55c9e51e89"></a>LS_LOG_INFO&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faa67a498784ae00b590d1f2b7bc0ec33da"></a>LS_LOG_VERBOSE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faa9d0f1786eceba2d504e6fc17a2a38df7"></a>LS_LOG_DEBUG&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faa64e46a87f434989d1c6cb30397f12d73"></a>LS_LOG_LEVEL_UNKNOWN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faa5b5e2774f8f6dec00191f43c1250c7c2"></a>LS_LOG_LEVEL_SEVERE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faac0d0eea0e7da3b83c2da0c8df23072bd"></a>LS_LOG_LEVEL_ERROR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faaa78836b4cf5cd80daa2234eda56877b3"></a>LS_LOG_LEVEL_WARNING&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faad6359e6f12cbabfbae97c7e44cfe4801"></a>LS_LOG_LEVEL_INFO&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faa056f93d3b545bbf2cbc331d1249614f1"></a>LS_LOG_LEVEL_VERBOSE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faae9d2dd2c3211b0a654f60b68cc9424e2"></a>LS_LOG_LEVEL_DEBUG&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a03db25acdbcd5b20d9d17486241e51faa8aa2ff2aaaa8765d091a6ff547556e72"></a>LS_LOG_LEVEL_COUNT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00064">64</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d7f/log_8h_source.html#l00057">57</a> of file <a class="el" href="../../d7/d7f/log_8h_source.html">log.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a909531659cce8ee6f56fc9bca7f13619"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a909531659cce8ee6f56fc9bca7f13619">&#9670;&nbsp;</a></span>ls_log()</h2>
+<a id="a2f541dcf808d011baa002f79af8a36c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f541dcf808d011baa002f79af8a36c2">&#9670;&nbsp;</a></span>ls_log_init_ex()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ls_log </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_log_init_ex </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *restrict&#160;</td>
+          <td class="paramname"><em>log</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>flags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a>&#160;</td>
           <td class="paramname"><em>level</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>fmt</em>, </td>
+          <td class="paramtype">FILE *const restrict&#160;</td>
+          <td class="paramname"><em>std_stream</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5a6a0e5ee701db4fb1e9912cf94d8726"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a6a0e5ee701db4fb1e9912cf94d8726">&#9670;&nbsp;</a></span>ls_log_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_log_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *&#160;</td>
+          <td class="paramname"><em>log</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>flags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a>&#160;</td>
+          <td class="paramname"><em>level</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad76fe1b3988be0001e3b5fbe82383db0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad76fe1b3988be0001e3b5fbe82383db0">&#9670;&nbsp;</a></span>ls_log_clear_ex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_log_clear_ex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *&#160;</td>
+          <td class="paramname"><em>log</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#ae5044b3a324ed15fd2eec225cf945da5">ls_bool_t</a>&#160;</td>
+          <td class="paramname"><em>close_streams</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6808ea3ebeccbda4c9e36bc10488a25c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6808ea3ebeccbda4c9e36bc10488a25c">&#9670;&nbsp;</a></span>ls_log_clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_log_clear </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *&#160;</td>
+          <td class="paramname"><em>log</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abea3d20e5ef108ec8bf47807debb082e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abea3d20e5ef108ec8bf47807debb082e">&#9670;&nbsp;</a></span>ls_log_level_set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_log_level_set </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *&#160;</td>
+          <td class="paramname"><em>log</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a>&#160;</td>
+          <td class="paramname"><em>level</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af685e1a9946b3a5342b921d05cad5b86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af685e1a9946b3a5342b921d05cad5b86">&#9670;&nbsp;</a></span>ls_log_set_stream_ex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_log_set_stream_ex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *restrict&#160;</td>
+          <td class="paramname"><em>log</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a>&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FILE *const restrict&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#ae5044b3a324ed15fd2eec225cf945da5">ls_bool_t</a>&#160;</td>
+          <td class="paramname"><em>close_stream</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac4d3947908d5138ffc035da23eb5ddf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4d3947908d5138ffc035da23eb5ddf8">&#9670;&nbsp;</a></span>ls_log_set_stream()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_log_set_stream </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *restrict&#160;</td>
+          <td class="paramname"><em>log</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a>&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FILE *const restrict&#160;</td>
+          <td class="paramname"><em>stream</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a28599f7a83045119d85981bec6a2f8e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28599f7a83045119d85981bec6a2f8e0">&#9670;&nbsp;</a></span>ls_log_vwrite_ex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_log_vwrite_ex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *restrict&#160;</td>
+          <td class="paramname"><em>log</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a>&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#ae5044b3a324ed15fd2eec225cf945da5">ls_bool_t</a>&#160;</td>
+          <td class="paramname"><em>eol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *const restrict&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">va_list&#160;</td>
+          <td class="paramname"><em>vl</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a175723fa1eee0b642670ba1ff8cddbd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a175723fa1eee0b642670ba1ff8cddbd6">&#9670;&nbsp;</a></span>ls_log_writeln()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_log_writeln </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *restrict&#160;</td>
+          <td class="paramname"><em>log</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a>&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *const restrict&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -389,53 +560,40 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aab592cbbb0b722933997a040ce813738"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab592cbbb0b722933997a040ce813738">&#9670;&nbsp;</a></span>ls_log_set_level()</h2>
+<a id="a43462c35e2e5e8559be028cd92cb9966"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43462c35e2e5e8559be028cd92cb9966">&#9670;&nbsp;</a></span>ls_log_write()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ls_log_set_level </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_log_write </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a>&#160;</td>
-          <td class="paramname"><em>level</em></td><td>)</td>
-          <td></td>
+          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a89547f861d7076adbe6d61ef20836468">ls_log_t</a> *restrict&#160;</td>
+          <td class="paramname"><em>log</em>, </td>
         </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a650c2f68b3b22034fb169b7f9bc91641"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a650c2f68b3b22034fb169b7f9bc91641">&#9670;&nbsp;</a></span>ls_log_get_level()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a> ls_log_get_level </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a>&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
         </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1277975f7c4764a4a9a244afd4c2ff14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1277975f7c4764a4a9a244afd4c2ff14">&#9670;&nbsp;</a></span>ls_can_log()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d8/d77/bool_8h.html#a9985bd22e16f85dbf0eef96673d85dc9">ls_bool</a> ls_can_log </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d7/d7f/log_8h.html#a5f13afb06c38462ff8dd25fadd1a9b06">ls_log_level_t</a>&#160;</td>
-          <td class="paramname"><em>level</em></td><td>)</td>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const char *const restrict&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -447,8 +605,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_c1346cf4828efdd0d2baf0d391d01b77.html">master</a></li><li class="navelem"><a class="el" href="../../dir_01f6f431f73a8541e8d4899d004ecba5.html">libserum</a></li><li class="navelem"><a class="el" href="../../dir_2224d1f18ca9cadebc853751e48f87a9.html">core</a></li><li class="navelem"><a class="el" href="../../dir_386951d7c51d2764a85b9ce90919cc11.html">logging</a></li><li class="navelem"><a class="el" href="../../d7/d7f/log_8h.html">log.h</a></li>
-    <li class="footer">Generated on Thu Apr 5 2018 21:15:59 for Serum by
+    <li class="navelem"><a class="el" href="../../dir_fe6eb5064d42f9f773e90d3512fafa25.html">submodules</a></li><li class="navelem"><a class="el" href="../../dir_24113ac1bdad3f87e86c838174ad5a9a.html">master</a></li><li class="navelem"><a class="el" href="../../dir_efa0fcafe104baae21d5209dfaf69cad.html">libserum</a></li><li class="navelem"><a class="el" href="../../dir_045c625547a8b3c02ec89d5e0efb9b24.html">io</a></li><li class="navelem"><a class="el" href="../../d7/d7f/log_8h.html">log.h</a></li>
+    <li class="footer">Generated on Thu Jul 19 2018 23:06:09 for Serum by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>
