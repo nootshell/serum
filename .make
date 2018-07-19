@@ -1,1 +1,1 @@
-submodules/make/.make
+submodules/make

@@ -1,4 +1,4 @@
 PROJECTS = libserum test
 PROFILE = debug
 
-include .make/base
+include .make/base.mk
