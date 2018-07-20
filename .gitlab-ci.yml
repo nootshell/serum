@@ -13,6 +13,7 @@ stages:
   stage: build
   script:
     - alpine-icy-info color
+    - echo "Profile ${PROFILE} will be built using ${CC}."
     - make clean CFLAGS_EXTRA="-DLSCST_SALSA20_FULL=1" PROFILE="$PROFILE" CC="$CC" libserum install
     - make clean PROFILE="$PROFILE" CC="$CC" test
     - mkdir bin/$PROFILE
@@ -31,6 +32,7 @@ stages:
   variables:
     GIT_STRATEGY: none
   script:
+    - echo "Testing profile ${PROFILE}."
     - mv bin/$PROFILE/libserum.so /usr/lib/libserum.so
     - bin/$PROFILE/test run-cst
     - sbin/test-siot.sh "bin/$PROFILE/test"
