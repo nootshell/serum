@@ -42,8 +42,9 @@
 extern "C" {
 #endif
 
-	LSAPI uint64_t ls_time_nanos();
-	LSAPI time_t ls_time_secs();
+	LSAPI uint64_t ls_time_nanos(void);
+
+	LSAPI time_t ls_time_secs(void);
 
 	LSAPI ls_result_t LS_ATTR_PURE ls_localtime(const time_t time, struct tm *const out_tm);
 	LSAPI ls_result_t ls_localtime_now(struct tm *const out_tm);
@@ -51,7 +52,7 @@ extern "C" {
 	LSAPI ls_result_t LS_ATTR_PURE ls_timespec_to_millis(const struct timespec *const restrict ts, uint64_t *const restrict out_millis);
 	LSAPI ls_result_t LS_ATTR_PURE ls_millis_to_timespec(const uint64_t millis, struct timespec *const out_ts);
 
-	LSAPI uint64_t ls_rdtsc();
+	LSAPI uint64_t ls_rdtsc(void);
 
 	LSAPI void ls_sleep_nanos(const uint64_t nanos);
 	LSAPI void ls_sleep_millis(const uint32_t millis);

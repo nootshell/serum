@@ -89,7 +89,7 @@ struct ls_thread {
 extern "C" {
 #endif
 
-	LSAPI ls_tid_t ls_get_tid();
+	LSAPI ls_tid_t ls_get_tid(void);
 
 	LSAPI ls_result_t ls_thread_init_ex(ls_thread_t *const thread, const ls_thread_entry_t entrypoint, const uint32_t flags);
 
