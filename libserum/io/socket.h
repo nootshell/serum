@@ -83,19 +83,99 @@ typedef struct ls_socket {
 extern "C" {
 #endif
 
+	/*!
+	 * \brief ls_socket_init_fd
+	 * \param socket
+	 * \param descriptor
+	 * \return
+	 */
 	LSAPI ls_result_t ls_socket_init_fd(ls_socket_t *const socket, const ls_sockfd_t descriptor);
+
+	/*!
+	 * \brief ls_socket_init
+	 * \param socket
+	 * \param flags
+	 * \return
+	 */
 	LSAPI ls_result_t ls_socket_init(ls_socket_t *const socket, const uint32_t flags);
+
+	/*!
+	 * \brief ls_socket_clear
+	 * \param socket
+	 * \return
+	 */
 	LSAPI ls_result_t ls_socket_clear(ls_socket_t *const socket);
 
+	/*!
+	 * \brief ls_socket_start
+	 * \param socket
+	 * \param node
+	 * \param service
+	 * \param port
+	 * \return
+	 */
 	LSAPI ls_result_t ls_socket_start(ls_socket_t *const restrict socket, const char *const restrict node, const char *const restrict service, const uint16_t port);
+
+	/*!
+	 * \brief ls_socket_stop
+	 * \param socket
+	 * \return
+	 */
 	LSAPI ls_result_t ls_socket_stop(ls_socket_t *const socket);
 
+	/*!
+	 * \brief ls_socket_accept_fd_ex
+	 * \param socket
+	 * \param out_descriptor
+	 * \param out_sockaddr
+	 * \param inout_sockaddrlen
+	 * \return
+	 */
 	LSAPI ls_result_t ls_socket_accept_fd_ex(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict out_descriptor, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen);
+
+	/*!
+	 * \brief ls_socket_accept_fd
+	 * \param socket
+	 * \param out_descriptor
+	 * \return
+	 */
 	LSAPI ls_result_t ls_socket_accept_fd(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict out_descriptor);
+
+	/*!
+	 * \brief ls_socket_accept_ex
+	 * \param socket
+	 * \param out_client
+	 * \param out_sockaddr
+	 * \param inout_sockaddrlen
+	 * \return
+	 */
 	LSAPI ls_result_t ls_socket_accept_ex(ls_socket_t *const restrict socket, ls_socket_t *const restrict out_client, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen);
+
+	/*!
+	 * \brief ls_socket_accept
+	 * \param socket
+	 * \param out_client
+	 * \return
+	 */
 	LSAPI ls_result_t ls_socket_accept(ls_socket_t *const restrict socket, ls_socket_t *const restrict out_client);
 
+	/*!
+	 * \brief ls_socket_write
+	 * \param socket
+	 * \param data
+	 * \param length
+	 * \return
+	 */
 	LSAPI ls_result_t ls_socket_write(ls_socket_t *const restrict socket, const void *const restrict data, const size_t length);
+
+	/*!
+	 * \brief ls_socket_read
+	 * \param socket
+	 * \param buffer
+	 * \param max_length
+	 * \param out_size
+	 * \return
+	 */
 	LSAPI ls_result_t ls_socket_read(ls_socket_t *const restrict socket, void *const restrict buffer, const size_t max_length, size_t *const out_size);
 
 #ifdef __cplusplus

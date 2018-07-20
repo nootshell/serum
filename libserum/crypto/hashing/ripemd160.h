@@ -66,10 +66,29 @@ typedef uint8_t ls_ripemd160_digest_t[LS_RIPEMD160_DIGEST_SIZE];
 extern "C" {
 #endif
 
+	/*!
+	 * \brief ls_ripemd160_init
+	 * \param context
+	 * \return
+	 */
 	LSAPI ls_result_t ls_ripemd160_init(ls_ripemd160_t *const context);
 
+	/*!
+	 * \brief ls_ripemd160_update
+	 * \param context
+	 * \param block
+	 * \return
+	 */
 	LSAPI ls_result_t ls_ripemd160_update(ls_ripemd160_t *const context, const ls_ripemd160_block_t block);
 
+	/*!
+	 * \brief ls_ripemd160_finish
+	 * \param context
+	 * \param input
+	 * \param input_size
+	 * \param out_digest
+	 * \return
+	 */
 	LSAPI ls_result_t ls_ripemd160_finish(ls_ripemd160_t *const restrict context, const uint8_t *const restrict input, const size_t input_size, ls_ripemd160_digest_t out_digest);
 
 #ifdef __cplusplus

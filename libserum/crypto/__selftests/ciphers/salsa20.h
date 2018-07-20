@@ -43,6 +43,11 @@
 extern "C" {
 #endif
 
+	/*!
+	 * \brief lscst_ciphers_salsa20
+	 * \param meta
+	 * \return
+	 */
 	LSAPI ls_result_t lscst_ciphers_salsa20(const lsreg_meta_t *const meta);
 
 #ifdef __cplusplus

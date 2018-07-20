@@ -134,6 +134,11 @@ typedef ls_nword_t ls_result_t;
 extern "C" {
 #endif
 
+	/*!
+	 * \brief ls_result_string
+	 * \param result
+	 * \return
+	 */
 	LSAPI const char* ls_result_string(const ls_result_t result);
 
 #ifdef __cplusplus

@@ -43,6 +43,11 @@
 extern "C" {
 #endif
 
+	/*!
+	 * \brief lscst_hashing_md5
+	 * \param meta
+	 * \return
+	 */
 	LSAPI ls_result_t lscst_hashing_md5(const lsreg_meta_t *const meta);
 
 #ifdef __cplusplus

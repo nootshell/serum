@@ -89,30 +89,99 @@ struct ls_thread {
 extern "C" {
 #endif
 
+	/*!
+	 * \brief ls_get_tid
+	 * \return
+	 */
 	LSAPI ls_tid_t ls_get_tid(void);
 
+	/*!
+	 * \brief ls_thread_init_ex
+	 * \param thread
+	 * \param entrypoint
+	 * \param flags
+	 * \return
+	 */
 	LSAPI ls_result_t ls_thread_init_ex(ls_thread_t *const thread, const ls_thread_entry_t entrypoint, const uint32_t flags);
 
+	/*!
+	 * \brief ls_thread_init
+	 * \param thread
+	 * \param entrypoint
+	 * \return
+	 */
 	LSAPI ls_result_t ls_thread_init(ls_thread_t *const thread, const ls_thread_entry_t entrypoint);
 
+	/*!
+	 * \brief ls_thread_clear
+	 * \param thread
+	 * \return
+	 */
 	LSAPI ls_result_t ls_thread_clear(ls_thread_t *const thread);
 
+	/*!
+	 * \brief ls_thread_start_ex
+	 * \param thread
+	 * \param stacksize
+	 * \return
+	 */
 	LSAPI ls_result_t ls_thread_start_ex(ls_thread_t *const thread, const size_t stacksize);
 
+	/*!
+	 * \brief ls_thread_start
+	 * \param thread
+	 * \return
+	 */
 	LSAPI ls_result_t ls_thread_start(ls_thread_t *const thread);
 
+	/*!
+	 * \brief ls_thread_start_ex_await
+	 * \param thread
+	 * \param stacksize
+	 * \return
+	 */
 	LSAPI ls_result_t ls_thread_start_ex_await(ls_thread_t *const thread, const size_t stacksize);
 
+	/*!
+	 * \brief ls_thread_start_await
+	 * \param thread
+	 * \return
+	 */
 	LSAPI ls_result_t ls_thread_start_await(ls_thread_t *const thread);
 
+	/*!
+	 * \brief ls_thread_stop
+	 * \param thread
+	 * \return
+	 */
 	LSAPI ls_result_t ls_thread_stop(ls_thread_t *const thread);
 
+	/*!
+	 * \brief ls_thread_stop_await
+	 * \param thread
+	 * \return
+	 */
 	LSAPI ls_result_t ls_thread_stop_await(ls_thread_t *const thread);
 
+	/*!
+	 * \brief ls_thread_suspend
+	 * \param thread
+	 * \return
+	 */
 	LSAPI ls_result_t ls_thread_suspend(ls_thread_t *const thread);
 
+	/*!
+	 * \brief ls_thread_resume
+	 * \param thread
+	 * \return
+	 */
 	LSAPI ls_result_t ls_thread_resume(ls_thread_t *const thread);
 
+	/*!
+	 * \brief ls_thread_status
+	 * \param thread
+	 * \return
+	 */
 	LSAPI ls_thread_status_t ls_thread_status(ls_thread_t *const thread);
 
 #ifdef __cplusplus

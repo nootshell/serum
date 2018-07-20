@@ -60,18 +60,58 @@ struct ls_event {
 extern "C" {
 #endif
 
+	/*!
+	 * \brief ls_event_init_ex
+	 * \param event
+	 * \param flags
+	 * \param initial_capacity
+	 * \return
+	 */
 	LSAPI ls_result_t ls_event_init_ex(ls_event_t *const event, const uint32_t flags, const size_t initial_capacity);
 
+	/*!
+	 * \brief ls_event_init
+	 * \param event
+	 * \return
+	 */
 	LSAPI ls_result_t ls_event_init(ls_event_t *const event);
 
+	/*!
+	 * \brief ls_event_clear
+	 * \param event
+	 * \return
+	 */
 	LSAPI ls_result_t ls_event_clear(ls_event_t *const event);
 
+	/*!
+	 * \brief ls_event_push
+	 * \param event
+	 * \param handler
+	 * \return
+	 */
 	LSAPI ls_result_t ls_event_push(ls_event_t *const event, ls_event_handler_t const handler);
 
+	/*!
+	 * \brief ls_event_pop
+	 * \param event
+	 * \param handler
+	 * \return
+	 */
 	LSAPI ls_result_t ls_event_pop(ls_event_t *const event, ls_event_handler_t const handler);
 
+	/*!
+	 * \brief ls_event_fire_ex
+	 * \param event
+	 * \param data
+	 * \return
+	 */
 	LSAPI ls_result_t ls_event_fire_ex(ls_event_t *const restrict event, void *const restrict data);
 
+	/*!
+	 * \brief ls_event_fire
+	 * \param event
+	 * \return
+	 */
 	LSAPI ls_result_t ls_event_fire(ls_event_t *const event);
 
 #ifdef __cplusplus

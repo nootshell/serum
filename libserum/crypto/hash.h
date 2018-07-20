@@ -63,16 +63,53 @@ typedef struct ls_hash {
 extern "C" {
 #endif
 
+	/*!
+	 * \brief ls_hash_init
+	 * \param hash
+	 * \param algorithm
+	 * \return
+	 */
 	LSAPI ls_result_t ls_hash_init(ls_hash_t *const hash, ls_hash_algo_t algorithm);
 
+	/*!
+	 * \brief ls_hash_clear
+	 * \param hash
+	 * \return
+	 */
 	LSAPI ls_result_t ls_hash_clear(ls_hash_t *const hash);
 
+	/*!
+	 * \brief ls_hash_reinit
+	 * \param hash
+	 * \return
+	 */
 	LSAPI ls_result_t ls_hash_reinit(ls_hash_t *const hash);
 
+	/*!
+	 * \brief ls_hash_update
+	 * \param hash
+	 * \param data
+	 * \param size
+	 * \return
+	 */
 	LSAPI ls_result_t ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict data, const size_t size);
 
+	/*!
+	 * \brief ls_hash_finish
+	 * \param hash
+	 * \param out_digest
+	 * \return
+	 */
 	LSAPI ls_result_t ls_hash_finish(ls_hash_t *const restrict hash, uint8_t *const restrict out_digest);
 
+	/*!
+	 * \brief ls_hash
+	 * \param algorithm
+	 * \param out_digest
+	 * \param data
+	 * \param size
+	 * \return
+	 */
 	LSAPI ls_result_t ls_hash(ls_hash_algo_t algorithm, uint8_t *const restrict out_digest, const uint8_t *const restrict data, const size_t size);
 
 #ifdef __cplusplus

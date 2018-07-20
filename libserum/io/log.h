@@ -82,24 +82,94 @@ typedef struct ls_log {
 extern "C" {
 #endif
 
+	/*!
+	 * \brief ls_log_init_ex
+	 * \param log
+	 * \param flags
+	 * \param level
+	 * \param std_stream
+	 * \return
+	 */
 	LSAPI ls_result_t ls_log_init_ex(ls_log_t *restrict log, const uint32_t flags, const ls_log_level_t level, FILE *const restrict std_stream);
 
+	/*!
+	 * \brief ls_log_init
+	 * \param log
+	 * \param flags
+	 * \param level
+	 * \return
+	 */
 	LSAPI ls_result_t ls_log_init(ls_log_t *log, const uint32_t flags, const ls_log_level_t level);
 
+	/*!
+	 * \brief ls_log_clear_ex
+	 * \param log
+	 * \param close_streams
+	 * \return
+	 */
 	LSAPI ls_result_t ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams);
 
+	/*!
+	 * \brief ls_log_clear
+	 * \param log
+	 * \return
+	 */
 	LSAPI ls_result_t ls_log_clear(ls_log_t *log);
 
+	/*!
+	 * \brief ls_log_level_set
+	 * \param log
+	 * \param level
+	 * \return
+	 */
 	LSAPI ls_result_t ls_log_level_set(ls_log_t *log, const ls_log_level_t level);
 
+	/*!
+	 * \brief ls_log_set_stream_ex
+	 * \param log
+	 * \param level
+	 * \param stream
+	 * \param close_stream
+	 * \return
+	 */
 	LSAPI ls_result_t ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream, const ls_bool_t close_stream);
 
+	/*!
+	 * \brief ls_log_set_stream
+	 * \param log
+	 * \param level
+	 * \param stream
+	 * \return
+	 */
 	LSAPI ls_result_t ls_log_set_stream(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream);
 
+	/*!
+	 * \brief ls_log_vwrite_ex
+	 * \param log
+	 * \param level
+	 * \param eol
+	 * \param format
+	 * \param vl
+	 * \return
+	 */
 	LSAPI ls_result_t ls_log_vwrite_ex(ls_log_t *restrict log, const ls_log_level_t level, const ls_bool_t eol, const char *const restrict format, va_list vl);
 
+	/*!
+	 * \brief ls_log_writeln
+	 * \param log
+	 * \param level
+	 * \param format
+	 * \return
+	 */
 	LSAPI ls_result_t ls_log_writeln(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...);
 
+	/*!
+	 * \brief ls_log_write
+	 * \param log
+	 * \param level
+	 * \param format
+	 * \return
+	 */
 	LSAPI ls_result_t ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...);
 
 #ifdef __cplusplus

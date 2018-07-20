@@ -68,14 +68,42 @@ typedef struct ls_state {
 extern "C" {
 #endif
 
+	/*!
+	 * \brief ls_state_init_ex
+	 * \param state
+	 * \param value
+	 * \return
+	 */
 	LSAPI ls_result_t ls_state_init_ex(ls_state_t *const state, const ls_nword_t value);
 
+	/*!
+	 * \brief ls_state_init
+	 * \param state
+	 * \return
+	 */
 	LSAPI ls_result_t ls_state_init(ls_state_t *const state);
 
+	/*!
+	 * \brief ls_state_clear
+	 * \param state
+	 * \return
+	 */
 	LSAPI ls_result_t ls_state_clear(ls_state_t *const state);
 
+	/*!
+	 * \brief ls_state_set
+	 * \param state
+	 * \param value
+	 * \return
+	 */
 	LSAPI ls_result_t ls_state_set(ls_state_t *const state, const ls_nword_t value);
 
+	/*!
+	 * \brief ls_state_get
+	 * \param state
+	 * \param out_value
+	 * \return
+	 */
 	LSAPI ls_result_t ls_state_get(ls_state_t *const restrict state, ls_nword_t *const restrict out_value);
 
 #ifdef __cplusplus

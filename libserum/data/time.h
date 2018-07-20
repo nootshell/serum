@@ -42,19 +42,65 @@
 extern "C" {
 #endif
 
+	/*!
+	 * \brief ls_time_nanos
+	 * \return
+	 */
 	LSAPI uint64_t ls_time_nanos(void);
 
+	/*!
+	 * \brief ls_time_secs
+	 * \return
+	 */
 	LSAPI time_t ls_time_secs(void);
 
+	/*!
+	 * \brief ls_localtime
+	 * \param time
+	 * \param out_tm
+	 * \return
+	 */
 	LSAPI ls_result_t LS_ATTR_PURE ls_localtime(const time_t time, struct tm *const out_tm);
+
+	/*!
+	 * \brief ls_localtime_now
+	 * \param out_tm
+	 * \return
+	 */
 	LSAPI ls_result_t ls_localtime_now(struct tm *const out_tm);
 
+	/*!
+	 * \brief ls_timespec_to_millis
+	 * \param ts
+	 * \param out_millis
+	 * \return
+	 */
 	LSAPI ls_result_t LS_ATTR_PURE ls_timespec_to_millis(const struct timespec *const restrict ts, uint64_t *const restrict out_millis);
+
+	/*!
+	 * \brief ls_millis_to_timespec
+	 * \param millis
+	 * \param out_ts
+	 * \return
+	 */
 	LSAPI ls_result_t LS_ATTR_PURE ls_millis_to_timespec(const uint64_t millis, struct timespec *const out_ts);
 
+	/*!
+	 * \brief ls_rdtsc
+	 * \return
+	 */
 	LSAPI uint64_t ls_rdtsc(void);
 
+	/*!
+	 * \brief ls_sleep_nanos
+	 * \param nanos
+	 */
 	LSAPI void ls_sleep_nanos(const uint64_t nanos);
+
+	/*!
+	 * \brief ls_sleep_millis
+	 * \param millis
+	 */
 	LSAPI void ls_sleep_millis(const uint32_t millis);
 
 #ifdef __cplusplus

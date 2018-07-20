@@ -59,13 +59,54 @@
 extern "C" {
 #endif
 
+	/*!
+	 * \brief ls_memory_dump_ex
+	 * \param src
+	 * \param size
+	 * \param columns
+	 * \param columnsize
+	 * \param dest
+	 * \param ansi
+	 * \return
+	 */
 	LSAPI ls_result_t ls_memory_dump_ex(const void *const src, const size_t size, const ls_nword_t columns, const ls_nword_t columnsize, FILE *const dest, const ls_bool_t ansi);
+
+	/*!
+	 * \brief ls_memory_dump
+	 * \param src
+	 * \param size
+	 * \return
+	 */
 	LSAPI ls_result_t ls_memory_dump(const void *const src, const size_t size);
 
+	/*!
+	 * \brief ls_memory_to_c_array
+	 * \param data
+	 * \param size
+	 * \return
+	 */
 	LSAPI char* ls_memory_to_c_array(const void *const data, const size_t size);
 
+	/*!
+	 * \brief ls_memory_free
+	 * \param target
+	 * \return
+	 */
 	LSAPI void* ls_memory_free(void *const target);
+
+	/*!
+	 * \brief ls_memory_clear
+	 * \param target
+	 * \param size
+	 */
 	LSAPI void ls_memory_clear(volatile void *const target, const size_t size);
+
+	/*!
+	 * \brief ls_memory_clear_free
+	 * \param target
+	 * \param size
+	 * \return
+	 */
 	LSAPI void* ls_memory_clear_free(volatile void *const target, const size_t size);
 
 #ifdef __cplusplus

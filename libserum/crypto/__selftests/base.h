@@ -41,10 +41,28 @@
 extern "C" {
 #endif
 
+	/*!
+	 * \brief lscst_set_logging
+	 * \param enabled
+	 */
 	LSAPI void lscst_set_logging(const ls_bool_t enabled);
 
+	/*!
+	 * \brief lscst_launch
+	 * \return
+	 */
 	LSAPI ls_result_t lscst_launch(void);
 
+	/*!
+	 * \brief lscst_log
+	 * \param result
+	 * \param algorithm
+	 * \param index
+	 * \param source
+	 * \param data_expected
+	 * \param data_found
+	 * \param data_size
+	 */
 	LSAPI void lscst_log(const ls_result_t result, const char *const algorithm, const size_t index, const char *const source, const uint8_t *const data_expected, const uint8_t *const data_found, const size_t data_size);
 
 #ifdef __cplusplus
