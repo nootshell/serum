@@ -40,10 +40,10 @@
 
 #if (LS_BITS_BYTE == 8)
 #	undef __MKROTATE
-#	define __MKROTATE(type_ret, name, bits, op1, op2)							\
-		static LS_FORCE_INLINE													\
-		type_ret name(type_ret value, unsigned int rotate) {					\
-			return ((value op1 rotate) | (value op2 (-rotate & ((bits) - 1))));	\
+#	define __MKROTATE(type_ret, name, bits, op1, op2)										\
+		static LS_FORCE_INLINE																\
+		type_ret name(type_ret value, unsigned int rotate) {								\
+			return (type_ret)((value op1 rotate) | (value op2 (-rotate & ((bits) - 1))));	\
 		}
 
 	__MKROTATE( uint8_t,  __ls_rotl8,  LS_BITS_BYTE, <<, >>)
