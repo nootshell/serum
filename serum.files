@@ -1,3 +1,5 @@
+test/unit/bitops.h
+test/unit/bitops.c
 test/siot/server.c
 test/siot/client.c
 COPYING.md

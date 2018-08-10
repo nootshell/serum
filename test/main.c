@@ -28,6 +28,8 @@
 
 #undef LS_EXPORTING
 
+#include "./unit/bitops.h"
+
 #include "../libserum/io/log.h"
 
 #include "../libserum/crypto/__selftests/base.h"
@@ -58,6 +60,29 @@ __run_cst() {
 
 
 int
+__run_unit_tests() {
+	int(*tests[])(void) = {
+		lst_unit_bitops
+	};
+
+	int failed = 0;
+
+	unsigned int i;
+	for (i = (sizeof(tests) / sizeof(*tests)); i--;) {
+		if (tests[i] != NULL) {
+			if (tests[i]() != 0) {
+				++failed;
+			}
+		}
+	}
+
+	return failed;
+}
+
+
+
+
+int
 main(int argc, char *argv[], char *env[]) {
 	if (argc < 2) {
 		return 1;
@@ -75,6 +100,10 @@ main(int argc, char *argv[], char *env[]) {
 		{
 			.param = "run-cst",
 			.function = __run_cst
+		},
+		{
+			.param = "unit-test",
+			.function = __run_unit_tests
 		},
 		{
 			.param = "siot-server",
