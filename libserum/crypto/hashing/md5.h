@@ -95,8 +95,6 @@ extern "C" {
 	**	\param input Remaining input to transform. May be `NULL` if
 	**	             there is nothing to transform (\p size must be `0`).
 	**	\param size The size of the remaining input.
-	**	\param bits The number of total bits in the message for
-	**	            this context.
 	**	\param digest The output location for the MD5 digest.
 	**
 	**	\return
