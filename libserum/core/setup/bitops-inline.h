@@ -38,28 +38,54 @@
 
 
 
-#if (LS_BITS_BYTE == 8)
-#	undef __MKROTATE
-#	define __MKROTATE(type_ret, name, bits, op1, op2)										\
-		static LS_FORCE_INLINE																\
-		type_ret name(type_ret value, unsigned int rotate) {								\
-			return (type_ret)((value op1 rotate) | (value op2 (-rotate & ((bits) - 1))));	\
-		}
+/*! \brief Rotates the 8-bit \p value \p n bits to the left. */
+static LS_FORCE_INLINE
+uint8_t __ls_rotl8(uint8_t value, unsigned int n) {
+	return (uint8_t)((value << n) | (value >> (-n & ((LS_BITS_BYTE) - 1))));
+}
 
-	__MKROTATE( uint8_t,  __ls_rotl8,  LS_BITS_BYTE, <<, >>)
-	__MKROTATE(uint16_t, __ls_rotl16,  LS_BITS_WORD, <<, >>)
-	__MKROTATE(uint32_t, __ls_rotl32, LS_BITS_DWORD, <<, >>)
-	__MKROTATE(uint64_t, __ls_rotl64, LS_BITS_QWORD, <<, >>)
+/*! \brief Rotates the 16-bit \p value \p n bits to the left. */
+static LS_FORCE_INLINE
+uint16_t __ls_rotl16(uint16_t value, unsigned int n) {
+	return (uint16_t)((value << n) | (value >> (-n & ((LS_BITS_WORD) - 1))));
+}
 
-	__MKROTATE( uint8_t,  __ls_rotr8,  LS_BITS_BYTE, >>, <<)
-	__MKROTATE(uint16_t, __ls_rotr16,  LS_BITS_WORD, >>, <<)
-	__MKROTATE(uint32_t, __ls_rotr32, LS_BITS_DWORD, >>, <<)
-	__MKROTATE(uint64_t, __ls_rotr64, LS_BITS_QWORD, >>, <<)
+/*! \brief Rotates the 32-bit \p value \p n bits to the left. */
+static LS_FORCE_INLINE
+uint32_t __ls_rotl32(uint32_t value, unsigned int n) {
+	return (uint32_t)((value << n) | (value >> (-n & ((LS_BITS_DWORD) - 1))));
+}
 
-#	undef __MKROTATE
-#else
-#	error Missing rotate fallbacks.
-#endif
+/*! \brief Rotates the 64-bit \p value \p n bits to the left. */
+static LS_FORCE_INLINE
+uint64_t __ls_rotl64(uint64_t value, unsigned int n) {
+	return (uint64_t)((value << n) | (value >> (-n & ((LS_BITS_QWORD) - 1))));
+}
+
+
+/*! \brief Rotates the 8-bit \p value \p n bits to the right. */
+static LS_FORCE_INLINE
+uint8_t __ls_rotr8(uint8_t value, unsigned int n) {
+	return (uint8_t)((value >> n) | (value << (-n & ((LS_BITS_BYTE) - 1))));
+}
+
+/*! \brief Rotates the 16-bit \p value \p n bits to the right. */
+static LS_FORCE_INLINE
+uint16_t __ls_rotr16(uint16_t value, unsigned int n) {
+	return (uint16_t)((value >> n) | (value << (-n & ((LS_BITS_WORD) - 1))));
+}
+
+/*! \brief Rotates the 32-bit \p value \p n bits to the right. */
+static LS_FORCE_INLINE
+uint32_t __ls_rotr32(uint32_t value, unsigned int n) {
+	return (uint32_t)((value >> n) | (value << (-n & ((LS_BITS_DWORD) - 1))));
+}
+
+/*! \brief Rotates the 64-bit \p value \p n bits to the right. */
+static LS_FORCE_INLINE
+uint64_t __ls_rotr64(uint64_t value, unsigned int n) {
+	return (uint64_t)((value >> n) | (value << (-n & ((LS_BITS_QWORD) - 1))));
+}
 
 
 
