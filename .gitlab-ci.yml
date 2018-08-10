@@ -34,8 +34,9 @@ stages:
   script:
     - echo "Testing profile ${PROFILE}."
     - mv bin/$PROFILE/libserum.so /usr/lib/libserum.so
-    - bin/$PROFILE/test run-cst
     - sbin/test-siot.sh "bin/$PROFILE/test"
+    - bin/$PROFILE/test unit-test
+    - bin/$PROFILE/test run-cst
 
 
 

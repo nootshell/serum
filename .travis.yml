@@ -29,5 +29,6 @@ before_script:
   - make clean PROFILE="$PROFILE" CC="$CC" test
 
 script:
-  - bin/test run-cst
   - sbin/test-siot.sh
+  - bin/test unit-test
+  - bin/test run-cst
