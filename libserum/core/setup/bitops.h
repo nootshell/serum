@@ -38,40 +38,46 @@
 
 
 
+/*! \hideinitializer \brief Used to determine if \p flag's bits are set in \p flags. */
 #define LS_FLAG(flags, flag)				(((flags) & (flag)) == (flag))
 
 
 
 
-#if (!LS_SANITIZE_BYTES)
-static const uint8_t __ls_sanitize_m__ = ((1U << LS_BITS_BYTE) - 1);
-#	define LS_BYTE_SANITIZE(x)				((x) & __ls_sanitize_m__)
-#else
-#	define LS_BYTE_SANITIZE(x)				x
-#endif
-
-
-
-
-#if (!LS_INTRINSICS_GOT_ROTL)
+#if (!LS_INTRINSICS_GOT_ROTL || LS_DOXYGEN)
 #	if (!LS_INTRINSICS_IGNORE_ROTL)
 		LS_COMPILER_LOG("Missing ROTL intrinsics, using fallback.")
 #	endif
 
+/*! \hideinitializer \brief Alias to compiler builtin or \link __ls_rotl8 fallback\endlink for: rotate left, 8-bit */
 #	define LS_ROTL8							__ls_rotl8
+
+/*! \hideinitializer \brief Alias to compiler builtin or \link __ls_rotl16 fallback\endlink for: rotate left, 16-bit */
 #	define LS_ROTL16						__ls_rotl16
+
+/*! \hideinitializer \brief Alias to compiler builtin or \link __ls_rotl32 fallback\endlink for: rotate left, 32-bit */
 #	define LS_ROTL32						__ls_rotl32
+
+/*! \hideinitializer \brief Alias to compiler builtin or \link __ls_rotl64 fallback\endlink for: rotate left, 64-bit */
 #	define LS_ROTL64						__ls_rotl64
 #endif
 
-#if (!LS_INTRINSICS_GOT_ROTR)
+
+#if (!LS_INTRINSICS_GOT_ROTR || LS_DOXYGEN)
 #	if (!LS_INTRINSICS_IGNORE_ROTR)
 		LS_COMPILER_LOG("Missing ROTR intrinsics, using fallback.")
 #	endif
 
+/*! \hideinitializer \brief Alias to compiler builtin or \link __ls_rotr8 fallback\endlink for: rotate right, 8-bit */
 #	define LS_ROTR8							__ls_rotr8
+
+/*! \hideinitializer \brief Alias to compiler builtin or \link __ls_rotr16 fallback\endlink for: rotate right, 16-bit */
 #	define LS_ROTR16						__ls_rotr16
+
+/*! \hideinitializer \brief Alias to compiler builtin or \link __ls_rotr32 fallback\endlink for: rotate right, 32-bit */
 #	define LS_ROTR32						__ls_rotr32
+
+/*! \hideinitializer \brief Alias to compiler builtin or \link __ls_rotr64 fallback\endlink for: rotate right, 64-bit */
 #	define LS_ROTR64						__ls_rotr64
 #endif
 
@@ -79,17 +85,22 @@ static const uint8_t __ls_sanitize_m__ = ((1U << LS_BITS_BYTE) - 1);
 
 
 
-#if (!LS_INTRINSICS_GOT_SWAP)
+#if (!LS_INTRINSICS_GOT_SWAP || LS_DOXYGEN)
+/*! \hideinitializer \brief Returns the endianness-swapped value of the given 16-bit integer, either by compiler builtin or bitwise fallback. */
 #	define LS_SWAP_16(x) (					 \
 		(((x) & 0xFF00            ) >>  8) | \
 		(((x) & 0x00FF            ) <<  8)	 \
 	)
+
+/*! \hideinitializer \brief Returns the endianness-swapped value of the given 32-bit integer, either by compiler builtin or bitwise fallback. */
 #	define LS_SWAP_32(x) (					 \
 		(((x) & 0xFF000000        ) >> 24) | \
 		(((x) & 0x00FF0000        ) >>  8) | \
 		(((x) & 0x0000FF00        ) <<  8) | \
 		(((x) & 0x000000FF        ) << 24)	 \
 	)
+
+/*! \hideinitializer \brief Returns the endianness-swapped value of the given 64-bit integer, either by compiler builtin or bitwise fallback. */
 #	define LS_SWAP_64(x) (					 \
 		(((x) & 0xFF00000000000000) >> 56) | \
 		(((x) & 0x00FF000000000000) >> 40) | \
@@ -103,12 +114,23 @@ static const uint8_t __ls_sanitize_m__ = ((1U << LS_BITS_BYTE) - 1);
 #endif
 
 
-#if (LS_BIG_ENDIAN)
+#if (LS_BIG_ENDIAN || LS_DOXYGEN)
+/*! \hideinitializer \brief Returns the big-endian value of the given \em native 16-bit integer. */
 #	define LS_ENSURE_BIG16(x)				(x)
+
+/*! \hideinitializer \brief Returns the big-endian value of the given \em native 32-bit integer. */
 #	define LS_ENSURE_BIG32(x)				(x)
+
+/*! \hideinitializer \brief Returns the big-endian value of the given \em native 64-bit integer. */
 #	define LS_ENSURE_BIG64(x)				(x)
+
+/*! \hideinitializer \brief Returns the little-endian value of the given \em native 16-bit integer. */
 #	define LS_ENSURE_LITTLE16(x)			LS_SWAP_16((x))
+
+/*! \hideinitializer \brief Returns the little-endian value of the given \em native 32-bit integer. */
 #	define LS_ENSURE_LITTLE32(x)			LS_SWAP_32((x))
+
+/*! \hideinitializer \brief Returns the little-endian value of the given \em native 64-bit integer. */
 #	define LS_ENSURE_LITTLE64(x)			LS_SWAP_64((x))
 #else
 #	define LS_ENSURE_BIG16(x)				LS_SWAP_16((x))
