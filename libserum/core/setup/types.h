@@ -45,8 +45,6 @@
 
 
 
-typedef unsigned int ls_nword_t;
-
 typedef bool ls_bool_t;
 
 

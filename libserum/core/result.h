@@ -125,7 +125,7 @@
 
 
 
-typedef ls_nword_t ls_result_t;
+typedef unsigned int ls_result_t;
 
 
 

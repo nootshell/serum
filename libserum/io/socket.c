@@ -561,7 +561,7 @@ ls_socket_write(ls_socket_t *const restrict socket, const void *const restrict d
 	}
 
 
-	ls_nword_t retry_counter = 0;
+	unsigned int retry_counter = 0;
 	const size_t mtu = socket->mtu;
 	ssize_t result;
 	size_t sent = 0, msglen = 0;

@@ -236,7 +236,7 @@ ls_thread_start_ex_await(ls_thread_t *const thread, const size_t stacksize) {
 		return result;
 	}
 
-	ls_nword_t state;
+	unsigned int state;
 	for (;;) {
 		if (ls_state_get(&thread->__state, &state) != LS_E_SUCCESS) {
 			state = LS_THREAD_ERROR;
@@ -272,7 +272,7 @@ ls_thread_stop(ls_thread_t *const thread) {
 		return_e(LS_E_MAGIC);
 	}
 
-	ls_nword_t state;
+	unsigned int state;
 	if (ls_state_get(&thread->__state, &state) != LS_E_SUCCESS) {
 		return_e(LS_E_FAILURE);
 	}
@@ -296,7 +296,7 @@ ls_thread_stop_await(ls_thread_t *const thread) {
 		return result;
 	}
 
-	ls_nword_t state;
+	unsigned int state;
 	for (;;) {
 		if (ls_state_get(&thread->__state, &state) != LS_E_SUCCESS) {
 			state = LS_THREAD_ERROR;
@@ -335,7 +335,7 @@ ls_thread_status(ls_thread_t *const thread) {
 		return LS_THREAD_ERROR;
 	}
 
-	ls_nword_t state;
+	unsigned int state;
 	if (ls_state_get(&thread->__state, &state) != LS_E_SUCCESS) {
 		return LS_THREAD_ERROR;
 	}
@@ -362,7 +362,7 @@ static THRAPI_RETURN __ls_thread_entry(void *param) {
 		goto __ret_bad;
 	}
 
-	ls_nword_t state;
+	unsigned int state;
 	if (ls_state_get(&thread->__state, &state) != LS_E_SUCCESS) {
 		goto __ret_bad;
 	} else if (state != LS_THREAD_INITIALIZING) {

@@ -137,7 +137,7 @@ ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams) {
 		ls_bool_t errors = false;
 
 		if (close_streams != false) {
-			ls_nword_t i;
+			unsigned int i;
 
 			FILE
 				**const streams = (FILE **const)log->__outf,

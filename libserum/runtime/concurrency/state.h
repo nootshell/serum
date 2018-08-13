@@ -57,7 +57,7 @@ typedef struct ls_state {
 #	error TODO
 #endif
 	ls_mutex_t __lock;
-	ls_nword_t value;
+	unsigned int value;
 	uint32_t __pad;
 } ls_state_t;
 
@@ -74,7 +74,7 @@ extern "C" {
 	 * \param value
 	 * \return
 	 */
-	LSAPI ls_result_t ls_state_init_ex(ls_state_t *const state, const ls_nword_t value);
+	LSAPI ls_result_t ls_state_init_ex(ls_state_t *const state, const unsigned int value);
 
 	/*!
 	 * \brief ls_state_init
@@ -96,7 +96,7 @@ extern "C" {
 	 * \param value
 	 * \return
 	 */
-	LSAPI ls_result_t ls_state_set(ls_state_t *const state, const ls_nword_t value);
+	LSAPI ls_result_t ls_state_set(ls_state_t *const state, const unsigned int value);
 
 	/*!
 	 * \brief ls_state_get
@@ -104,7 +104,7 @@ extern "C" {
 	 * \param out_value
 	 * \return
 	 */
-	LSAPI ls_result_t ls_state_get(ls_state_t *const restrict state, ls_nword_t *const restrict out_value);
+	LSAPI ls_result_t ls_state_get(ls_state_t *const restrict state, unsigned int *const restrict out_value);
 
 #ifdef __cplusplus
 }

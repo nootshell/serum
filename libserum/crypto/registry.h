@@ -75,7 +75,7 @@ typedef struct lsreg_hash {
 	lssig_hash_finish f_finish;
 } lsreg_hash_t;
 
-typedef ls_nword_t ls_hash_algo_t;
+typedef unsigned int ls_hash_algo_t;
 
 
 extern const struct lsreg_hash __hash_registry[];
@@ -111,7 +111,7 @@ typedef struct lsreg_cipher {
 	lssig_cipher_block_decrypt f_block_decrypt;
 } lsreg_cipher_t;
 
-typedef ls_nword_t ls_cipher_algo_t;
+typedef unsigned int ls_cipher_algo_t;
 
 
 extern const struct lsreg_cipher __cipher_registry[];

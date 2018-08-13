@@ -69,7 +69,7 @@ extern "C" {
 	 * \param ansi
 	 * \return
 	 */
-	LSAPI ls_result_t ls_memory_dump_ex(const void *const src, const size_t size, const ls_nword_t columns, const ls_nword_t columnsize, FILE *const dest, const ls_bool_t ansi);
+	LSAPI ls_result_t ls_memory_dump_ex(const void *const src, const size_t size, const unsigned int columns, const unsigned int columnsize, FILE *const dest, const ls_bool_t ansi);
 
 	/*!
 	 * \brief ls_memory_dump

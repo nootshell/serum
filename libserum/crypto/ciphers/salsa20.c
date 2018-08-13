@@ -127,7 +127,7 @@ ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint8_t *const re
 
 
 ls_result_t
-ls_salsa20_get_stream_block_ex(ls_salsa20_t *const restrict context, ls_salsa20_block_t block, const ls_nword_t rounds) {
+ls_salsa20_get_stream_block_ex(ls_salsa20_t *const restrict context, ls_salsa20_block_t block, const unsigned int rounds) {
 	if (context == NULL || block == NULL) {
 		return_e(LS_E_NULL);
 	}
@@ -140,7 +140,7 @@ ls_salsa20_get_stream_block_ex(ls_salsa20_t *const restrict context, ls_salsa20_
 	uint32_t buffer[16];
 	memcpy(buffer, context->words, sizeof(buffer));
 
-	ls_nword_t i;
+	unsigned int i;
 	for (i = (rounds >> 1); i--;) {
 		buffer[ 4] ^= LS_ROTL32((buffer[ 0] + buffer[12]), 0x07);
 		buffer[ 8] ^= LS_ROTL32((buffer[ 4] + buffer[ 0]), 0x09);
@@ -224,7 +224,7 @@ ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t 
 
 	uint32_t *const block32 = (uint32_t *const)block;
 
-	ls_nword_t i;
+	unsigned int i;
 	for (i = (sizeof(buffer) / sizeof(*buffer)); i--;) {
 		block32[i] ^= buffer[i];
 	}

@@ -37,7 +37,7 @@ FILEID("MT-safe state object.");
 
 
 ls_result_t
-ls_state_init_ex(ls_state_t *const state, const ls_nword_t value) {
+ls_state_init_ex(ls_state_t *const state, const unsigned int value) {
 	if (state == NULL) {
 		ls_debug("NULL encountered.");
 		return_e(LS_E_NULL);
@@ -99,7 +99,7 @@ ls_state_clear(ls_state_t *const state) {
 
 
 ls_result_t
-ls_state_set(ls_state_t *const state, const ls_nword_t value) {
+ls_state_set(ls_state_t *const state, const unsigned int value) {
 	if (state == NULL) {
 		ls_debug("NULL encountered.");
 		return_e(LS_E_NULL);
@@ -114,14 +114,14 @@ ls_state_set(ls_state_t *const state, const ls_nword_t value) {
 
 
 ls_result_t
-ls_state_get(ls_state_t *const restrict state, ls_nword_t *const restrict out_value) {
+ls_state_get(ls_state_t *const restrict state, unsigned int *const restrict out_value) {
 	if (state == NULL) {
 		ls_debug("NULL encountered.");
 		return_e(LS_E_NULL);
 	}
 
 	LS_MUTEX_ACQUIRE_OR_ERROR(&state->__lock);
-	const ls_nword_t value = state->value;
+	const unsigned int value = state->value;
 	LS_MUTEX_RELEASE_OR_ERROR(&state->__lock);
 
 	*out_value = value;
