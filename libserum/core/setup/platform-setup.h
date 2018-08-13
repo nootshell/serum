@@ -37,15 +37,56 @@
 
 
 
-#if (LS_WINDOWS)
+#if (!LS_WINDOWS || LS_DOXYGEN)
+#	/*! \hideinitializer \brief OS EOL sequence. */
+#	define LS_EOL							"\n"
+#	/*! \hideinitializer \brief OS EOL length. */
+#	define LS_EOL_SIZE						1
+#else
 #	define LS_EOL							"\r\n"
 #	define LS_EOL_SIZE						2
-#else
-#	define LS_EOL							"\n"
-#	define LS_EOL_SIZE						1
 #endif
 
-#if (LS_GCC || LS_LLVM)
+#if (LS_DOXYGEN)
+#	/*! \brief Logs a compiler message (compiler dependent). */
+#	define LS_COMPILER_LOG(mesg)
+#
+#	/*! \brief Attribute to mark for export (compiler dependent). */
+#	define LS_EXPORT
+#
+#	/*! \brief Attribute to mark for import (compiler dependent). */
+#	define LS_IMPORT
+#
+#	/*! \brief Attribute to prevent export (compiler dependent). */
+#	define LS_INTERNAL
+#
+#	/*! \brief Attribute: nonnull (compiler dependent). */
+#	define LS_ATTR_NONNULL
+#
+#	/*! \brief Attribute: nonnull (compiler dependent). */
+#	define LS_ATTR_NONNULL_EX(...)
+#
+#	/*! \brief Attribute: pure (compiler dependent). */
+#	define LS_ATTR_PURE
+#
+#	/*! \brief Attribute: const (compiler dependent). */
+#	define LS_ATTR_CONST
+#
+#	/*! \brief Attribute: used (compiler dependent). */
+#	define LS_ATTR_USED
+#
+#	/*! \brief Attribute: noreturn (compiler dependent). */
+#	define LS_ATTR_NORETURN
+#
+#	/*! \brief Attribute: always_inline (compiler dependent). */
+#	define LS_ATTR_FORCE_INLINE
+#
+#	/*! \brief Attribute: threadlocal (compiler dependent). */
+#	define LS_ATTR_THREADLOCAL
+#
+#	/*! \brief Attribute/keyword: forced inline (compiler dependent). */
+#	define LS_FORCE_INLINE
+#elif (LS_GCC || LS_LLVM)
 #	define __LS_ATTR(x)						__attribute__((x))
 #
 #	include "./macros.h"
