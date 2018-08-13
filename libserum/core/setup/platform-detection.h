@@ -38,17 +38,17 @@
 #	if (CHAR_BIT != 8)
 #		error Currently only platforms with 8-bit characters are supported.
 #	endif
-
-/*! \hideinitializer \brief Number of bits in a byte. */
+#
+#	/*! \hideinitializer \brief Number of bits in a byte. */
 #	define LS_BITS_BYTE						CHAR_BIT
-
-/*! \hideinitializer \brief Number of bits in a word. */
+#
+#	/*! \hideinitializer \brief Number of bits in a word. */
 #	define LS_BITS_WORD						(LS_BITS_BYTE << 1)
-
-/*! \hideinitializer \brief Number of bits in a double-word. */
+#
+#	/*! \hideinitializer \brief Number of bits in a double-word. */
 #	define LS_BITS_DWORD					(LS_BITS_BYTE << 2)
-
-/*! \hideinitializer \brief Number of bits in a quad-word. */
+#
+#	/*! \hideinitializer \brief Number of bits in a quad-word. */
 #	define LS_BITS_QWORD					(LS_BITS_BYTE << 3)
 #else
 #	error Missing preprocessor definition: CHAR_BIT
@@ -99,17 +99,17 @@
 
 
 #if (LS_ID_ARCH == LS_ID_X86)
-/*! \hideinitializer \brief Defined and set to `1` if the detected platform is \em x86. */
+#	/*! \hideinitializer \brief Defined and set to `1` if the detected platform is \em x86. */
 #	define LS_X86							1
 #endif
 
 #if (LS_ID_ARCH == LS_ID_X64)
-/*! \hideinitializer \brief Defined and set to `1` if the detected platform is \em x64. */
+#	/*! \hideinitializer \brief Defined and set to `1` if the detected platform is \em x64. */
 #	define LS_X64							1
 #endif
 
 #if (LS_ID_ARCH == LS_ID_ARM)
-/*! \hideinitializer \brief Defined and set to `1` if the detected platform is \em ARM. */
+#	/*! \hideinitializer \brief Defined and set to `1` if the detected platform is \em ARM. */
 #	define LS_ARM							1
 #endif
 
@@ -138,17 +138,17 @@
 
 
 #if (LS_ID_OS == LS_ID_LINUX)
-/*! \hideinitializer \brief Defined and set to `1` if the detected OS is \em Linux. */
+#	/*! \hideinitializer \brief Defined and set to `1` if the detected OS is \em Linux. */
 #	define LS_LINUX							1
 #endif
 
 #if (LS_ID_OS == LS_ID_WINDOWS)
-/*! \hideinitializer \brief Defined and set to `1` if the detected OS is \em Windows. */
+#	/*! \hideinitializer \brief Defined and set to `1` if the detected OS is \em Windows. */
 #	define LS_WINDOWS						1
 #endif
 
 #if (LS_ID_OS == LS_ID_MAC)
-/*! \hideinitializer \brief Defined and set to `1` if the detected OS is \em Mac. */
+#	/*! \hideinitializer \brief Defined and set to `1` if the detected OS is \em Mac. */
 #	define LS_MAC							1
 #endif
 
@@ -180,12 +180,12 @@
 
 
 #if (LS_ID_ENDIAN == LS_ID_BIG_ENDIAN)
-/*! \hideinitializer \brief Defined and set to `1` if the detected endianness is \em big-endian. */
+#	/*! \hideinitializer \brief Defined and set to `1` if the detected endianness is \em big-endian. */
 #	define LS_BIG_ENDIAN					1
 #endif
 
 #if (LS_ID_ENDIAN == LS_ID_LITTLE_ENDIAN)
-/*! \hideinitializer \brief Defined and set to `1` if the detected endianness is \em little-endian. */
+#	/*! \hideinitializer \brief Defined and set to `1` if the detected endianness is \em little-endian. */
 #	define LS_LITTLE_ENDIAN					1
 #endif
 
@@ -221,31 +221,31 @@
 
 #if ((LS_ID_COMPILER == LS_ID_GCC) || (LS_ID_COMPILER == LS_ID_LLVM))
 #	if (LS_ID_COMPILER == LS_ID_GCC)
-/*! \hideinitializer \brief Defined and set to `1` if the detected compiler is \em GCC. */
+#		/*! \hideinitializer \brief Defined and set to `1` if the detected compiler is \em GCC. */
 #		define LS_GCC						1
 #	else
-/*! \hideinitializer \brief Defined and set to `1` if the detected compiler is \em LLVM. */
+#		/*! \hideinitializer \brief Defined and set to `1` if the detected compiler is \em LLVM. */
 #		define LS_LLVM						1
 #	endif
 #endif
 
 #if (LS_ID_COMPILER == LS_ID_MINGW)
-/*! \hideinitializer \brief Defined and set to `1` if the detected compiler is \em MinGW. */
+#	/*! \hideinitializer \brief Defined and set to `1` if the detected compiler is \em MinGW. */
 #	define LS_MINGW							1
 #endif
 
 #if (LS_ID_COMPILER == LS_ID_MSC)
-/*! \hideinitializer \brief Defined and set to `1` if the detected compiler is \em MSC. */
+#	/*! \hideinitializer \brief Defined and set to `1` if the detected compiler is \em MSC. */
 #	define LS_MSC							1
 #endif
 
 #if (LS_ID_COMPILER == LS_ID_TCC)
-/*! \hideinitializer \brief Defined and set to `1` if the detected compiler is \em TCC. */
+#	/*! \hideinitializer \brief Defined and set to `1` if the detected compiler is \em TCC. */
 #	define LS_TCC							1
 #endif
 
 #if (defined(_UCRT) || LS_DOXYGEN)
-/*! \hideinitializer \brief Defined and set to `1` if the _Universal C Runtime_ is enabled (Windows). */
+#	/*! \hideinitializer \brief Defined and set to `1` if the _Universal C Runtime_ is enabled (Windows). */
 #	define LS_UCRT							1
 #endif
 
