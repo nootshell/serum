@@ -232,3 +232,15 @@ ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t 
 
 	return block_result;
 }
+
+
+ls_result_t
+ls_salsa20_block_encrypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block) {
+	return ls_salsa20_block_crypt(context, block);
+}
+
+
+ls_result_t
+ls_salsa20_block_decrypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block) {
+	return ls_salsa20_block_crypt(context, block);
+}

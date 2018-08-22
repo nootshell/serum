@@ -113,8 +113,18 @@ extern "C" {
 	 * \return ?TODO
 	 */
 	LSAPI ls_result_t ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
-#	define ls_salsa20_block_encrypt ls_salsa20_block_crypt
-#	define ls_salsa20_block_decrypt ls_salsa20_block_crypt
+
+	/*!
+	 * \algorithm{Salsa20}
+	 * \copydoc lssig_cipher_block_encrypt
+	 */
+	LSAPI ls_result_t ls_salsa20_block_encrypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
+
+	/*!
+	 * \algorithm{Salsa20}
+	 * \copydoc lssig_cipher_block_decrypt
+	 */
+	LSAPI ls_result_t ls_salsa20_block_decrypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
 
 #ifdef __cplusplus
 }
