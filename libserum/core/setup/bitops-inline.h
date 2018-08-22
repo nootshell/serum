@@ -38,50 +38,50 @@
 
 
 
-/*! \brief Rotates the 8-bit \p value \p n bits to the left. */
+//! \brief Rotates the 8-bit \p value \p n bits to the left.
 static LS_FORCE_INLINE
 uint8_t __ls_rotl8(uint8_t value, unsigned int n) {
 	return (uint8_t)((value << n) | (value >> (-n & ((LS_BITS_BYTE) - 1))));
 }
 
-/*! \brief Rotates the 16-bit \p value \p n bits to the left. */
+//! \brief Rotates the 16-bit \p value \p n bits to the left.
 static LS_FORCE_INLINE
 uint16_t __ls_rotl16(uint16_t value, unsigned int n) {
 	return (uint16_t)((value << n) | (value >> (-n & ((LS_BITS_WORD) - 1))));
 }
 
-/*! \brief Rotates the 32-bit \p value \p n bits to the left. */
+//! \brief Rotates the 32-bit \p value \p n bits to the left.
 static LS_FORCE_INLINE
 uint32_t __ls_rotl32(uint32_t value, unsigned int n) {
 	return (uint32_t)((value << n) | (value >> (-n & ((LS_BITS_DWORD) - 1))));
 }
 
-/*! \brief Rotates the 64-bit \p value \p n bits to the left. */
+//! \brief Rotates the 64-bit \p value \p n bits to the left.
 static LS_FORCE_INLINE
 uint64_t __ls_rotl64(uint64_t value, unsigned int n) {
 	return (uint64_t)((value << n) | (value >> (-n & ((LS_BITS_QWORD) - 1))));
 }
 
 
-/*! \brief Rotates the 8-bit \p value \p n bits to the right. */
+//! \brief Rotates the 8-bit \p value \p n bits to the right.
 static LS_FORCE_INLINE
 uint8_t __ls_rotr8(uint8_t value, unsigned int n) {
 	return (uint8_t)((value >> n) | (value << (-n & ((LS_BITS_BYTE) - 1))));
 }
 
-/*! \brief Rotates the 16-bit \p value \p n bits to the right. */
+//! \brief Rotates the 16-bit \p value \p n bits to the right.
 static LS_FORCE_INLINE
 uint16_t __ls_rotr16(uint16_t value, unsigned int n) {
 	return (uint16_t)((value >> n) | (value << (-n & ((LS_BITS_WORD) - 1))));
 }
 
-/*! \brief Rotates the 32-bit \p value \p n bits to the right. */
+//! \brief Rotates the 32-bit \p value \p n bits to the right.
 static LS_FORCE_INLINE
 uint32_t __ls_rotr32(uint32_t value, unsigned int n) {
 	return (uint32_t)((value >> n) | (value << (-n & ((LS_BITS_DWORD) - 1))));
 }
 
-/*! \brief Rotates the 64-bit \p value \p n bits to the right. */
+//! \brief Rotates the 64-bit \p value \p n bits to the right.
 static LS_FORCE_INLINE
 uint64_t __ls_rotr64(uint64_t value, unsigned int n) {
 	return (uint64_t)((value >> n) | (value << (-n & ((LS_BITS_QWORD) - 1))));
