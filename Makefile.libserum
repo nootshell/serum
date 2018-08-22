@@ -16,8 +16,8 @@ CFLAGS_RELEASE_CST = \
 	$(CFLAGS_RELEASE) -DLSCST_ENABLED=1
 
 
-
 PROFILE = debug-cst
+DESTDIR = /usr/lib
 
 
 
@@ -38,6 +38,6 @@ libserum: pre-libserum bin/libserum.so
 
 install: libserum
 	@echo $(strip $(ECHO_EOL))
-	@echo -n "> cp bin/libserum.so /usr/lib/libserum.so";
-	@cp bin/libserum.so /usr/lib/libserum.so;
+	@echo -n "> cp bin/libserum.so "${DESTDIR}/libserum.so";
+	@cp bin/libserum.so "${DESTDIR}/libserum.so";
 	@echo " (done)";
