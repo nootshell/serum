@@ -49,12 +49,12 @@ ls_memory_dump_ex(const void *const src, const size_t size, const unsigned int c
 		return_e(LS_E_NULL);
 	}
 
-	if (columns < 1 || columnsize < 1) {
-		return_e(LS_E_INVALID);
-	}
-
 	if (size < 1) {
 		return_e(LS_E_NOOP);
+	}
+
+	if (columns < 1 || columnsize < 1) {
+		return_e(LS_E_INVALID);
 	}
 
 
