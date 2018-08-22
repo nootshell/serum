@@ -38,6 +38,6 @@ libserum: pre-libserum bin/libserum.so
 
 install: libserum
 	@echo $(strip $(ECHO_EOL))
-	@echo -n "> cp bin/libserum.so "${DESTDIR}/libserum.so";
+	@echo -n "> cp bin/libserum.so \"${DESTDIR}/libserum.so\"";
 	@cp bin/libserum.so "${DESTDIR}/libserum.so";
 	@echo " (done)";
