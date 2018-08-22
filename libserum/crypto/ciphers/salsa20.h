@@ -32,6 +32,17 @@
 
 
 
+/*!
+ * \page salsa20 Salsa20
+ *
+ * \see crypto/ciphers/salsa20.h
+ *
+ * ?TODO
+ */
+
+
+
+
 #include "../../core/setup.h"
 
 
@@ -71,47 +82,35 @@ extern "C" {
 #endif
 
 	/*!
-	 * \brief ls_salsa20_init
-	 * \param context
-	 * \param key
-	 * \param key_size
-	 * \param nonce
-	 * \param nonce_size
-	 * \return
+	 * \algorithm{Salsa20}
+	 * \copydoc lssig_cipher_init
 	 */
 	LSAPI ls_result_t ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const size_t key_size, const uint8_t *const restrict nonce, const size_t nonce_size);
 
 	/*!
-	 * \brief ls_salsa20_rekey
-	 * \param context
-	 * \param key
-	 * \param key_size
-	 * \return
+	 * \algorithm{Salsa20}
+	 * \copydoc lssig_cipher_rekey
 	 */
 	LSAPI ls_result_t ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const size_t key_size);
 
 	/*!
-	 * \brief ls_salsa20_renonce
-	 * \param context
-	 * \param nonce
-	 * \param nonce_size
-	 * \return
+	 * \algorithm{Salsa20}
+	 * \copydoc lssig_cipher_renonce
 	 */
 	LSAPI ls_result_t ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint8_t *const restrict nonce, const size_t nonce_size);
 
 	/*!
-	 * \brief ls_salsa20_get_stream_block
-	 * \param context
-	 * \param block
-	 * \return
+	 * \algorithm{Salsa20}
+	 * \copydoc lssig_cipher_get_stream_block
 	 */
 	LSAPI ls_result_t ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
 
 	/*!
-	 * \brief ls_salsa20_block_crypt
-	 * \param context
-	 * \param block
-	 * \return
+	 * \algorithm{Salsa20}
+	 * \brief Encrypts/decrypts the given block using the given cipher context.
+	 * \param context The context to use.
+	 * \param block The block to encrypt/decrypt.
+	 * \return ?TODO
 	 */
 	LSAPI ls_result_t ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
 #	define ls_salsa20_block_encrypt ls_salsa20_block_crypt
