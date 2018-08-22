@@ -45,7 +45,7 @@ static const char fmt_ansi[] = "\033[0;36m%0*"PRIXPTR"\033[0m: \033[0;37m";
 
 ls_result_t
 ls_memory_dump_ex(const void *const src, const size_t size, const unsigned int columns, const unsigned int columnsize, FILE *const dest, const ls_bool_t ansi) {
-	if (dest == NULL) {
+	if (src == NULL || dest == NULL) {
 		return_e(LS_E_NULL);
 	}
 
@@ -68,7 +68,7 @@ ls_memory_dump_ex(const void *const src, const size_t size, const unsigned int c
 	size_t i, word, column;
 	for (i = size, word = column = 0; i--;) {
 		if (column == 0) {
-			if (fprintf(dest, pfmt, (int)(sizeof(void*) << 1), (uintptr_t)src8) != pfmt_sz) {
+			if ((size_t)fprintf(dest, pfmt, (int)(sizeof(void*) << 1), (uintptr_t)src8) != pfmt_sz) {
 				result = LS_E_IO_WRITE;
 				break;
 			}
