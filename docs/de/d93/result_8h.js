@@ -28,6 +28,6 @@ var result_8h =
     [ "LS_E_DATA_MISMATCH", "de/d93/result_8h.html#a08c4f1f0f4f488de6c3f5d4b31b18953", null ],
     [ "LS_E_ALGORITHM", "de/d93/result_8h.html#ad2971ec01d72baeecc469d52231ed4b1", null ],
     [ "LS_E_DEPLETED", "de/d93/result_8h.html#ae3a98c225e97055ef29f0eae39818752", null ],
-    [ "ls_result_t", "de/d93/result_8h.html#a553daa36179037d30847fafbc76030db", null ],
-    [ "ls_result_string", "de/d93/result_8h.html#a5824adb12f93593f8cddcf16df64488d", null ]
+    [ "ls_result_t", "de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649", null ],
+    [ "ls_result_string", "de/d93/result_8h.html#a0565b88a839d76da7ee895e17c638f7b", null ]
 ];

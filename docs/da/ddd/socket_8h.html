@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Serum: submodules/master/libserum/io/socket.h File Reference</title>
+<title>Serum: io/socket.h File Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -96,8 +96,8 @@ $(document).ready(function(){initNavTree('da/ddd/socket_8h.html','../../');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="../../d7/df7/setup_8h_source.html">../core/setup.h</a>&quot;</code><br />
-<code>#include &lt;sys/types.h&gt;</code><br />
-<code>#include &lt;sys/socket.h&gt;</code><br />
+<code>#include &lt;winsock2.h&gt;</code><br />
+<code>#include &lt;ws2tcpip.h&gt;</code><br />
 </div>
 <p><a href="../../da/ddd/socket_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -108,7 +108,7 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a07901bcb0ced47bcc4143d8746bc8753"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a07901bcb0ced47bcc4143d8746bc8753">LS_INVALID_SOCKFD</a>&#160;&#160;&#160;~((<a class="el" href="../../da/ddd/socket_8h.html#a6520fd4b41fe7412a276f3052b78fe4e">ls_sockfd_t</a>)0)</td></tr>
+<tr class="memitem:a07901bcb0ced47bcc4143d8746bc8753"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a07901bcb0ced47bcc4143d8746bc8753">LS_INVALID_SOCKFD</a>&#160;&#160;&#160;~((<a class="el" href="../../da/ddd/socket_8h.html#abac00ede19eb6908fbc95b012ba453f2">ls_sockfd_t</a>)0)</td></tr>
 <tr class="memdesc:a07901bcb0ced47bcc4143d8746bc8753"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes an invalid socket descriptor.  <a href="#a07901bcb0ced47bcc4143d8746bc8753">More...</a><br /></td></tr>
 <tr class="separator:a07901bcb0ced47bcc4143d8746bc8753"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add82f149f8ddcbd76d125f09ada28148"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#add82f149f8ddcbd76d125f09ada28148">LS_SOCKET_MAX_WRITE_RETRY</a>&#160;&#160;&#160;10</td></tr>
@@ -132,34 +132,45 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a6520fd4b41fe7412a276f3052b78fe4e"><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a6520fd4b41fe7412a276f3052b78fe4e">ls_sockfd_t</a></td></tr>
-<tr class="separator:a6520fd4b41fe7412a276f3052b78fe4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abac00ede19eb6908fbc95b012ba453f2"><td class="memItemLeft" align="right" valign="top">typedef SOCKET&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#abac00ede19eb6908fbc95b012ba453f2">ls_sockfd_t</a></td></tr>
+<tr class="separator:abac00ede19eb6908fbc95b012ba453f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac14821cf7c92e894b422e4088e563421"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="../../db/daf/structls__socket.html">ls_socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a></td></tr>
 <tr class="separator:ac14821cf7c92e894b422e4088e563421"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4da7eacd489b37c90cfec498e6b9d291"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a4da7eacd489b37c90cfec498e6b9d291">ls_socket_init_fd</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const socket, const <a class="el" href="../../da/ddd/socket_8h.html#a6520fd4b41fe7412a276f3052b78fe4e">ls_sockfd_t</a> descriptor)</td></tr>
+<tr class="memitem:a4da7eacd489b37c90cfec498e6b9d291"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a4da7eacd489b37c90cfec498e6b9d291">ls_socket_init_fd</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const socket, const <a class="el" href="../../da/ddd/socket_8h.html#abac00ede19eb6908fbc95b012ba453f2">ls_sockfd_t</a> descriptor)</td></tr>
+<tr class="memdesc:a4da7eacd489b37c90cfec498e6b9d291"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_socket_init_fd  <a href="#a4da7eacd489b37c90cfec498e6b9d291">More...</a><br /></td></tr>
 <tr class="separator:a4da7eacd489b37c90cfec498e6b9d291"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e07686388e89d5d38b9c6083ab222ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a2e07686388e89d5d38b9c6083ab222ca">ls_socket_init</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const socket, const uint32_t flags)</td></tr>
+<tr class="memitem:a2e07686388e89d5d38b9c6083ab222ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a2e07686388e89d5d38b9c6083ab222ca">ls_socket_init</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const socket, const uint32_t flags)</td></tr>
+<tr class="memdesc:a2e07686388e89d5d38b9c6083ab222ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_socket_init  <a href="#a2e07686388e89d5d38b9c6083ab222ca">More...</a><br /></td></tr>
 <tr class="separator:a2e07686388e89d5d38b9c6083ab222ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80b8ca9daba81d118a2fd3e8bb6bd028"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a80b8ca9daba81d118a2fd3e8bb6bd028">ls_socket_clear</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const socket)</td></tr>
+<tr class="memitem:a80b8ca9daba81d118a2fd3e8bb6bd028"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a80b8ca9daba81d118a2fd3e8bb6bd028">ls_socket_clear</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const socket)</td></tr>
+<tr class="memdesc:a80b8ca9daba81d118a2fd3e8bb6bd028"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_socket_clear  <a href="#a80b8ca9daba81d118a2fd3e8bb6bd028">More...</a><br /></td></tr>
 <tr class="separator:a80b8ca9daba81d118a2fd3e8bb6bd028"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41321610afb7801dc0dcc11dad1c4f18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a41321610afb7801dc0dcc11dad1c4f18">ls_socket_start</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, const char *const restrict node, const char *const restrict service, const uint16_t port)</td></tr>
+<tr class="memitem:a41321610afb7801dc0dcc11dad1c4f18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a41321610afb7801dc0dcc11dad1c4f18">ls_socket_start</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, const char *const restrict node, const char *const restrict service, const uint16_t port)</td></tr>
+<tr class="memdesc:a41321610afb7801dc0dcc11dad1c4f18"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_socket_start  <a href="#a41321610afb7801dc0dcc11dad1c4f18">More...</a><br /></td></tr>
 <tr class="separator:a41321610afb7801dc0dcc11dad1c4f18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89b48cdb8e91afd4033c1180f340dea5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a89b48cdb8e91afd4033c1180f340dea5">ls_socket_stop</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const socket)</td></tr>
+<tr class="memitem:a89b48cdb8e91afd4033c1180f340dea5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a89b48cdb8e91afd4033c1180f340dea5">ls_socket_stop</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const socket)</td></tr>
+<tr class="memdesc:a89b48cdb8e91afd4033c1180f340dea5"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_socket_stop  <a href="#a89b48cdb8e91afd4033c1180f340dea5">More...</a><br /></td></tr>
 <tr class="separator:a89b48cdb8e91afd4033c1180f340dea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a962c868b555b8a9e8e2e528972061f3c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a962c868b555b8a9e8e2e528972061f3c">ls_socket_accept_fd_ex</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, <a class="el" href="../../da/ddd/socket_8h.html#a6520fd4b41fe7412a276f3052b78fe4e">ls_sockfd_t</a> *const restrict out_descriptor, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen)</td></tr>
+<tr class="memitem:a962c868b555b8a9e8e2e528972061f3c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a962c868b555b8a9e8e2e528972061f3c">ls_socket_accept_fd_ex</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, <a class="el" href="../../da/ddd/socket_8h.html#abac00ede19eb6908fbc95b012ba453f2">ls_sockfd_t</a> *const restrict out_descriptor, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen)</td></tr>
+<tr class="memdesc:a962c868b555b8a9e8e2e528972061f3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_socket_accept_fd_ex  <a href="#a962c868b555b8a9e8e2e528972061f3c">More...</a><br /></td></tr>
 <tr class="separator:a962c868b555b8a9e8e2e528972061f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3231a440b76d2ee3d09c67f5f77f962d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a3231a440b76d2ee3d09c67f5f77f962d">ls_socket_accept_fd</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, <a class="el" href="../../da/ddd/socket_8h.html#a6520fd4b41fe7412a276f3052b78fe4e">ls_sockfd_t</a> *const restrict out_descriptor)</td></tr>
+<tr class="memitem:a3231a440b76d2ee3d09c67f5f77f962d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a3231a440b76d2ee3d09c67f5f77f962d">ls_socket_accept_fd</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, <a class="el" href="../../da/ddd/socket_8h.html#abac00ede19eb6908fbc95b012ba453f2">ls_sockfd_t</a> *const restrict out_descriptor)</td></tr>
+<tr class="memdesc:a3231a440b76d2ee3d09c67f5f77f962d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_socket_accept_fd  <a href="#a3231a440b76d2ee3d09c67f5f77f962d">More...</a><br /></td></tr>
 <tr class="separator:a3231a440b76d2ee3d09c67f5f77f962d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e50dfe00034043de30f0ffa91e84729"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a2e50dfe00034043de30f0ffa91e84729">ls_socket_accept_ex</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, <a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict out_client, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen)</td></tr>
+<tr class="memitem:a2e50dfe00034043de30f0ffa91e84729"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a2e50dfe00034043de30f0ffa91e84729">ls_socket_accept_ex</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, <a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict out_client, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen)</td></tr>
+<tr class="memdesc:a2e50dfe00034043de30f0ffa91e84729"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_socket_accept_ex  <a href="#a2e50dfe00034043de30f0ffa91e84729">More...</a><br /></td></tr>
 <tr class="separator:a2e50dfe00034043de30f0ffa91e84729"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2447031aeba9a6889cbfa8f89688bcc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a2447031aeba9a6889cbfa8f89688bcc5">ls_socket_accept</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, <a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict out_client)</td></tr>
+<tr class="memitem:a2447031aeba9a6889cbfa8f89688bcc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a2447031aeba9a6889cbfa8f89688bcc5">ls_socket_accept</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, <a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict out_client)</td></tr>
+<tr class="memdesc:a2447031aeba9a6889cbfa8f89688bcc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_socket_accept  <a href="#a2447031aeba9a6889cbfa8f89688bcc5">More...</a><br /></td></tr>
 <tr class="separator:a2447031aeba9a6889cbfa8f89688bcc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3be04287d9445a33960adde679779b4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a3be04287d9445a33960adde679779b4c">ls_socket_write</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, const void *const restrict data, const size_t length)</td></tr>
+<tr class="memitem:a3be04287d9445a33960adde679779b4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a3be04287d9445a33960adde679779b4c">ls_socket_write</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, const void *const restrict data, const size_t length)</td></tr>
+<tr class="memdesc:a3be04287d9445a33960adde679779b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_socket_write  <a href="#a3be04287d9445a33960adde679779b4c">More...</a><br /></td></tr>
 <tr class="separator:a3be04287d9445a33960adde679779b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17c0f77033ddf73d3f9d4e775e04ea26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a17c0f77033ddf73d3f9d4e775e04ea26">ls_socket_read</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, void *const restrict buffer, const size_t max_length, size_t *const out_size)</td></tr>
+<tr class="memitem:a17c0f77033ddf73d3f9d4e775e04ea26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/ddd/socket_8h.html#a17c0f77033ddf73d3f9d4e775e04ea26">ls_socket_read</a> (<a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict socket, void *const restrict buffer, const size_t max_length, size_t *const out_size)</td></tr>
+<tr class="memdesc:a17c0f77033ddf73d3f9d4e775e04ea26"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_socket_read  <a href="#a17c0f77033ddf73d3f9d4e775e04ea26">More...</a><br /></td></tr>
 <tr class="separator:a17c0f77033ddf73d3f9d4e775e04ea26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -170,7 +181,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_INVALID_SOCKFD&#160;&#160;&#160;~((<a class="el" href="../../da/ddd/socket_8h.html#a6520fd4b41fe7412a276f3052b78fe4e">ls_sockfd_t</a>)0)</td>
+          <td class="memname">#define LS_INVALID_SOCKFD&#160;&#160;&#160;~((<a class="el" href="../../da/ddd/socket_8h.html#abac00ede19eb6908fbc95b012ba453f2">ls_sockfd_t</a>)0)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -326,19 +337,19 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="a6520fd4b41fe7412a276f3052b78fe4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6520fd4b41fe7412a276f3052b78fe4e">&#9670;&nbsp;</a></span>ls_sockfd_t</h2>
+<a id="abac00ede19eb6908fbc95b012ba453f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abac00ede19eb6908fbc95b012ba453f2">&#9670;&nbsp;</a></span>ls_sockfd_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int <a class="el" href="../../da/ddd/socket_8h.html#a6520fd4b41fe7412a276f3052b78fe4e">ls_sockfd_t</a></td>
+          <td class="memname">typedef SOCKET <a class="el" href="../../da/ddd/socket_8h.html#abac00ede19eb6908fbc95b012ba453f2">ls_sockfd_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../da/ddd/socket_8h_source.html#l00046">46</a> of file <a class="el" href="../../da/ddd/socket_8h_source.html">socket.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../da/ddd/socket_8h_source.html#l00041">41</a> of file <a class="el" href="../../da/ddd/socket_8h_source.html">socket.h</a>.</p>
 
 </div>
 </div>
@@ -364,7 +375,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_socket_init_fd </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_socket_init_fd </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const&#160;</td>
           <td class="paramname"><em>socket</em>, </td>
@@ -372,7 +383,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="../../da/ddd/socket_8h.html#a6520fd4b41fe7412a276f3052b78fe4e">ls_sockfd_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="../../da/ddd/socket_8h.html#abac00ede19eb6908fbc95b012ba453f2">ls_sockfd_t</a>&#160;</td>
           <td class="paramname"><em>descriptor</em>&#160;</td>
         </tr>
         <tr>
@@ -383,6 +394,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>ls_socket_init_fd </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket</td><td></td></tr>
+    <tr><td class="paramname">descriptor</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
 </div>
 </div>
 <a id="a2e07686388e89d5d38b9c6083ab222ca"></a>
@@ -392,7 +413,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_socket_init </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_socket_init </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const&#160;</td>
           <td class="paramname"><em>socket</em>, </td>
@@ -411,6 +432,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>ls_socket_init </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket</td><td></td></tr>
+    <tr><td class="paramname">flags</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
 </div>
 </div>
 <a id="a80b8ca9daba81d118a2fd3e8bb6bd028"></a>
@@ -420,7 +451,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_socket_clear </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_socket_clear </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const&#160;</td>
           <td class="paramname"><em>socket</em></td><td>)</td>
@@ -428,6 +459,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>ls_socket_clear </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -438,7 +478,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_socket_start </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_socket_start </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>socket</em>, </td>
@@ -469,6 +509,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>ls_socket_start </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket</td><td></td></tr>
+    <tr><td class="paramname">node</td><td></td></tr>
+    <tr><td class="paramname">service</td><td></td></tr>
+    <tr><td class="paramname">port</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
 </div>
 </div>
 <a id="a89b48cdb8e91afd4033c1180f340dea5"></a>
@@ -478,7 +530,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_socket_stop </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_socket_stop </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const&#160;</td>
           <td class="paramname"><em>socket</em></td><td>)</td>
@@ -486,6 +538,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>ls_socket_stop </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -496,7 +557,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_socket_accept_fd_ex </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_socket_accept_fd_ex </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>socket</em>, </td>
@@ -504,7 +565,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#a6520fd4b41fe7412a276f3052b78fe4e">ls_sockfd_t</a> *const restrict&#160;</td>
+          <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#abac00ede19eb6908fbc95b012ba453f2">ls_sockfd_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>out_descriptor</em>, </td>
         </tr>
         <tr>
@@ -527,6 +588,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>ls_socket_accept_fd_ex </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket</td><td></td></tr>
+    <tr><td class="paramname">out_descriptor</td><td></td></tr>
+    <tr><td class="paramname">out_sockaddr</td><td></td></tr>
+    <tr><td class="paramname">inout_sockaddrlen</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
 </div>
 </div>
 <a id="a3231a440b76d2ee3d09c67f5f77f962d"></a>
@@ -536,7 +609,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_socket_accept_fd </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_socket_accept_fd </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>socket</em>, </td>
@@ -544,7 +617,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#a6520fd4b41fe7412a276f3052b78fe4e">ls_sockfd_t</a> *const restrict&#160;</td>
+          <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#abac00ede19eb6908fbc95b012ba453f2">ls_sockfd_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>out_descriptor</em>&#160;</td>
         </tr>
         <tr>
@@ -555,6 +628,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>ls_socket_accept_fd </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket</td><td></td></tr>
+    <tr><td class="paramname">out_descriptor</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
 </div>
 </div>
 <a id="a2e50dfe00034043de30f0ffa91e84729"></a>
@@ -564,7 +647,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_socket_accept_ex </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_socket_accept_ex </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>socket</em>, </td>
@@ -595,6 +678,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>ls_socket_accept_ex </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket</td><td></td></tr>
+    <tr><td class="paramname">out_client</td><td></td></tr>
+    <tr><td class="paramname">out_sockaddr</td><td></td></tr>
+    <tr><td class="paramname">inout_sockaddrlen</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
 </div>
 </div>
 <a id="a2447031aeba9a6889cbfa8f89688bcc5"></a>
@@ -604,7 +699,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_socket_accept </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_socket_accept </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>socket</em>, </td>
@@ -623,6 +718,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>ls_socket_accept </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket</td><td></td></tr>
+    <tr><td class="paramname">out_client</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
 </div>
 </div>
 <a id="a3be04287d9445a33960adde679779b4c"></a>
@@ -632,7 +737,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_socket_write </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_socket_write </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>socket</em>, </td>
@@ -657,6 +762,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>ls_socket_write </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket</td><td></td></tr>
+    <tr><td class="paramname">data</td><td></td></tr>
+    <tr><td class="paramname">length</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
 </div>
 </div>
 <a id="a17c0f77033ddf73d3f9d4e775e04ea26"></a>
@@ -666,7 +782,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_socket_read </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_socket_read </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421">ls_socket_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>socket</em>, </td>
@@ -697,6 +813,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>ls_socket_read </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket</td><td></td></tr>
+    <tr><td class="paramname">buffer</td><td></td></tr>
+    <tr><td class="paramname">max_length</td><td></td></tr>
+    <tr><td class="paramname">out_size</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
 </div>
 </div>
 </div><!-- contents -->
@@ -704,8 +832,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_fe6eb5064d42f9f773e90d3512fafa25.html">submodules</a></li><li class="navelem"><a class="el" href="../../dir_24113ac1bdad3f87e86c838174ad5a9a.html">master</a></li><li class="navelem"><a class="el" href="../../dir_efa0fcafe104baae21d5209dfaf69cad.html">libserum</a></li><li class="navelem"><a class="el" href="../../dir_045c625547a8b3c02ec89d5e0efb9b24.html">io</a></li><li class="navelem"><a class="el" href="../../da/ddd/socket_8h.html">socket.h</a></li>
-    <li class="footer">Generated on Thu Jul 19 2018 23:06:09 for Serum by
+    <li class="navelem"><a class="el" href="../../dir_bc161955dc3a3d2485839eba21420d01.html">io</a></li><li class="navelem"><a class="el" href="../../da/ddd/socket_8h.html">socket.h</a></li>
+    <li class="footer">Generated on Thu Aug 23 2018 03:00:12 for Serum by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

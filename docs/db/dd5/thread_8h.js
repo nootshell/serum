@@ -12,7 +12,7 @@ var thread_8h =
       [ "LS_THREAD_STOPPING", "db/dd5/thread_8h.html#a41a13e8832a8ed0b22e6c0ccabf85f5dadcf7707c0e4b4420aed86787cc7ec823", null ],
       [ "LS_THREAD_STOPPED", "db/dd5/thread_8h.html#a41a13e8832a8ed0b22e6c0ccabf85f5da66891fc092b6c904e9e771491d5f52c1", null ]
     ] ],
-    [ "ls_get_tid", "db/dd5/thread_8h.html#a0db2c67e01cd0ef8f9e45a92fa90ca84", null ],
+    [ "ls_get_tid", "db/dd5/thread_8h.html#ac470af93aba39f6d2e6e8c0f4b7754f3", null ],
     [ "ls_thread_init_ex", "db/dd5/thread_8h.html#adb3dc173a45eeca76089d1eac12b893b", null ],
     [ "ls_thread_init", "db/dd5/thread_8h.html#a7a98599c226fdadae15ca0c6fa96f137", null ],
     [ "ls_thread_clear", "db/dd5/thread_8h.html#a3f7b96990128fe02193fbf1a0ad164e1", null ],

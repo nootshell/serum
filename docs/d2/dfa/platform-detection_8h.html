@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Serum: submodules/master/libserum/core/setup/platform-detection.h File Reference</title>
+<title>Serum: core/setup/platform-detection.h File Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -98,179 +98,254 @@ $(document).ready(function(){initNavTree('d2/dfa/platform-detection_8h.html','..
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:af4f233f213bd0917b548a0f1e51657a2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#af4f233f213bd0917b548a0f1e51657a2">LS_ID_X86</a>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:af4f233f213bd0917b548a0f1e51657a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5604859c60f5b7feac0f3c5281e99ef7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a5604859c60f5b7feac0f3c5281e99ef7">LS_ID_X64</a>&#160;&#160;&#160;2</td></tr>
-<tr class="separator:a5604859c60f5b7feac0f3c5281e99ef7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b81065b90f46053d419664833bb3dce"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a2b81065b90f46053d419664833bb3dce">LS_ID_ARM</a>&#160;&#160;&#160;3</td></tr>
-<tr class="separator:a2b81065b90f46053d419664833bb3dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada839745148456bf1bf0a16dd84b9f65"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#ada839745148456bf1bf0a16dd84b9f65">LS_ID_LINUX</a>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:ada839745148456bf1bf0a16dd84b9f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb5d1f4082543fd2688b3f7a4122d529"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#aeb5d1f4082543fd2688b3f7a4122d529">LS_ID_WINDOWS</a>&#160;&#160;&#160;2</td></tr>
-<tr class="separator:aeb5d1f4082543fd2688b3f7a4122d529"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a4bf9b92d90aa295420aec3b864b648"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a4a4bf9b92d90aa295420aec3b864b648">LS_ID_MAC</a>&#160;&#160;&#160;3</td></tr>
-<tr class="separator:a4a4bf9b92d90aa295420aec3b864b648"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a0014f634ae4d35684ed18a8b5c4fb5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a0a0014f634ae4d35684ed18a8b5c4fb5">LS_ID_LITTLE_ENDIAN</a>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:a0a0014f634ae4d35684ed18a8b5c4fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9609bb596924054ee5106c1f6e6f927"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#ae9609bb596924054ee5106c1f6e6f927">LS_ID_BIG_ENDIAN</a>&#160;&#160;&#160;2</td></tr>
-<tr class="separator:ae9609bb596924054ee5106c1f6e6f927"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e1ecf54efa49e14d1002c44166ba519"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a3e1ecf54efa49e14d1002c44166ba519">LS_ID_ENDIAN</a>&#160;&#160;&#160;<a class="el" href="../../d2/dfa/platform-detection_8h.html#a0a0014f634ae4d35684ed18a8b5c4fb5">LS_ID_LITTLE_ENDIAN</a></td></tr>
-<tr class="separator:a3e1ecf54efa49e14d1002c44166ba519"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab70f32948aa1b9ef2c4a33bc995362cd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#ab70f32948aa1b9ef2c4a33bc995362cd">LS_LITTLE_ENDIAN</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memitem:a3fdd777cea1e2da7ac79283bb1629fb8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a3fdd777cea1e2da7ac79283bb1629fb8">LS_BITS_BYTE</a></td></tr>
+<tr class="memdesc:a3fdd777cea1e2da7ac79283bb1629fb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of bits in a byte.  <a href="#a3fdd777cea1e2da7ac79283bb1629fb8">More...</a><br /></td></tr>
+<tr class="separator:a3fdd777cea1e2da7ac79283bb1629fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addbb70825d829b80768c2579a2db1506"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#addbb70825d829b80768c2579a2db1506">LS_BITS_WORD</a></td></tr>
+<tr class="memdesc:addbb70825d829b80768c2579a2db1506"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of bits in a word.  <a href="#addbb70825d829b80768c2579a2db1506">More...</a><br /></td></tr>
+<tr class="separator:addbb70825d829b80768c2579a2db1506"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaf2248188c96e2382f56371772fbbab"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#abaf2248188c96e2382f56371772fbbab">LS_BITS_DWORD</a></td></tr>
+<tr class="memdesc:abaf2248188c96e2382f56371772fbbab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of bits in a double-word.  <a href="#abaf2248188c96e2382f56371772fbbab">More...</a><br /></td></tr>
+<tr class="separator:abaf2248188c96e2382f56371772fbbab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a087c62a146346dec83c4689458494793"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a087c62a146346dec83c4689458494793">LS_BITS_QWORD</a></td></tr>
+<tr class="memdesc:a087c62a146346dec83c4689458494793"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of bits in a quad-word.  <a href="#a087c62a146346dec83c4689458494793">More...</a><br /></td></tr>
+<tr class="separator:a087c62a146346dec83c4689458494793"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a245e37a58a6aabae6d59505b74e4ed01"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a245e37a58a6aabae6d59505b74e4ed01">LS_X86</a></td></tr>
+<tr class="memdesc:a245e37a58a6aabae6d59505b74e4ed01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the detected platform is <em>x86</em>.  <a href="#a245e37a58a6aabae6d59505b74e4ed01">More...</a><br /></td></tr>
+<tr class="separator:a245e37a58a6aabae6d59505b74e4ed01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafdd042cd20917cbfe015f2e0dfdbdf2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#aafdd042cd20917cbfe015f2e0dfdbdf2">LS_X64</a></td></tr>
+<tr class="memdesc:aafdd042cd20917cbfe015f2e0dfdbdf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the detected platform is <em>x64</em>.  <a href="#aafdd042cd20917cbfe015f2e0dfdbdf2">More...</a><br /></td></tr>
+<tr class="separator:aafdd042cd20917cbfe015f2e0dfdbdf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb65564944ba23a1c874dfb72b0ccfb0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#acb65564944ba23a1c874dfb72b0ccfb0">LS_ARM</a></td></tr>
+<tr class="memdesc:acb65564944ba23a1c874dfb72b0ccfb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the detected platform is <em>ARM</em>.  <a href="#acb65564944ba23a1c874dfb72b0ccfb0">More...</a><br /></td></tr>
+<tr class="separator:acb65564944ba23a1c874dfb72b0ccfb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad613286d83736b653d8bcbfdef904640"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#ad613286d83736b653d8bcbfdef904640">LS_LINUX</a></td></tr>
+<tr class="memdesc:ad613286d83736b653d8bcbfdef904640"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the detected OS is <em>Linux</em>.  <a href="#ad613286d83736b653d8bcbfdef904640">More...</a><br /></td></tr>
+<tr class="separator:ad613286d83736b653d8bcbfdef904640"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4770bd437876ca325d77be52ed242376"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a4770bd437876ca325d77be52ed242376">LS_WINDOWS</a></td></tr>
+<tr class="memdesc:a4770bd437876ca325d77be52ed242376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the detected OS is <em>Windows</em>.  <a href="#a4770bd437876ca325d77be52ed242376">More...</a><br /></td></tr>
+<tr class="separator:a4770bd437876ca325d77be52ed242376"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04a0c0685ca78149aff74eaba3ade6b1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a04a0c0685ca78149aff74eaba3ade6b1">LS_MAC</a></td></tr>
+<tr class="memdesc:a04a0c0685ca78149aff74eaba3ade6b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the detected OS is <em>Mac</em>.  <a href="#a04a0c0685ca78149aff74eaba3ade6b1">More...</a><br /></td></tr>
+<tr class="separator:a04a0c0685ca78149aff74eaba3ade6b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab41b7839bd19678fb00e18337cd69925"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#ab41b7839bd19678fb00e18337cd69925">LS_BIG_ENDIAN</a></td></tr>
+<tr class="memdesc:ab41b7839bd19678fb00e18337cd69925"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the detected endianness is <em>big-endian</em>.  <a href="#ab41b7839bd19678fb00e18337cd69925">More...</a><br /></td></tr>
+<tr class="separator:ab41b7839bd19678fb00e18337cd69925"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab70f32948aa1b9ef2c4a33bc995362cd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#ab70f32948aa1b9ef2c4a33bc995362cd">LS_LITTLE_ENDIAN</a></td></tr>
+<tr class="memdesc:ab70f32948aa1b9ef2c4a33bc995362cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the detected endianness is <em>little-endian</em>.  <a href="#ab70f32948aa1b9ef2c4a33bc995362cd">More...</a><br /></td></tr>
 <tr class="separator:ab70f32948aa1b9ef2c4a33bc995362cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ffd29002b66f090f5cb7e1f36cceee7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a9ffd29002b66f090f5cb7e1f36cceee7">LS_ID_GCC</a>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:a9ffd29002b66f090f5cb7e1f36cceee7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b1f54e08e3ae8e00b53685bff7af371"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a1b1f54e08e3ae8e00b53685bff7af371">LS_ID_LLVM</a>&#160;&#160;&#160;2</td></tr>
-<tr class="separator:a1b1f54e08e3ae8e00b53685bff7af371"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fdd204eda40cfbe348c15d2c425df93"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a0fdd204eda40cfbe348c15d2c425df93">LS_ID_MSC</a>&#160;&#160;&#160;3</td></tr>
-<tr class="separator:a0fdd204eda40cfbe348c15d2c425df93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e763b227f2bb42109e87372791214b6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a2e763b227f2bb42109e87372791214b6">LS_ID_MINGW</a>&#160;&#160;&#160;4</td></tr>
-<tr class="separator:a2e763b227f2bb42109e87372791214b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad468a4be6bb792ff4239c53b2588da5b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#ad468a4be6bb792ff4239c53b2588da5b">LS_ID_TCC</a>&#160;&#160;&#160;5</td></tr>
-<tr class="separator:ad468a4be6bb792ff4239c53b2588da5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01e293f71cafee70c250fb7dcb72ca34"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a01e293f71cafee70c250fb7dcb72ca34">LS_GCC</a></td></tr>
+<tr class="memdesc:a01e293f71cafee70c250fb7dcb72ca34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the detected compiler is <em>GCC</em>.  <a href="#a01e293f71cafee70c250fb7dcb72ca34">More...</a><br /></td></tr>
+<tr class="separator:a01e293f71cafee70c250fb7dcb72ca34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4932bc1af4eec8d34ffa9f63aafccb9e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a4932bc1af4eec8d34ffa9f63aafccb9e">LS_MINGW</a></td></tr>
+<tr class="memdesc:a4932bc1af4eec8d34ffa9f63aafccb9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the detected compiler is <em>MinGW</em>.  <a href="#a4932bc1af4eec8d34ffa9f63aafccb9e">More...</a><br /></td></tr>
+<tr class="separator:a4932bc1af4eec8d34ffa9f63aafccb9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d32b9828ef843cfaad866d14f47f34b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a9d32b9828ef843cfaad866d14f47f34b">LS_MSC</a></td></tr>
+<tr class="memdesc:a9d32b9828ef843cfaad866d14f47f34b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the detected compiler is <em>MSC</em>.  <a href="#a9d32b9828ef843cfaad866d14f47f34b">More...</a><br /></td></tr>
+<tr class="separator:a9d32b9828ef843cfaad866d14f47f34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a892cd25587cad5158f42e3c06f9ce1ae"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a892cd25587cad5158f42e3c06f9ce1ae">LS_TCC</a></td></tr>
+<tr class="memdesc:a892cd25587cad5158f42e3c06f9ce1ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the detected compiler is <em>TCC</em>.  <a href="#a892cd25587cad5158f42e3c06f9ce1ae">More...</a><br /></td></tr>
+<tr class="separator:a892cd25587cad5158f42e3c06f9ce1ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0130b05f77f40fd40f94c787c104fc87"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dfa/platform-detection_8h.html#a0130b05f77f40fd40f94c787c104fc87">LS_UCRT</a></td></tr>
+<tr class="memdesc:a0130b05f77f40fd40f94c787c104fc87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined and set to <code>1</code> if the <em>Universal C Runtime</em> is enabled (Windows).  <a href="#a0130b05f77f40fd40f94c787c104fc87">More...</a><br /></td></tr>
+<tr class="separator:a0130b05f77f40fd40f94c787c104fc87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="af4f233f213bd0917b548a0f1e51657a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4f233f213bd0917b548a0f1e51657a2">&#9670;&nbsp;</a></span>LS_ID_X86</h2>
+<a id="a3fdd777cea1e2da7ac79283bb1629fb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fdd777cea1e2da7ac79283bb1629fb8">&#9670;&nbsp;</a></span>LS_BITS_BYTE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_X86&#160;&#160;&#160;1</td>
+          <td class="memname">#define LS_BITS_BYTE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00053">53</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Number of bits in a byte. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00043">43</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="a5604859c60f5b7feac0f3c5281e99ef7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5604859c60f5b7feac0f3c5281e99ef7">&#9670;&nbsp;</a></span>LS_ID_X64</h2>
+<a id="addbb70825d829b80768c2579a2db1506"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addbb70825d829b80768c2579a2db1506">&#9670;&nbsp;</a></span>LS_BITS_WORD</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_X64&#160;&#160;&#160;2</td>
+          <td class="memname">#define LS_BITS_WORD</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00054">54</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Number of bits in a word. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00046">46</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="a2b81065b90f46053d419664833bb3dce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b81065b90f46053d419664833bb3dce">&#9670;&nbsp;</a></span>LS_ID_ARM</h2>
+<a id="abaf2248188c96e2382f56371772fbbab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abaf2248188c96e2382f56371772fbbab">&#9670;&nbsp;</a></span>LS_BITS_DWORD</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_ARM&#160;&#160;&#160;3</td>
+          <td class="memname">#define LS_BITS_DWORD</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00055">55</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Number of bits in a double-word. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00049">49</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="ada839745148456bf1bf0a16dd84b9f65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada839745148456bf1bf0a16dd84b9f65">&#9670;&nbsp;</a></span>LS_ID_LINUX</h2>
+<a id="a087c62a146346dec83c4689458494793"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a087c62a146346dec83c4689458494793">&#9670;&nbsp;</a></span>LS_BITS_QWORD</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_LINUX&#160;&#160;&#160;1</td>
+          <td class="memname">#define LS_BITS_QWORD</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00104">104</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Number of bits in a quad-word. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00052">52</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="aeb5d1f4082543fd2688b3f7a4122d529"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb5d1f4082543fd2688b3f7a4122d529">&#9670;&nbsp;</a></span>LS_ID_WINDOWS</h2>
+<a id="a245e37a58a6aabae6d59505b74e4ed01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a245e37a58a6aabae6d59505b74e4ed01">&#9670;&nbsp;</a></span>LS_X86</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_WINDOWS&#160;&#160;&#160;2</td>
+          <td class="memname">#define LS_X86</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00105">105</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Defined and set to <code>1</code> if the detected platform is <em>x86</em>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00103">103</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="a4a4bf9b92d90aa295420aec3b864b648"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a4bf9b92d90aa295420aec3b864b648">&#9670;&nbsp;</a></span>LS_ID_MAC</h2>
+<a id="aafdd042cd20917cbfe015f2e0dfdbdf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafdd042cd20917cbfe015f2e0dfdbdf2">&#9670;&nbsp;</a></span>LS_X64</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_MAC&#160;&#160;&#160;3</td>
+          <td class="memname">#define LS_X64</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00106">106</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Defined and set to <code>1</code> if the detected platform is <em>x64</em>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00108">108</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="a0a0014f634ae4d35684ed18a8b5c4fb5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a0014f634ae4d35684ed18a8b5c4fb5">&#9670;&nbsp;</a></span>LS_ID_LITTLE_ENDIAN</h2>
+<a id="acb65564944ba23a1c874dfb72b0ccfb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb65564944ba23a1c874dfb72b0ccfb0">&#9670;&nbsp;</a></span>LS_ARM</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_LITTLE_ENDIAN&#160;&#160;&#160;1</td>
+          <td class="memname">#define LS_ARM</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00131">131</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Defined and set to <code>1</code> if the detected platform is <em>ARM</em>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00113">113</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="ae9609bb596924054ee5106c1f6e6f927"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9609bb596924054ee5106c1f6e6f927">&#9670;&nbsp;</a></span>LS_ID_BIG_ENDIAN</h2>
+<a id="ad613286d83736b653d8bcbfdef904640"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad613286d83736b653d8bcbfdef904640">&#9670;&nbsp;</a></span>LS_LINUX</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_BIG_ENDIAN&#160;&#160;&#160;2</td>
+          <td class="memname">#define LS_LINUX</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00132">132</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Defined and set to <code>1</code> if the detected OS is <em>Linux</em>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00142">142</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="a3e1ecf54efa49e14d1002c44166ba519"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e1ecf54efa49e14d1002c44166ba519">&#9670;&nbsp;</a></span>LS_ID_ENDIAN</h2>
+<a id="a4770bd437876ca325d77be52ed242376"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4770bd437876ca325d77be52ed242376">&#9670;&nbsp;</a></span>LS_WINDOWS</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_ENDIAN&#160;&#160;&#160;<a class="el" href="../../d2/dfa/platform-detection_8h.html#a0a0014f634ae4d35684ed18a8b5c4fb5">LS_ID_LITTLE_ENDIAN</a></td>
+          <td class="memname">#define LS_WINDOWS</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00146">146</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Defined and set to <code>1</code> if the detected OS is <em>Windows</em>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00147">147</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+
+</div>
+</div>
+<a id="a04a0c0685ca78149aff74eaba3ade6b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04a0c0685ca78149aff74eaba3ade6b1">&#9670;&nbsp;</a></span>LS_MAC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_MAC</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Defined and set to <code>1</code> if the detected OS is <em>Mac</em>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00152">152</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+
+</div>
+</div>
+<a id="ab41b7839bd19678fb00e18337cd69925"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab41b7839bd19678fb00e18337cd69925">&#9670;&nbsp;</a></span>LS_BIG_ENDIAN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_BIG_ENDIAN</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Defined and set to <code>1</code> if the detected endianness is <em>big-endian</em>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00184">184</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
@@ -281,92 +356,104 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_LITTLE_ENDIAN&#160;&#160;&#160;1</td>
+          <td class="memname">#define LS_LITTLE_ENDIAN</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00153">153</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Defined and set to <code>1</code> if the detected endianness is <em>little-endian</em>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00189">189</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="a9ffd29002b66f090f5cb7e1f36cceee7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ffd29002b66f090f5cb7e1f36cceee7">&#9670;&nbsp;</a></span>LS_ID_GCC</h2>
+<a id="a01e293f71cafee70c250fb7dcb72ca34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01e293f71cafee70c250fb7dcb72ca34">&#9670;&nbsp;</a></span>LS_GCC</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_GCC&#160;&#160;&#160;1</td>
+          <td class="memname">#define LS_GCC</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00161">161</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Defined and set to <code>1</code> if the detected compiler is <em>GCC</em>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00225">225</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="a1b1f54e08e3ae8e00b53685bff7af371"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b1f54e08e3ae8e00b53685bff7af371">&#9670;&nbsp;</a></span>LS_ID_LLVM</h2>
+<a id="a4932bc1af4eec8d34ffa9f63aafccb9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4932bc1af4eec8d34ffa9f63aafccb9e">&#9670;&nbsp;</a></span>LS_MINGW</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_LLVM&#160;&#160;&#160;2</td>
+          <td class="memname">#define LS_MINGW</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00162">162</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Defined and set to <code>1</code> if the detected compiler is <em>MinGW</em>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00234">234</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="a0fdd204eda40cfbe348c15d2c425df93"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fdd204eda40cfbe348c15d2c425df93">&#9670;&nbsp;</a></span>LS_ID_MSC</h2>
+<a id="a9d32b9828ef843cfaad866d14f47f34b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d32b9828ef843cfaad866d14f47f34b">&#9670;&nbsp;</a></span>LS_MSC</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_MSC&#160;&#160;&#160;3</td>
+          <td class="memname">#define LS_MSC</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00163">163</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Defined and set to <code>1</code> if the detected compiler is <em>MSC</em>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00239">239</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="a2e763b227f2bb42109e87372791214b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e763b227f2bb42109e87372791214b6">&#9670;&nbsp;</a></span>LS_ID_MINGW</h2>
+<a id="a892cd25587cad5158f42e3c06f9ce1ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a892cd25587cad5158f42e3c06f9ce1ae">&#9670;&nbsp;</a></span>LS_TCC</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_MINGW&#160;&#160;&#160;4</td>
+          <td class="memname">#define LS_TCC</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00164">164</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Defined and set to <code>1</code> if the detected compiler is <em>TCC</em>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00244">244</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
-<a id="ad468a4be6bb792ff4239c53b2588da5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad468a4be6bb792ff4239c53b2588da5b">&#9670;&nbsp;</a></span>LS_ID_TCC</h2>
+<a id="a0130b05f77f40fd40f94c787c104fc87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0130b05f77f40fd40f94c787c104fc87">&#9670;&nbsp;</a></span>LS_UCRT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_ID_TCC&#160;&#160;&#160;5</td>
+          <td class="memname">#define LS_UCRT</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00165">165</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
+<p>Defined and set to <code>1</code> if the <em>Universal C Runtime</em> is enabled (Windows). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d2/dfa/platform-detection_8h_source.html#l00249">249</a> of file <a class="el" href="../../d2/dfa/platform-detection_8h_source.html">platform-detection.h</a>.</p>
 
 </div>
 </div>
@@ -375,8 +462,8 @@ Macros</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_fe6eb5064d42f9f773e90d3512fafa25.html">submodules</a></li><li class="navelem"><a class="el" href="../../dir_24113ac1bdad3f87e86c838174ad5a9a.html">master</a></li><li class="navelem"><a class="el" href="../../dir_efa0fcafe104baae21d5209dfaf69cad.html">libserum</a></li><li class="navelem"><a class="el" href="../../dir_495cc9ef2793da0b31d86ea851cc89b4.html">core</a></li><li class="navelem"><a class="el" href="../../dir_d3a5c5c4efb5d7140b622529ad2fb95f.html">setup</a></li><li class="navelem"><a class="el" href="../../d2/dfa/platform-detection_8h.html">platform-detection.h</a></li>
-    <li class="footer">Generated on Thu Jul 19 2018 23:06:09 for Serum by
+    <li class="navelem"><a class="el" href="../../dir_4270bfced15e0e73154b13468c7c9ad9.html">core</a></li><li class="navelem"><a class="el" href="../../dir_8760b0f5b4ed057897345edc3594d85f.html">setup</a></li><li class="navelem"><a class="el" href="../../d2/dfa/platform-detection_8h.html">platform-detection.h</a></li>
+    <li class="footer">Generated on Thu Aug 23 2018 03:00:12 for Serum by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

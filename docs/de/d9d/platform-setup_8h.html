@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Serum: submodules/master/libserum/core/setup/platform-setup.h File Reference</title>
+<title>Serum: core/setup/platform-setup.h File Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -98,10 +98,51 @@ $(document).ready(function(){initNavTree('de/d9d/platform-setup_8h.html','../../
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a954277682c99af44d8940fb5a262edf5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#a954277682c99af44d8940fb5a262edf5">LS_EOL</a>&#160;&#160;&#160;&quot;\n&quot;</td></tr>
+<tr class="memitem:a954277682c99af44d8940fb5a262edf5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#a954277682c99af44d8940fb5a262edf5">LS_EOL</a></td></tr>
+<tr class="memdesc:a954277682c99af44d8940fb5a262edf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">OS EOL sequence.  <a href="#a954277682c99af44d8940fb5a262edf5">More...</a><br /></td></tr>
 <tr class="separator:a954277682c99af44d8940fb5a262edf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee8bb6e0b084806906657f78f23b98ba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#aee8bb6e0b084806906657f78f23b98ba">LS_EOL_SIZE</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memitem:aee8bb6e0b084806906657f78f23b98ba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#aee8bb6e0b084806906657f78f23b98ba">LS_EOL_SIZE</a></td></tr>
+<tr class="memdesc:aee8bb6e0b084806906657f78f23b98ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">OS EOL length.  <a href="#aee8bb6e0b084806906657f78f23b98ba">More...</a><br /></td></tr>
 <tr class="separator:aee8bb6e0b084806906657f78f23b98ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedc43edd3880120ec23fde745d99e903"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#aedc43edd3880120ec23fde745d99e903">LS_COMPILER_LOG</a>(mesg)</td></tr>
+<tr class="memdesc:aedc43edd3880120ec23fde745d99e903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a compiler message (compiler dependent).  <a href="#aedc43edd3880120ec23fde745d99e903">More...</a><br /></td></tr>
+<tr class="separator:aedc43edd3880120ec23fde745d99e903"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac046e55d85e9fbcd8bf221ab522eec85"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#ac046e55d85e9fbcd8bf221ab522eec85">LS_EXPORT</a></td></tr>
+<tr class="memdesc:ac046e55d85e9fbcd8bf221ab522eec85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute to mark for export (compiler dependent).  <a href="#ac046e55d85e9fbcd8bf221ab522eec85">More...</a><br /></td></tr>
+<tr class="separator:ac046e55d85e9fbcd8bf221ab522eec85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c512e8aebc692bae43ee091dc3d980f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#a5c512e8aebc692bae43ee091dc3d980f">LS_IMPORT</a></td></tr>
+<tr class="memdesc:a5c512e8aebc692bae43ee091dc3d980f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute to mark for import (compiler dependent).  <a href="#a5c512e8aebc692bae43ee091dc3d980f">More...</a><br /></td></tr>
+<tr class="separator:a5c512e8aebc692bae43ee091dc3d980f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76d8da5392a88dda5446bc4deef7892a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#a76d8da5392a88dda5446bc4deef7892a">LS_INTERNAL</a></td></tr>
+<tr class="memdesc:a76d8da5392a88dda5446bc4deef7892a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute to prevent export (compiler dependent).  <a href="#a76d8da5392a88dda5446bc4deef7892a">More...</a><br /></td></tr>
+<tr class="separator:a76d8da5392a88dda5446bc4deef7892a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a2349ff93f4c4e2b0e2e868eda8c259"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#a3a2349ff93f4c4e2b0e2e868eda8c259">LS_ATTR_NONNULL</a></td></tr>
+<tr class="memdesc:a3a2349ff93f4c4e2b0e2e868eda8c259"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute: nonnull (compiler dependent).  <a href="#a3a2349ff93f4c4e2b0e2e868eda8c259">More...</a><br /></td></tr>
+<tr class="separator:a3a2349ff93f4c4e2b0e2e868eda8c259"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a463b3590109ad04c3db2ef35817afc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#a1a463b3590109ad04c3db2ef35817afc">LS_ATTR_NONNULL_EX</a>(...)</td></tr>
+<tr class="memdesc:a1a463b3590109ad04c3db2ef35817afc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute: nonnull (compiler dependent).  <a href="#a1a463b3590109ad04c3db2ef35817afc">More...</a><br /></td></tr>
+<tr class="separator:a1a463b3590109ad04c3db2ef35817afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d39bb2e6fdb418567491627c77ed64b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#a3d39bb2e6fdb418567491627c77ed64b">LS_ATTR_PURE</a></td></tr>
+<tr class="memdesc:a3d39bb2e6fdb418567491627c77ed64b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute: pure (compiler dependent).  <a href="#a3d39bb2e6fdb418567491627c77ed64b">More...</a><br /></td></tr>
+<tr class="separator:a3d39bb2e6fdb418567491627c77ed64b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d21b67d3670d0d8ce3b89c9378952af"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#a9d21b67d3670d0d8ce3b89c9378952af">LS_ATTR_CONST</a></td></tr>
+<tr class="memdesc:a9d21b67d3670d0d8ce3b89c9378952af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute: const (compiler dependent).  <a href="#a9d21b67d3670d0d8ce3b89c9378952af">More...</a><br /></td></tr>
+<tr class="separator:a9d21b67d3670d0d8ce3b89c9378952af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e21bcbafcb96046c7bd12aa150fd502"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#a8e21bcbafcb96046c7bd12aa150fd502">LS_ATTR_USED</a></td></tr>
+<tr class="memdesc:a8e21bcbafcb96046c7bd12aa150fd502"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute: used (compiler dependent).  <a href="#a8e21bcbafcb96046c7bd12aa150fd502">More...</a><br /></td></tr>
+<tr class="separator:a8e21bcbafcb96046c7bd12aa150fd502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb64cb0e99bb7f13d55445ff5a03791c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#afb64cb0e99bb7f13d55445ff5a03791c">LS_ATTR_NORETURN</a></td></tr>
+<tr class="memdesc:afb64cb0e99bb7f13d55445ff5a03791c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute: noreturn (compiler dependent).  <a href="#afb64cb0e99bb7f13d55445ff5a03791c">More...</a><br /></td></tr>
+<tr class="separator:afb64cb0e99bb7f13d55445ff5a03791c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a643d51a6badeff669eb04beabfde6c6f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#a643d51a6badeff669eb04beabfde6c6f">LS_ATTR_FORCE_INLINE</a></td></tr>
+<tr class="memdesc:a643d51a6badeff669eb04beabfde6c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute: always_inline (compiler dependent).  <a href="#a643d51a6badeff669eb04beabfde6c6f">More...</a><br /></td></tr>
+<tr class="separator:a643d51a6badeff669eb04beabfde6c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac19f18caba76ec7c1951bed53494ac8d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#ac19f18caba76ec7c1951bed53494ac8d">LS_ATTR_THREADLOCAL</a></td></tr>
+<tr class="memdesc:ac19f18caba76ec7c1951bed53494ac8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute: threadlocal (compiler dependent).  <a href="#ac19f18caba76ec7c1951bed53494ac8d">More...</a><br /></td></tr>
+<tr class="separator:ac19f18caba76ec7c1951bed53494ac8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a863b4f3568075fb17329f049e384fe0f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9d/platform-setup_8h.html#a863b4f3568075fb17329f049e384fe0f">LS_FORCE_INLINE</a></td></tr>
+<tr class="memdesc:a863b4f3568075fb17329f049e384fe0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute/keyword: forced inline (compiler dependent).  <a href="#a863b4f3568075fb17329f049e384fe0f">More...</a><br /></td></tr>
+<tr class="separator:a863b4f3568075fb17329f049e384fe0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a954277682c99af44d8940fb5a262edf5"></a>
@@ -111,12 +152,14 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_EOL&#160;&#160;&#160;&quot;\n&quot;</td>
+          <td class="memname">#define LS_EOL</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00044">44</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+<p>OS EOL sequence. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00042">42</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
 
 </div>
 </div>
@@ -127,12 +170,256 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LS_EOL_SIZE&#160;&#160;&#160;1</td>
+          <td class="memname">#define LS_EOL_SIZE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00045">45</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+<p>OS EOL length. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00044">44</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="aedc43edd3880120ec23fde745d99e903"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedc43edd3880120ec23fde745d99e903">&#9670;&nbsp;</a></span>LS_COMPILER_LOG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_COMPILER_LOG</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">mesg</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Logs a compiler message (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00052">52</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="ac046e55d85e9fbcd8bf221ab522eec85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac046e55d85e9fbcd8bf221ab522eec85">&#9670;&nbsp;</a></span>LS_EXPORT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_EXPORT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute to mark for export (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00055">55</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="a5c512e8aebc692bae43ee091dc3d980f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c512e8aebc692bae43ee091dc3d980f">&#9670;&nbsp;</a></span>LS_IMPORT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_IMPORT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute to mark for import (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00058">58</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="a76d8da5392a88dda5446bc4deef7892a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76d8da5392a88dda5446bc4deef7892a">&#9670;&nbsp;</a></span>LS_INTERNAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_INTERNAL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute to prevent export (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00061">61</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="a3a2349ff93f4c4e2b0e2e868eda8c259"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a2349ff93f4c4e2b0e2e868eda8c259">&#9670;&nbsp;</a></span>LS_ATTR_NONNULL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_ATTR_NONNULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute: nonnull (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00064">64</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="a1a463b3590109ad04c3db2ef35817afc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a463b3590109ad04c3db2ef35817afc">&#9670;&nbsp;</a></span>LS_ATTR_NONNULL_EX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_ATTR_NONNULL_EX</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute: nonnull (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00067">67</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="a3d39bb2e6fdb418567491627c77ed64b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d39bb2e6fdb418567491627c77ed64b">&#9670;&nbsp;</a></span>LS_ATTR_PURE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_ATTR_PURE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute: pure (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00070">70</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="a9d21b67d3670d0d8ce3b89c9378952af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d21b67d3670d0d8ce3b89c9378952af">&#9670;&nbsp;</a></span>LS_ATTR_CONST</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_ATTR_CONST</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute: const (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00073">73</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="a8e21bcbafcb96046c7bd12aa150fd502"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e21bcbafcb96046c7bd12aa150fd502">&#9670;&nbsp;</a></span>LS_ATTR_USED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_ATTR_USED</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute: used (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00076">76</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="afb64cb0e99bb7f13d55445ff5a03791c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb64cb0e99bb7f13d55445ff5a03791c">&#9670;&nbsp;</a></span>LS_ATTR_NORETURN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_ATTR_NORETURN</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute: noreturn (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00079">79</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="a643d51a6badeff669eb04beabfde6c6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a643d51a6badeff669eb04beabfde6c6f">&#9670;&nbsp;</a></span>LS_ATTR_FORCE_INLINE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_ATTR_FORCE_INLINE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute: always_inline (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00082">82</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="ac19f18caba76ec7c1951bed53494ac8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac19f18caba76ec7c1951bed53494ac8d">&#9670;&nbsp;</a></span>LS_ATTR_THREADLOCAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_ATTR_THREADLOCAL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute: threadlocal (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00085">85</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
+
+</div>
+</div>
+<a id="a863b4f3568075fb17329f049e384fe0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a863b4f3568075fb17329f049e384fe0f">&#9670;&nbsp;</a></span>LS_FORCE_INLINE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_FORCE_INLINE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute/keyword: forced inline (compiler dependent). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d9d/platform-setup_8h_source.html#l00088">88</a> of file <a class="el" href="../../de/d9d/platform-setup_8h_source.html">platform-setup.h</a>.</p>
 
 </div>
 </div>
@@ -141,8 +428,8 @@ Macros</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_fe6eb5064d42f9f773e90d3512fafa25.html">submodules</a></li><li class="navelem"><a class="el" href="../../dir_24113ac1bdad3f87e86c838174ad5a9a.html">master</a></li><li class="navelem"><a class="el" href="../../dir_efa0fcafe104baae21d5209dfaf69cad.html">libserum</a></li><li class="navelem"><a class="el" href="../../dir_495cc9ef2793da0b31d86ea851cc89b4.html">core</a></li><li class="navelem"><a class="el" href="../../dir_d3a5c5c4efb5d7140b622529ad2fb95f.html">setup</a></li><li class="navelem"><a class="el" href="../../de/d9d/platform-setup_8h.html">platform-setup.h</a></li>
-    <li class="footer">Generated on Thu Jul 19 2018 23:06:09 for Serum by
+    <li class="navelem"><a class="el" href="../../dir_4270bfced15e0e73154b13468c7c9ad9.html">core</a></li><li class="navelem"><a class="el" href="../../dir_8760b0f5b4ed057897345edc3594d85f.html">setup</a></li><li class="navelem"><a class="el" href="../../de/d9d/platform-setup_8h.html">platform-setup.h</a></li>
+    <li class="footer">Generated on Thu Aug 23 2018 03:00:12 for Serum by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Serum: submodules/master/libserum/crypto/ciphers/salsa20.h File Reference</title>
+<title>Serum: crypto/ciphers/salsa20.h File Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -114,10 +114,6 @@ Macros</h2></td></tr>
 <tr class="separator:af48655885a5a16360e1d3c84dfd26020"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fea3919378e3ba82b52d9d79a3f74e4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a7fea3919378e3ba82b52d9d79a3f74e4">LS_SALSA20_128</a>&#160;&#160;&#160;16</td></tr>
 <tr class="separator:a7fea3919378e3ba82b52d9d79a3f74e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9de8a46cc5a4bd5c4511c69911b5a905"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a9de8a46cc5a4bd5c4511c69911b5a905">ls_salsa20_block_encrypt</a>&#160;&#160;&#160;<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a120692e2b3f253a28250d40140c6cbf1">ls_salsa20_block_crypt</a></td></tr>
-<tr class="separator:a9de8a46cc5a4bd5c4511c69911b5a905"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf10f5894c6fb9b018b3971090047444"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#abf10f5894c6fb9b018b3971090047444">ls_salsa20_block_decrypt</a>&#160;&#160;&#160;<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a120692e2b3f253a28250d40140c6cbf1">ls_salsa20_block_crypt</a></td></tr>
-<tr class="separator:abf10f5894c6fb9b018b3971090047444"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -128,16 +124,27 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8f491359fedc5d42da75633c6bad4148"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a8f491359fedc5d42da75633c6bad4148">ls_salsa20_init</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, const uint8_t *const restrict key, const size_t key_size, const uint8_t *const restrict nonce, const size_t nonce_size)</td></tr>
+<tr class="memitem:a8f491359fedc5d42da75633c6bad4148"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a8f491359fedc5d42da75633c6bad4148">ls_salsa20_init</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, const uint8_t *const restrict key, const size_t key_size, const uint8_t *const restrict nonce, const size_t nonce_size)</td></tr>
+<tr class="memdesc:a8f491359fedc5d42da75633c6bad4148"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the given cipher <code>context</code>.  <a href="#a8f491359fedc5d42da75633c6bad4148">More...</a><br /></td></tr>
 <tr class="separator:a8f491359fedc5d42da75633c6bad4148"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a379e65869f2b9041141d8a335b0a9e37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a379e65869f2b9041141d8a335b0a9e37">ls_salsa20_rekey</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, const uint8_t *const restrict key, const size_t key_size)</td></tr>
+<tr class="memitem:a379e65869f2b9041141d8a335b0a9e37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a379e65869f2b9041141d8a335b0a9e37">ls_salsa20_rekey</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, const uint8_t *const restrict key, const size_t key_size)</td></tr>
+<tr class="memdesc:a379e65869f2b9041141d8a335b0a9e37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rekeys the given cipher <code>context</code>.  <a href="#a379e65869f2b9041141d8a335b0a9e37">More...</a><br /></td></tr>
 <tr class="separator:a379e65869f2b9041141d8a335b0a9e37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46ae1492a2506f65fc350e5dced5d084"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a46ae1492a2506f65fc350e5dced5d084">ls_salsa20_renonce</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, const uint8_t *const restrict nonce, const size_t nonce_size)</td></tr>
+<tr class="memitem:a46ae1492a2506f65fc350e5dced5d084"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a46ae1492a2506f65fc350e5dced5d084">ls_salsa20_renonce</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, const uint8_t *const restrict nonce, const size_t nonce_size)</td></tr>
+<tr class="memdesc:a46ae1492a2506f65fc350e5dced5d084"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renonces the given cipher <code>context</code>.  <a href="#a46ae1492a2506f65fc350e5dced5d084">More...</a><br /></td></tr>
 <tr class="separator:a46ae1492a2506f65fc350e5dced5d084"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a118dfcd759a422d2751fb907a31ce46e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a118dfcd759a422d2751fb907a31ce46e">ls_salsa20_get_stream_block</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, <a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aafb4a23c67ba24be62b72b1e0cb6fa30">ls_salsa20_block_t</a> block)</td></tr>
+<tr class="memitem:a118dfcd759a422d2751fb907a31ce46e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a118dfcd759a422d2751fb907a31ce46e">ls_salsa20_get_stream_block</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, <a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aafb4a23c67ba24be62b72b1e0cb6fa30">ls_salsa20_block_t</a> block)</td></tr>
+<tr class="memdesc:a118dfcd759a422d2751fb907a31ce46e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetches the current streaming block of the given cipher <code>context</code>.  <a href="#a118dfcd759a422d2751fb907a31ce46e">More...</a><br /></td></tr>
 <tr class="separator:a118dfcd759a422d2751fb907a31ce46e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a120692e2b3f253a28250d40140c6cbf1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a120692e2b3f253a28250d40140c6cbf1">ls_salsa20_block_crypt</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, <a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aafb4a23c67ba24be62b72b1e0cb6fa30">ls_salsa20_block_t</a> block)</td></tr>
+<tr class="memitem:a120692e2b3f253a28250d40140c6cbf1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a120692e2b3f253a28250d40140c6cbf1">ls_salsa20_block_crypt</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, <a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aafb4a23c67ba24be62b72b1e0cb6fa30">ls_salsa20_block_t</a> block)</td></tr>
+<tr class="memdesc:a120692e2b3f253a28250d40140c6cbf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encrypts/decrypts the given block using the given cipher context.  <a href="#a120692e2b3f253a28250d40140c6cbf1">More...</a><br /></td></tr>
 <tr class="separator:a120692e2b3f253a28250d40140c6cbf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a140773947608b13daccbc68f7a05e753"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a140773947608b13daccbc68f7a05e753">ls_salsa20_block_encrypt</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, <a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aafb4a23c67ba24be62b72b1e0cb6fa30">ls_salsa20_block_t</a> block)</td></tr>
+<tr class="memdesc:a140773947608b13daccbc68f7a05e753"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encrypts the given <code>block</code> using the given cipher <code>context</code>.  <a href="#a140773947608b13daccbc68f7a05e753">More...</a><br /></td></tr>
+<tr class="separator:a140773947608b13daccbc68f7a05e753"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34c1f0dac60755c0eb8b72069e538509"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a34c1f0dac60755c0eb8b72069e538509">ls_salsa20_block_decrypt</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, <a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aafb4a23c67ba24be62b72b1e0cb6fa30">ls_salsa20_block_t</a> block)</td></tr>
+<tr class="memdesc:a34c1f0dac60755c0eb8b72069e538509"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrypts the given <code>block</code> using the given cipher <code>context</code>.  <a href="#a34c1f0dac60755c0eb8b72069e538509">More...</a><br /></td></tr>
+<tr class="separator:a34c1f0dac60755c0eb8b72069e538509"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a596cb0f2b63f009d821b37e46d916348"></a>
@@ -152,7 +159,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00040">40</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00051">51</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
 
 </div>
 </div>
@@ -168,7 +175,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00042">42</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00053">53</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
 
 </div>
 </div>
@@ -184,7 +191,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00044">44</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00055">55</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
 
 </div>
 </div>
@@ -200,39 +207,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00045">45</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
-
-</div>
-</div>
-<a id="a9de8a46cc5a4bd5c4511c69911b5a905"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9de8a46cc5a4bd5c4511c69911b5a905">&#9670;&nbsp;</a></span>ls_salsa20_block_encrypt</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ls_salsa20_block_encrypt&#160;&#160;&#160;<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a120692e2b3f253a28250d40140c6cbf1">ls_salsa20_block_crypt</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00080">80</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
-
-</div>
-</div>
-<a id="abf10f5894c6fb9b018b3971090047444"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf10f5894c6fb9b018b3971090047444">&#9670;&nbsp;</a></span>ls_salsa20_block_decrypt</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ls_salsa20_block_decrypt&#160;&#160;&#160;<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a120692e2b3f253a28250d40140c6cbf1">ls_salsa20_block_crypt</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00081">81</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00056">56</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
 
 </div>
 </div>
@@ -263,7 +238,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00064">64</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00075">75</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
 
 </div>
 </div>
@@ -275,7 +250,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_salsa20_init </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_salsa20_init </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>context</em>, </td>
@@ -312,6 +287,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Initializes the given cipher <code>context</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>The context to initialize. </td></tr>
+    <tr><td class="paramname">key</td><td>The key to use. </td></tr>
+    <tr><td class="paramname">key_size</td><td>The size of the <code>key</code>. </td></tr>
+    <tr><td class="paramname">nonce</td><td>[optional] The nonce to use. </td></tr>
+    <tr><td class="paramname">nonce_size</td><td>[optional] The size of the <code>nonce</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>?TODO</dd></dl>
+<dl class="section algorithm">
+<dt>Algorithm</dt>
+<dd>Salsa20</dd>
+</dl>
+
 </div>
 </div>
 <a id="a379e65869f2b9041141d8a335b0a9e37"></a>
@@ -321,7 +313,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_salsa20_rekey </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_salsa20_rekey </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>context</em>, </td>
@@ -346,6 +338,21 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Rekeys the given cipher <code>context</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>The context to rekey. </td></tr>
+    <tr><td class="paramname">key</td><td>The key to use. </td></tr>
+    <tr><td class="paramname">key_size</td><td>The size of the <code>key</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>?TODO</dd></dl>
+<dl class="section algorithm">
+<dt>Algorithm</dt>
+<dd>Salsa20</dd>
+</dl>
+
 </div>
 </div>
 <a id="a46ae1492a2506f65fc350e5dced5d084"></a>
@@ -355,7 +362,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_salsa20_renonce </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_salsa20_renonce </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>context</em>, </td>
@@ -380,6 +387,21 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Renonces the given cipher <code>context</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>The context to renonce. </td></tr>
+    <tr><td class="paramname">nonce</td><td>The nonce to use. </td></tr>
+    <tr><td class="paramname">nonce_size</td><td>The size of the <code>nonce</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>?TODO</dd></dl>
+<dl class="section algorithm">
+<dt>Algorithm</dt>
+<dd>Salsa20</dd>
+</dl>
+
 </div>
 </div>
 <a id="a118dfcd759a422d2751fb907a31ce46e"></a>
@@ -389,7 +411,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_salsa20_get_stream_block </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_salsa20_get_stream_block </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>context</em>, </td>
@@ -407,6 +429,20 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Fetches the current streaming block of the given cipher <code>context</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramname">block</td><td>The variable to store the block in.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>?TODO</dd></dl>
+<dl class="section algorithm">
+<dt>Algorithm</dt>
+<dd>Salsa20</dd>
+</dl>
 
 </div>
 </div>
@@ -417,7 +453,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_salsa20_block_crypt </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_salsa20_block_crypt </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict&#160;</td>
           <td class="paramname"><em>context</em>, </td>
@@ -436,6 +472,104 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Encrypts/decrypts the given block using the given cipher context. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramname">block</td><td>The block to encrypt/decrypt.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>?TODO</dd></dl>
+<dl class="section algorithm">
+<dt>Algorithm</dt>
+<dd>Salsa20</dd>
+</dl>
+
+</div>
+</div>
+<a id="a140773947608b13daccbc68f7a05e753"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a140773947608b13daccbc68f7a05e753">&#9670;&nbsp;</a></span>ls_salsa20_block_encrypt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_salsa20_block_encrypt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aafb4a23c67ba24be62b72b1e0cb6fa30">ls_salsa20_block_t</a>&#160;</td>
+          <td class="paramname"><em>block</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Encrypts the given <code>block</code> using the given cipher <code>context</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramname">block</td><td>The block to encrypt.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>?TODO</dd></dl>
+<dl class="section algorithm">
+<dt>Algorithm</dt>
+<dd>Salsa20</dd>
+</dl>
+
+</div>
+</div>
+<a id="a34c1f0dac60755c0eb8b72069e538509"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34c1f0dac60755c0eb8b72069e538509">&#9670;&nbsp;</a></span>ls_salsa20_block_decrypt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_salsa20_block_decrypt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aafb4a23c67ba24be62b72b1e0cb6fa30">ls_salsa20_block_t</a>&#160;</td>
+          <td class="paramname"><em>block</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Decrypts the given <code>block</code> using the given cipher <code>context</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramname">block</td><td>The block to decrypt.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>?TODO</dd></dl>
+<dl class="section algorithm">
+<dt>Algorithm</dt>
+<dd>Salsa20</dd>
+</dl>
+
 </div>
 </div>
 </div><!-- contents -->
@@ -443,8 +577,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_fe6eb5064d42f9f773e90d3512fafa25.html">submodules</a></li><li class="navelem"><a class="el" href="../../dir_24113ac1bdad3f87e86c838174ad5a9a.html">master</a></li><li class="navelem"><a class="el" href="../../dir_efa0fcafe104baae21d5209dfaf69cad.html">libserum</a></li><li class="navelem"><a class="el" href="../../dir_58c594e8347fc1e532c05f151b7bd137.html">crypto</a></li><li class="navelem"><a class="el" href="../../dir_a0f6e312dd84063db9e1b29d03928e9d.html">ciphers</a></li><li class="navelem"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html">salsa20.h</a></li>
-    <li class="footer">Generated on Thu Jul 19 2018 23:06:09 for Serum by
+    <li class="navelem"><a class="el" href="../../dir_53403d93963d3f5d2fcffd0698f5bddb.html">crypto</a></li><li class="navelem"><a class="el" href="../../dir_62dbec40a63e0d5723239a02af4fd259.html">ciphers</a></li><li class="navelem"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html">salsa20.h</a></li>
+    <li class="footer">Generated on Thu Aug 23 2018 03:00:12 for Serum by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

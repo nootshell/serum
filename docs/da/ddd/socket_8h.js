@@ -11,7 +11,7 @@ var socket_8h =
     [ "LS_SOCKET_UDP", "da/ddd/socket_8h.html#a69ded7b7a41f715cd5a725c0d5ab4da6", null ],
     [ "LS_SOCKOPT_REUSEADDR", "da/ddd/socket_8h.html#aa3c0eff97e3495d0733c687b6d1f9c2c", null ],
     [ "LS_SOCKOPT_REUSEPORT", "da/ddd/socket_8h.html#a644fe0efdacf9c72fd5fcba352da5f82", null ],
-    [ "ls_sockfd_t", "da/ddd/socket_8h.html#a6520fd4b41fe7412a276f3052b78fe4e", null ],
+    [ "ls_sockfd_t", "da/ddd/socket_8h.html#abac00ede19eb6908fbc95b012ba453f2", null ],
     [ "ls_socket_t", "da/ddd/socket_8h.html#ac14821cf7c92e894b422e4088e563421", null ],
     [ "ls_socket_init_fd", "da/ddd/socket_8h.html#a4da7eacd489b37c90cfec498e6b9d291", null ],
     [ "ls_socket_init", "da/ddd/socket_8h.html#a2e07686388e89d5d38b9c6083ab222ca", null ],

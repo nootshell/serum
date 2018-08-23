@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['salsa20',['Salsa20',['../d8/d38/salsa20.html',1,'ciphers']]],
   ['salsa20_2eh',['salsa20.h',['../db/da2/____selftests_2ciphers_2salsa20_8h.html',1,'(Global Namespace)'],['../d7/d62/ciphers_2salsa20_8h.html',1,'(Global Namespace)']]],
   ['selftest',['selftest',['../dd/d72/structlsreg__meta.html#a8fc1f9c8c0e9740b24b0a4c815a06e10',1,'lsreg_meta']]],
   ['setup_2eh',['setup.h',['../d7/df7/setup_8h.html',1,'']]],

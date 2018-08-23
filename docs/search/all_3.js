@@ -4,6 +4,7 @@ var searchData=
   ['c2',['c2',['../da/d36/unionls__salsa20.html#a79ac570e657a5d1705b7b70319d019ef',1,'ls_salsa20']]],
   ['c3',['c3',['../da/d36/unionls__salsa20.html#a9bfcec3c48d80999552447ae7f0378fd',1,'ls_salsa20']]],
   ['c4',['c4',['../da/d36/unionls__salsa20.html#a9b262e43b18c221268cb3d05baeb1b38',1,'ls_salsa20']]],
+  ['ciphers',['Ciphers',['../df/dd5/ciphers.html',1,'algorithms']]],
   ['const_5fpthreads',['CONST_PTHREADS',['../d0/df8/mutex_8h.html#a199d52a628848b949604c39bd5ef0601',1,'mutex.h']]],
   ['const_5fwthreads',['CONST_WTHREADS',['../d0/df8/mutex_8h.html#a7ca80533c80cacacf3de487510998d70',1,'mutex.h']]],
   ['context',['context',['../de/d9d/structls__hash.html#a3be4389a4ef21d7b18e5afae99853fef',1,'ls_hash']]],

@@ -24,6 +24,7 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "Serum", "index.html", [
+    [ "Algorithms", "d5/dc9/algorithms.html", "d5/dc9/algorithms" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -50,8 +51,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d8/d8b/signatures_8h.html#a8a4348735a0cbedea784053364a61d41",
-"de/d93/result_8h.html#aba171f00e0d8be74c95f53d59abea2ae"
+"d8/d85/hashing_2ripemd160_8h.html#a817e5f6486e07eb1db22751935fa97c7",
+"de/d93/result_8h.html#a4cc3025f0f05bcc43b22121ca8a57321"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

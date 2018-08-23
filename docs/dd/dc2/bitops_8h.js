@@ -1,7 +1,6 @@
 var bitops_8h =
 [
     [ "LS_FLAG", "dd/dc2/bitops_8h.html#a7f47557a2bf359a93b98764b6c14d12d", null ],
-    [ "LS_BYTE_SANITIZE", "dd/dc2/bitops_8h.html#a84d4bd8b3389041be46be371359f1b00", null ],
     [ "LS_ROTL8", "dd/dc2/bitops_8h.html#a2a2a4a945adec3f8eea44e5bb72863da", null ],
     [ "LS_ROTL16", "dd/dc2/bitops_8h.html#aac3f062c6703080718cce052ade50785", null ],
     [ "LS_ROTL32", "dd/dc2/bitops_8h.html#a9d4455d821fd4e8ffac7ed62a1fe3fc1", null ],
@@ -18,6 +17,5 @@ var bitops_8h =
     [ "LS_ENSURE_BIG64", "dd/dc2/bitops_8h.html#a5ad2cc65cc0c0ac9178e9150593c009b", null ],
     [ "LS_ENSURE_LITTLE16", "dd/dc2/bitops_8h.html#ae4452f3bf2decca27a145954e6291231", null ],
     [ "LS_ENSURE_LITTLE32", "dd/dc2/bitops_8h.html#a888f414c801676b09e597658f9571aab", null ],
-    [ "LS_ENSURE_LITTLE64", "dd/dc2/bitops_8h.html#aae5be6269711563072fa2d1919c08bb7", null ],
-    [ "__ls_sanitize_m__", "dd/dc2/bitops_8h.html#ad679571c894f379d1f3ba724719b3475", null ]
+    [ "LS_ENSURE_LITTLE64", "dd/dc2/bitops_8h.html#aae5be6269711563072fa2d1919c08bb7", null ]
 ];

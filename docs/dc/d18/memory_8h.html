@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Serum: submodules/master/libserum/core/memory.h File Reference</title>
+<title>Serum: core/memory.h File Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('dc/d18/memory_8h.html','../../');});
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">memory.h File Reference</div>  </div>
@@ -97,30 +98,106 @@ $(document).ready(function(){initNavTree('dc/d18/memory_8h.html','../../');});
 </div>
 <p><a href="../../dc/d18/memory_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:af3aed55a3d10ca2e3b68d83250cedfa6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/memory_8h.html#af3aed55a3d10ca2e3b68d83250cedfa6">LS_STACK_ALLOC</a>(type,  var,  sizeb)</td></tr>
+<tr class="memdesc:af3aed55a3d10ca2e3b68d83250cedfa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates an array on the stack.  <a href="#af3aed55a3d10ca2e3b68d83250cedfa6">More...</a><br /></td></tr>
+<tr class="separator:af3aed55a3d10ca2e3b68d83250cedfa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d051044bf4929183e20bb8a3a3a910e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/memory_8h.html#a8d051044bf4929183e20bb8a3a3a910e">LS_STACK_FREE</a>(var)</td></tr>
+<tr class="memdesc:a8d051044bf4929183e20bb8a3a3a910e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deallocates an array from the stack that was previously allocated by <code><a class="el" href="../../dc/d18/memory_8h.html#af3aed55a3d10ca2e3b68d83250cedfa6" title="Allocates an array on the stack. ">LS_STACK_ALLOC</a></code>.  <a href="#a8d051044bf4929183e20bb8a3a3a910e">More...</a><br /></td></tr>
+<tr class="separator:a8d051044bf4929183e20bb8a3a3a910e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac2131f0f17a3e503fb1c11c38eb8ed07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/memory_8h.html#ac2131f0f17a3e503fb1c11c38eb8ed07">ls_memory_dump_ex</a> (const void *const src, const size_t size, const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#ac96f14baf8d3668fb4133100f321c511">ls_nword_t</a> columns, const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#ac96f14baf8d3668fb4133100f321c511">ls_nword_t</a> columnsize, FILE *const dest, const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#ae5044b3a324ed15fd2eec225cf945da5">ls_bool_t</a> ansi)</td></tr>
-<tr class="separator:ac2131f0f17a3e503fb1c11c38eb8ed07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4ae801bc886378421c59fea09ecb321"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/memory_8h.html#ac4ae801bc886378421c59fea09ecb321">ls_memory_dump</a> (const void *const src, const size_t size)</td></tr>
+<tr class="memitem:a439a40d3e46391fb62fe3b49fc837318"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/memory_8h.html#a439a40d3e46391fb62fe3b49fc837318">ls_memory_dump_ex</a> (const void *const src, const size_t size, const unsigned int columns, const unsigned int columnsize, FILE *const dest, const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#ae5044b3a324ed15fd2eec225cf945da5">ls_bool_t</a> ansi)</td></tr>
+<tr class="memdesc:a439a40d3e46391fb62fe3b49fc837318"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the memory in the range from <code>src</code> to <code>src</code> + <code>size</code>.  <a href="#a439a40d3e46391fb62fe3b49fc837318">More...</a><br /></td></tr>
+<tr class="separator:a439a40d3e46391fb62fe3b49fc837318"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4ae801bc886378421c59fea09ecb321"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/memory_8h.html#ac4ae801bc886378421c59fea09ecb321">ls_memory_dump</a> (const void *const src, const size_t size)</td></tr>
+<tr class="memdesc:ac4ae801bc886378421c59fea09ecb321"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the memory in the range from <code>src</code> to <code>src</code> + <code>size</code>.  <a href="#ac4ae801bc886378421c59fea09ecb321">More...</a><br /></td></tr>
 <tr class="separator:ac4ae801bc886378421c59fea09ecb321"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82dee27391f7b965f64f402d68e3c47a"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/memory_8h.html#a82dee27391f7b965f64f402d68e3c47a">ls_memory_to_c_array</a> (const void *const data, const size_t size)</td></tr>
-<tr class="separator:a82dee27391f7b965f64f402d68e3c47a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c26063d4c8eb9ac14f8d04b5258f2ae"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/memory_8h.html#a3c26063d4c8eb9ac14f8d04b5258f2ae">ls_memory_to_c_array</a> (const void *const src, const size_t size)</td></tr>
+<tr class="memdesc:a3c26063d4c8eb9ac14f8d04b5258f2ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the memory in the range from <code>src</code> to <code>src</code> + <code>size</code> to a string representing the memory as a C array of bytes.  <a href="#a3c26063d4c8eb9ac14f8d04b5258f2ae">More...</a><br /></td></tr>
+<tr class="separator:a3c26063d4c8eb9ac14f8d04b5258f2ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af67a2c26e79c01538b958037f6e447c3"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/memory_8h.html#af67a2c26e79c01538b958037f6e447c3">ls_memory_free</a> (void *const target)</td></tr>
+<tr class="memdesc:af67a2c26e79c01538b958037f6e447c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper for the standard <code>free</code> function.  <a href="#af67a2c26e79c01538b958037f6e447c3">More...</a><br /></td></tr>
 <tr class="separator:af67a2c26e79c01538b958037f6e447c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82008972e038632b1822b8a86024f072"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/memory_8h.html#a82008972e038632b1822b8a86024f072">ls_memory_clear</a> (volatile void *const target, const size_t size)</td></tr>
+<tr class="memdesc:a82008972e038632b1822b8a86024f072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the memory in the range from <code>target</code> to <code>target</code> + <code>size</code> by filling it up with zeroes.  <a href="#a82008972e038632b1822b8a86024f072">More...</a><br /></td></tr>
 <tr class="separator:a82008972e038632b1822b8a86024f072"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5073cb42151935eb340c01bfadb7c927"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/memory_8h.html#a5073cb42151935eb340c01bfadb7c927">ls_memory_clear_free</a> (volatile void *const target, const size_t size)</td></tr>
+<tr class="memdesc:a5073cb42151935eb340c01bfadb7c927"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears and deallocates memory by combining calls to <code><a class="el" href="../../dc/d18/memory_8h.html#a82008972e038632b1822b8a86024f072" title="Clears the memory in the range from target to target + size by filling it up with zeroes...">ls_memory_clear</a></code> and <code><a class="el" href="../../dc/d18/memory_8h.html#af67a2c26e79c01538b958037f6e447c3" title="Wrapper for the standard free function. ">ls_memory_free</a></code>.  <a href="#a5073cb42151935eb340c01bfadb7c927">More...</a><br /></td></tr>
 <tr class="separator:a5073cb42151935eb340c01bfadb7c927"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="ac2131f0f17a3e503fb1c11c38eb8ed07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2131f0f17a3e503fb1c11c38eb8ed07">&#9670;&nbsp;</a></span>ls_memory_dump_ex()</h2>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="af3aed55a3d10ca2e3b68d83250cedfa6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3aed55a3d10ca2e3b68d83250cedfa6">&#9670;&nbsp;</a></span>LS_STACK_ALLOC</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_memory_dump_ex </td>
+          <td class="memname">#define LS_STACK_ALLOC</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">type, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">var, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">sizeb&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Allocates an array on the stack. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../dc/d18/memory_8h_source.html#l00043">43</a> of file <a class="el" href="../../dc/d18/memory_8h_source.html">memory.h</a>.</p>
+
+</div>
+</div>
+<a id="a8d051044bf4929183e20bb8a3a3a910e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d051044bf4929183e20bb8a3a3a910e">&#9670;&nbsp;</a></span>LS_STACK_FREE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LS_STACK_FREE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">var</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Deallocates an array from the stack that was previously allocated by <code><a class="el" href="../../dc/d18/memory_8h.html#af3aed55a3d10ca2e3b68d83250cedfa6" title="Allocates an array on the stack. ">LS_STACK_ALLOC</a></code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../dc/d18/memory_8h_source.html#l00046">46</a> of file <a class="el" href="../../dc/d18/memory_8h_source.html">memory.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a439a40d3e46391fb62fe3b49fc837318"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a439a40d3e46391fb62fe3b49fc837318">&#9670;&nbsp;</a></span>ls_memory_dump_ex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_memory_dump_ex </td>
           <td>(</td>
           <td class="paramtype">const void *const&#160;</td>
           <td class="paramname"><em>src</em>, </td>
@@ -134,13 +211,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#ac96f14baf8d3668fb4133100f321c511">ls_nword_t</a>&#160;</td>
+          <td class="paramtype">const unsigned int&#160;</td>
           <td class="paramname"><em>columns</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#ac96f14baf8d3668fb4133100f321c511">ls_nword_t</a>&#160;</td>
+          <td class="paramtype">const unsigned int&#160;</td>
           <td class="paramname"><em>columnsize</em>, </td>
         </tr>
         <tr>
@@ -163,6 +240,25 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Dumps the memory in the range from <code>src</code> to <code>src</code> + <code>size</code>. </p>
+<p>Writes the dump to the file specified by <code>dest</code>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>The starting address to dump from. </td></tr>
+    <tr><td class="paramname">size</td><td>The number of bytes to dump. </td></tr>
+    <tr><td class="paramname">columns</td><td>The number of columns to display. </td></tr>
+    <tr><td class="paramname">columnsize</td><td>The number of bytes per column. </td></tr>
+    <tr><td class="paramname">dest</td><td>A pointer to the <code>FILE</code> to dump to. </td></tr>
+    <tr><td class="paramname">ansi</td><td>Whether or not to enhance the output using ANSI escape codes. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="../../de/d93/result_8h.html#a512832641bc549e642f80f59e1dba00d" title="Null-pointer encountered. ">LS_E_NULL</a></code> if <code>src</code> or <code>dest</code> is <code>NULL</code>. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#a81042d5627df7a62539a3f4f6b0ad298" title="The operation would have no effect. ">LS_E_NOOP</a></code> if <code>size</code> is less than 1. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#a8f0e961d549684b9176425e45d26f10a" title="Parameter or state/data invalid. ">LS_E_INVALID</a></code> if <code>columns</code> or <code>columnsize</code> is less than 1. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#a430624040dee0564fa75bbca57cefc03" title="IO error related to writing. ">LS_E_IO_WRITE</a></code> if writing to <code>dest</code> fails. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#ae0f0308978414d717c40adf5467ad69f" title="IO error related to flushing. ">LS_E_IO_FLUSH</a></code> if flushing to <code>dest</code> fails. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#aa170098a32bd374a3e4e1679db0f7da0" title="Successful. ">LS_E_SUCCESS</a></code> otherwise. </dd></dl>
+
 </div>
 </div>
 <a id="ac4ae801bc886378421c59fea09ecb321"></a>
@@ -172,7 +268,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a553daa36179037d30847fafbc76030db">ls_result_t</a> ls_memory_dump </td>
+          <td class="memname"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a> ls_memory_dump </td>
           <td>(</td>
           <td class="paramtype">const void *const&#160;</td>
           <td class="paramname"><em>src</em>, </td>
@@ -191,10 +287,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Dumps the memory in the range from <code>src</code> to <code>src</code> + <code>size</code>. </p>
+<p>Writes the dump to <code>stdout</code> using 16 single-byte columns. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>The starting address to dump from. </td></tr>
+    <tr><td class="paramname">size</td><td>The number of bytes to dump. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="../../de/d93/result_8h.html#a512832641bc549e642f80f59e1dba00d" title="Null-pointer encountered. ">LS_E_NULL</a></code> if <code>src</code> or <code>dest</code> is <code>NULL</code>. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#a81042d5627df7a62539a3f4f6b0ad298" title="The operation would have no effect. ">LS_E_NOOP</a></code> if <code>size</code> is less than 1. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#a430624040dee0564fa75bbca57cefc03" title="IO error related to writing. ">LS_E_IO_WRITE</a></code> if writing to <code>stdout</code> fails. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#ae0f0308978414d717c40adf5467ad69f" title="IO error related to flushing. ">LS_E_IO_FLUSH</a></code> if flushing to <code>stdout</code> fails. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#aa170098a32bd374a3e4e1679db0f7da0" title="Successful. ">LS_E_SUCCESS</a></code> otherwise. </dd></dl>
+
 </div>
 </div>
-<a id="a82dee27391f7b965f64f402d68e3c47a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82dee27391f7b965f64f402d68e3c47a">&#9670;&nbsp;</a></span>ls_memory_to_c_array()</h2>
+<a id="a3c26063d4c8eb9ac14f8d04b5258f2ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c26063d4c8eb9ac14f8d04b5258f2ae">&#9670;&nbsp;</a></span>ls_memory_to_c_array()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -203,7 +313,7 @@ Functions</h2></td></tr>
           <td class="memname">char* ls_memory_to_c_array </td>
           <td>(</td>
           <td class="paramtype">const void *const&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
+          <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -218,6 +328,17 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Converts the memory in the range from <code>src</code> to <code>src</code> + <code>size</code> to a string representing the memory as a C array of bytes. </p>
+<p>Each successful call to this function must be countered by a call to <code>free</code> once, to deallocate the allocated memory. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>The starting address to dump from. </td></tr>
+    <tr><td class="paramname">size</td><td>The number of bytes to dump. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NULL</code> on failure. <br />
+ A pointer to the newly allocated string otherwise. </dd></dl>
 
 </div>
 </div>
@@ -236,6 +357,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Wrapper for the standard <code>free</code> function. </p>
+<p>Unlike standard <code>free</code>, this function always returns <code>NULL</code> and checks if the passed pointer isn't null before passing it down. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The pointer to the memory to deallocate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NULL</code>, always. </dd></dl>
 
 </div>
 </div>
@@ -265,6 +395,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Clears the memory in the range from <code>target</code> to <code>target</code> + <code>size</code> by filling it up with zeroes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The pointer to the memory to clear. </td></tr>
+    <tr><td class="paramname">size</td><td>The number of bytes to clear. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a5073cb42151935eb340c01bfadb7c927"></a>
@@ -293,6 +432,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Clears and deallocates memory by combining calls to <code><a class="el" href="../../dc/d18/memory_8h.html#a82008972e038632b1822b8a86024f072" title="Clears the memory in the range from target to target + size by filling it up with zeroes...">ls_memory_clear</a></code> and <code><a class="el" href="../../dc/d18/memory_8h.html#af67a2c26e79c01538b958037f6e447c3" title="Wrapper for the standard free function. ">ls_memory_free</a></code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The pointer to the memory to clear. </td></tr>
+    <tr><td class="paramname">size</td><td>The number of bytes to clear. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NULL</code>, always. </dd></dl>
+
 </div>
 </div>
 </div><!-- contents -->
@@ -300,8 +449,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_fe6eb5064d42f9f773e90d3512fafa25.html">submodules</a></li><li class="navelem"><a class="el" href="../../dir_24113ac1bdad3f87e86c838174ad5a9a.html">master</a></li><li class="navelem"><a class="el" href="../../dir_efa0fcafe104baae21d5209dfaf69cad.html">libserum</a></li><li class="navelem"><a class="el" href="../../dir_495cc9ef2793da0b31d86ea851cc89b4.html">core</a></li><li class="navelem"><a class="el" href="../../dc/d18/memory_8h.html">memory.h</a></li>
-    <li class="footer">Generated on Thu Jul 19 2018 23:06:09 for Serum by
+    <li class="navelem"><a class="el" href="../../dir_4270bfced15e0e73154b13468c7c9ad9.html">core</a></li><li class="navelem"><a class="el" href="../../dc/d18/memory_8h.html">memory.h</a></li>
+    <li class="footer">Generated on Thu Aug 23 2018 03:00:12 for Serum by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>
