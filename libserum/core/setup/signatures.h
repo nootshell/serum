@@ -41,20 +41,29 @@
 
 /*!
  * \brief Initializes the given hash \p context.
- * \param context The context to initialize.
+ *
+ * \param[out] context The context to initialize.
+ *
+ * \return ?TODO
  */
 typedef ls_result_t (*lssig_hash_init)(void *const context);
 
 /*!
  * \brief Clears the given hash \p context.
- * \param context The context to clear.
+ *
+ * \param[out] context The context to clear.
+ *
+ * \return ?TODO
  */
 typedef ls_result_t (*lssig_hash_clear)(void *const context);
 
 /*!
  * \brief Updates the given hash \p context.
- * \param context The context to update.
- * \param block The block to consume.
+ *
+ * \param[inout] context The context to update.
+ * \param[in] block The block to consume.
+ *
+ * \return ?TODO
  */
 typedef ls_result_t (*lssig_hash_update)(void *const restrict context, const uint8_t *const restrict block);
 
@@ -63,10 +72,10 @@ typedef ls_result_t (*lssig_hash_update)(void *const restrict context, const uin
  *
  * Transforms the remaining input, if any, and finishes the message with proper padding. Calculates the digest, and clears the context.
  *
- * \param context The context to use.
- * \param data Remaining input to transform. May be `NULL` if there is nothing to transform (however, \p size must be set to `0`).
- * \param size The size of the remaining input.
- * \param digest The output location of the digest.
+ * \param[inout] context The context to use.
+ * \param[in]    data Remaining input to transform. May be `NULL` if there is nothing to transform (however, \p size must be set to `0`).
+ * \param[in]    size The size of the remaining input.
+ * \param[out]   digest The output location of the digest.
  *
  * \return
  *		`#LS_E_NULL` if \p context or \p digest is `NULL`.					\n
@@ -83,13 +92,13 @@ typedef ls_result_t (*lssig_hash_finish)(void *const restrict context, const uin
 /* Cipher signatures */
 
 /*!
- * \brief Initializes the given cipher \p context.
+ * \brief Initializes the given cipher context.
  *
- * \param context The context to initialize.
- * \param key The key to use.
- * \param key_size The size of the \p key.
- * \param nonce [optional] The nonce to use.
- * \param nonce_size [optional] The size of the \p nonce.
+ * \param[out] context The context to initialize.
+ * \param[in]  key The key to use.
+ * \param[in]  key_size The size of the \p key.
+ * \param[in]  nonce The nonce to use.
+ * \param[in]  nonce_size The size of the \p nonce.
  *
  * \return ?TODO
  */
@@ -98,7 +107,7 @@ typedef ls_result_t (*lssig_cipher_init)(void *const restrict context, const uin
 /*!
  * \brief Clears the given cipher \p context.
  *
- * \param context The context to clear.
+ * \param[out] context The context to clear.
  *
  * \return ?TODO
  */
@@ -107,9 +116,9 @@ typedef ls_result_t (*lssig_cipher_clear)(void *const context);
 /*!
  * \brief Rekeys the given cipher \p context.
  *
- * \param context The context to rekey.
- * \param key The key to use.
- * \param key_size The size of the \p key.
+ * \param[inout] context The context to rekey.
+ * \param[in]    key The key to use.
+ * \param[in]    key_size The size of the \p key.
  *
  * \return ?TODO
  */
@@ -118,9 +127,9 @@ typedef ls_result_t (*lssig_cipher_rekey)(void *const restrict context, const ui
 /*!
  * \brief Renonces the given cipher \p context.
  *
- * \param context The context to renonce.
- * \param nonce The nonce to use.
- * \param nonce_size The size of the \p nonce.
+ * \param[inout] context The context to renonce.
+ * \param[in]    nonce The nonce to use.
+ * \param[in]    nonce_size The size of the \p nonce.
  *
  * \return ?TODO
  */
@@ -129,8 +138,8 @@ typedef ls_result_t (*lssig_cipher_renonce)(void *const restrict context, const 
 /*!
  * \brief Fetches the current streaming block of the given cipher \p context.
  *
- * \param context The context to use.
- * \param block The variable to store the block in.
+ * \param[inout] context The context to use.
+ * \param[out]   block The variable to store the block in.
  *
  * \return ?TODO
  */
@@ -139,8 +148,8 @@ typedef ls_result_t (*lssig_cipher_get_stream_block)(void *const restrict contex
 /*!
  * \brief Encrypts the given \p block using the given cipher \p context.
  *
- * \param context The context to use.
- * \param block The block to encrypt.
+ * \param[inout] context The context to use.
+ * \param[inout] block The block to encrypt.
  *
  * \return ?TODO
  */
@@ -149,8 +158,8 @@ typedef ls_result_t (*lssig_cipher_block_encrypt)(void *const restrict context, 
 /*!
  * \brief Decrypts the given \p block using the given cipher \p context.
  *
- * \param context The context to use.
- * \param block The block to decrypt.
+ * \param[inout] context The context to use.
+ * \param[inout] block The block to decrypt.
  *
  * \return ?TODO
  */
