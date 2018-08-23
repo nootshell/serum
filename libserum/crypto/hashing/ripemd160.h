@@ -31,6 +31,16 @@
 
 
 
+/*!
+ * \page ripemd160 RIPEMD160
+ *
+ * \see crypto/hashing/ripemd160.h
+ *
+ * ?TODO
+ */
+
+
+
 
 #include "../../core/setup.h"
 
@@ -53,10 +63,10 @@ typedef struct ls_ripemd160 {
 	uint32_t __pad;
 } ls_ripemd160_t;
 
-/*! \brief A byte array with the size of a RIPEMD-160 block (`#LS_RIPEMD160_BLOCK_SIZE`). */
+//! \brief A byte array with the size of a RIPEMD-160 block (`#LS_RIPEMD160_BLOCK_SIZE`).
 typedef uint8_t ls_ripemd160_block_t[LS_RIPEMD160_BLOCK_SIZE];
 
-/*! \brief A byte array with the size of a RIPEMD-160 digest (`#LS_RIPEMD160_DIGEST_SIZE`). */
+//! \brief A byte array with the size of a RIPEMD-160 digest (`#LS_RIPEMD160_DIGEST_SIZE`).
 typedef uint8_t ls_ripemd160_digest_t[LS_RIPEMD160_DIGEST_SIZE];
 
 
@@ -67,29 +77,25 @@ extern "C" {
 #endif
 
 	/*!
-	 * \brief ls_ripemd160_init
-	 * \param context
-	 * \return
+	 * \copydoc lssig_hash_init
+	 *
+	 * \algorithm{RIPEMD160}
 	 */
 	LSAPI ls_result_t ls_ripemd160_init(ls_ripemd160_t *const context);
 
 	/*!
-	 * \brief ls_ripemd160_update
-	 * \param context
-	 * \param block
-	 * \return
+	 * \copydoc lssig_hash_update
+	 *
+	 * \algorithm{RIPEMD160}
 	 */
 	LSAPI ls_result_t ls_ripemd160_update(ls_ripemd160_t *const context, const ls_ripemd160_block_t block);
 
 	/*!
-	 * \brief ls_ripemd160_finish
-	 * \param context
-	 * \param input
-	 * \param input_size
-	 * \param out_digest
-	 * \return
+	 * \copydoc lssig_hash_finish
+	 *
+	 * \algorithm{RIPEMD160}
 	 */
-	LSAPI ls_result_t ls_ripemd160_finish(ls_ripemd160_t *const restrict context, const uint8_t *const restrict input, const size_t input_size, ls_ripemd160_digest_t out_digest);
+	LSAPI ls_result_t ls_ripemd160_finish(ls_ripemd160_t *const restrict context, const uint8_t *const restrict data, const size_t size, ls_ripemd160_digest_t digest);
 
 #ifdef __cplusplus
 }
