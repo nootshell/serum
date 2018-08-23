@@ -1,6 +1,12 @@
 # Doxyfile 1.8.13
 
 #---------------------------------------------------------------------------
+# Configuration setup
+#---------------------------------------------------------------------------
+ALIASES                += dl{3}="<dl class=\"section \1\"><dt>\2</dt><dd>\3</dd></dl>"
+ALIASES                += algorithm{1}="\dl{algorithm,Algorithm,\1}"
+
+#---------------------------------------------------------------------------
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
@@ -27,7 +33,6 @@ MULTILINE_CPP_IS_BRIEF = NO
 INHERIT_DOCS           = YES
 SEPARATE_MEMBER_PAGES  = NO
 TAB_SIZE               = 4
-ALIASES                = "mtsafe=\xrefitem mtsafe \"Multithreading Safe\" \"Multithreading Safe Functions\""
 TCL_SUBST              =
 OPTIMIZE_OUTPUT_FOR_C  = YES
 OPTIMIZE_OUTPUT_JAVA   = NO
@@ -105,9 +110,9 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ./submodules/master/libserum
+INPUT                  = ./submodules/master/libserum ./extra
 INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.h
+FILE_PATTERNS          = *.h *.dox
 RECURSIVE              = YES
 EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO
