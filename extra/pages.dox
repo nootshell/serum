@@ -1,0 +1,30 @@
+/*!
+ * \page algorithms Algorithms
+ *
+ * \subpage ciphers
+ * \subpage hashing
+ */
+
+
+/*!
+ * \page ciphers Ciphers
+ *
+ * \subpage salsa20
+ */
+
+
+/*!
+ * \page hashing Hashing
+ *
+ * \subpage md5
+ * \subpage ripemd160
+ */
+
+
+
+
+/*!
+ * \page helpers Helpers
+ *
+ * \subpage hash_wrapper
+ */
