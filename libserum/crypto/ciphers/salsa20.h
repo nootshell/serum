@@ -82,47 +82,56 @@ extern "C" {
 #endif
 
 	/*!
-	 * \algorithm{Salsa20}
 	 * \copydoc lssig_cipher_init
+	 *
+	 * \algorithm{Salsa20}
 	 */
 	LSAPI ls_result_t ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const size_t key_size, const uint8_t *const restrict nonce, const size_t nonce_size);
 
 	/*!
-	 * \algorithm{Salsa20}
 	 * \copydoc lssig_cipher_rekey
+	 *
+	 * \algorithm{Salsa20}
 	 */
 	LSAPI ls_result_t ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const size_t key_size);
 
 	/*!
-	 * \algorithm{Salsa20}
 	 * \copydoc lssig_cipher_renonce
+	 *
+	 * \algorithm{Salsa20}
 	 */
 	LSAPI ls_result_t ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint8_t *const restrict nonce, const size_t nonce_size);
 
 	/*!
-	 * \algorithm{Salsa20}
 	 * \copydoc lssig_cipher_get_stream_block
+	 *
+	 * \algorithm{Salsa20}
 	 */
 	LSAPI ls_result_t ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
 
 	/*!
-	 * \algorithm{Salsa20}
 	 * \brief Encrypts/decrypts the given block using the given cipher context.
+	 *
 	 * \param context The context to use.
 	 * \param block The block to encrypt/decrypt.
+	 *
 	 * \return ?TODO
+	 *
+	 * \algorithm{Salsa20}
 	 */
 	LSAPI ls_result_t ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
 
 	/*!
-	 * \algorithm{Salsa20}
 	 * \copydoc lssig_cipher_block_encrypt
+	 *
+	 * \algorithm{Salsa20}
 	 */
 	LSAPI ls_result_t ls_salsa20_block_encrypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
 
 	/*!
-	 * \algorithm{Salsa20}
 	 * \copydoc lssig_cipher_block_decrypt
+	 *
+	 * \algorithm{Salsa20}
 	 */
 	LSAPI ls_result_t ls_salsa20_block_decrypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block);
 
