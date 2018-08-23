@@ -187,8 +187,8 @@ ls_md5_update(ls_md5_t *const restrict context, const ls_md5_block_t block) {
 
 
 ls_result_t
-ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict input, const size_t input_size, ls_md5_digest_t out_digest) {
-	if (context == NULL || (input_size > 0 && input == NULL) || out_digest == NULL) {
+ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict data, const size_t input_size, ls_md5_digest_t out_digest) {
+	if (context == NULL || (input_size > 0 && data == NULL) || out_digest == NULL) {
 		return_e(LS_E_NULL);
 	}
 
@@ -204,7 +204,7 @@ ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict in
 			context, (lssig_hash_update)ls_md5_update,
 			((context->length + input_size) * LS_BITS_BYTE),
 			buffer, LS_MD5_BLOCK_SIZE,
-			input, input_size
+			data, input_size
 		);
 
 		if (pad_result != LS_E_SUCCESS) {

@@ -32,6 +32,17 @@
 
 
 
+/*!
+ * \page md5 MD5
+ *
+ * \see crypto/hashing/md5.h
+ *
+ * ?TODO
+ */
+
+
+
+
 #include "../../core/setup.h"
 
 
@@ -51,10 +62,10 @@ typedef struct ls_md5 {
 	uint32_t state_D;
 } ls_md5_t;
 
-/*! \brief A byte array with the size of a MD5 block (`#LS_MD5_BLOCK_SIZE`). */
+//! \brief A byte array with the size of a MD5 block (`#LS_MD5_BLOCK_SIZE`).
 typedef uint8_t ls_md5_block_t[LS_MD5_BLOCK_SIZE];
 
-/*! \brief A byte array with the size of a MD5 digest (`#LS_MD5_DIGEST_SIZE`). */
+//! \brief A byte array with the size of a MD5 digest (`#LS_MD5_DIGEST_SIZE`).
 typedef uint8_t ls_md5_digest_t[LS_MD5_DIGEST_SIZE];
 
 
@@ -64,47 +75,26 @@ typedef uint8_t ls_md5_digest_t[LS_MD5_DIGEST_SIZE];
 extern "C" {
 #endif
 
-	/*! \brief Initializes the specified MD5 \p context.
-	**
-	**	\param context The MD5 context.
-	**
-	**	\return
-	**		`#LS_E_NULL` if \p context is `NULL`.
-	**		`#LS_E_SUCCESS` otherwise.
-	*/
+	/*!
+	 * \copydoc lssig_hash_init
+	 *
+	 * \algorithm{MD5}
+	 */
 	LSAPI ls_result_t ls_md5_init(ls_md5_t *const context);
 
-	/*!	\brief Performs a MD5 transformation using the specified \p block, for the specified \p context.
-	**
-	**	\param context The MD5 context.
-	**	\param block The block to use.
-	**
-	**	\return
-	**		`#LS_E_NULL` if \p context or \p block is `NULL`.
-	**		`#LS_E_SUCCESS` otherwise.
-	*/
+	/*!
+	 * \copydoc lssig_hash_update
+	 *
+	 * \algorithm{MD5}
+	 */
 	LSAPI ls_result_t ls_md5_update(ls_md5_t *const restrict context, const ls_md5_block_t block);
 
-	/*!	\brief Finalizes the specified MD5 \p context by calculating its
-	**	       \p digest and clearing the \p context.
-	**
-	**	Transforms the remaining input, if any, and finishes the message
-	**	with proper padding. Calculates the digest, and clears the context.
-	**
-	**	\param context The MD5 context.
-	**	\param input Remaining input to transform. May be `NULL` if
-	**	             there is nothing to transform (\p size must be `0`).
-	**	\param size The size of the remaining input.
-	**	\param digest The output location for the MD5 digest.
-	**
-	**	\return
-	**		`#LS_E_NULL` if \p context or \p digest is `NULL`.
-	**		`#LS_E_NULL` if \p size is greater than `0` and \p input is `NULL`.
-	**		`#LS_E_SIZE` if \p size is greater than `#LS_MD5_BLOCK_SIZE`.
-	**		`#LS_E_FAILURE` if any transformations fail.
-	**		`#LS_E_SUCCESS` otherwise.
-	*/
-	LSAPI ls_result_t ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict input, size_t size, ls_md5_digest_t digest);
+	/*!
+	 * \copydoc lssig_hash_finish
+	 *
+	 * \algorithm{MD5}
+	 */
+	LSAPI ls_result_t ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict data, size_t size, ls_md5_digest_t digest);
 
 #ifdef __cplusplus
 }
