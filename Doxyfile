@@ -5,6 +5,7 @@
 #---------------------------------------------------------------------------
 ALIASES                += dl{3}="<dl class=\"section \1\"><dt>\2</dt><dd>\3</dd></dl>"
 ALIASES                += algorithm{1}="\dl{algorithm,Algorithm,\1}"
+ALIASES                += visibility{1}="\dl{visibility,Visibility,\1}"
 
 #---------------------------------------------------------------------------
 # Project related configuration options
