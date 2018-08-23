@@ -42,15 +42,25 @@ extern "C" {
 #endif
 
 	/*!
-	 * \brief __ls_hash_finish_80_00_length64
-	 * \param context
-	 * \param f_update
-	 * \param length
-	 * \param block_buffer
-	 * \param block_size
-	 * \param input
-	 * \param input_size
+	 * \brief Finishes a hash context with `0x80,{0x00},<u64mesglen>`.
+	 *
+	 * Pads the remaining data with one bit (`0x80`), filling the remainder of the buffer to the last 8 bytes with zeroes, and adding the total length of the message in those 8 bytes as a 64-bit little-endian integer.
+	 *
+	 * \param[inout] context The hash context to finish.
+	 * \param[in]    f_update The hash update function to use.
+	 * \param[in]    length The length of the message.
+	 * \param[inout] block_buffer The block to use as a buffer.
+	 * \param[in]    block_size The size of the block.
+	 * \param[in]    input The remaining input to process.
+	 * \param[in]    input_size The size of the remaining input.
+	 *
 	 * \return
+	 *		`#LS_E_NULL` if \p context, \p f_update, or \p block_buffer, or, if \p input_size is greater than `0`, \p input is `NULL`.	\n
+	 *		`#LS_E_SIZE` if \p block_size is `0`.																						\n
+	 *		`#LS_E_FAILURE` if \p f_update doesn't return `#LS_E_SUCCESS`.																\n
+	 *		`#LS_E_SUCCESS` otherwise.`
+	 *
+	 * \visibility{internal}
 	 */
 	LSINT ls_result_t __ls_hash_finish_80_00_length64(void *const restrict context, lssig_hash_update f_update, const ls_message_length_t length, uint8_t *const restrict block_buffer, const size_t block_size, const void *const restrict input, const size_t input_size);
 
