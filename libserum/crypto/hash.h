@@ -32,6 +32,17 @@
 
 
 
+/*!
+ * \page hash_wrapper Hash wrapper
+ *
+ * \see crypto/hash.h
+ *
+ * ?TODO
+ */
+
+
+
+
 #include "../core/setup.h"
 
 #include "./registry.h"
@@ -64,51 +75,94 @@ extern "C" {
 #endif
 
 	/*!
-	 * \brief ls_hash_init
-	 * \param hash
-	 * \param algorithm
+	 * \brief Initialize the specified hash \p context for the specified \p algorithm.
+	 *
+	 * \param[inout] context The context to initialize.
+	 * \param[in]    algorithm The algorithm to prepare the \p context for.
+	 *
+	 * \see lssig_hash_init
+	 *
 	 * \return
+	 *		`#LS_E_NULL` if \p context is `NULL`.														\n
+	 *		`#LS_E_ALGORITHM` if \p algorithm is not a valid, registered hash algorithm.				\n
+	 *		`#LS_E_MEMORY` if allocating memory failed.													\n
+	 *		`#LS_E_INITIALIZATION` if the initialization function of the specified \p algorithm fails.	\n
+	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t ls_hash_init(ls_hash_t *const context, ls_hash_algo_t algorithm);
 
 	/*!
-	 * \brief ls_hash_clear
-	 * \param hash
+	 * \brief Clears the specified hash \p context.
+	 *
+	 * \param[inout] context The context to clear.
+	 *
+	 * \see lssig_hash_clear
+	 *
 	 * \return
+	 *		`#LS_E_NULL` if \p context is `NULL`.	\n
+	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t ls_hash_clear(ls_hash_t *const context);
 
 	/*!
-	 * \brief ls_hash_reinit
-	 * \param hash
+	 * \brief Reinitializes the specified hash \p context.
+	 *
+	 * \param[inout] context The context to reinitialize.
+	 *
+	 * \see lssig_hash_init
+	 *
 	 * \return
+	 *		`#LS_E_NULL` if \p context is `NULL`.							\n
+	 *		`#LS_E_FAILURE` if clearing \p context, when possible, fails.	\n
+	 *		Otherwise, the return value of the algorithm's initialization function is returned.
 	 */
 	LSAPI ls_result_t ls_hash_reinit(ls_hash_t *const context);
 
 	/*!
-	 * \brief ls_hash_update
-	 * \param hash
-	 * \param data
-	 * \param size
+	 * \brief Updates the given hash \p context.
+	 *
+	 * \param[inout] context The context to update.
+	 * \param[in]    data The data to feed the \p context.
+	 * \param[in]    size The number of bytes to read from \p data.
+	 *
+	 * \see lssig_hash_update
+	 *
 	 * \return
+	 *		`#LS_E_NULL` if \p context or \p data is `NULL`.			\n
+	 *		`#LS_E_NOOP` if \p size is `0`.								\n
+	 *		`#LS_E_FAILURE` if the algorithm's update function fails.	\n
+	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t ls_hash_update(ls_hash_t *const restrict context, const uint8_t *const restrict data, const size_t size);
 
 	/*!
-	 * \brief ls_hash_finish
-	 * \param hash
-	 * \param out_digest
+	 * \brief Finishes the given hash \p context.
+	 *
+	 * \param[inout] context The context to finish.
+	 * \param[out]   out_digest The output location of the digest.
+	 *
+	 * \see lssig_hash_finish
+	 *
 	 * \return
+	 *		`#LS_E_NULL` if \p context or \p out_digest is `NULL`.							\n
+	 *		Otherwise, the return value of the algorithm's finishing function is returned.
 	 */
 	LSAPI ls_result_t ls_hash_finish(ls_hash_t *const restrict context, uint8_t *const restrict out_digest);
 
 	/*!
-	 * \brief ls_hash
-	 * \param algorithm
-	 * \param out_digest
-	 * \param data
-	 * \param size
+	 * \brief Calculates \p out_digest by processing \p size bytes from \p data using the specified \p algorithm.
+	 *
+	 * \param[in]  algorithm The algorithm to use.
+	 * \param[out] out_digest The output location of the digest.
+	 * \param[in]  data The data to process.
+	 * \param[in]  size The number of bytes to read from \p data.
+	 *
+	 * \see ls_hash_init
+	 * \see ls_hash_update
+	 * \see ls_hash_finish
+	 *
 	 * \return
+	 *		Any of the return values from `#ls_hash_init`, `#ls_hash_update`, and `#ls_hash_finish`.
 	 */
 	LSAPI ls_result_t ls_hash(ls_hash_algo_t algorithm, uint8_t *const restrict out_digest, const uint8_t *const restrict data, const size_t size);
 
