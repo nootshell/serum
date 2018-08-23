@@ -89,10 +89,10 @@ extern "C" {
 	**	\param mutex The mutex to initialize.
 	**
 	**	\return
-	**		`#LS_E_NULL` if \p mutex is `NULL`;							<br/>
-	**		`#LS_E_MAGIC` if the struct magic is already set;			<br/>
-	**		`#LS_E_FAILURE` on failure;									<br/>
-	**		`#LS_E_SUCCESS` on success;									<br/>
+	**		`#LS_E_NULL` if \p mutex is `NULL`;							\n
+	**		`#LS_E_MAGIC` if the struct magic is already set;			\n
+	**		`#LS_E_FAILURE` on failure;									\n
+	**		`#LS_E_SUCCESS` on success;									\n
 	**		`#LS_E_UNSUPPORTED` if the implementation is missing.
 	*/
 	LSAPI ls_result_t ls_mutex_init(ls_mutex_t *const mutex);
@@ -102,10 +102,10 @@ extern "C" {
 	**	\param mutex The mutex to clear.
 	**
 	**	\return
-	**		`#LS_E_NULL` if \p mutex is `NULL`;							<br/>
-	**		`#LS_E_MAGIC` if the struct magic is not set;				<br/>
-	**		`#LS_E_FAILURE` on failure;									<br/>
-	**		`#LS_E_SUCCESS` on success;									<br/>
+	**		`#LS_E_NULL` if \p mutex is `NULL`;							\n
+	**		`#LS_E_MAGIC` if the struct magic is not set;				\n
+	**		`#LS_E_FAILURE` on failure;									\n
+	**		`#LS_E_SUCCESS` on success;									\n
 	**		`#LS_E_UNSUPPORTED` if the implementation is missing.
 	*/
 	LSAPI ls_result_t ls_mutex_clear(ls_mutex_t *const mutex);
@@ -118,12 +118,12 @@ extern "C" {
 	**	\param mutex The mutex to lock.
 	**
 	**	\return
-	**		`#LS_E_NULL` if \p mutex is `NULL`;							<br/>
-	**		`#LS_E_MAGIC` if the struct magic is not set;				<br/>
-	**		`#LS_E_UNINITIALIZED` if \p mutex`->lock` is `NULL` (Windows);	<br/>
-	**		`#LS_E_SUCCESS` on success;									<br/>
-	**		`#LS_E_ABANDONED` if the lock was abandoned;				<br/>
-	**		`#LS_E_FAILURE` on failure;									<br/>
+	**		`#LS_E_NULL` if \p mutex is `NULL`;							\n
+	**		`#LS_E_MAGIC` if the struct magic is not set;				\n
+	**		`#LS_E_UNINITIALIZED` if \p mutex`->lock` is `NULL` (Windows);	\n
+	**		`#LS_E_SUCCESS` on success;									\n
+	**		`#LS_E_ABANDONED` if the lock was abandoned;				\n
+	**		`#LS_E_FAILURE` on failure;									\n
 	**		`#LS_E_UNSUPPORTED` if the implementation is missing.
 	*/
 	LSAPI ls_result_t ls_mutex_lock(CONST_WTHREADS ls_mutex_t *const mutex);
@@ -137,9 +137,9 @@ extern "C" {
 	**	\param timeout The time to wait before timing out.
 	**
 	**	\return
-	**		`#LS_E_INVALID` if a timeout of zero was given;				<br/>
-	**		`#LS_E_CONVERSION` if conversion of \p timeout failed;		<br/>
-	**		`#LS_E_TIMEOUT` if it times out;							<br/>
+	**		`#LS_E_INVALID` if a timeout of zero was given;				\n
+	**		`#LS_E_CONVERSION` if conversion of \p timeout failed;		\n
+	**		`#LS_E_TIMEOUT` if it times out;							\n
 	**		return values from `#ls_mutex_lock` otherwise.
 	*/
 	LSAPI ls_result_t ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec timeout);
@@ -152,11 +152,11 @@ extern "C" {
 	**	\param mutex The mutex to unlock.
 	**
 	**	\return
-	**		`#LS_E_NULL` if \p mutex is `NULL`;							<br/>
-	**		`#LS_E_MAGIC` if the struct magic is not set;				<br/>
-	**		`#LS_E_UNINITIALIZED` if \p mutex`->lock` is `NULL` (Windows);	<br/>
-	**		`#LS_E_FAILURE` on failure;									<br/>
-	**		`#LS_E_SUCCESS` on success;									<br/>
+	**		`#LS_E_NULL` if \p mutex is `NULL`;							\n
+	**		`#LS_E_MAGIC` if the struct magic is not set;				\n
+	**		`#LS_E_UNINITIALIZED` if \p mutex`->lock` is `NULL` (Windows);	\n
+	**		`#LS_E_FAILURE` on failure;									\n
+	**		`#LS_E_SUCCESS` on success;									\n
 	**		`#LS_E_UNSUPPORTED` if the implementation is missing.
 	*/
 	LSAPI ls_result_t ls_mutex_unlock(CONST_WTHREADS ls_mutex_t *const mutex);

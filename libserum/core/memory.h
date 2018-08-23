@@ -72,11 +72,11 @@ extern "C" {
 	 * \param dest A pointer to the `FILE` to dump to.
 	 * \param ansi Whether or not to enhance the output using ANSI escape codes.
 	 * \return
-	 *		`#LS_E_NULL` if \p src or \p dest is `NULL`.					<br/>
-	 *		`#LS_E_NOOP` if \p size is less than 1.							<br/>
-	 *		`#LS_E_INVALID` if \p columns or \p columnsize is less than 1.	<br/>
-	 *		`#LS_E_IO_WRITE` if writing to \p dest fails.					<br/>
-	 *		`#LS_E_IO_FLUSH` if flushing to \p dest fails.					<br/>
+	 *		`#LS_E_NULL` if \p src or \p dest is `NULL`.					\n
+	 *		`#LS_E_NOOP` if \p size is less than 1.							\n
+	 *		`#LS_E_INVALID` if \p columns or \p columnsize is less than 1.	\n
+	 *		`#LS_E_IO_WRITE` if writing to \p dest fails.					\n
+	 *		`#LS_E_IO_FLUSH` if flushing to \p dest fails.					\n
 	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t ls_memory_dump_ex(const void *const src, const size_t size, const unsigned int columns, const unsigned int columnsize, FILE *const dest, const ls_bool_t ansi);
@@ -87,10 +87,10 @@ extern "C" {
 	 * \param src The starting address to dump from.
 	 * \param size The number of bytes to dump.
 	 * \return
-	 *		`#LS_E_NULL` if \p src or \p dest is `NULL`.					<br/>
-	 *		`#LS_E_NOOP` if \p size is less than 1.							<br/>
-	 *		`#LS_E_IO_WRITE` if writing to `stdout` fails.					<br/>
-	 *		`#LS_E_IO_FLUSH` if flushing to `stdout` fails.					<br/>
+	 *		`#LS_E_NULL` if \p src or \p dest is `NULL`.					\n
+	 *		`#LS_E_NOOP` if \p size is less than 1.							\n
+	 *		`#LS_E_IO_WRITE` if writing to `stdout` fails.					\n
+	 *		`#LS_E_IO_FLUSH` if flushing to `stdout` fails.					\n
 	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t ls_memory_dump(const void *const src, const size_t size);
@@ -101,7 +101,7 @@ extern "C" {
 	 * \param src The starting address to dump from.
 	 * \param size The number of bytes to dump.
 	 * \return
-	 *		`NULL` on failure.	<br/>
+	 *		`NULL` on failure.	\n
 	 *		A pointer to the newly allocated string otherwise.
 	 */
 	LSAPI char* ls_memory_to_c_array(const void *const src, const size_t size);
