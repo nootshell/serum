@@ -54,16 +54,26 @@ typedef ls_result_t (*lssig_hash_clear)(void *const context);
 /*!
  * \brief Updates the given hash \p context.
  * \param context The context to update.
- * \param data The data to consume.
+ * \param block The block to consume.
  */
-typedef ls_result_t (*lssig_hash_update)(void *const restrict context, const uint8_t *const restrict data);
+typedef ls_result_t (*lssig_hash_update)(void *const restrict context, const uint8_t *const restrict block);
 
 /*!
- * \brief Finishes the given hash \p context.
- * \param context The context to finish.
- * \param data [optional] Remaining data to consume.
- * \param size [optional] The size of the given \p data.
- * \param digest The variable to store the calculated digest in.
+ * \brief Calculates the \p digest for the specified \p context, clearing the \p context afterwards.
+ *
+ * Transforms the remaining input, if any, and finishes the message with proper padding. Calculates the digest, and clears the context.
+ *
+ * \param context The context to use.
+ * \param data Remaining input to transform. May be `NULL` if there is nothing to transform (however, \p size must be set to `0`).
+ * \param size The size of the remaining input.
+ * \param digest The output location of the digest.
+ *
+ * \return
+ *		`#LS_E_NULL` if \p context or \p digest is `NULL`.					\n
+ *		`#LS_E_NULL` if \p size is greater than `0` and \p input is `NULL`.	\n
+ *		`#LS_E_SIZE` if \p size is greater than the algorithm's block size.	\n
+ *		`#LS_E_FAILURE` if any transformations fail.						\n
+ *		`#LS_E_SUCCESS` otherwise.
  */
 typedef ls_result_t (*lssig_hash_finish)(void *const restrict context, const uint8_t *const restrict data, const size_t size, uint8_t *const restrict digest);
 
