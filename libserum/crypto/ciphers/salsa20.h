@@ -72,6 +72,7 @@ typedef union ls_salsa20 {
 	uint32_t words[16];
 } ls_salsa20_t;
 
+//! \brief A byte array with the size of a Salsa20 block.
 typedef uint8_t ls_salsa20_block_t[LS_SALSA20_BLOCK_SIZE];
 
 
@@ -112,8 +113,8 @@ extern "C" {
 	/*!
 	 * \brief Encrypts/decrypts the given block using the given cipher context.
 	 *
-	 * \param context The context to use.
-	 * \param block The block to encrypt/decrypt.
+	 * \param[inout] context The context to use.
+	 * \param[inout] block The block to encrypt/decrypt.
 	 *
 	 * \return ?TODO
 	 *
