@@ -41,8 +41,8 @@ FILEID("Luxury hash function wrapper.");
 
 
 ls_result_t
-ls_hash_init(ls_hash_t *const hash, ls_hash_algo_t algorithm) {
-	if (hash == NULL) {
+ls_hash_init(ls_hash_t *const context, ls_hash_algo_t algorithm) {
+	if (context == NULL) {
 		return_e(LS_E_NULL);
 	}
 
@@ -59,28 +59,28 @@ ls_hash_init(ls_hash_t *const hash, ls_hash_algo_t algorithm) {
 	if (ptr == NULL) {
 		return_e(LS_E_MEMORY);
 	}
-	hash->context = ptr;
+	context->context = ptr;
 
 	ptr = malloc(reg_entry->block_size);
 	if (ptr == NULL) {
-		hash->context = ls_memory_free(hash->context);
+		context->context = ls_memory_free(context->context);
 		return_e(LS_E_MEMORY);
 	}
-	hash->buffer = ptr;
+	context->buffer = ptr;
 
 
-	hash->context_size = reg_entry->ctx_size;
-	hash->buffer_size = reg_entry->block_size;
-	hash->buffer_index = 0;
+	context->context_size = reg_entry->ctx_size;
+	context->buffer_size = reg_entry->block_size;
+	context->buffer_index = 0;
 
-	hash->f_init = reg_entry->f_init;
-	hash->f_clear = reg_entry->f_clear;
-	hash->f_update = reg_entry->f_update;
-	hash->f_finish = reg_entry->f_finish;
+	context->f_init = reg_entry->f_init;
+	context->f_clear = reg_entry->f_clear;
+	context->f_update = reg_entry->f_update;
+	context->f_finish = reg_entry->f_finish;
 
 
-	if (hash->f_init(hash->context) != LS_E_SUCCESS) {
-		ls_hash_clear(hash);
+	if (context->f_init(context->context) != LS_E_SUCCESS) {
+		ls_hash_clear(context);
 		return_e(LS_E_INITIALIZATION);
 	}
 
@@ -90,46 +90,46 @@ ls_hash_init(ls_hash_t *const hash, ls_hash_algo_t algorithm) {
 
 
 ls_result_t
-ls_hash_clear(ls_hash_t *const hash) {
-	if (hash == NULL) {
+ls_hash_clear(ls_hash_t *const context) {
+	if (context == NULL) {
 		return_e(LS_E_NULL);
 	}
 
-	if (hash->context != NULL) {
-		if (hash->f_clear == NULL || hash->f_clear(hash->context) != LS_E_SUCCESS) {
-			hash->context = ls_memory_clear_free(hash->context, hash->context_size);
+	if (context->context != NULL) {
+		if (context->f_clear == NULL || context->f_clear(context->context) != LS_E_SUCCESS) {
+			context->context = ls_memory_clear_free(context->context, context->context_size);
 		}
 	}
 
-	if (hash->buffer != NULL) {
-		hash->buffer = ls_memory_clear_free(hash->buffer, hash->buffer_size);
+	if (context->buffer != NULL) {
+		context->buffer = ls_memory_clear_free(context->buffer, context->buffer_size);
 	}
 
-	ls_memory_clear(hash, sizeof(*hash));
+	ls_memory_clear(context, sizeof(*context));
 
 	return LS_E_SUCCESS;
 }
 
 
 ls_result_t
-ls_hash_reinit(ls_hash_t *const hash) {
-	if (hash == NULL) {
+ls_hash_reinit(ls_hash_t *const context) {
+	if (context == NULL) {
 		return_e(LS_E_NULL);
 	}
 
-	if (hash->f_clear != NULL && hash->f_clear(hash->context) != LS_E_SUCCESS) {
+	if (context->f_clear != NULL && context->f_clear(context->context) != LS_E_SUCCESS) {
 		return_e(LS_E_FAILURE);
 	}
 
-	return hash->f_init(hash->context);
+	return context->f_init(context->context);
 }
 
 
 
 
 ls_result_t
-ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict data, const size_t size) {
-	if (hash == NULL || data == NULL) {
+ls_hash_update(ls_hash_t *const restrict context, const uint8_t *const restrict data, const size_t size) {
+	if (context == NULL || data == NULL) {
 		return_e(LS_E_NULL);
 	}
 
@@ -138,14 +138,14 @@ ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict dat
 	}
 
 
-	const size_t buffer_index = hash->buffer_index;
-	const size_t buffer_size = hash->buffer_size;
+	const size_t buffer_index = context->buffer_index;
+	const size_t buffer_size = context->buffer_size;
 
 
 	/* If we can't fill the buffer, store the data in the buffer and report success */
 	if ((buffer_index + size) < buffer_size) {
-		memcpy(&hash->buffer[buffer_index], data, size);
-		hash->buffer_index += size;
+		memcpy(&context->buffer[buffer_index], data, size);
+		context->buffer_index += size;
 		return LS_E_SUCCESS;
 	}
 
@@ -157,7 +157,7 @@ ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict dat
 
 	/* Prepare the cache with buffered data (if any) plus input data */
 	if (buffer_index > 0) {
-		memcpy(cache, hash->buffer, buffer_index);
+		memcpy(cache, context->buffer, buffer_index);
 
 		const size_t remaining = (buffer_size - buffer_index);
 		memcpy(&cache[buffer_index], dptr, remaining);
@@ -169,10 +169,10 @@ ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict dat
 	}
 
 
-	void *const context = hash->context;
+	void *const context = context->context;
 	for (;;) {
 		/* Process the block in the cache */
-		if (hash->f_update(context, cache) != LS_E_SUCCESS) {
+		if (context->f_update(context, cache) != LS_E_SUCCESS) {
 			// TODO: HCF
 			LS_STACK_FREE(cache);
 			return_e(LS_E_FAILURE);
@@ -190,9 +190,9 @@ ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict dat
 	}
 
 
-	hash->buffer_index = sz_remaining;
+	context->buffer_index = sz_remaining;
 	if (sz_remaining > 0) {
-		memcpy(hash->buffer, dptr, sz_remaining);
+		memcpy(context->buffer, dptr, sz_remaining);
 	}
 
 
@@ -202,12 +202,12 @@ ls_hash_update(ls_hash_t *const restrict hash, const uint8_t *const restrict dat
 
 
 ls_result_t
-ls_hash_finish(ls_hash_t *const restrict hash, uint8_t *const restrict out_digest) {
-	if (hash == NULL || out_digest == NULL) {
+ls_hash_finish(ls_hash_t *const restrict context, uint8_t *const restrict out_digest) {
+	if (context == NULL || out_digest == NULL) {
 		return_e(LS_E_NULL);
 	}
 
-	return hash->f_finish(hash->context, hash->buffer, hash->buffer_index, out_digest);
+	return context->f_finish(context->context, context->buffer, context->buffer_index, out_digest);
 }
 
 
