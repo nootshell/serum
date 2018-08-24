@@ -1,0 +1,38 @@
+/* Fonts */
+html {
+	font-family: 'Open Sans', sans-serif;
+}
+
+
+/* Page foreground/background */
+body {
+	margin: 0;
+}
+body, div#nav-tree, div.header {
+	color: #FCFCFC;
+	background-image: none !important;
+	background-color: #202020 !important;
+}
+
+
+/* Paddings */
+div#doc-content {
+	padding: 12px;
+}
+
+
+/* Title */
+div#titlearea > table {
+	width: 100%;
+}
+div#titlearea div#projectname {
+	display: inline-block;
+	padding: 5px 10px;
+	font-size: 2.222em;
+	font-variant: small-caps;
+}
+div#titlearea div#projectbrief {
+	display: inline-block;
+	font-size: 0.75em;
+	font-style: italic;
+}

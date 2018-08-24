@@ -1,0 +1,58 @@
+/* Tables */
+table.memberdecls td.memItemLeft, table.memberdecls td.memItemRight {
+	font-family: monospace;
+}
+
+
+/* Sections */
+dl.section.see > dd,
+dl.section.algorithm > dd,
+dl.section.visibility > dd {
+	font-family: monospace;
+}
+
+
+/* Declarations */
+h2.memtitle {
+	float: left;
+	font-family: monospace;
+	font-size: 1.6em;
+	margin: 30px 0 -1px 0;
+	padding: 8px 32px;
+	border-bottom: none;
+	border-radius: 6px 6px 0 0;
+}
+div.memitem {
+	display: table !important;
+	width: 100%;
+	margin: 0 0 12px 0;
+	border-radius: 0 6px 6px 6px;
+	background-color: #303030;
+}
+div.memitem > div.memproto {
+	font-family: monospace;
+	padding: 10px;
+	border-left: none;
+	border-right: none;
+	border-top: none;
+}
+div.memitem > div.memdoc {
+	padding: 0 12px;
+}
+h2.memtitle, div.memproto {
+	background-color: #383838;
+}
+h2.memtitle {
+	background-color: #424242;
+}
+h2.memtitle, div.memitem, div.memproto {
+	border: 1px solid #424242;
+}
+dl.params > dd > table.params td.paramdir {
+	font-family: monospace;
+	opacity: 0.45;
+}
+dl.params > dd > table.params td.paramname {
+	font-family: monospace;
+	color: firebrick;
+}

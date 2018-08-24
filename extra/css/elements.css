@@ -1,0 +1,33 @@
+/* Transitions */
+a {
+	transition: 0.0666s;
+}
+
+
+/* Anchors */
+a {
+	color: #FF9000;
+}
+a:hover {
+	color: #E06800;
+}
+
+
+/* Frames */
+div.ui-resizable-handle {
+	background-image: none !important;
+	background-color: #505050;
+	border: 1px solid #404040;
+	border-top: none;
+	border-bottom: none;
+}
+
+
+/* Titles */
+div.headertitle > div.title {
+	font-size: 1.85em;
+	margin: -12px -12px 0 -12px;
+	padding: 12px;
+	background-color: #363636;
+	border-bottom: 1px solid #404040;
+}

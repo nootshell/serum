@@ -1,0 +1,23 @@
+/* Box sizing */
+* {
+	box-sizing: border-box;
+}
+html > body > div#side-nav {
+	box-sizing: initial;
+}
+
+/* Images */
+.sm-dox {
+	background-image: none !important;
+}
+#nav-tree .selected {
+	background-image: none !important;
+}
+
+/* Elements */
+div#nav-path > ul > li.footer {
+	color: inherit;
+}
+span.arrow {
+    display: inline-block;
+}
