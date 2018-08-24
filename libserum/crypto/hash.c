@@ -169,10 +169,10 @@ ls_hash_update(ls_hash_t *const restrict context, const uint8_t *const restrict 
 	}
 
 
-	void *const context = context->context;
+	void *const algctx = context->context;
 	for (;;) {
 		/* Process the block in the cache */
-		if (context->f_update(context, cache) != LS_E_SUCCESS) {
+		if (context->f_update(algctx, cache) != LS_E_SUCCESS) {
 			// TODO: HCF
 			LS_STACK_FREE(cache);
 			return_e(LS_E_FAILURE);
