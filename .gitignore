@@ -18,8 +18,9 @@ ignore/
 !.editorconfig
 !.gitkeep
 
-# Include Doxyfiles.
+# Include Doxygen files.
 !Doxyfile
+!*.dox
 
 # Include docs/.
 !docs/**
