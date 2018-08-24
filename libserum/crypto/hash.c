@@ -59,17 +59,17 @@ ls_hash_init(ls_hash_t *const context, ls_hash_algo_t algorithm) {
 	if (ptr == NULL) {
 		return_e(LS_E_MEMORY);
 	}
-	context->context = ptr;
+	context->algo_context = ptr;
 
 	ptr = malloc(reg_entry->block_size);
 	if (ptr == NULL) {
-		context->context = ls_memory_free(context->context);
+		context->algo_context = ls_memory_free(context->algo_context);
 		return_e(LS_E_MEMORY);
 	}
 	context->buffer = ptr;
 
 
-	context->context_size = reg_entry->ctx_size;
+	context->algo_context_size = reg_entry->ctx_size;
 	context->buffer_size = reg_entry->block_size;
 	context->buffer_index = 0;
 
@@ -79,7 +79,7 @@ ls_hash_init(ls_hash_t *const context, ls_hash_algo_t algorithm) {
 	context->f_finish = reg_entry->f_finish;
 
 
-	if (context->f_init(context->context) != LS_E_SUCCESS) {
+	if (context->f_init(context->algo_context) != LS_E_SUCCESS) {
 		ls_hash_clear(context);
 		return_e(LS_E_INITIALIZATION);
 	}
@@ -95,9 +95,9 @@ ls_hash_clear(ls_hash_t *const context) {
 		return_e(LS_E_NULL);
 	}
 
-	if (context->context != NULL) {
-		if (context->f_clear == NULL || context->f_clear(context->context) != LS_E_SUCCESS) {
-			context->context = ls_memory_clear_free(context->context, context->context_size);
+	if (context->algo_context != NULL) {
+		if (context->f_clear == NULL || context->f_clear(context->algo_context) != LS_E_SUCCESS) {
+			context->algo_context = ls_memory_clear_free(context->algo_context, context->algo_context_size);
 		}
 	}
 
@@ -117,11 +117,11 @@ ls_hash_reinit(ls_hash_t *const context) {
 		return_e(LS_E_NULL);
 	}
 
-	if (context->f_clear != NULL && context->f_clear(context->context) != LS_E_SUCCESS) {
+	if (context->f_clear != NULL && context->f_clear(context->algo_context) != LS_E_SUCCESS) {
 		return_e(LS_E_FAILURE);
 	}
 
-	return context->f_init(context->context);
+	return context->f_init(context->algo_context);
 }
 
 
@@ -169,7 +169,7 @@ ls_hash_update(ls_hash_t *const restrict context, const uint8_t *const restrict 
 	}
 
 
-	void *const algctx = context->context;
+	void *const algctx = context->algo_context;
 	for (;;) {
 		/* Process the block in the cache */
 		if (context->f_update(algctx, cache) != LS_E_SUCCESS) {
@@ -207,7 +207,7 @@ ls_hash_finish(ls_hash_t *const restrict context, uint8_t *const restrict out_di
 		return_e(LS_E_NULL);
 	}
 
-	return context->f_finish(context->context, context->buffer, context->buffer_index, out_digest);
+	return context->f_finish(context->algo_context, context->buffer, context->buffer_index, out_digest);
 }
 
 

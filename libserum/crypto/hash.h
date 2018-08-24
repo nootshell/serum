@@ -52,8 +52,8 @@
 
 typedef struct ls_hash {
 	/* Allocated memory for the context */
-	void *context;
-	size_t context_size;
+	void *algo_context;
+	size_t algo_context_size;
 
 	/* Allocated memory for a buffer block */
 	uint8_t *buffer;
