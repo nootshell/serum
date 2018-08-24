@@ -120,12 +120,13 @@ Typedefs</h2></td></tr>
 <tr class="memitem:aab7c7ac205c6fe6cc591e5b4d7cd30cb"><td class="memItemLeft" align="right" valign="top">typedef union <a class="el" href="../../da/d36/unionls__salsa20.html">ls_salsa20</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a></td></tr>
 <tr class="separator:aab7c7ac205c6fe6cc591e5b4d7cd30cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafb4a23c67ba24be62b72b1e0cb6fa30"><td class="memItemLeft" align="right" valign="top">typedef uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aafb4a23c67ba24be62b72b1e0cb6fa30">ls_salsa20_block_t</a>[64]</td></tr>
+<tr class="memdesc:aafb4a23c67ba24be62b72b1e0cb6fa30"><td class="mdescLeft">&#160;</td><td class="mdescRight">A byte array with the size of a Salsa20 block.  <a href="#aafb4a23c67ba24be62b72b1e0cb6fa30">More...</a><br /></td></tr>
 <tr class="separator:aafb4a23c67ba24be62b72b1e0cb6fa30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a8f491359fedc5d42da75633c6bad4148"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a8f491359fedc5d42da75633c6bad4148">ls_salsa20_init</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, const uint8_t *const restrict key, const size_t key_size, const uint8_t *const restrict nonce, const size_t nonce_size)</td></tr>
-<tr class="memdesc:a8f491359fedc5d42da75633c6bad4148"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the given cipher <code>context</code>.  <a href="#a8f491359fedc5d42da75633c6bad4148">More...</a><br /></td></tr>
+<tr class="memdesc:a8f491359fedc5d42da75633c6bad4148"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the given cipher context.  <a href="#a8f491359fedc5d42da75633c6bad4148">More...</a><br /></td></tr>
 <tr class="separator:a8f491359fedc5d42da75633c6bad4148"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a379e65869f2b9041141d8a335b0a9e37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#a379e65869f2b9041141d8a335b0a9e37">ls_salsa20_rekey</a> (<a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html#aab7c7ac205c6fe6cc591e5b4d7cd30cb">ls_salsa20_t</a> *const restrict context, const uint8_t *const restrict key, const size_t key_size)</td></tr>
 <tr class="memdesc:a379e65869f2b9041141d8a335b0a9e37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rekeys the given cipher <code>context</code>.  <a href="#a379e65869f2b9041141d8a335b0a9e37">More...</a><br /></td></tr>
@@ -238,7 +239,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00075">75</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
+<p>A byte array with the size of a Salsa20 block. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html#l00076">76</a> of file <a class="el" href="../../d7/d62/ciphers_2salsa20_8h_source.html">salsa20.h</a>.</p>
 
 </div>
 </div>
@@ -287,14 +290,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the given cipher <code>context</code>. </p>
+<p>Initializes the given cipher context. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to initialize. </td></tr>
-    <tr><td class="paramname">key</td><td>The key to use. </td></tr>
-    <tr><td class="paramname">key_size</td><td>The size of the <code>key</code>. </td></tr>
-    <tr><td class="paramname">nonce</td><td>[optional] The nonce to use. </td></tr>
-    <tr><td class="paramname">nonce_size</td><td>[optional] The size of the <code>nonce</code>.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">context</td><td>The context to initialize. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key</td><td>The key to use. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key_size</td><td>The size of the <code>key</code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nonce</td><td>The nonce to use. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nonce_size</td><td>The size of the <code>nonce</code>.</td></tr>
   </table>
   </dd>
 </dl>
@@ -341,9 +344,9 @@ Functions</h2></td></tr>
 <p>Rekeys the given cipher <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to rekey. </td></tr>
-    <tr><td class="paramname">key</td><td>The key to use. </td></tr>
-    <tr><td class="paramname">key_size</td><td>The size of the <code>key</code>.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to rekey. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key</td><td>The key to use. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key_size</td><td>The size of the <code>key</code>.</td></tr>
   </table>
   </dd>
 </dl>
@@ -390,9 +393,9 @@ Functions</h2></td></tr>
 <p>Renonces the given cipher <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to renonce. </td></tr>
-    <tr><td class="paramname">nonce</td><td>The nonce to use. </td></tr>
-    <tr><td class="paramname">nonce_size</td><td>The size of the <code>nonce</code>.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to renonce. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nonce</td><td>The nonce to use. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nonce_size</td><td>The size of the <code>nonce</code>.</td></tr>
   </table>
   </dd>
 </dl>
@@ -433,8 +436,8 @@ Functions</h2></td></tr>
 <p>Fetches the current streaming block of the given cipher <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
-    <tr><td class="paramname">block</td><td>The variable to store the block in.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">block</td><td>The variable to store the block in.</td></tr>
   </table>
   </dd>
 </dl>
@@ -475,8 +478,8 @@ Functions</h2></td></tr>
 <p>Encrypts/decrypts the given block using the given cipher context. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
-    <tr><td class="paramname">block</td><td>The block to encrypt/decrypt.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">block</td><td>The block to encrypt/decrypt.</td></tr>
   </table>
   </dd>
 </dl>
@@ -517,8 +520,8 @@ Functions</h2></td></tr>
 <p>Encrypts the given <code>block</code> using the given cipher <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
-    <tr><td class="paramname">block</td><td>The block to encrypt.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">block</td><td>The block to encrypt.</td></tr>
   </table>
   </dd>
 </dl>
@@ -559,8 +562,8 @@ Functions</h2></td></tr>
 <p>Decrypts the given <code>block</code> using the given cipher <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
-    <tr><td class="paramname">block</td><td>The block to decrypt.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">block</td><td>The block to decrypt.</td></tr>
   </table>
   </dd>
 </dl>
@@ -578,7 +581,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_53403d93963d3f5d2fcffd0698f5bddb.html">crypto</a></li><li class="navelem"><a class="el" href="../../dir_62dbec40a63e0d5723239a02af4fd259.html">ciphers</a></li><li class="navelem"><a class="el" href="../../d7/d62/ciphers_2salsa20_8h.html">salsa20.h</a></li>
-    <li class="footer">Generated on Thu Aug 23 2018 03:00:12 for Serum by
+    <li class="footer">Generated on Fri Aug 24 2018 02:32:38 for Serum by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

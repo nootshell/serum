@@ -25,6 +25,7 @@ var NAVTREE =
 [
   [ "Serum", "index.html", [
     [ "Algorithms", "d5/dc9/algorithms.html", "d5/dc9/algorithms" ],
+    [ "Helpers", "dc/d5b/helpers.html", "dc/d5b/helpers" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -51,8 +52,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d8/d85/hashing_2ripemd160_8h.html#a817e5f6486e07eb1db22751935fa97c7",
-"de/d93/result_8h.html#a4cc3025f0f05bcc43b22121ca8a57321"
+"d8/d85/hashing_2ripemd160_8h.html#a2d0a74dcc9d89809becbf8b36869e44c",
+"de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

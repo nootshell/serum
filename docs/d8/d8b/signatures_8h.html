@@ -111,7 +111,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:aa9baf3cad29ed12d660a7e23452a613f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the <code>digest</code> for the specified <code>context</code>, clearing the <code>context</code> afterwards.  <a href="#aa9baf3cad29ed12d660a7e23452a613f">More...</a><br /></td></tr>
 <tr class="separator:aa9baf3cad29ed12d660a7e23452a613f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadf10dd0d6363ea05ad60a3ecab19ad8"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d8b/signatures_8h.html#aadf10dd0d6363ea05ad60a3ecab19ad8">lssig_cipher_init</a>) (void *const restrict context, const uint8_t *const restrict key, const size_t key_size, const uint8_t *const restrict nonce, const size_t nonce_size)</td></tr>
-<tr class="memdesc:aadf10dd0d6363ea05ad60a3ecab19ad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the given cipher <code>context</code>.  <a href="#aadf10dd0d6363ea05ad60a3ecab19ad8">More...</a><br /></td></tr>
+<tr class="memdesc:aadf10dd0d6363ea05ad60a3ecab19ad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the given cipher context.  <a href="#aadf10dd0d6363ea05ad60a3ecab19ad8">More...</a><br /></td></tr>
 <tr class="separator:aadf10dd0d6363ea05ad60a3ecab19ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a36fec5c0b759550cfc53defd27f3dd"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d8b/signatures_8h.html#a7a36fec5c0b759550cfc53defd27f3dd">lssig_cipher_clear</a>) (void *const context)</td></tr>
 <tr class="memdesc:a7a36fec5c0b759550cfc53defd27f3dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the given cipher <code>context</code>.  <a href="#a7a36fec5c0b759550cfc53defd27f3dd">More...</a><br /></td></tr>
@@ -148,12 +148,13 @@ Typedefs</h2></td></tr>
 <p>Initializes the given hash <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to initialize. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">context</td><td>The context to initialize.</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>?TODO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00046">46</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00049">49</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
 
 </div>
 </div>
@@ -172,12 +173,13 @@ Typedefs</h2></td></tr>
 <p>Clears the given hash <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to clear. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">context</td><td>The context to clear.</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>?TODO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00052">52</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00058">58</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
 
 </div>
 </div>
@@ -196,13 +198,14 @@ Typedefs</h2></td></tr>
 <p>Updates the given hash <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to update. </td></tr>
-    <tr><td class="paramname">block</td><td>The block to consume. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to update. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">block</td><td>The block to consume.</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>?TODO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00059">59</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00068">68</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
 
 </div>
 </div>
@@ -222,10 +225,10 @@ Typedefs</h2></td></tr>
 <p>Transforms the remaining input, if any, and finishes the message with proper padding. Calculates the digest, and clears the context.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
-    <tr><td class="paramname">data</td><td>Remaining input to transform. May be <code>NULL</code> if there is nothing to transform (however, <code>size</code> must be set to <code>0</code>). </td></tr>
-    <tr><td class="paramname">size</td><td>The size of the remaining input. </td></tr>
-    <tr><td class="paramname">digest</td><td>The output location of the digest.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>Remaining input to transform. May be <code>NULL</code> if there is nothing to transform (however, <code>size</code> must be set to <code>0</code>). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>The size of the remaining input. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">digest</td><td>The output location of the digest.</td></tr>
   </table>
   </dd>
 </dl>
@@ -235,7 +238,7 @@ Typedefs</h2></td></tr>
  <code><a class="el" href="../../de/d93/result_8h.html#ab6afa510700f45088a56e612d646edf8" title="Failure. ">LS_E_FAILURE</a></code> if any transformations fail. <br />
  <code><a class="el" href="../../de/d93/result_8h.html#aa170098a32bd374a3e4e1679db0f7da0" title="Successful. ">LS_E_SUCCESS</a></code> otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00078">78</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00087">87</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
 
 </div>
 </div>
@@ -251,20 +254,20 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the given cipher <code>context</code>. </p>
+<p>Initializes the given cipher context. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to initialize. </td></tr>
-    <tr><td class="paramname">key</td><td>The key to use. </td></tr>
-    <tr><td class="paramname">key_size</td><td>The size of the <code>key</code>. </td></tr>
-    <tr><td class="paramname">nonce</td><td>[optional] The nonce to use. </td></tr>
-    <tr><td class="paramname">nonce_size</td><td>[optional] The size of the <code>nonce</code>.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">context</td><td>The context to initialize. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key</td><td>The key to use. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key_size</td><td>The size of the <code>key</code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nonce</td><td>The nonce to use. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nonce_size</td><td>The size of the <code>nonce</code>.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>?TODO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00096">96</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00105">105</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
 
 </div>
 </div>
@@ -283,13 +286,13 @@ Typedefs</h2></td></tr>
 <p>Clears the given cipher <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to clear.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">context</td><td>The context to clear.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>?TODO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00105">105</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00114">114</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
 
 </div>
 </div>
@@ -308,15 +311,15 @@ Typedefs</h2></td></tr>
 <p>Rekeys the given cipher <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to rekey. </td></tr>
-    <tr><td class="paramname">key</td><td>The key to use. </td></tr>
-    <tr><td class="paramname">key_size</td><td>The size of the <code>key</code>.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to rekey. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key</td><td>The key to use. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key_size</td><td>The size of the <code>key</code>.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>?TODO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00116">116</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00125">125</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
 
 </div>
 </div>
@@ -335,15 +338,15 @@ Typedefs</h2></td></tr>
 <p>Renonces the given cipher <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to renonce. </td></tr>
-    <tr><td class="paramname">nonce</td><td>The nonce to use. </td></tr>
-    <tr><td class="paramname">nonce_size</td><td>The size of the <code>nonce</code>.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to renonce. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nonce</td><td>The nonce to use. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nonce_size</td><td>The size of the <code>nonce</code>.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>?TODO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00127">127</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00136">136</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
 
 </div>
 </div>
@@ -362,14 +365,14 @@ Typedefs</h2></td></tr>
 <p>Fetches the current streaming block of the given cipher <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
-    <tr><td class="paramname">block</td><td>The variable to store the block in.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">block</td><td>The variable to store the block in.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>?TODO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00137">137</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00146">146</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
 
 </div>
 </div>
@@ -388,14 +391,14 @@ Typedefs</h2></td></tr>
 <p>Encrypts the given <code>block</code> using the given cipher <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
-    <tr><td class="paramname">block</td><td>The block to encrypt.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">block</td><td>The block to encrypt.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>?TODO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00147">147</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00156">156</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
 
 </div>
 </div>
@@ -414,14 +417,14 @@ Typedefs</h2></td></tr>
 <p>Decrypts the given <code>block</code> using the given cipher <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
-    <tr><td class="paramname">block</td><td>The block to decrypt.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">block</td><td>The block to decrypt.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>?TODO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00157">157</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d8/d8b/signatures_8h_source.html#l00166">166</a> of file <a class="el" href="../../d8/d8b/signatures_8h_source.html">signatures.h</a>.</p>
 
 </div>
 </div>
@@ -431,7 +434,7 @@ Typedefs</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_4270bfced15e0e73154b13468c7c9ad9.html">core</a></li><li class="navelem"><a class="el" href="../../dir_8760b0f5b4ed057897345edc3594d85f.html">setup</a></li><li class="navelem"><a class="el" href="../../d8/d8b/signatures_8h.html">signatures.h</a></li>
-    <li class="footer">Generated on Thu Aug 23 2018 03:00:12 for Serum by
+    <li class="footer">Generated on Fri Aug 24 2018 02:32:38 for Serum by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

@@ -238,10 +238,11 @@ Functions</h2></td></tr>
 <p>Initializes the given hash <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to initialize.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">context</td><td>The context to initialize.</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>?TODO</dd></dl>
 <dl class="section algorithm">
 <dt>Algorithm</dt>
 <dd>MD5</dd>
@@ -278,11 +279,12 @@ Functions</h2></td></tr>
 <p>Updates the given hash <code>context</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to update. </td></tr>
-    <tr><td class="paramname">block</td><td>The block to consume.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to update. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">block</td><td>The block to consume.</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>?TODO</dd></dl>
 <dl class="section algorithm">
 <dt>Algorithm</dt>
 <dd>MD5</dd>
@@ -332,10 +334,10 @@ Functions</h2></td></tr>
 <p>Transforms the remaining input, if any, and finishes the message with proper padding. Calculates the digest, and clears the context.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>The context to use. </td></tr>
-    <tr><td class="paramname">data</td><td>Remaining input to transform. May be <code>NULL</code> if there is nothing to transform (however, <code>size</code> must be set to <code>0</code>). </td></tr>
-    <tr><td class="paramname">size</td><td>The size of the remaining input. </td></tr>
-    <tr><td class="paramname">digest</td><td>The output location of the digest.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The context to use. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>Remaining input to transform. May be <code>NULL</code> if there is nothing to transform (however, <code>size</code> must be set to <code>0</code>). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>The size of the remaining input. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">digest</td><td>The output location of the digest.</td></tr>
   </table>
   </dd>
 </dl>
@@ -357,7 +359,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_53403d93963d3f5d2fcffd0698f5bddb.html">crypto</a></li><li class="navelem"><a class="el" href="../../dir_a7e44a8860d5dbe3ff7c1f9629e666f5.html">hashing</a></li><li class="navelem"><a class="el" href="../../d1/d56/hashing_2md5_8h.html">md5.h</a></li>
-    <li class="footer">Generated on Thu Aug 23 2018 03:00:12 for Serum by
+    <li class="footer">Generated on Fri Aug 24 2018 02:32:38 for Serum by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['salsa20',['Salsa20',['../d8/d38/salsa20.html',1,'ciphers']]]
+  ['ripemd160',['RIPEMD160',['../d0/d55/ripemd160.html',1,'hashing']]]
 ];

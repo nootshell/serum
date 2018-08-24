@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('db/dd6/hash__utils_8h.html','../../');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a4a32f2fd3368202232f31bc8e29d7232"><td class="memItemLeft" align="right" valign="top">LSINT <a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dd6/hash__utils_8h.html#a4a32f2fd3368202232f31bc8e29d7232">__ls_hash_finish_80_00_length64</a> (void *const restrict context, <a class="el" href="../../d8/d8b/signatures_8h.html#a0eb40bf316af1cb606cf3cdd7af2ebf8">lssig_hash_update</a> f_update, const <a class="el" href="../../d5/dc0/core_2setup_2types_8h.html#a50bd58fa430f608fa9b144046577a735">ls_message_length_t</a> length, uint8_t *const restrict block_buffer, const size_t block_size, const void *const restrict input, const size_t input_size)</td></tr>
-<tr class="memdesc:a4a32f2fd3368202232f31bc8e29d7232"><td class="mdescLeft">&#160;</td><td class="mdescRight">__ls_hash_finish_80_00_length64  <a href="#a4a32f2fd3368202232f31bc8e29d7232">More...</a><br /></td></tr>
+<tr class="memdesc:a4a32f2fd3368202232f31bc8e29d7232"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finishes a hash context with <code>0x80,{0x00},&lt;u64mesglen&gt;</code>.  <a href="#a4a32f2fd3368202232f31bc8e29d7232">More...</a><br /></td></tr>
 <tr class="separator:a4a32f2fd3368202232f31bc8e29d7232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -159,20 +159,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>__ls_hash_finish_80_00_length64 </p>
+<p>Finishes a hash context with <code>0x80,{0x00},&lt;u64mesglen&gt;</code>. </p>
+<p>Pads the remaining data with one bit (<code>0x80</code>), filling the remainder of the buffer to the last 8 bytes with zeroes, and adding the total length of the message in those 8 bytes as a 64-bit little-endian integer.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td></td></tr>
-    <tr><td class="paramname">f_update</td><td></td></tr>
-    <tr><td class="paramname">length</td><td></td></tr>
-    <tr><td class="paramname">block_buffer</td><td></td></tr>
-    <tr><td class="paramname">block_size</td><td></td></tr>
-    <tr><td class="paramname">input</td><td></td></tr>
-    <tr><td class="paramname">input_size</td><td></td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">context</td><td>The hash context to finish. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f_update</td><td>The hash update function to use. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The length of the message. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">block_buffer</td><td>The block to use as a buffer. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">block_size</td><td>The size of the block. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>The remaining input to process. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">input_size</td><td>The size of the remaining input.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="../../de/d93/result_8h.html#a512832641bc549e642f80f59e1dba00d" title="Null-pointer encountered. ">LS_E_NULL</a></code> if <code>context</code>, <code>f_update</code>, or <code>block_buffer</code>, or, if <code>input_size</code> is greater than <code>0</code>, <code>input</code> is <code>NULL</code>. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#ac553e5db3e3187354b0a9b30bf67bc9e" title="Size parameter/data invalid. ">LS_E_SIZE</a></code> if <code>block_size</code> is <code>0</code>. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#ab6afa510700f45088a56e612d646edf8" title="Failure. ">LS_E_FAILURE</a></code> if <code>f_update</code> doesn't return <code><a class="el" href="../../de/d93/result_8h.html#aa170098a32bd374a3e4e1679db0f7da0" title="Successful. ">LS_E_SUCCESS</a></code>. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#aa170098a32bd374a3e4e1679db0f7da0" title="Successful. ">LS_E_SUCCESS</a></code> otherwise.`</dd></dl>
+<dl class="section visibility">
+<dt>Visibility</dt>
+<dd>internal</dd>
+</dl>
 
 </div>
 </div>
@@ -182,7 +190,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_53403d93963d3f5d2fcffd0698f5bddb.html">crypto</a></li><li class="navelem"><a class="el" href="../../db/dd6/hash__utils_8h.html">hash_utils.h</a></li>
-    <li class="footer">Generated on Thu Aug 23 2018 03:00:12 for Serum by
+    <li class="footer">Generated on Fri Aug 24 2018 02:32:38 for Serum by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>
