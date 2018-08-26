@@ -20,7 +20,12 @@
 <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../search/searchdata.js"></script>
 <script type="text/javascript" src="../../search/search.js"></script>
-<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../serum.css" rel="stylesheet" type="text/css" />
+<link href="../../reset.css" rel="stylesheet" type="text/css"/>
+<link href="../../elements.css" rel="stylesheet" type="text/css"/>
+<link href="../../declarations.css" rel="stylesheet" type="text/css"/>
+<link href="../../menus.css" rel="stylesheet" type="text/css"/>
+<link href="../../syntax.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -100,31 +105,31 @@ $(document).ready(function(){initNavTree('de/df7/time_8h.html','../../');});
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a8ce2ecf24dbdd8dc28ac7e99c7845f81"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/time_8h.html#a8ce2ecf24dbdd8dc28ac7e99c7845f81">ls_time_nanos</a> (void)</td></tr>
-<tr class="memdesc:a8ce2ecf24dbdd8dc28ac7e99c7845f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_time_nanos  <a href="#a8ce2ecf24dbdd8dc28ac7e99c7845f81">More...</a><br /></td></tr>
+<tr class="memdesc:a8ce2ecf24dbdd8dc28ac7e99c7845f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current time in nanoseconds.  <a href="#a8ce2ecf24dbdd8dc28ac7e99c7845f81">More...</a><br /></td></tr>
 <tr class="separator:a8ce2ecf24dbdd8dc28ac7e99c7845f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0af6137e3a89f392be98052196eb958e"><td class="memItemLeft" align="right" valign="top">time_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/time_8h.html#a0af6137e3a89f392be98052196eb958e">ls_time_secs</a> (void)</td></tr>
-<tr class="memdesc:a0af6137e3a89f392be98052196eb958e"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_time_secs  <a href="#a0af6137e3a89f392be98052196eb958e">More...</a><br /></td></tr>
+<tr class="memdesc:a0af6137e3a89f392be98052196eb958e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current time in seconds.  <a href="#a0af6137e3a89f392be98052196eb958e">More...</a><br /></td></tr>
 <tr class="separator:a0af6137e3a89f392be98052196eb958e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac530036126ccf85076bb713eabdfbf02"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/time_8h.html#ac530036126ccf85076bb713eabdfbf02">ls_localtime</a> (const time_t time, struct tm *const out_tm)</td></tr>
-<tr class="memdesc:ac530036126ccf85076bb713eabdfbf02"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_localtime  <a href="#ac530036126ccf85076bb713eabdfbf02">More...</a><br /></td></tr>
+<tr class="memdesc:ac530036126ccf85076bb713eabdfbf02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the specified <code>time</code> to a time structure.  <a href="#ac530036126ccf85076bb713eabdfbf02">More...</a><br /></td></tr>
 <tr class="separator:ac530036126ccf85076bb713eabdfbf02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab99e0a2d3005035584d3716503ce0792"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/time_8h.html#ab99e0a2d3005035584d3716503ce0792">ls_localtime_now</a> (struct tm *const out_tm)</td></tr>
-<tr class="memdesc:ab99e0a2d3005035584d3716503ce0792"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_localtime_now  <a href="#ab99e0a2d3005035584d3716503ce0792">More...</a><br /></td></tr>
+<tr class="memdesc:ab99e0a2d3005035584d3716503ce0792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the current time to a time structure.  <a href="#ab99e0a2d3005035584d3716503ce0792">More...</a><br /></td></tr>
 <tr class="separator:ab99e0a2d3005035584d3716503ce0792"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a933a95fc229009775fe86b42df4e0ecd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/time_8h.html#a933a95fc229009775fe86b42df4e0ecd">ls_timespec_to_millis</a> (const struct timespec *const restrict ts, uint64_t *const restrict out_millis)</td></tr>
-<tr class="memdesc:a933a95fc229009775fe86b42df4e0ecd"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_timespec_to_millis  <a href="#a933a95fc229009775fe86b42df4e0ecd">More...</a><br /></td></tr>
+<tr class="memdesc:a933a95fc229009775fe86b42df4e0ecd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the time in milliseconds from the specified timespec.  <a href="#a933a95fc229009775fe86b42df4e0ecd">More...</a><br /></td></tr>
 <tr class="separator:a933a95fc229009775fe86b42df4e0ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5e58e6a331fbe97752cf20175f8fd95"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d93/result_8h.html#a4a6f5c4a2c8a47357acf0d24ca1ab649">ls_result_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/time_8h.html#ac5e58e6a331fbe97752cf20175f8fd95">ls_millis_to_timespec</a> (const uint64_t millis, struct timespec *const out_ts)</td></tr>
-<tr class="memdesc:ac5e58e6a331fbe97752cf20175f8fd95"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_millis_to_timespec  <a href="#ac5e58e6a331fbe97752cf20175f8fd95">More...</a><br /></td></tr>
+<tr class="memdesc:ac5e58e6a331fbe97752cf20175f8fd95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the timespec from the specified time in milliseconds.  <a href="#ac5e58e6a331fbe97752cf20175f8fd95">More...</a><br /></td></tr>
 <tr class="separator:ac5e58e6a331fbe97752cf20175f8fd95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85bd57b624238bbccdd583084f4694b0"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/time_8h.html#a85bd57b624238bbccdd583084f4694b0">ls_rdtsc</a> (void)</td></tr>
-<tr class="memdesc:a85bd57b624238bbccdd583084f4694b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_rdtsc  <a href="#a85bd57b624238bbccdd583084f4694b0">More...</a><br /></td></tr>
+<tr class="memdesc:a85bd57b624238bbccdd583084f4694b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the time stamp counter, which contains the number of cycles since the system reset.  <a href="#a85bd57b624238bbccdd583084f4694b0">More...</a><br /></td></tr>
 <tr class="separator:a85bd57b624238bbccdd583084f4694b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af39f13f8c853d2fb2b1556c5be1ff769"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/time_8h.html#af39f13f8c853d2fb2b1556c5be1ff769">ls_sleep_nanos</a> (const uint64_t nanos)</td></tr>
-<tr class="memdesc:af39f13f8c853d2fb2b1556c5be1ff769"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_sleep_nanos  <a href="#af39f13f8c853d2fb2b1556c5be1ff769">More...</a><br /></td></tr>
+<tr class="memdesc:af39f13f8c853d2fb2b1556c5be1ff769"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sleeps for the specified number of nanoseconds.  <a href="#af39f13f8c853d2fb2b1556c5be1ff769">More...</a><br /></td></tr>
 <tr class="separator:af39f13f8c853d2fb2b1556c5be1ff769"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2b9ee4e39e5917c5c3a8c243a9f534a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/time_8h.html#ab2b9ee4e39e5917c5c3a8c243a9f534a">ls_sleep_millis</a> (const uint32_t millis)</td></tr>
-<tr class="memdesc:ab2b9ee4e39e5917c5c3a8c243a9f534a"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls_sleep_millis  <a href="#ab2b9ee4e39e5917c5c3a8c243a9f534a">More...</a><br /></td></tr>
+<tr class="memdesc:ab2b9ee4e39e5917c5c3a8c243a9f534a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sleeps for the specified number of milliseconds.  <a href="#ab2b9ee4e39e5917c5c3a8c243a9f534a">More...</a><br /></td></tr>
 <tr class="separator:ab2b9ee4e39e5917c5c3a8c243a9f534a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -144,8 +149,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>ls_time_nanos </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Gets the current time in nanoseconds. </p>
+<dl class="section return"><dt>Returns</dt><dd>The current time in nanoseconds. </dd></dl>
 
 </div>
 </div>
@@ -165,8 +170,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>ls_time_secs </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Gets the current time in seconds. </p>
+<dl class="section return"><dt>Returns</dt><dd>The current time in seconds. </dd></dl>
 
 </div>
 </div>
@@ -196,15 +201,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>ls_localtime </p>
+<p>Parses the specified <code>time</code> to a time structure. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">time</td><td></td></tr>
-    <tr><td class="paramname">out_tm</td><td></td></tr>
+    <tr><td class="paramname">time</td><td>The time. </td></tr>
+    <tr><td class="paramname">out_tm</td><td>The time structure to populate.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="../../de/d93/result_8h.html#ab6afa510700f45088a56e612d646edf8" title="Failure. ">LS_E_FAILURE</a></code> if the call to the platform's <code>localtime</code> failed. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#aa170098a32bd374a3e4e1679db0f7da0" title="Successful. ">LS_E_SUCCESS</a></code> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -224,14 +230,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>ls_localtime_now </p>
+<p>Parses the current time to a time structure. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out_tm</td><td></td></tr>
+    <tr><td class="paramname">out_tm</td><td>The time structure to populate.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See <code><a class="el" href="../../de/df7/time_8h.html#ac530036126ccf85076bb713eabdfbf02" title="Parses the specified time to a time structure. ">ls_localtime</a></code>. </dd></dl>
 
 </div>
 </div>
@@ -261,15 +267,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>ls_timespec_to_millis </p>
+<p>Gets the time in milliseconds from the specified timespec. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ts</td><td></td></tr>
-    <tr><td class="paramname">out_millis</td><td></td></tr>
+    <tr><td class="paramname">ts</td><td>The timespec to convert. </td></tr>
+    <tr><td class="paramname">out_millis</td><td>The variable to store the resulting milliseconds in.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="../../de/d93/result_8h.html#a512832641bc549e642f80f59e1dba00d" title="Null-pointer encountered. ">LS_E_NULL</a></code> if <code>ts</code> or <code>out_millis</code> is <code>NULL</code>. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#aa170098a32bd374a3e4e1679db0f7da0" title="Successful. ">LS_E_SUCCESS</a></code> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -299,15 +306,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>ls_millis_to_timespec </p>
+<p>Gets the timespec from the specified time in milliseconds. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">millis</td><td></td></tr>
-    <tr><td class="paramname">out_ts</td><td></td></tr>
+    <tr><td class="paramname">millis</td><td>The milliseconds to convert. </td></tr>
+    <tr><td class="paramname">out_ts</td><td>The variable to store the resulting timespec in.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="../../de/d93/result_8h.html#a512832641bc549e642f80f59e1dba00d" title="Null-pointer encountered. ">LS_E_NULL</a></code> if <code>millis</code> or <code>out_ts</code> is <code>NULL</code>. <br />
+ <code><a class="el" href="../../de/d93/result_8h.html#aa170098a32bd374a3e4e1679db0f7da0" title="Successful. ">LS_E_SUCCESS</a></code> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -327,8 +335,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>ls_rdtsc </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Reads the time stamp counter, which contains the number of cycles since the system reset. </p>
+<dl class="section return"><dt>Returns</dt><dd>The value of the time stamp counter. </dd></dl>
 
 </div>
 </div>
@@ -348,10 +356,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>ls_sleep_nanos </p>
+<p>Sleeps for the specified number of nanoseconds. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">nanos</td><td></td></tr>
+    <tr><td class="paramname">nanos</td><td>The number of nanoseconds to sleep. </td></tr>
   </table>
   </dd>
 </dl>
@@ -374,10 +382,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>ls_sleep_millis </p>
+<p>Sleeps for the specified number of milliseconds. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">millis</td><td></td></tr>
+    <tr><td class="paramname">millis</td><td>The number of milliseconds to sleep. </td></tr>
   </table>
   </dd>
 </dl>
@@ -390,7 +398,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_472fafaf0f039b9e6b043966c1ef7dbf.html">data</a></li><li class="navelem"><a class="el" href="../../de/df7/time_8h.html">time.h</a></li>
-    <li class="footer">Generated on Fri Aug 24 2018 02:32:38 for Serum by
+    <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

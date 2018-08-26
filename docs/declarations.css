@@ -1,0 +1,124 @@
+/* Tables */
+table.memberdecls td.memItemLeft, table.memberdecls td.memItemRight {
+	font-family: monospace;
+}
+
+
+/* Sections */
+dl.section.see > dd,
+dl.section.algorithm > dd,
+dl.section.visibility > dd {
+	font-family: monospace;
+}
+
+
+/* Generic */
+h2.groupheader {
+	margin: 66px 0 0 0;
+	padding: 0 0 0 12px;
+}
+h2.groupheader > a {
+	padding: 24px 0 0 0;
+}
+h2.memtitle {
+	float: left;
+	font-family: monospace;
+	font-size: 1.6em;
+	margin: 30px 0 -1px 0;
+	padding: 8px 32px;
+	border-bottom: none;
+	border-radius: 6px 6px 0 0;
+	background-color: #424242;
+}
+h2.memtitle, div.memitem, div.memproto {
+	border: 1px solid #424242;
+}
+
+
+/* Declarations */
+table.memberdecls {
+	border-spacing: 0;
+}
+table.memberdecls h2.groupheader {
+	width: 0;
+	margin-bottom: 10px;
+	white-space: nowrap;
+}
+
+table.memberdecls tr[class*="memitem:"] > td, table.memberdecls tr[class*="memdesc:"] > td {
+	display: table-cell;
+	border: 1px solid #424242;
+	border-radius: 2px;
+	padding: 4px 8px;
+}
+table.memberdecls tr[class*="memdesc:"] > td:not(:first-of-type), table.memberdecls tr[class*="memitem:"] > td:not(:first-of-type) {
+	border-left: none;
+}
+
+table.memberdecls tr[class*="memitem:"] > td {
+	background-color: #383838;
+}
+table.memberdecls tr[class*="memitem:"] > td:first-of-type {
+	border-top-right-radius: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+table.memberdecls tr[class*="memitem:"] > td:last-of-type {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+table.memberdecls tr[class*="memdesc:"] > td {
+	background-color: #303030;
+	border-top: none;
+}
+table.memberdecls tr[class*="memdesc:"] > td:first-of-type {
+	border-right: none;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+table.memberdecls tr[class*="memdesc:"] > td:last-of-type {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+table.memberdecls tr[class*="separator:"] {
+	font-size: 0.33em;
+}
+
+
+/* Items */
+div.memitem {
+	display: table !important;
+	width: 100%;
+	margin: 0 0 12px 0;
+	border-radius: 0 6px 6px 6px;
+	background-color: #303030;
+}
+div.memitem > div.memproto {
+	font-family: monospace;
+	padding: 10px;
+	border-left: none;
+	border-right: none;
+	border-top: none;
+}
+div.memitem > div.memdoc {
+	padding: 0 12px;
+}
+h2.memtitle, div.memproto {
+	background-color: #383838;
+}
+div.memitem > div.memdoc > dl.params > dd > table.params td.paramdir {
+	font-family: monospace;
+	opacity: 0.45;
+}
+div.memitem > div.memdoc > dl.params > dd > table.params td.paramname {
+	padding: 0 8px;
+}
+div.memitem > div.memdoc > dl.params > dd > table.params td.paramname, div.memitem > div.memproto > table.memname td.paramname > em {
+	font-family: monospace;
+	color: firebrick;
+}

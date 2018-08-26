@@ -1,0 +1,37 @@
+/* Box sizing */
+* {
+	box-sizing: border-box;
+}
+html > body > div#side-nav {
+	box-sizing: initial;
+}
+
+
+/* Backgrounds */
+body, div#nav-tree {
+	color: #FCFCFC;
+	background-image: none !important;
+	background-color: #202020 !important;
+}
+
+
+/* Images */
+.sm-dox {
+	background-image: none !important;
+}
+#nav-tree .selected {
+	background-image: none !important;
+}
+
+
+/* Elements */
+div#nav-path > ul > li.footer {
+	color: inherit;
+}
+span.arrow {
+    display: inline-block;
+}
+div.ttc {
+	position: absolute;
+	display: none;
+}

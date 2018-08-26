@@ -6,6 +6,6 @@ var hash_8h =
     [ "ls_hash_clear", "db/dfb/hash_8h.html#ab1c8afca3c2b353dedac4dae47ca814e", null ],
     [ "ls_hash_reinit", "db/dfb/hash_8h.html#ac285aea8bf8fd8dda617002397430fc3", null ],
     [ "ls_hash_update", "db/dfb/hash_8h.html#acf8434a9b51a3718e3dc91649bfcd3cb", null ],
-    [ "ls_hash_finish", "db/dfb/hash_8h.html#af7a22722066f3d5b6bfd7190fbfdd042", null ],
-    [ "ls_hash", "db/dfb/hash_8h.html#a8989a458cd61ed10e3725930d81169a5", null ]
+    [ "ls_hash_finish", "db/dfb/hash_8h.html#a3b449aa97d2e49b3caa604c603606ba5", null ],
+    [ "ls_hash", "db/dfb/hash_8h.html#ac3030d88b607745834e3d5650f8d129f", null ]
 ];

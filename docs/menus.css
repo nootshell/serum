@@ -1,0 +1,81 @@
+/* Main Menu */
+ul#main-menu {
+	background-color: #FF8000;
+}
+ul#main-menu a:hover {
+	background: none;
+}
+@media(max-width:768px) {
+	ul#main-menu a > span.sub-arrow {
+		background-color: rgba(255, 255, 255, 0.33);
+	}
+}
+ul#main-menu > li > a:hover {
+	background-color: #C06000;
+}
+ul#main-menu ul, ul#main-menu ul a {
+	color: #E0E0E0;
+	background-color: #303030;
+}
+ul#main-menu ul a:hover {
+	color: #C0C0C0;
+	background-color: #242424;
+}
+
+
+/* Nav Tree */
+div#nav-tree ul {
+	list-style: none outside none;
+}
+div#nav-tree div#selected, div#nav-tree div.item.selected {
+	background-color: #804000;
+}
+
+
+/* Nav Path */
+div.navpath {
+	line-height: 140%;
+	background-color: #303030;
+}
+div.navpath ul {
+	margin: 0;
+	padding: 0;
+	height: 30px;
+	line-height: 30px;
+	overflow: hidden;
+	font-size: 11px;
+	border: none;
+}
+div.navpath ul > li {
+	list-style-type: none;
+    float: left;
+}
+div.navpath ul > li.navelem > a {
+	display: inline-block;
+	height: 23px;
+	line-height: 23px;
+	padding: 0 5px;
+}
+div.navpath ul > li.navelem > a:hover {
+	background-color: #404040;
+}
+div.navpath ul > li.navelem:first-child {
+    padding-left: 5px;
+}
+div.navpath ul > li.navelem:not(:first-child)::before {
+	content: '>';
+    padding: 0 5px;
+}
+div.navpath ul > li.footer {
+	position: relative;
+	top: -10px;
+    padding-right: 15px;
+	float: right;
+	font-size: 10pt;
+	transform: scale(0.75) translate(17.5%, 5%);
+}
+div.navpath ul > li.footer > a {
+	position: relative;
+	display: inline-block;
+	top: 10px;
+}

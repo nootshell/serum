@@ -1,0 +1,94 @@
+/* Fonts */
+html {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.9em;
+}
+
+
+/* Page foreground/background */
+body {
+	margin: 0;
+}
+
+
+/* Content */
+div#doc-content {
+	padding: 12px;
+}
+div#doc-content > div.contents {
+	position: relative;
+}
+div#doc-content > div.contents > div.textblock {
+	min-width: 430px;
+	overflow: hidden;
+}
+div#doc-content > div.contents > p:first-of-type {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	font-size: 0.8em;
+}
+
+
+/* Title */
+@-webkit-keyframes TitleAreaBack {
+	0% { background-position: 100%; }
+	50% { background-position: 0%; }
+	100% { background-position: 100%; }
+}
+@-moz-keyframes TitleAreaBack {
+	0% { background-position: 100%; }
+	50% { background-position: 0%; }
+	100% { background-position: 100%; }
+}
+@keyframes TitleAreaBack {
+	0% { background-position: 100%; }
+	50% { background-position: 0%; }
+	100% { background-position: 100%; }
+}
+div#titlearea {
+	background: linear-gradient(90deg, #202020, #444444, #202020);
+	background-size: 202%;
+	-webkit-animation: TitleAreaBack 45s ease infinite;
+	-moz-animation: TitleAreaBack 45s ease infinite;
+	animation: TitleAreaBack 45s ease infinite;
+	text-shadow: 0 0 3px black;
+}
+div#titlearea > table {
+	width: 100%;
+}
+div#titlearea div#projectname {
+	display: inline-block;
+	padding: 5px 10px;
+	font-size: 2.222em;
+	font-variant: small-caps;
+}
+div#titlearea div#projectbrief {
+	display: inline-block;
+	font-size: 0.75em;
+	font-style: italic;
+}
+
+
+/* Header */
+div.header {
+	margin: -12px -12px 12px -12px;
+	padding: 0 12px;
+	height: 65px;
+	line-height: 65px;
+	background-color: #363636;
+	border-bottom: 1px solid #404040;
+}
+div.header > div.summary {
+	float: right;
+	padding-right: calc(((66px - 11pt) / 2) - 12px);
+	font-size: 0.96em;
+	white-space: nowrap;
+	overflow: hidden;
+}
+div.header > div.headertitle {
+	font-size: 1.85em;
+	white-space: nowrap;
+	overflow: hidden;
+}

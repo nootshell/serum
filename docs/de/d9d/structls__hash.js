@@ -1,7 +1,7 @@
 var structls__hash =
 [
-    [ "context", "de/d9d/structls__hash.html#a3be4389a4ef21d7b18e5afae99853fef", null ],
-    [ "context_size", "de/d9d/structls__hash.html#af52b932fae5fbf4b010aa86107205161", null ],
+    [ "algo_context", "de/d9d/structls__hash.html#a0a7a30c86f48b46511e226b3c5aac170", null ],
+    [ "algo_context_size", "de/d9d/structls__hash.html#a3502034caedec0eaaf777f11e94d946f", null ],
     [ "buffer", "de/d9d/structls__hash.html#a85f6f2d2e2ffbf9693c40b80d2da9e11", null ],
     [ "buffer_size", "de/d9d/structls__hash.html#a9bca236cae64b0e3f652aed4220907a7", null ],
     [ "buffer_index", "de/d9d/structls__hash.html#a6931839f61a9e6972b02d63c735db408", null ],
