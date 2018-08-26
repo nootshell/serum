@@ -162,6 +162,7 @@ HTML_EXTRA_STYLESHEET  += ./extra/css/reset.css
 HTML_EXTRA_STYLESHEET  += ./extra/css/elements.css
 HTML_EXTRA_STYLESHEET  += ./extra/css/declarations.css
 HTML_EXTRA_STYLESHEET  += ./extra/css/menus.css
+HTML_EXTRA_STYLESHEET  += ./extra/css/syntax.css
 HTML_EXTRA_FILES       =
 HTML_COLORSTYLE_HUE    = 220
 HTML_COLORSTYLE_SAT    = 100

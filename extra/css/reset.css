@@ -21,3 +21,7 @@ div#nav-path > ul > li.footer {
 span.arrow {
     display: inline-block;
 }
+div.ttc {
+	position: absolute;
+	display: none;
+}
