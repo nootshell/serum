@@ -53,10 +53,11 @@ struct lsreg_meta {
 
 
 
+//! \hideinitializer \brief Checks if the given algorithm is a valid, registered hash algorithm.
 #define LS_HASH_ALGORITHM_VALID(algo)		(((algo) > 0) && ((algo < __hash_registry_count)))
 
-#define LS_HASH_MD5							1
-#define LS_HASH_RIPEMD160					2
+#define LS_HASH_MD5							1	//!< \hideinitializer \brief The MD5 algorithm.
+#define LS_HASH_RIPEMD160					2	//!< \hideinitializer \brief The RIPEMD160 algorithm.
 
 
 typedef struct lsreg_hash {
@@ -86,11 +87,12 @@ extern const size_t __hash_registry_count;
 
 
 
+//! \hideinitializer \brief Checks if the given algorithm is a valid, registered cipher algorithm.
 #define LS_CIPHER_ALGORITHM_VALID(algo)		(((algo) > 0) && ((algo < __cipher_registry_count)))
 
-#define LS_CIPHER_SALSA20					1
+#define LS_CIPHER_SALSA20					1	//!< \hideinitializer \brief The Salsa20 algorithm.
 
-#define LS_CIPHER_STREAMABLE				1
+#define LS_CIPHER_STREAMABLE				1	//!< \hideinitializer \brief Meta flag indicating that the cipher is streamable.
 
 
 typedef struct lsreg_cipher {
