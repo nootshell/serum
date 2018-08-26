@@ -6,6 +6,15 @@ html > body > div#side-nav {
 	box-sizing: initial;
 }
 
+
+/* Backgrounds */
+body, div#nav-tree {
+	color: #FCFCFC;
+	background-image: none !important;
+	background-color: #202020 !important;
+}
+
+
 /* Images */
 .sm-dox {
 	background-image: none !important;
@@ -13,6 +22,7 @@ html > body > div#side-nav {
 #nav-tree .selected {
 	background-image: none !important;
 }
+
 
 /* Elements */
 div#nav-path > ul > li.footer {

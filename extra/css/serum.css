@@ -9,11 +9,6 @@ html {
 body {
 	margin: 0;
 }
-body, div#nav-tree, div.header {
-	color: #FCFCFC;
-	background-image: none !important;
-	background-color: #202020 !important;
-}
 
 
 /* Content */
@@ -37,6 +32,29 @@ div#doc-content > div.contents > p:first-of-type {
 
 
 /* Title */
+@-webkit-keyframes TitleAreaBack {
+	0% { background-position: 100%; }
+	50% { background-position: 0%; }
+	100% { background-position: 100%; }
+}
+@-moz-keyframes TitleAreaBack {
+	0% { background-position: 100%; }
+	50% { background-position: 0%; }
+	100% { background-position: 100%; }
+}
+@keyframes TitleAreaBack {
+	0% { background-position: 100%; }
+	50% { background-position: 0%; }
+	100% { background-position: 100%; }
+}
+div#titlearea {
+	background: linear-gradient(90deg, #202020, #444444, #202020);
+	background-size: 202%;
+	-webkit-animation: TitleAreaBack 45s ease infinite;
+	-moz-animation: TitleAreaBack 45s ease infinite;
+	animation: TitleAreaBack 45s ease infinite;
+	text-shadow: 0 0 3px black;
+}
 div#titlearea > table {
 	width: 100%;
 }

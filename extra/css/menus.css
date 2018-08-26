@@ -1,6 +1,25 @@
 /* Main Menu */
 ul#main-menu {
-	background-color: #FF9000;
+	background-color: #FF8000;
+}
+ul#main-menu a:hover {
+	background: none;
+}
+@media(max-width:768px) {
+	ul#main-menu a > span.sub-arrow {
+		background-color: rgba(255, 255, 255, 0.33);
+	}
+}
+ul#main-menu > li > a:hover {
+	background-color: #C06000;
+}
+ul#main-menu ul, ul#main-menu ul a {
+	color: #E0E0E0;
+	background-color: #303030;
+}
+ul#main-menu ul a:hover {
+	color: #C0C0C0;
+	background-color: #242424;
 }
 
 
