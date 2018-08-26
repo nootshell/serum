@@ -139,21 +139,21 @@ extern "C" {
 	 * \brief Finishes the given hash \p context.
 	 *
 	 * \param[inout] context The context to finish.
-	 * \param[out]   out_digest The output location of the digest.
+	 * \param[out]   digest The output location of the digest.
 	 *
 	 * \see lssig_hash_finish
 	 *
 	 * \return
-	 *		`#LS_E_NULL` if \p context or \p out_digest is `NULL`.							\n
+	 *		`#LS_E_NULL` if \p context or \p digest is `NULL`.							\n
 	 *		Otherwise, the return value of the algorithm's finishing function is returned.
 	 */
-	LSAPI ls_result_t ls_hash_finish(ls_hash_t *const restrict context, uint8_t *const restrict out_digest);
+	LSAPI ls_result_t ls_hash_finish(ls_hash_t *const restrict context, uint8_t *const restrict digest);
 
 	/*!
-	 * \brief Calculates \p out_digest by processing \p size bytes from \p data using the specified \p algorithm.
+	 * \brief Calculates \p digest by processing \p size bytes from \p data using the specified \p algorithm.
 	 *
 	 * \param[in]  algorithm The algorithm to use.
-	 * \param[out] out_digest The output location of the digest.
+	 * \param[out] digest The output location of the digest.
 	 * \param[in]  data The data to process.
 	 * \param[in]  size The number of bytes to read from \p data.
 	 *
@@ -164,7 +164,7 @@ extern "C" {
 	 * \return
 	 *		Any of the return values from `#ls_hash_init`, `#ls_hash_update`, and `#ls_hash_finish`.
 	 */
-	LSAPI ls_result_t ls_hash(ls_hash_algo_t algorithm, uint8_t *const restrict out_digest, const uint8_t *const restrict data, const size_t size);
+	LSAPI ls_result_t ls_hash(ls_hash_algo_t algorithm, uint8_t *const restrict digest, const uint8_t *const restrict data, const size_t size);
 
 #ifdef __cplusplus
 }

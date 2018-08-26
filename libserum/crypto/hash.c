@@ -202,19 +202,19 @@ ls_hash_update(ls_hash_t *const restrict context, const uint8_t *const restrict 
 
 
 ls_result_t
-ls_hash_finish(ls_hash_t *const restrict context, uint8_t *const restrict out_digest) {
-	if (context == NULL || out_digest == NULL) {
+ls_hash_finish(ls_hash_t *const restrict context, uint8_t *const restrict digest) {
+	if (context == NULL || digest == NULL) {
 		return_e(LS_E_NULL);
 	}
 
-	return context->f_finish(context->algo_context, context->buffer, context->buffer_index, out_digest);
+	return context->f_finish(context->algo_context, context->buffer, context->buffer_index, digest);
 }
 
 
 
 
 ls_result_t
-ls_hash(ls_hash_algo_t algorithm, uint8_t *const restrict out_digest, const uint8_t *const restrict data, const size_t size) {
+ls_hash(ls_hash_algo_t algorithm, uint8_t *const restrict digest, const uint8_t *const restrict data, const size_t size) {
 	ls_hash_t hctx;
 	memset(&hctx, 0, sizeof(hctx));
 
@@ -229,7 +229,7 @@ ls_hash(ls_hash_algo_t algorithm, uint8_t *const restrict out_digest, const uint
 		goto __cleanup;
 	}
 
-	if ((result = ls_hash_finish(&hctx, out_digest)) != LS_E_SUCCESS) {
+	if ((result = ls_hash_finish(&hctx, digest)) != LS_E_SUCCESS) {
 		goto __cleanup;
 	}
 

@@ -187,8 +187,8 @@ ls_md5_update(ls_md5_t *const restrict context, const ls_md5_block_t block) {
 
 
 ls_result_t
-ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict data, const size_t input_size, ls_md5_digest_t out_digest) {
-	if (context == NULL || (input_size > 0 && data == NULL) || out_digest == NULL) {
+ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict data, const size_t input_size, ls_md5_digest_t digest) {
+	if (context == NULL || (input_size > 0 && data == NULL) || digest == NULL) {
 		return_e(LS_E_NULL);
 	}
 
@@ -213,7 +213,7 @@ ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict da
 	}
 
 	/* Output the digest. */
-	uint32_t *const dout32 = (uint32_t *const)out_digest;
+	uint32_t *const dout32 = (uint32_t *const)digest;
 	dout32[0] = LS_ENSURE_LITTLE32(context->state_A);
 	dout32[1] = LS_ENSURE_LITTLE32(context->state_B);
 	dout32[2] = LS_ENSURE_LITTLE32(context->state_C);

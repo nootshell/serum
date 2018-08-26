@@ -313,8 +313,8 @@ ls_ripemd160_update(ls_ripemd160_t *const context, const ls_ripemd160_block_t bl
 
 
 ls_result_t
-ls_ripemd160_finish(ls_ripemd160_t *const restrict context, const uint8_t *const restrict input, const size_t input_size, ls_ripemd160_digest_t out_digest) {
-	if (context == NULL || (input_size > 0 && input == NULL) || out_digest == NULL) {
+ls_ripemd160_finish(ls_ripemd160_t *const restrict context, const uint8_t *const restrict input, const size_t input_size, ls_ripemd160_digest_t digest) {
+	if (context == NULL || (input_size > 0 && input == NULL) || digest == NULL) {
 		return_e(LS_E_NULL);
 	}
 
@@ -339,7 +339,7 @@ ls_ripemd160_finish(ls_ripemd160_t *const restrict context, const uint8_t *const
 	}
 
 	/* Output the digest. */
-	uint32_t *const dout32 = (uint32_t *const)out_digest;
+	uint32_t *const dout32 = (uint32_t *const)digest;
 	dout32[0] = LS_ENSURE_LITTLE32(context->state_A);
 	dout32[1] = LS_ENSURE_LITTLE32(context->state_B);
 	dout32[2] = LS_ENSURE_LITTLE32(context->state_C);
