@@ -63,15 +63,15 @@ ls_result_t
 ls_localtime(const time_t time, struct tm *const out_tm) {
 #if (LS_MSC || LS_MINGW)
 	if (localtime_s(out_tm, &time) != 0) {
-		return 1;
+		return LS_E_FAILURE;
 	}
 #else
 	if (localtime_r(&time, out_tm) == NULL) {
-		return 1;
+		return LS_E_FAILURE;
 	}
 #endif
 
-	return 0;
+	return LS_E_SUCCESS;
 }
 
 
