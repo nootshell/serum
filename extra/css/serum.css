@@ -16,9 +16,23 @@ body, div#nav-tree, div.header {
 }
 
 
-/* Paddings */
+/* Content */
 div#doc-content {
 	padding: 12px;
+}
+div#doc-content > div.contents {
+	position: relative;
+}
+div#doc-content > div.contents > div.textblock {
+	min-width: 430px;
+	overflow: hidden;
+}
+div#doc-content > div.contents > p:first-of-type {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	font-size: 0.8em;
 }
 
 
@@ -36,4 +50,27 @@ div#titlearea div#projectbrief {
 	display: inline-block;
 	font-size: 0.75em;
 	font-style: italic;
+}
+
+
+/* Header */
+div.header {
+	margin: -12px -12px 12px -12px;
+	padding: 0 12px;
+	height: 65px;
+	line-height: 65px;
+	background-color: #363636;
+	border-bottom: 1px solid #404040;
+}
+div.header > div.summary {
+	float: right;
+	padding-right: calc(((66px - 11pt) / 2) - 12px);
+	font-size: 0.96em;
+	white-space: nowrap;
+	overflow: hidden;
+}
+div.header > div.headertitle {
+	font-size: 1.85em;
+	white-space: nowrap;
+	overflow: hidden;
 }
