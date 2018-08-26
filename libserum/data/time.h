@@ -43,63 +43,83 @@ extern "C" {
 #endif
 
 	/*!
-	 * \brief ls_time_nanos
-	 * \return
+	 * \brief Gets the current time in nanoseconds.
+	 *
+	 * \return The current time in nanoseconds.
 	 */
 	LSAPI uint64_t ls_time_nanos(void);
 
 	/*!
-	 * \brief ls_time_secs
-	 * \return
+	 * \brief Gets the current time in seconds.
+	 *
+	 * \return The current time in seconds.
 	 */
 	LSAPI time_t ls_time_secs(void);
 
 	/*!
-	 * \brief ls_localtime
-	 * \param time
-	 * \param out_tm
+	 * \brief Parses the specified \p time to a time structure.
+	 *
+	 * \param time The time.
+	 * \param out_tm The time structure to populate.
+	 *
 	 * \return
+	 *		`#LS_E_FAILURE` if the call to the platform's `localtime` failed.	\n
+	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t LS_ATTR_PURE ls_localtime(const time_t time, struct tm *const out_tm);
 
 	/*!
-	 * \brief ls_localtime_now
-	 * \param out_tm
+	 * \brief Parses the current time to a time structure.
+	 *
+	 * \param out_tm The time structure to populate.
+	 *
 	 * \return
+	 *		See `#ls_localtime`.
 	 */
 	LSAPI ls_result_t ls_localtime_now(struct tm *const out_tm);
 
 	/*!
-	 * \brief ls_timespec_to_millis
-	 * \param ts
-	 * \param out_millis
+	 * \brief Gets the time in milliseconds from the specified timespec.
+	 *
+	 * \param ts The timespec to convert.
+	 * \param out_millis The variable to store the resulting milliseconds in.
+	 *
 	 * \return
+	 *		`#LS_E_NULL` if \p ts or \p out_millis is `NULL`.	\n
+	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t LS_ATTR_PURE ls_timespec_to_millis(const struct timespec *const restrict ts, uint64_t *const restrict out_millis);
 
 	/*!
-	 * \brief ls_millis_to_timespec
-	 * \param millis
-	 * \param out_ts
+	 * \brief Gets the timespec from the specified time in milliseconds.
+	 *
+	 * \param millis The milliseconds to convert.
+	 * \param out_ts The variable to store the resulting timespec in.
+	 *
 	 * \return
+	 *		`#LS_E_NULL` if \p millis or \p out_ts is `NULL`.	\n
+	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t LS_ATTR_PURE ls_millis_to_timespec(const uint64_t millis, struct timespec *const out_ts);
 
 	/*!
-	 * \brief ls_rdtsc
-	 * \return
+	 * \brief Reads the time stamp counter, which contains the number of cycles since the system reset.
+	 *
+	 * \return The value of the time stamp counter.
 	 */
 	LSAPI uint64_t ls_rdtsc(void);
 
 	/*!
-	 * \brief ls_sleep_nanos
-	 * \param nanos
+	 * \brief Sleeps for the specified number of nanoseconds.
+	 *
+	 * \param nanos The number of nanoseconds to sleep.
 	 */
 	LSAPI void ls_sleep_nanos(const uint64_t nanos);
 
 	/*!
-	 * \brief ls_sleep_millis
-	 * \param millis
+	 * \brief Sleeps for the specified number of milliseconds.
+	 *
+	 * \param millis The number of milliseconds to sleep.
 	 */
 	LSAPI void ls_sleep_millis(const uint32_t millis);
 
