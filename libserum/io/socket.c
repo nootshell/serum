@@ -420,8 +420,8 @@ ls_socket_clear(ls_socket_t *const socket) {
 
 
 ls_result_t
-ls_socket_accept_fd_ex(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict out_descriptor, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen) {
-	if (socket == NULL || out_descriptor == NULL) {
+ls_socket_accept_fd_ex(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict descriptor, struct sockaddr *const restrict sockaddr, socklen_t *const restrict sockaddrlen) {
+	if (socket == NULL || descriptor == NULL) {
 		return_e(LS_E_NULL);
 	}
 
@@ -438,22 +438,22 @@ ls_socket_accept_fd_ex(ls_socket_t *const restrict socket, ls_sockfd_t *const re
 	}
 
 
-	ls_sockfd_t sockfd = accept(socket->descriptor, out_sockaddr, inout_sockaddrlen);
+	ls_sockfd_t sockfd = accept(socket->descriptor, sockaddr, sockaddrlen);
 	if (!__socket_validate_fd(&sockfd)) {
 		ls_debugfe("Failed to accept connection: errno=[%i]", errno);
 		return_e(LS_E_FAILURE);
 	}
 
 
-	*out_descriptor = sockfd;
+	*descriptor = sockfd;
 	return LS_E_SUCCESS;
 }
 
 ls_result_t
-ls_socket_accept_fd(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict out_descriptor) {
+ls_socket_accept_fd(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict descriptor) {
 	return ls_socket_accept_fd_ex(
 		socket,
-		out_descriptor,
+		descriptor,
 		NULL,
 		NULL
 	);
@@ -461,30 +461,30 @@ ls_socket_accept_fd(ls_socket_t *const restrict socket, ls_sockfd_t *const restr
 
 
 ls_result_t
-ls_socket_accept_ex(ls_socket_t *const restrict socket, ls_socket_t *const restrict out_client, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen) {
+ls_socket_accept_ex(ls_socket_t *const restrict socket, ls_socket_t *const restrict client, struct sockaddr *const restrict sockaddr, socklen_t *const restrict sockaddrlen) {
 	ls_sockfd_t sockfd;
 
-	ls_result_t result = ls_socket_accept_fd_ex(socket, &sockfd, out_sockaddr, inout_sockaddrlen);
+	ls_result_t result = ls_socket_accept_fd_ex(socket, &sockfd, sockaddr, sockaddrlen);
 	if (result != LS_E_SUCCESS) {
 		return result;
 	}
 
-	result = ls_socket_init_fd(out_client, sockfd);
+	result = ls_socket_init_fd(client, sockfd);
 	if (result != LS_E_SUCCESS) {
-		ls_socket_clear(out_client);
+		ls_socket_clear(client);
 		return result;
 	}
 
-	out_client->flags |= LS_SOCKET_READY;
+	client->flags |= LS_SOCKET_READY;
 
 	return LS_E_SUCCESS;
 }
 
 ls_result_t
-ls_socket_accept(ls_socket_t *const restrict socket, ls_socket_t *const restrict out_client) {
+ls_socket_accept(ls_socket_t *const restrict socket, ls_socket_t *const restrict client) {
 	return ls_socket_accept_ex(
 		socket,
-		out_client,
+		client,
 		NULL,
 		NULL
 	);
@@ -604,7 +604,7 @@ __retry:
 
 
 ls_result_t
-ls_socket_read(ls_socket_t *const restrict socket, void *const restrict buffer, const size_t max_length, size_t *const out_size) {
+ls_socket_read(ls_socket_t *const restrict socket, void *const restrict buffer, const size_t max_length, size_t *const nbytesrecv) {
 	if (socket == NULL || buffer == NULL) {
 		return_e(LS_E_NULL);
 	}
@@ -622,8 +622,8 @@ ls_socket_read(ls_socket_t *const restrict socket, void *const restrict buffer, 
 	if (received < 0) {
 		// Error
 
-		if (out_size != NULL) {
-			*out_size = 0;
+		if (nbytesrecv != NULL) {
+			*nbytesrecv = 0;
 		}
 
 		ls_debugfe("Socket read failed: fd=[%i] recv=[%" PRIiPTR "] errno=[%i]", socket->descriptor, received, errno);
@@ -641,8 +641,8 @@ ls_socket_read(ls_socket_t *const restrict socket, void *const restrict buffer, 
 
 	ls_debugf("Socket read: fd=[%i] buff=[%" PRIXPTR "] mlen=[%" PRIuPTR "] msglen=[%" PRIuPTR "]", socket->descriptor, buffer, max_length, received);
 
-	if (out_size != NULL) {
-		*out_size = (size_t)received;
+	if (nbytesrecv != NULL) {
+		*nbytesrecv = (size_t)received;
 	}
 
 

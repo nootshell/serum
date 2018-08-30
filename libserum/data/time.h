@@ -60,47 +60,47 @@ extern "C" {
 	 * \brief Parses the specified \p time to a time structure.
 	 *
 	 * \param time The time.
-	 * \param out_tm The time structure to populate.
+	 * \param tm The time structure to populate.
 	 *
 	 * \return
 	 *		`#LS_E_FAILURE` if the call to the platform's `localtime` failed.	\n
 	 *		`#LS_E_SUCCESS` otherwise.
 	 */
-	LSAPI ls_result_t LS_ATTR_PURE ls_localtime(const time_t time, struct tm *const out_tm);
+	LSAPI ls_result_t LS_ATTR_PURE ls_localtime(const time_t time, struct tm *const tm);
 
 	/*!
 	 * \brief Parses the current time to a time structure.
 	 *
-	 * \param out_tm The time structure to populate.
+	 * \param tm The time structure to populate.
 	 *
 	 * \return
 	 *		See `#ls_localtime`.
 	 */
-	LSAPI ls_result_t ls_localtime_now(struct tm *const out_tm);
+	LSAPI ls_result_t ls_localtime_now(struct tm *const tm);
 
 	/*!
 	 * \brief Gets the time in milliseconds from the specified timespec.
 	 *
 	 * \param ts The timespec to convert.
-	 * \param out_millis The variable to store the resulting milliseconds in.
+	 * \param millis The variable to store the resulting milliseconds in.
 	 *
 	 * \return
-	 *		`#LS_E_NULL` if \p ts or \p out_millis is `NULL`.	\n
+	 *		`#LS_E_NULL` if \p ts or \p millis is `NULL`.	\n
 	 *		`#LS_E_SUCCESS` otherwise.
 	 */
-	LSAPI ls_result_t LS_ATTR_PURE ls_timespec_to_millis(const struct timespec *const restrict ts, uint64_t *const restrict out_millis);
+	LSAPI ls_result_t LS_ATTR_PURE ls_timespec_to_millis(const struct timespec *const restrict ts, uint64_t *const restrict millis);
 
 	/*!
 	 * \brief Gets the timespec from the specified time in milliseconds.
 	 *
 	 * \param millis The milliseconds to convert.
-	 * \param out_ts The variable to store the resulting timespec in.
+	 * \param ts The variable to store the resulting timespec in.
 	 *
 	 * \return
-	 *		`#LS_E_NULL` if \p millis or \p out_ts is `NULL`.	\n
+	 *		`#LS_E_NULL` if \p millis or \p ts is `NULL`.	\n
 	 *		`#LS_E_SUCCESS` otherwise.
 	 */
-	LSAPI ls_result_t LS_ATTR_PURE ls_millis_to_timespec(const uint64_t millis, struct timespec *const out_ts);
+	LSAPI ls_result_t LS_ATTR_PURE ls_millis_to_timespec(const uint64_t millis, struct timespec *const ts);
 
 	/*!
 	 * \brief Reads the time stamp counter, which contains the number of cycles since the system reset.

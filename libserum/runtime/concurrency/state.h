@@ -101,10 +101,10 @@ extern "C" {
 	/*!
 	 * \brief ls_state_get
 	 * \param state
-	 * \param out_value
+	 * \param value
 	 * \return
 	 */
-	LSAPI ls_result_t ls_state_get(ls_state_t *const restrict state, unsigned int *const restrict out_value);
+	LSAPI ls_result_t ls_state_get(ls_state_t *const restrict state, unsigned int *const restrict value);
 
 #ifdef __cplusplus
 }

@@ -126,38 +126,38 @@ extern "C" {
 	/*!
 	 * \brief ls_socket_accept_fd_ex
 	 * \param socket
-	 * \param out_descriptor
-	 * \param out_sockaddr
-	 * \param inout_sockaddrlen
+	 * \param descriptor
+	 * \param sockaddr
+	 * \param sockaddrlen
 	 * \return
 	 */
-	LSAPI ls_result_t ls_socket_accept_fd_ex(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict out_descriptor, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen);
+	LSAPI ls_result_t ls_socket_accept_fd_ex(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict descriptor, struct sockaddr *const restrict sockaddr, socklen_t *const restrict sockaddrlen);
 
 	/*!
 	 * \brief ls_socket_accept_fd
 	 * \param socket
-	 * \param out_descriptor
+	 * \param descriptor
 	 * \return
 	 */
-	LSAPI ls_result_t ls_socket_accept_fd(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict out_descriptor);
+	LSAPI ls_result_t ls_socket_accept_fd(ls_socket_t *const restrict socket, ls_sockfd_t *const restrict descriptor);
 
 	/*!
 	 * \brief ls_socket_accept_ex
 	 * \param socket
-	 * \param out_client
-	 * \param out_sockaddr
-	 * \param inout_sockaddrlen
+	 * \param client
+	 * \param sockaddr
+	 * \param sockaddrlen
 	 * \return
 	 */
-	LSAPI ls_result_t ls_socket_accept_ex(ls_socket_t *const restrict socket, ls_socket_t *const restrict out_client, struct sockaddr *const restrict out_sockaddr, socklen_t *const restrict inout_sockaddrlen);
+	LSAPI ls_result_t ls_socket_accept_ex(ls_socket_t *const restrict socket, ls_socket_t *const restrict client, struct sockaddr *const restrict sockaddr, socklen_t *const restrict sockaddrlen);
 
 	/*!
 	 * \brief ls_socket_accept
 	 * \param socket
-	 * \param out_client
+	 * \param client
 	 * \return
 	 */
-	LSAPI ls_result_t ls_socket_accept(ls_socket_t *const restrict socket, ls_socket_t *const restrict out_client);
+	LSAPI ls_result_t ls_socket_accept(ls_socket_t *const restrict socket, ls_socket_t *const restrict client);
 
 	/*!
 	 * \brief ls_socket_write
@@ -173,10 +173,10 @@ extern "C" {
 	 * \param socket
 	 * \param buffer
 	 * \param max_length
-	 * \param out_size
+	 * \param size
 	 * \return
 	 */
-	LSAPI ls_result_t ls_socket_read(ls_socket_t *const restrict socket, void *const restrict buffer, const size_t max_length, size_t *const out_size);
+	LSAPI ls_result_t ls_socket_read(ls_socket_t *const restrict socket, void *const restrict buffer, const size_t max_length, size_t *const size);
 
 #ifdef __cplusplus
 }
