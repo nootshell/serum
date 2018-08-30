@@ -83,92 +83,134 @@ extern "C" {
 #endif
 
 	/*!
-	 * \brief ls_log_init_ex
-	 * \param log
-	 * \param flags
-	 * \param level
-	 * \param std_stream
+	 * \brief Initializes the specified log context.
+	 *
+	 * \param log The log context to initialize. `NULL` to use the global context.
+	 * \param flags The flags to pass down to the context.
+	 * \param level The most verbose log level allowed to be logged.
+	 * \param std_stream The file stream to log to. If `#LS_LOG_MULTI` is passed to \p flags, this will be the fallback stream if no other stream is found.
+	 *
 	 * \return
+	 *		`#LS_E_NULL` if \p std_stream is `NULL`.
+	 *		`#LS_E_MAGIC` if the context has its magic set (already initialized).
+	 *		`#LS_E_MEMORY` if memory allocation failed.
+	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t ls_log_init_ex(ls_log_t *restrict log, const uint32_t flags, const ls_log_level_t level, FILE *const restrict std_stream);
 
 	/*!
-	 * \brief ls_log_init
-	 * \param log
-	 * \param flags
-	 * \param level
+	 * \brief \copybrief ls_log_init_ex
+	 *
+	 * \param log The log context to initialize. `NULL` to use the global context.
+	 * \param flags The flags to pass down to the context.
+	 * \param level The most verbose log level allowed to be logged.
+	 *
 	 * \return
+	 *		Any return value from `#ls_log_init_ex`.
 	 */
 	LSAPI ls_result_t ls_log_init(ls_log_t *log, const uint32_t flags, const ls_log_level_t level);
 
 	/*!
-	 * \brief ls_log_clear_ex
-	 * \param log
-	 * \param close_streams
+	 * \brief Clears the specified log context.
+	 *
+	 * \param log The log context to clear. `NULL` to use the global context.
+	 * \param close_streams Whether to close the underlying streams or not.
+	 *
 	 * \return
+	 *		`#LS_E_MAGIC` if the context does not have its magic set (not yet initialized).	\n
+	 *		`#LS_E_IO_CLOSE` if a call to `fclose` failed.									\n
+	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t ls_log_clear_ex(ls_log_t *log, const ls_bool_t close_streams);
 
 	/*!
-	 * \brief ls_log_clear
-	 * \param log
+	 * \brief \copybrief ls_log_clear_ex Closes underlying streams.
+	 *
+	 * \param log The log context to clear. `NULL` to use the global context.
+	 *
 	 * \return
+	 *		Any return value from `#ls_log_clear_ex`.
 	 */
 	LSAPI ls_result_t ls_log_clear(ls_log_t *log);
 
 	/*!
-	 * \brief ls_log_level_set
-	 * \param log
-	 * \param level
+	 * \brief Sets the log level of the specified log context.
+	 *
+	 * \param log The log context to set the level of. `NULL` to use the global context.
+	 * \param level The most verbose log level allowed to be logged.
+	 *
 	 * \return
+	 *		`#LS_E_INVALID` if \p level is out of range.	\n
+	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t ls_log_level_set(ls_log_t *log, const ls_log_level_t level);
 
 	/*!
-	 * \brief ls_log_set_stream_ex
-	 * \param log
-	 * \param level
-	 * \param stream
-	 * \param close_stream
+	 * \brief Sets the stream for the specified log level on the specified log context.
+	 *
+	 * Stream applies to the specified log level, and any lower levels that don't have a stream set.
+	 *
+	 * \param log The log context to configure.
+	 * \param level The log level to set the stream of.
+	 * \param stream The stream to associate to the log level.
+	 * \param close_stream Whether to close an existing stream or not.
+	 *
 	 * \return
+	 *		`#LS_E_INVALID` if \p level is out of range.								\n
+	 *		`#LS_E_STATE` if \p log is not initialized with the `#LS_LOG_MULTI` flag.	\n
+	 *		`#LS_E_NULL` if an unexpected `NULL` pointer is encountered.				\n
+	 *		`#LS_E_IO_CLOSE` if a call to `fclose` failed.								\n
+	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t ls_log_set_stream_ex(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream, const ls_bool_t close_stream);
 
 	/*!
-	 * \brief ls_log_set_stream
-	 * \param log
-	 * \param level
-	 * \param stream
+	 * \brief Sets the stream for the specified log level on the specified log context.
+	 *
+	 * Stream applies to the specified log level, and any lower levels that don't have a stream set.
+	 *
+	 * \param log The log context to configure.
+	 * \param level The log level to set the stream of.
+	 * \param stream The stream to associate to the log level.
+	 *
 	 * \return
+	 *		Any return value from `#ls_log_set_stream_ex`.
 	 */
 	LSAPI ls_result_t ls_log_set_stream(ls_log_t *restrict log, const ls_log_level_t level, FILE *const restrict stream);
 
-	/*!
+	/*! \cond LS_DOXYGEN_PRIVATE
 	 * \brief ls_log_vwrite_ex
+	 *
 	 * \param log
 	 * \param level
 	 * \param eol
 	 * \param format
 	 * \param vl
+	 *
 	 * \return
 	 */
 	LSAPI ls_result_t ls_log_vwrite_ex(ls_log_t *restrict log, const ls_log_level_t level, const ls_bool_t eol, const char *const restrict format, va_list vl);
 
-	/*!
-	 * \brief ls_log_writeln
-	 * \param log
-	 * \param level
-	 * \param format
+	/*! \endcond
+	 * \brief Writes an optionally formatted string to the specified log context.
+	 *
+	 * \param log The log context to write to.
+	 * \param level The level to deem the logging under.
+	 * \param format The string to write to the log context, passed to `vfprintf`.
+	 *
 	 * \return
+	 *		`#LS_E_NULL` if \p format is `NULL`.									\n
+	 *		`#LS_E_NOOP` if \p level is not allowed to log.							\n
+	 *		`#LS_E_IO_TARGET` if no suitable stream was found.						\n
+	 *		`#LS_E_FAILURE` if a call to `#ls_localtime_now` or `snprintf` failed.	\n
+	 *		`#LS_E_IO_WRITE` if writing to the stream failed.						\n
+	 *		`#LS_E_IO_FLUSH` if flushing the stream failed.							\n
+	 *		`#LS_E_SUCCESS` otherwise.
 	 */
 	LSAPI ls_result_t ls_log_writeln(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...);
 
 	/*!
-	 * \brief ls_log_write
-	 * \param log
-	 * \param level
-	 * \param format
-	 * \return
+	 * \copydoc ls_log_writeln
 	 */
 	LSAPI ls_result_t ls_log_write(ls_log_t *restrict log, const ls_log_level_t level, const char *const restrict format, ...);
 
