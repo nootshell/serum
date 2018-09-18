@@ -28,7 +28,7 @@
 
 #ifndef __LS_CRYPTO_SELFTESTS_HASHING_RIPEMD160_H
 #define __LS_CRYPTO_SELFTESTS_HASHING_RIPEMD160_H
-#if (LS_EXPORTING)
+#if (LSCST_ENABLED)
 
 
 
@@ -57,5 +57,7 @@ extern "C" {
 
 
 
+#else
+#	define lscst_hashing_ripemd160			NULL
 #endif
 #endif

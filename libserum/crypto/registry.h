@@ -40,86 +40,71 @@
 
 
 typedef struct lsreg_meta lsreg_meta_t;
-
 typedef ls_result_t (*lssig_cst_case)(const lsreg_meta_t *const meta);
 
-struct lsreg_meta {
-	lssig_cst_case selftest;
-	uint32_t flags;
-	char name[12];
-	char maintainer[32];
-};
+
+typedef unsigned int ls_crypto_algo_t;
 
 
 
 
-//! \hideinitializer \brief Checks if the given algorithm is a valid, registered hash algorithm.
-#define LS_HASH_ALGORITHM_VALID(algo)		(((algo) > 0) && ((algo < __hash_registry_count)))
+#define LSREG_HASH							0x0001
+#define LSREG_CIPHER						0x0002
+#define LS_CIPHER_STREAMABLE				0x0100 //!< \hideinitializer \brief Meta flag indicating that the cipher is streamable.
+
+
+//! \hideinitializer \brief Checks if the given algorithm is a valid, registered algorithm and has the given flags set.
+#define LSREG_CRYPTO_VALID(algo, _flags)	((((algo) > 0) && ((algo) < __crypto_registry_count)) && LS_FLAG(__crypto_registry[(algo)].meta.flags, (_flags)))
+
+//! \hideinitializer \brief
+#define LSREG_CRYPTO_HASH_VALID(algo)		LSREG_CRYPTO_VALID((algo), LSREG_HASH)
+
+//! \hideinitializer \brief
+#define LSREG_CRYPTO_CIPHER_VALID(algo)		LSREG_CRYPTO_VALID((algo), LSREG_CIPHER)
+
+
+
 
 #define LS_HASH_MD5							1	//!< \hideinitializer \brief The MD5 algorithm.
 #define LS_HASH_RIPEMD160					2	//!< \hideinitializer \brief The RIPEMD160 algorithm.
 
-
-typedef struct lsreg_hash {
-	// Metadata.
-	struct lsreg_meta meta;
-
-	// Properties.
-	size_t ctx_size;
-	size_t block_size;
-	size_t digest_size;
-
-	// Functions.
-	lssig_hash_init f_init;
-	lssig_hash_clear f_clear;
-	lssig_hash_update f_update;
-	lssig_hash_finish f_finish;
-} lsreg_hash_t;
-
-typedef unsigned int ls_hash_algo_t;
-
-
-extern const struct lsreg_hash __hash_registry[];
-
-extern const size_t __hash_registry_size;
-extern const size_t __hash_registry_count;
+#define LS_CIPHER_SALSA20					3	//!< \hideinitializer \brief The Salsa20 algorithm.
 
 
 
 
-//! \hideinitializer \brief Checks if the given algorithm is a valid, registered cipher algorithm.
-#define LS_CIPHER_ALGORITHM_VALID(algo)		(((algo) > 0) && ((algo < __cipher_registry_count)))
+extern const struct lsreg_crypto {
+	struct lsreg_meta {
+		lssig_cst_case selftest;
+		size_t context_size;
+		uint32_t flags;
+		char name[12];
+		char maintainer[32];
+	} meta;
+	union {
+		struct lsreg_crypto_hash {
+			size_t block_size;
+			size_t digest_size;
+			lssig_hash_init f_init;
+			lssig_hash_clear f_clear;
+			lssig_hash_update f_update;
+			lssig_hash_finish f_finish;
+		} hash;
+		struct lsreg_crypto_cipher {
+			size_t block_size;
+			lssig_cipher_init f_init;
+			lssig_cipher_clear f_clear;
+			lssig_cipher_rekey f_rekey;
+			lssig_cipher_renonce f_renonce;
+			lssig_cipher_get_block f_get_block;
+			lssig_cipher_block_encrypt f_block_encrypt;
+			lssig_cipher_block_decrypt f_block_decrypt;
+		} cipher;
+	} data;
+} __crypto_registry[];
 
-#define LS_CIPHER_SALSA20					1	//!< \hideinitializer \brief The Salsa20 algorithm.
-
-#define LS_CIPHER_STREAMABLE				1	//!< \hideinitializer \brief Meta flag indicating that the cipher is streamable.
-
-
-typedef struct lsreg_cipher {
-	// Metadata.
-	struct lsreg_meta meta;
-
-	// Properties.
-	size_t ctx_size;
-	size_t block_size;
-
-	// Functions.
-	lssig_cipher_init f_init;
-	lssig_cipher_clear f_clear;
-	lssig_cipher_rekey f_rekey;
-	lssig_cipher_renonce f_renonce;
-	lssig_cipher_get_stream_block f_get_stream_block;
-	lssig_cipher_block_encrypt f_block_encrypt;
-	lssig_cipher_block_decrypt f_block_decrypt;
-} lsreg_cipher_t;
-
-typedef unsigned int ls_cipher_algo_t;
-
-
-extern const struct lsreg_cipher __cipher_registry[];
-
-extern const size_t __cipher_registry_size;
-extern const size_t __cipher_registry_count;
+extern const size_t __crypto_registry_size;
+extern const size_t __crypto_registry_count;
 
 
 

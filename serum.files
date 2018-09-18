@@ -1,3 +1,4 @@
+libserum/crypto/registry.c
 test/unit/bitops.h
 test/unit/bitops.c
 test/siot/server.c
@@ -38,8 +39,6 @@ libserum/crypto/hashing/ripemd160.c
 libserum/crypto/hashing/ripemd160.h
 libserum/crypto/registry.h
 libserum/crypto/registry.h
-libserum/crypto/registry/cipher_registry.c
-libserum/crypto/registry/hash_registry.c
 libserum/crypto/__selftests/assert.c
 libserum/crypto/__selftests/assert.h
 libserum/crypto/__selftests/base.c

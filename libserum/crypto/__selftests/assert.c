@@ -48,8 +48,8 @@ FILEID("Assertion functions for CSTs.");
 
 
 ls_result_t
-lscst_hash_assert(ls_hash_algo_t algorithm, const uint8_t *const restrict data, const size_t data_size, const size_t iterations, const uint8_t *const restrict digest, uint8_t *const restrict out_digest, const size_t digest_size) {
-	if (!LS_HASH_ALGORITHM_VALID(algorithm)) {
+lscst_hash_assert(ls_crypto_algo_t algorithm, const uint8_t *const restrict data, const size_t data_size, const size_t iterations, const uint8_t *const restrict digest, uint8_t *const restrict out_digest, const size_t digest_size) {
+	if (!LSREG_CRYPTO_HASH_VALID(algorithm)) {
 		return_e(LS_E_ALGORITHM);
 	}
 

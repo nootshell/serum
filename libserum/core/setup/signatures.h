@@ -143,7 +143,7 @@ typedef ls_result_t (*lssig_cipher_renonce)(void *const restrict context, const 
  *
  * \return ?TODO
  */
-typedef ls_result_t (*lssig_cipher_get_stream_block)(void *const restrict context, void *const restrict block);
+typedef ls_result_t (*lssig_cipher_get_block)(void *const restrict context, void *const restrict block);
 
 /*!
  * \brief Encrypts the given \p block using the given cipher \p context.

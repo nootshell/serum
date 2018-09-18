@@ -89,7 +89,7 @@ extern "C" {
 	 *		`#LS_E_INITIALIZATION` if the initialization function of the specified \p algorithm fails.	\n
 	 *		`#LS_E_SUCCESS` otherwise.
 	 */
-	LSAPI ls_result_t ls_hash_init(ls_hash_t *const context, ls_hash_algo_t algorithm);
+	LSAPI ls_result_t ls_hash_init(ls_hash_t *const context, ls_crypto_algo_t algorithm);
 
 	/*!
 	 * \brief Clears the specified hash \p context.
@@ -164,7 +164,7 @@ extern "C" {
 	 * \return
 	 *		Any of the return values from `#ls_hash_init`, `#ls_hash_update`, and `#ls_hash_finish`.
 	 */
-	LSAPI ls_result_t ls_hash(ls_hash_algo_t algorithm, uint8_t *const restrict digest, const uint8_t *const restrict data, const size_t size);
+	LSAPI ls_result_t ls_hash(ls_crypto_algo_t algorithm, uint8_t *const restrict digest, const uint8_t *const restrict data, const size_t size);
 
 #ifdef __cplusplus
 }

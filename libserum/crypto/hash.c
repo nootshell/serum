@@ -41,27 +41,27 @@ FILEID("Luxury hash function wrapper.");
 
 
 ls_result_t
-ls_hash_init(ls_hash_t *const context, ls_hash_algo_t algorithm) {
+ls_hash_init(ls_hash_t *const context, ls_crypto_algo_t algorithm) {
 	if (context == NULL) {
 		return_e(LS_E_NULL);
 	}
 
-	if (!LS_HASH_ALGORITHM_VALID(algorithm)) {
+	if (!LSREG_CRYPTO_HASH_VALID(algorithm)) {
 		return_e(LS_E_ALGORITHM);
 	}
 
 
 	void *ptr = NULL;
-	const lsreg_hash_t *const reg_entry = &__hash_registry[algorithm];
+	const struct lsreg_crypto *const reg_entry = &__crypto_registry[algorithm];
 
 
-	ptr = malloc(reg_entry->ctx_size);
+	ptr = malloc(reg_entry->meta.context_size);
 	if (ptr == NULL) {
 		return_e(LS_E_MEMORY);
 	}
 	context->algo_context = ptr;
 
-	ptr = malloc(reg_entry->block_size);
+	ptr = malloc(reg_entry->data.hash.block_size);
 	if (ptr == NULL) {
 		context->algo_context = ls_memory_free(context->algo_context);
 		return_e(LS_E_MEMORY);
@@ -69,14 +69,14 @@ ls_hash_init(ls_hash_t *const context, ls_hash_algo_t algorithm) {
 	context->buffer = ptr;
 
 
-	context->algo_context_size = reg_entry->ctx_size;
-	context->buffer_size = reg_entry->block_size;
+	context->algo_context_size = reg_entry->meta.context_size;
+	context->buffer_size = reg_entry->data.hash.block_size;
 	context->buffer_index = 0;
 
-	context->f_init = reg_entry->f_init;
-	context->f_clear = reg_entry->f_clear;
-	context->f_update = reg_entry->f_update;
-	context->f_finish = reg_entry->f_finish;
+	context->f_init = reg_entry->data.hash.f_init;
+	context->f_clear = reg_entry->data.hash.f_clear;
+	context->f_update = reg_entry->data.hash.f_update;
+	context->f_finish = reg_entry->data.hash.f_finish;
 
 
 	if (context->f_init(context->algo_context) != LS_E_SUCCESS) {
@@ -214,7 +214,7 @@ ls_hash_finish(ls_hash_t *const restrict context, uint8_t *const restrict digest
 
 
 ls_result_t
-ls_hash(ls_hash_algo_t algorithm, uint8_t *const restrict digest, const uint8_t *const restrict data, const size_t size) {
+ls_hash(ls_crypto_algo_t algorithm, uint8_t *const restrict digest, const uint8_t *const restrict data, const size_t size) {
 	ls_hash_t hctx;
 	memset(&hctx, 0, sizeof(hctx));
 

@@ -26,67 +26,79 @@
 ******************************************************************************/
 
 
-#include "../registry.h"
+#include "./registry.h"
 
-#include "../hashing/md5.h"
-#include "../__selftests/hashing/md5.h"
+#include "./hashing/md5.h"
+#include "./__selftests/hashing/md5.h"
+#include "./hashing/ripemd160.h"
+#include "./__selftests/hashing/ripemd160.h"
 
-#include "../hashing/ripemd160.h"
-#include "../__selftests/hashing/ripemd160.h"
-
-
-
-
-FILEID("Registry of hash functions.");
+#include "./ciphers/salsa20.h"
+#include "./__selftests/ciphers/salsa20.h"
 
 
 
 
-const struct lsreg_hash __hash_registry[] = {
-	{ /* Fill up 0th index. */ },
+const struct lsreg_crypto __crypto_registry[] = {
+	/* Fill up 0th index. */
+	{ .meta = { 0 }, .data = { { 0 } } },
+
 	{
 		.meta = {
-#if (LSCST_ENABLED)
 			.selftest = lscst_hashing_md5,
-#else
-			.selftest = NULL,
-#endif
-			.flags = 0,
+			.context_size = sizeof(struct ls_md5),
+			.flags = (LSREG_HASH),
 			.name = "MD5",
 			.maintainer = "icecubetray"
 		},
-
-		.ctx_size = sizeof(struct ls_md5),
-		.block_size = LS_MD5_BLOCK_SIZE,
-		.digest_size = LS_MD5_DIGEST_SIZE,
-
-		.f_init = (lssig_hash_init)ls_md5_init,
-		.f_clear = NULL,
-		.f_update = (lssig_hash_update)ls_md5_update,
-		.f_finish = (lssig_hash_finish)ls_md5_finish
+		.data.hash = {
+			.block_size = LS_MD5_BLOCK_SIZE,
+			.digest_size = LS_MD5_DIGEST_SIZE,
+			.f_init = (lssig_hash_init)ls_md5_init,
+			.f_clear = NULL,
+			.f_update = (lssig_hash_update)ls_md5_update,
+			.f_finish = (lssig_hash_finish)ls_md5_finish
+		}
 	},
+
 	{
 		.meta = {
-#if (LSCST_ENABLED)
 			.selftest = lscst_hashing_ripemd160,
-#else
-			.selftest = NULL,
-#endif
-			.flags = 0,
+			.context_size = sizeof(struct ls_ripemd160),
+			.flags = (LSREG_HASH),
 			.name = "RIPEMD-160",
 			.maintainer = "icecubetray"
 		},
+		.data.hash = {
+			.block_size = LS_RIPEMD160_BLOCK_SIZE,
+			.digest_size = LS_RIPEMD160_DIGEST_SIZE,
+			.f_init = (lssig_hash_init)ls_ripemd160_init,
+			.f_clear = NULL,
+			.f_update = (lssig_hash_update)ls_ripemd160_update,
+			.f_finish = (lssig_hash_finish)ls_ripemd160_finish
+		}
+	},
 
-		.ctx_size = sizeof(struct ls_ripemd160),
-		.block_size = LS_RIPEMD160_BLOCK_SIZE,
-		.digest_size = LS_RIPEMD160_DIGEST_SIZE,
-
-		.f_init = (lssig_hash_init)ls_ripemd160_init,
-		.f_clear = NULL,
-		.f_update = (lssig_hash_update)ls_ripemd160_update,
-		.f_finish = (lssig_hash_finish)ls_ripemd160_finish
+	{
+		.meta = {
+			.selftest = lscst_ciphers_salsa20,
+			.context_size = sizeof(union ls_salsa20),
+			.flags = (LSREG_CIPHER | LS_CIPHER_STREAMABLE),
+			.name = "Salsa20",
+			.maintainer = "icecubetray"
+		},
+		.data.cipher = {
+			.block_size = LS_SALSA20_BLOCK_SIZE,
+			.f_init = (lssig_cipher_init)ls_salsa20_init,
+			.f_clear = NULL,
+			.f_rekey = (lssig_cipher_rekey)ls_salsa20_rekey,
+			.f_renonce = (lssig_cipher_renonce)ls_salsa20_renonce,
+			.f_get_block = (lssig_cipher_get_block)ls_salsa20_get_stream_block,
+			.f_block_encrypt = (lssig_cipher_block_encrypt)ls_salsa20_block_encrypt,
+			.f_block_decrypt = (lssig_cipher_block_decrypt)ls_salsa20_block_decrypt
+		}
 	}
 };
 
-const size_t __hash_registry_size = sizeof(__hash_registry);
-const size_t __hash_registry_count = (sizeof(__hash_registry) / sizeof(*__hash_registry));
+const size_t __crypto_registry_size = sizeof(__crypto_registry);
+const size_t __crypto_registry_count = (sizeof(__crypto_registry) / sizeof(*__crypto_registry));
