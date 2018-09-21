@@ -40,9 +40,11 @@ FILEID("RIPEMD-160 implementation.");
 
 ls_result_t
 ls_ripemd160_init(ls_ripemd160_t *const context) {
+#if (LS_SANITY)
 	if (context == NULL) {
 		return_e(LS_E_NULL);
 	}
+#endif
 
 	context->length = 0;
 	context->state_A = 0x67452301;
@@ -78,9 +80,11 @@ ls_ripemd160_init(ls_ripemd160_t *const context) {
 
 ls_result_t
 ls_ripemd160_update(ls_ripemd160_t *const context, const ls_ripemd160_block_t block) {
+#if (LS_SANITY)
 	if (context == NULL || block == NULL) {
 		return_e(LS_E_NULL);
 	}
+#endif
 
 
 	const uint32_t *const X = (const uint32_t *const)block;
@@ -314,6 +318,7 @@ ls_ripemd160_update(ls_ripemd160_t *const context, const ls_ripemd160_block_t bl
 
 ls_result_t
 ls_ripemd160_finish(ls_ripemd160_t *const restrict context, const uint8_t *const restrict input, const size_t input_size, ls_ripemd160_digest_t digest) {
+#if (LS_SANITY)
 	if (context == NULL || (input_size > 0 && input == NULL) || digest == NULL) {
 		return_e(LS_E_NULL);
 	}
@@ -321,6 +326,7 @@ ls_ripemd160_finish(ls_ripemd160_t *const restrict context, const uint8_t *const
 	if (input_size > LS_RIPEMD160_BLOCK_SIZE) {
 		return_e(LS_E_SIZE);
 	}
+#endif
 
 	/* Pad the message, and perform the final transformation. */
 	{

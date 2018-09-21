@@ -88,9 +88,11 @@ ls_localtime_now(struct tm *const tm) {
 
 ls_result_t
 ls_timespec_to_millis(const struct timespec *const restrict ts, uint64_t *const restrict millis) {
+#if (LS_SANITY)
 	if (ts == NULL || millis == NULL) {
 		return_e(LS_E_NULL);
 	}
+#endif
 
 	*millis = ((ts->tv_sec * 1000) + (ts->tv_nsec / 1000000));
 	return LS_E_SUCCESS;
@@ -99,9 +101,11 @@ ls_timespec_to_millis(const struct timespec *const restrict ts, uint64_t *const 
 
 ls_result_t
 ls_millis_to_timespec(const uint64_t millis, struct timespec *const ts) {
+#if (LS_SANITY)
 	if (ts == NULL) {
 		return_e(LS_E_NULL);
 	}
+#endif
 
 	if (millis == 0) {
 		ts->tv_sec = ts->tv_nsec = 0;

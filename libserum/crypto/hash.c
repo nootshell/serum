@@ -42,6 +42,7 @@ FILEID("Luxury hash function wrapper.");
 
 ls_result_t
 ls_hash_init(ls_hash_t *const context, ls_crypto_algo_t algorithm) {
+#if (LS_SANITY)
 	if (context == NULL) {
 		return_e(LS_E_NULL);
 	}
@@ -49,6 +50,7 @@ ls_hash_init(ls_hash_t *const context, ls_crypto_algo_t algorithm) {
 	if (!LSREG_CRYPTO_HASH_VALID(algorithm)) {
 		return_e(LS_E_ALGORITHM);
 	}
+#endif
 
 
 	void *ptr = NULL;
@@ -91,9 +93,11 @@ ls_hash_init(ls_hash_t *const context, ls_crypto_algo_t algorithm) {
 
 ls_result_t
 ls_hash_clear(ls_hash_t *const context) {
+#if (LS_SANITY)
 	if (context == NULL) {
 		return_e(LS_E_NULL);
 	}
+#endif
 
 	if (context->algo_context != NULL) {
 		if (context->f_clear == NULL || context->f_clear(context->algo_context) != LS_E_SUCCESS) {
@@ -113,6 +117,7 @@ ls_hash_clear(ls_hash_t *const context) {
 
 ls_result_t
 ls_hash_reinit(ls_hash_t *const context) {
+#if (LS_SANITY)
 	if (context == NULL) {
 		return_e(LS_E_NULL);
 	}
@@ -120,6 +125,7 @@ ls_hash_reinit(ls_hash_t *const context) {
 	if (context->f_clear != NULL && context->f_clear(context->algo_context) != LS_E_SUCCESS) {
 		return_e(LS_E_FAILURE);
 	}
+#endif
 
 	return context->f_init(context->algo_context);
 }
@@ -129,6 +135,7 @@ ls_hash_reinit(ls_hash_t *const context) {
 
 ls_result_t
 ls_hash_update(ls_hash_t *const restrict context, const uint8_t *const restrict data, const size_t size) {
+#if (LS_SANITY)
 	if (context == NULL || data == NULL) {
 		return_e(LS_E_NULL);
 	}
@@ -136,6 +143,7 @@ ls_hash_update(ls_hash_t *const restrict context, const uint8_t *const restrict 
 	if (size == 0) {
 		return_e(LS_E_NOOP);
 	}
+#endif
 
 
 	const size_t buffer_index = context->buffer_index;
@@ -203,9 +211,11 @@ ls_hash_update(ls_hash_t *const restrict context, const uint8_t *const restrict 
 
 ls_result_t
 ls_hash_finish(ls_hash_t *const restrict context, uint8_t *const restrict digest) {
+#if (LS_SANITY)
 	if (context == NULL || digest == NULL) {
 		return_e(LS_E_NULL);
 	}
+#endif
 
 	return context->f_finish(context->algo_context, context->buffer, context->buffer_index, digest);
 }

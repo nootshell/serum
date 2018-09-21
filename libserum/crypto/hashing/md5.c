@@ -43,9 +43,11 @@ FILEID("MD5 implementation.");
 
 ls_result_t
 ls_md5_init(ls_md5_t *const context) {
+#if (LS_SANITY)
 	if (context == NULL) {
 		return_e(LS_E_NULL);
 	}
+#endif
 
 	context->length = 0;
 	context->state_A = 0x67452301U;
@@ -68,9 +70,11 @@ ls_md5_init(ls_md5_t *const context) {
 
 ls_result_t
 ls_md5_update(ls_md5_t *const restrict context, const ls_md5_block_t block) {
+#if (LS_SANITY)
 	if (context == NULL || block == NULL) {
 		return_e(LS_E_NULL);
 	}
+#endif
 
 	register uint32_t a, b, c, d;
 	uint32_t a_old, b_old, c_old, d_old;
@@ -188,6 +192,7 @@ ls_md5_update(ls_md5_t *const restrict context, const ls_md5_block_t block) {
 
 ls_result_t
 ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict data, const size_t input_size, ls_md5_digest_t digest) {
+#if (LS_SANITY)
 	if (context == NULL || (input_size > 0 && data == NULL) || digest == NULL) {
 		return_e(LS_E_NULL);
 	}
@@ -195,6 +200,7 @@ ls_md5_finish(ls_md5_t *const restrict context, const uint8_t *const restrict da
 	if (input_size > LS_MD5_BLOCK_SIZE) {
 		return_e(LS_E_SIZE);
 	}
+#endif
 
 	/* Pad the message, and perform the final transformation. */
 	{

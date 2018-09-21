@@ -62,10 +62,11 @@ static inline __WaitForSingleObject(const ls_mutex_t *const mutex, const DWORD t
 
 ls_result_t
 ls_mutex_init(ls_mutex_t *const mutex) {
+#if (LS_SANITY)
 	if (mutex == NULL) {
-		ls_debug("NULL encountered.");
 		return_e(LS_E_NULL);
 	}
+#endif
 
 #if (LS_PTHREADS)
 	if (pthread_mutex_init(&mutex->lock, NULL) != 0) {
@@ -85,10 +86,11 @@ ls_mutex_init(ls_mutex_t *const mutex) {
 
 ls_result_t
 ls_mutex_clear(ls_mutex_t *const mutex) {
+#if (LS_SANITY)
 	if (mutex == NULL) {
-		ls_debug("NULL encountered.");
 		return_e(LS_E_NULL);
 	}
+#endif
 
 #if (LS_PTHREADS)
 	if (pthread_mutex_destroy(&mutex->lock) != 0) {
@@ -113,19 +115,22 @@ ls_mutex_clear(ls_mutex_t *const mutex) {
 
 ls_result_t
 ls_mutex_lock(CONST_WTHREADS ls_mutex_t *const mutex) {
+#if (LS_SANITY)
 	if (mutex == NULL) {
-		ls_debug("NULL encountered.");
 		return_e(LS_E_NULL);
 	}
+#endif
 
 #if (LS_PTHREADS)
 	if (pthread_mutex_lock(&mutex->lock) != 0) {
 		return_e(LS_E_FAILURE);
 	}
 #elif (LS_WTHREADS)
+#	if (LS_SANITY)
 	if (mutex->lock == NULL) {
 		return_e(LS_E_UNINITIALIZED);
 	}
+#	endif
 
 	return __WaitForSingleObject(mutex, INFINITE);
 #else
@@ -138,18 +143,19 @@ ls_mutex_lock(CONST_WTHREADS ls_mutex_t *const mutex) {
 
 ls_result_t
 ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec timeout) {
-#if (!LS_WTHREADS)
+#if (LS_SANITY)
+#	if (!LS_WTHREADS)
 	// WTHREADS already checks these in ls_timedlock_millis
 
 	if (mutex == NULL) {
-		ls_debug("NULL encountered.");
 		return_e(LS_E_NULL);
 	}
-#endif
+#	endif
 
 	if (timeout.tv_sec == 0 && timeout.tv_nsec == 0) {
 		return_e(LS_E_INVALID);
 	}
+#endif
 
 #if (LS_PTHREADS)
 	if (pthread_mutex_timedlock(&mutex->lock, &timeout) != 0) {
@@ -172,6 +178,7 @@ ls_mutex_timedlock(CONST_WTHREADS ls_mutex_t *const mutex, const struct timespec
 
 ls_result_t
 ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const uint64_t timeout) {
+#if (LS_SANITY)
 	if (mutex == NULL) {
 		ls_debug("NULL encountered.");
 		return_e(LS_E_NULL);
@@ -180,6 +187,7 @@ ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const uint64_t
 	if (timeout == 0) {
 		return_e(LS_E_INVALID);
 	}
+#endif
 
 #if (LS_PTHREADS)
 	struct timespec ts = { 0 };
@@ -191,6 +199,7 @@ ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const uint64_t
 		return_e(LS_E_FAILURE);
 	}
 #elif (LS_WTHREADS)
+#	if (LS_SANITY)
 	if (mutex->lock == NULL) {
 		return_e(LS_E_UNINITIALIZED);
 	}
@@ -198,6 +207,7 @@ ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const uint64_t
 	if (timeout >= MAXDWORD) {
 		return_e(LS_E_SIZE);
 	}
+#	endif
 
 	return __WaitForSingleObject(mutex, (const DWORD)timeout);
 #else
@@ -212,19 +222,22 @@ ls_mutex_timedlock_millis(CONST_WTHREADS ls_mutex_t *const mutex, const uint64_t
 
 ls_result_t
 ls_mutex_unlock(CONST_WTHREADS ls_mutex_t *const mutex) {
+#if (LS_SANITY)
 	if (mutex == NULL) {
-		ls_debug("NULL encountered.");
 		return_e(LS_E_NULL);
 	}
+#endif
 
 #if (LS_PTHREADS)
 	if (pthread_mutex_unlock(&mutex->lock) != 0) {
 		return_e(LS_E_FAILURE);
 	}
 #elif (LS_WTHREADS)
+#	if (LS_SANITY)
 	if (mutex->lock == NULL) {
 		return_e(LS_E_UNINITIALIZED);
 	}
+#	endif
 
 	if (ReleaseMutex(mutex->lock) == 0) {
 		return_e(LS_E_FAILURE);

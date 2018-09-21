@@ -64,6 +64,9 @@
 #	include "./setup/fileid.h"
 #	include "./setup/magic.h"
 #	include "./setup/bitops.h"
+#	ifndef LS_SANITY
+#		define LS_SANITY					LS_DEBUG
+#	endif
 #endif
 
 

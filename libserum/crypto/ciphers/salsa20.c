@@ -66,6 +66,7 @@ ls_salsa20_init(ls_salsa20_t *const restrict context, const uint8_t *const restr
 
 ls_result_t
 ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const restrict key, const size_t key_size) {
+#if (LS_SANITY)
 	if (context == NULL || key == NULL) {
 		return_e(LS_E_NULL);
 	}
@@ -73,6 +74,7 @@ ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const rest
 	if (key_size != LS_SALSA20_256 && key_size != LS_SALSA20_128) {
 		return_e(LS_E_SIZE);
 	}
+#endif
 
 
 	const uint32_t *key32 = (const uint32_t *)key;
@@ -107,6 +109,7 @@ ls_salsa20_rekey(ls_salsa20_t *const restrict context, const uint8_t *const rest
 
 ls_result_t
 ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint8_t *const restrict nonce, const size_t nonce_size) {
+#if (LS_SANITY)
 	if (context == NULL) {
 		return_e(LS_E_NULL);
 	}
@@ -114,6 +117,7 @@ ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint8_t *const re
 	if (nonce_size != 8) {
 		return_e(LS_E_SIZE);
 	}
+#endif
 
 
 	context->layout.counter = 0;
@@ -128,6 +132,7 @@ ls_salsa20_renonce(ls_salsa20_t *const restrict context, const uint8_t *const re
 
 ls_result_t
 ls_salsa20_get_stream_block_ex(ls_salsa20_t *const restrict context, ls_salsa20_block_t block, const unsigned int rounds) {
+#if (LS_SANITY)
 	if (context == NULL || block == NULL) {
 		return_e(LS_E_NULL);
 	}
@@ -135,6 +140,7 @@ ls_salsa20_get_stream_block_ex(ls_salsa20_t *const restrict context, ls_salsa20_
 	if ((rounds & 1) != 0) {
 		return_e(LS_E_SIZE);
 	}
+#endif
 
 
 	uint32_t buffer[16];
@@ -210,9 +216,11 @@ ls_salsa20_get_stream_block(ls_salsa20_t *const restrict context, ls_salsa20_blo
 
 ls_result_t
 ls_salsa20_block_crypt(ls_salsa20_t *const restrict context, ls_salsa20_block_t block) {
+#if (LS_SANITY)
 	if (context == NULL || block == NULL) {
 		return_e(LS_E_NULL);
 	}
+#endif
 
 
 	uint32_t buffer[(LS_SALSA20_BLOCK_SIZE / sizeof(uint32_t))];

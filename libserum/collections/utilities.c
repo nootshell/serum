@@ -38,9 +38,11 @@ FILEID("Utilities for collections.");
 
 void *const
 ls_pcollection_find(ls_pcollection_t collection, const void *const find, const size_t size) {
+#if (LS_SANITY)
 	if (collection == NULL || size == 0) {
 		return NULL;
 	}
+#endif
 
 	size_t i;
 	for (i = 0; i < size; ++i) {

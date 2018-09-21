@@ -45,6 +45,7 @@ static const char fmt_ansi[] = "\033[0;36m%0*"PRIXPTR"\033[0m: \033[0;37m";
 
 ls_result_t
 ls_memory_dump_ex(const void *const src, const size_t size, const unsigned int columns, const unsigned int columnsize, FILE *const dest, const ls_bool_t ansi) {
+#if (LS_SANITY)
 	if (src == NULL || dest == NULL) {
 		return_e(LS_E_NULL);
 	}
@@ -56,6 +57,7 @@ ls_memory_dump_ex(const void *const src, const size_t size, const unsigned int c
 	if (columns < 1 || columnsize < 1) {
 		return_e(LS_E_INVALID);
 	}
+#endif
 
 
 	const uint8_t *src8 = src;
