@@ -15,6 +15,7 @@ master/
 # Include these repo files.
 !.gitignore
 !.gitattributes
+!.gitmodules
 !.editorconfig
 
 # Include these build files.
@@ -30,3 +31,6 @@ master/
 # Include these CI files.
 !.travis.yml
 !.gitlab-ci.yml
+
+# Include these submodules.
+!.make
