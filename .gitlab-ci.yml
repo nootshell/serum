@@ -47,7 +47,7 @@ prepare:
     GIT_SUBMODULE_STRATEGY: recursive
   artifacts:
     paths:
-      - submodules/make
+      - .make
       - sbin/test-*.sh
       - test/siot/*.txt
   script:
