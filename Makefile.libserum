@@ -24,16 +24,15 @@ DESTDIR = /usr/lib
 
 bin/libserum.so: CFLAGS += -DLS_EXPORTING=1
 bin/libserum.so: $(call getfiles,libserum)
-	@echo -n "=> $@";
 	@mkdir -p $(@D);
 	@$(CC) -o $@ -shared $^ -lpthread
-	@echo " (done)";
 
 
 pre-libserum:
-	@echo $(strip $(ECHO_EOL))
+	@echo -n 'Building libserum.so: ';
 
 libserum: pre-libserum bin/libserum.so
+	@echo ' done.';
 
 
 install: libserum

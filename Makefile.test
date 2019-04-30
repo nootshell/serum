@@ -1,11 +1,10 @@
 bin/test: $(call getfiles,test)
-	@echo -n "=> $@";
 	@mkdir -p $(@D);
 	@$(CC) -o $@ $^ $(shell ((test -f bin/libserum.so && realpath bin/libserum.so) || echo '-lserum'));
-	@echo " (done)";
 
 
 pre-test:
-	@echo $(strip $(ECHO_EOL))
+	@echo -n 'Building test: ';
 
 test: pre-test bin/test
+	@echo ' done.';
