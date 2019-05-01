@@ -19,6 +19,10 @@ CFLAGS_RELEASE = -O3
 # Libraries to use
 #LD_LIBS = pthread
 
+# Parallelism
+#PARALLELISM = full|friendly
+PARALLELISM = friendly
+
 
 
 
@@ -52,3 +56,9 @@ MODULES = serum.core
 #
 
 CFLAGS_PROFILE = $(CFLAGS_$(call TransformProfileName,$(PROFILE)))
+
+ifeq (full,$(PARALLELISM))
+PARALLELISM_CORES := $(shell nproc --all)
+else
+PARALLELISM_CORES := $(shell nproc --ignore=1)
+endif
