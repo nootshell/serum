@@ -54,7 +54,7 @@ static ls_bool_t __logging = false;
 #include "../registry.h"
 
 #include "../../core/memory.h"
-#include "../../data/time.h"
+#include <serum.core/clock.h>
 
 #include <inttypes.h>
 

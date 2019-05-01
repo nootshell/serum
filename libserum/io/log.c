@@ -29,7 +29,7 @@
 #include "./log.h"
 
 #include "../core/memory.h"
-#include "../data/time.h"
+#include <serum.core/clock.h>
 #include "../runtime/concurrency/thread.h"
 
 #include <string.h>
