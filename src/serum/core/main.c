@@ -28,14 +28,6 @@
 
 #include "./setup.h"
 
-#include "../io/log.h"
-#include "../runtime/concurrency/mutex.h"
-#include "../runtime/concurrency/state.h"
-#include "../runtime/concurrency/thread.h"
-#include "../runtime/event.h"
-
-#include "../crypto/__selftests/base.h"
-
 #include <stdio.h>
 #include <inttypes.h>
 
