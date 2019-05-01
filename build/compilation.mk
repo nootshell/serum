@@ -1,11 +1,12 @@
-BUILD_OBJ = $(CC) $(CFLAGS) $(CFLAGS_PROFILE) -c '$^' -o '$(call TransformObjectName,$@)'
+OBJ_FILE = $(call TransformObjectName,$@)
+BUILD_OBJ = $(CC) $(CFLAGS) $(CFLAGS_PROFILE) -c '$^' -o '$(OBJ_FILE)'
 BUILD_SO = $(LD) -o '$(call TransformSharedObjectName,$@)' -shared $(foreach obj,$^,'$(call TransformObjectName,$(obj))') $(foreach lib,$(LD_LIBS),-l$(lib))
 
 
 
 
 obj/%.o: %.c
-	@mkdir -p obj/;
+	@test ! -L '$@' && ln -s '$(shell mkdir -p '$(@D)' && touch '$(OBJ_FILE)' && realpath '$(OBJ_FILE)')' '$@';
 ifeq (simple,$(OUTPUT_MODE))
 	@$(BUILD_OBJ)
 	@echo "$^";
