@@ -8,8 +8,8 @@ BUILD_SO = $(LD) -o '$(call TransformSharedObjectName,$@)' -shared $(foreach obj
 obj/%.o: %.c
 	@test ! -L '$@' && ln -s '$(shell mkdir -p '$(@D)' && touch '$(OBJ_FILE)' && realpath '$(OBJ_FILE)')' '$@';
 ifeq (simple,$(OUTPUT_MODE))
-	@$(BUILD_OBJ)
 	@echo "$^";
+	@$(BUILD_OBJ)
 else ifeq (char,$(OUTPUT_MODE))
 	@$(BUILD_OBJ)
 	@echo -n "$(OUTPUT_CHAR)";
