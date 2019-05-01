@@ -1,2 +1,2 @@
 serum.core: $(call GetModuleObjects,.c,$@)
-	$(BUILD_SO)
+	$(call BuildSharedObject,$(call GetModuleObjects,.c,$@))

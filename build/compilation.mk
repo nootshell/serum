@@ -1,6 +1,6 @@
 OBJ_FILE = $(call TransformObjectName,$@)
-BUILD_OBJ = $(CC) $(CFLAGS) $(CFLAGS_PROFILE) -c '$^' -o '$(OBJ_FILE)'
-BUILD_SO = $(LD) -o '$(call TransformSharedObjectName,$@)' -shared $(foreach obj,$^,'$(call TransformObjectName,$(obj))') $(foreach lib,$(LD_LIBS),-l$(lib))
+BuildObject = $(CC) $(CFLAGS) $(CFLAGS_PROFILE) -c '$1' -o '$(OBJ_FILE)'
+BuildSharedObject = $(LD) -o '$(call TransformSharedObjectName,$@)' -shared $(foreach obj,$1,'$(call TransformObjectName,$(obj))') $(foreach lib,$(LD_LIBS),-l$(lib))
 
 
 
@@ -9,12 +9,12 @@ obj/%.o: %.c
 	@test ! -L '$@' && ln -s '$(shell mkdir -p '$(@D)' && touch '$(OBJ_FILE)' && realpath '$(OBJ_FILE)')' '$@';
 ifeq (simple,$(OUTPUT_MODE))
 	@echo "$^";
-	@$(BUILD_OBJ)
+	@$(call BuildObject,$^)
 else ifeq (char,$(OUTPUT_MODE))
-	@$(BUILD_OBJ)
+	@$(call BuildObject,$^)
 	@echo -n "$(OUTPUT_CHAR)";
 else ifeq (silent,$(OUTPUT_MODE))
-	@$(BUILD_OBJ)
+	@$(call BuildObject,$^)
 else
-	$(BUILD_OBJ)
+	$(call BuildObject,$^)
 endif
