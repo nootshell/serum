@@ -1,26 +1,23 @@
 #
-# Compiler/linker selection
+# Compiler/linker setup
 #
 
 CC = gcc
 LD = gcc
 
-
-
-
-#
-# Define C flags
-#
-
-# Global flags
+# Global C flags
 CFLAGS = \
 	-fPIC -Wall \
 	-Isrc \
-	-DLS_EXPORTING=1
+	-DLS_EXPORTING=1 \
+	-DTIMESTAMP='"$(TIMESTAMP)"'
 
-# Profile-specific flags
+# Profile-specific C flags
 CFLAGS_DEBUG = -g -DDEBUG=1
 CFLAGS_RELEASE = -O3
+
+# Libraries to use
+#LD_LIBS = pthread
 
 
 
@@ -29,11 +26,11 @@ CFLAGS_RELEASE = -O3
 # Choose an output mode
 #
 
-#OUTPUT_MODE = raw
+OUTPUT_MODE = raw
 
 #OUTPUT_MODE = simple
 
-OUTPUT_MODE = silent
+#OUTPUT_MODE = silent
 
 #OUTPUT_MODE = char
 #OUTPUT_CHAR = .
