@@ -1,36 +1,21 @@
-# Exclude all files.
+# Exclude all files
 *
 !*/
 
-# Exclude ignore/ and master/.
-ignore/
-master/
+# Build system exceptions
+!*.mk
 
-# Include files with these extensions.
+# Source file exceptions
 !*.c
 !*.h
+
+# Misc. repo file exceptions
 !*.sh
 !*.md
-
-# Include these repo files.
 !.gitignore
 !.gitattributes
 !.gitmodules
 !.editorconfig
-
-# Include these build files.
 !Doxyfile
-!Makefile
-!Makefile.*
-!Dockerfile
-
-# Include these project files.
-!serum.creator
-!serum.files
-
-# Include these CI files.
 !.travis.yml
 !.gitlab-ci.yml
-
-# Include these submodules.
-!.make
