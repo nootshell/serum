@@ -17,5 +17,5 @@
 !.gitmodules
 !.editorconfig
 !Doxyfile
-!.travis.yml
-!.gitlab-ci.yml
+!.travis.yml*
+!.gitlab-ci.yml*
