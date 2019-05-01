@@ -46,7 +46,7 @@ OUTPUT_MODE = raw
 # Define modules to build
 #
 
-MODULES = serum.core
+MODULES = serum.core serum.crypto
 
 
 

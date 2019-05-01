@@ -29,12 +29,9 @@
 #include "./registry.h"
 
 #include "./hashing/md5.h"
-#include "./__selftests/hashing/md5.h"
 #include "./hashing/ripemd160.h"
-#include "./__selftests/hashing/ripemd160.h"
 
 #include "./ciphers/salsa20.h"
-#include "./__selftests/ciphers/salsa20.h"
 
 
 
@@ -45,7 +42,6 @@ const struct lsreg_crypto __crypto_registry[] = {
 
 	{
 		.meta = {
-			.selftest = lscst_hashing_md5,
 			.context_size = sizeof(struct ls_md5),
 			.flags = (LSREG_HASH),
 			.name = "MD5",
@@ -63,7 +59,6 @@ const struct lsreg_crypto __crypto_registry[] = {
 
 	{
 		.meta = {
-			.selftest = lscst_hashing_ripemd160,
 			.context_size = sizeof(struct ls_ripemd160),
 			.flags = (LSREG_HASH),
 			.name = "RIPEMD-160",
@@ -81,7 +76,6 @@ const struct lsreg_crypto __crypto_registry[] = {
 
 	{
 		.meta = {
-			.selftest = lscst_ciphers_salsa20,
 			.context_size = sizeof(union ls_salsa20),
 			.flags = (LSREG_CIPHER | LS_CIPHER_STREAMABLE),
 			.name = "Salsa20",
