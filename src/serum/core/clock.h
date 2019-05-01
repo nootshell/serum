@@ -32,7 +32,7 @@
 
 
 
-#include "../core/setup.h"
+#include "./setup.h"
 #include <time.h>
 
 
