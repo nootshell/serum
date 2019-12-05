@@ -1,34 +1,22 @@
-# Decent git implementations will support this flawlessly.
+# Exclude all files
 *
 !*/
+
+# Build system exceptions
+!*.mk
+
+# Source file exceptions
 !*.c
 !*.h
-!*.cbp
-!*.workspace
+
+# Repo file exceptions
 !.gitignore
 !.gitattributes
 !.editorconfig
-!*.sh
+
+# Documentation file exceptions
 !*.md
-!*.kdev4
+!Doxyfile
 
-# Visual Studio on the other hand, doesn't give a shit.
-bin
-obj
-.suo
-*.suo
-*.filters
-*.user
-*.sdf
-*.dll
-*.exp
-*.ilk
-*.tlog
-*.obj
-*.log
-*.idb
-*.pdb
-distro
-
-ignore
-*.ignore
+# Explicitly ignore
+.scavenge
