@@ -12,11 +12,15 @@
 # Repo file exceptions
 !.gitignore
 !.gitattributes
+!.gitmodules
 !.editorconfig
 
 # Documentation file exceptions
 !*.md
 !Doxyfile
+
+# Modules
+!build/makeframe
 
 # Explicitly ignore
 .scavenge
