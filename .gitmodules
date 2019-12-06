@@ -1,0 +1,4 @@
+[submodule "build/makeframe"]
+	path = build/makeframe
+	url = https://github.com/icecubetray/makeframe.git
+	branch = master
