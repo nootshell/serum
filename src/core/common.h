@@ -9,7 +9,9 @@
 #include <stdlib.h>
 
 /* Default serum/core includes. */
+#include "./sanity.h"
 #include "./macro.h"
+#include "./platform.h"
 
 
 
