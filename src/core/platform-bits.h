@@ -1,5 +1,5 @@
-#ifndef __SERUM_CORE_BITS_H
-#define __SERUM_CORE_BITS_H
+#ifndef __SERUM_CORE_PLATFORM_BITS_H
+#define __SERUM_CORE_PLATFORM_BITS_H
 
 #ifndef __SERUM_CORE_PLATFORM_H
 #	error Expecting to be included from serum/core/platform.h, which was not detected.
