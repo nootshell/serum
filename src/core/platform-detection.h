@@ -8,6 +8,14 @@
 
 
 
+#include <limits.h>
+#if (CHAR_BIT != 8)
+#	error CHAR_BIT not 8.
+#endif
+
+
+
+
 #define SERUM_ID_UNKNOWN					0
 
 #define SERUM_ID_LINUX						0x11
