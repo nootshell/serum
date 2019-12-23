@@ -1,9 +1,13 @@
 #!/usr/bin/env -S make -f
 
+CC = gcc
+LD = gcc
+
 PROJECT_NAME = serum
 PROJECT_SOURCE = ./src
 PROJECT_DIST = ./dist
-CFLAGS_EXTRA = -fno-diagnostics-show-caret
+
+CFLAGS_EXTRA = -fno-diagnostics-show-caret -DSERUM_BUILD_MUTE=1
 
 DEFAULT_TARGET = libserum
 
