@@ -18,7 +18,7 @@
 
 #define SERUM_RETERRNOIFEXPR(__expr, __ret, __errno)	\
 	if ((__expr)) {										\
-		*errno = (__errno);								\
+		errno = (__errno);								\
 		return (__ret);									\
 	}
 
