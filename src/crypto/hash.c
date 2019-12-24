@@ -8,13 +8,17 @@
 /* Temporary substitution for upcoming in-section registration. */
 
 const static struct serum_hash_info __hash_register[] = {
-	{
+	/* MD5 */ {
 		.f_init = (serum_interface_hash_init)serum_md5_init,
 		.f_clear = (serum_interface_hash_clear)serum_md5_clear,
 		.f_update = (serum_interface_hash_update)serum_md5_update,
 		.f_finish = (serum_interface_hash_finish)serum_md5_finish,
 
 		.identifier = SERUM_MD5,
+
+		.block_size = SERUM_MD5_BLOCK_SIZE,
+		.digest_size = SERUM_MD5_DIGEST_SIZE,
+		.context_size = sizeof(struct serum_md5_context),
 
 		.name = "MD5"
 	}

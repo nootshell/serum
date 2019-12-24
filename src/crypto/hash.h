@@ -87,6 +87,9 @@ struct serum_hash_info {
 	serum_interface_hash_finish f_finish;
 
 	unsigned int identifier;
+	unsigned int block_size;
+	unsigned int digest_size;
+	unsigned int context_size;
 
 	char name[16];
 };
