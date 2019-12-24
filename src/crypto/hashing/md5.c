@@ -9,7 +9,9 @@
 
 unsigned int
 serum_md5_init(struct serum_md5_context *const ctx) {
-	SERUM_CHECK_NULLPTR(ctx);
+	SERUM_SANITY_AREA(
+		SERUM_CHECK_NULLPTR(ctx);
+	);
 
 	/* Set initial MD5 state. */
 	ctx->state[0] = 0x67452301U;
@@ -23,7 +25,9 @@ serum_md5_init(struct serum_md5_context *const ctx) {
 
 unsigned int
 serum_md5_clear(struct serum_md5_context *const ctx) {
-	SERUM_CHECK_NULLPTR(ctx);
+	SERUM_SANITY_AREA(
+		SERUM_CHECK_NULLPTR(ctx);
+	);
 
 	// TODO: make hash clearing erase-optional
 	serum_erase(ctx, sizeof(*ctx));
@@ -42,8 +46,10 @@ serum_md5_clear(struct serum_md5_context *const ctx) {
 
 unsigned int
 serum_md5_update(struct serum_md5_context *const SATTR_RESTRICT ctx, const void *const SATTR_RESTRICT block) {
-	SERUM_CHECK_NULLPTR(ctx);
-	SERUM_CHECK_NULLPTR(block);
+	SERUM_SANITY_AREA(
+		SERUM_CHECK_NULLPTR(ctx);
+		SERUM_CHECK_NULLPTR(block);
+	);
 
 
 	register uint32_t a, b, c, d;
@@ -161,13 +167,15 @@ serum_md5_update(struct serum_md5_context *const SATTR_RESTRICT ctx, const void 
 
 unsigned int
 serum_md5_finish(struct serum_md5_context *const SATTR_RESTRICT ctx, unsigned char *const SATTR_RESTRICT digest, const void *const SATTR_RESTRICT block, const unsigned int remain, const unsigned long long int total_bytes) {
-	SERUM_CHECK_NULLPTR(ctx);
-	SERUM_CHECK_NULLPTR(digest);
+	SERUM_SANITY_AREA(
+		SERUM_CHECK_NULLPTR(ctx);
+		SERUM_CHECK_NULLPTR(digest);
 
-	SERUM_CHECK_RANGE(remain, 0, 63);
-	if (remain > 0) {
-		SERUM_CHECK_NULLPTR(block);
-	}
+		SERUM_CHECK_RANGE(remain, 0, 63);
+		if (remain > 0) {
+			SERUM_CHECK_NULLPTR(block);
+		}
+	);
 
 
 	/* Prepare buffer with remaining data and pad it. */

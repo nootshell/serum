@@ -17,6 +17,11 @@
 
 
 
+#define SERUM_SANITY_AREA(__x__)			__x__
+
+
+
+
 #define SERUM_RETERRNOIFEXPR(__expr, __ret, __errno)	\
 	if ((__expr)) {										\
 		errno = (__errno);								\
