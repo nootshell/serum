@@ -7,7 +7,7 @@
 
 /* Temporary substitution for upcoming in-section registration. */
 
-struct serum_hash {
+struct serum_hash_regentry {
 	serum_interface_hash_init f_init;
 	serum_interface_hash_clear f_clear;
 	serum_interface_hash_update f_update;
@@ -18,7 +18,7 @@ struct serum_hash {
 	char name[16];
 };
 
-const static struct serum_hash __hash_register[] = {
+const static struct serum_hash_regentry __hash_register[] = {
 	{
 		.f_init = (serum_interface_hash_init)serum_md5_init,
 		.f_clear = (serum_interface_hash_clear)serum_md5_clear,
@@ -44,7 +44,7 @@ serum_hash_getimpl(const unsigned int identifier, serum_interface_hash_init *con
 	);
 
 	unsigned int register i;
-	const struct serum_hash *a;
+	const struct serum_hash_regentry *a;
 	for (i = (sizeof(__hash_register) / sizeof(*__hash_register)); i--;) {
 		a = &__hash_register[i];
 
