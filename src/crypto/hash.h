@@ -80,4 +80,17 @@ typedef unsigned int (*serum_interface_hash_finish)(
 
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+unsigned int serum_hash_getimpl(const unsigned int identifier, serum_interface_hash_init *const out_init, serum_interface_hash_clear *const out_clear, serum_interface_hash_update *const out_update, serum_interface_hash_finish *const out_finish);
+
+#ifdef __cplusplus
+}
+#endif
+
+
+
+
 #endif
