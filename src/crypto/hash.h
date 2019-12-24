@@ -18,7 +18,9 @@
  *		`#SERUM_NULLPTR` if \p context is `NULL` \n
  *		`#SERUM_OK` otherwise.
  */
-typedef unsigned int (*serum_interface_hash_init)(void *);
+typedef unsigned int (*serum_interface_hash_init)(
+	void *const context
+);
 
 
 /*!
@@ -30,7 +32,9 @@ typedef unsigned int (*serum_interface_hash_init)(void *);
  *		`#SERUM_NULLPTR` if \p context is `NULL` \n
  *		`#SERUM_OK` otherwise.
  */
-typedef unsigned int (*serum_interface_hash_clear)(void *);
+typedef unsigned int (*serum_interface_hash_clear)(
+	void *const context
+);
 
 
 /*!
