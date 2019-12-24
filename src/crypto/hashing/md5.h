@@ -9,8 +9,9 @@
 
 
 
-#define SERUM_MD5_BLOCK_SIZE				64	/*!< \hideinitializer \brief MD5 block size, in bytes. */
-#define SERUM_MD5_DIGEST_SIZE				16	/*!< \hideinitializer \brief MD5 digest size, in bytes. */
+#define SERUM_MD5							0xA1	/*!< \hideinitializer \brief MD5 algorithm identifier. */
+#define SERUM_MD5_BLOCK_SIZE				64		/*!< \hideinitializer \brief MD5 block size, in bytes. */
+#define SERUM_MD5_DIGEST_SIZE				16		/*!< \hideinitializer \brief MD5 digest size, in bytes. */
 
 
 
