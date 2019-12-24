@@ -23,7 +23,7 @@
 #	endif
 #	define SPF_INCLUDE_AVAIL(x)				SPF_INCLUDE_AVAIL_DEFAULT
 #	define SERUM_NO_INCLUDE_AVAIL			1
-	SERUM_COMPILER_WARN_FEATURE("macro to check for include file availability");
+	SERUM_COMPILER_WARN_FEATURE("macro to check for include file availability")
 #endif
 
 #if (!defined(SPF_BUILTIN_AVAIL))
@@ -32,49 +32,49 @@
 #	endif
 #	define SPF_BUILTIN_AVAIL(x)				SPF_BUILTIN_AVAIL_DEFAULT
 #	define SERUM_NO_BUILTIN_AVAIL			1
-	SERUM_COMPILER_WARN_FEATURE("macro to check for builtin availability");
+	SERUM_COMPILER_WARN_FEATURE("macro to check for builtin availability")
 #endif
 
 #if (!defined(SATTR_THREADLOCAL))
 #	define SATTR_THREADLOCAL
 #	define SERUM_NO_ATTR_THREAD				1
-	SERUM_COMPILER_WARN_FEATURE("attribute for thread-local storage");
+	SERUM_COMPILER_WARN_FEATURE("attribute for thread-local storage")
 #endif
 
 #if (!defined(SATTR_USED))
 #	define SATTR_USED
 #	define SERUM_NO_ATTR_USED				1
-	SERUM_COMPILER_WARN_FEATURE("attribute for marking a variable or function as used");
+	SERUM_COMPILER_WARN_FEATURE("attribute for marking a variable or function as used")
 #endif
 
 #if (!defined(SATTR_CONSTRUCTOR))
 #	define SATTR_CONSTRUCTOR
 #	define SERUM_NO_ATTR_CONSTRUCTOR		1
-	SERUM_COMPILER_WARN_FEATURE("attribute for marking a function as constructor");
+	SERUM_COMPILER_WARN_FEATURE("attribute for marking a function as constructor")
 #endif
 
 #if (!defined(SATTR_DESTRUCTOR))
 #	define SATTR_DESTRUCTOR
 #	define SERUM_NO_ATTR_DESTRUCTOR			1
-	SERUM_COMPILER_WARN_FEATURE("attribute for marking a function as destructor");
+	SERUM_COMPILER_WARN_FEATURE("attribute for marking a function as destructor")
 #endif
 
 #if (!defined(SATTR_INLINE))
 #	define SATTR_INLINE
 #	define SERUM_NO_ATTR_INLINE				1
-	SERUM_COMPILER_WARN_FEATURE("attribute for function inlining");
+	SERUM_COMPILER_WARN_FEATURE("attribute for function inlining")
 #endif
 
 #if (!defined(SATTR_NONNULL))
 #	define SATTR_NONNULL(params)
 #	define SERUM_NO_ATTR_NONNULL			1
-	SERUM_COMPILER_WARN_FEATURE("attribute for non-null pointers");
+	SERUM_COMPILER_WARN_FEATURE("attribute for non-null pointers")
 #endif
 
 #if (!defined(SATTR_RESTRICT))
 #	define SATTR_RESTRICT
 #	define SERUM_NO_RESTRICT				1
-	SERUM_COMPILER_WARN_FEATURE("keyword for restricted pointers");
+	SERUM_COMPILER_WARN_FEATURE("keyword for restricted pointers")
 #endif
 
 #if (!defined(SERUM_COMPILER_PUSH) || !defined(SERUM_COMPILER_POP) || !defined(SERUM_COMPILER_PEDANTIC))
