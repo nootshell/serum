@@ -46,7 +46,7 @@ serum_hash_getinfo(const unsigned int identifier, struct serum_hash_info *const 
 		return SERUM_OK;
 	}
 
-	return SERUM_ALGORITHM;
+	return SERUM_EALGORITHM;
 }
 
 

@@ -10,10 +10,10 @@
 
 
 #define SERUM_OK							0
-#define SERUM_SYSCALL						1	/*!< \hideinitializer \brief Returned when errno describes the error perfectly fine. */
-#define SERUM_NULLPTR						2	/*!< \hideinitializer \brief Nullpointer encountered where NULL was not expected. */
-#define SERUM_RANGE							3	/*!< \hideinitializer \brief Value is out of the expected range. */
-#define SERUM_ALGORITHM						4	/*!< \hideinitializer \brief Algorithm error. */
+#define SERUM_ESYSTEM						1	/*!< \hideinitializer \brief Returned when a call to a system function failed, errno should be untouched. */
+#define SERUM_ENULLPTR						2	/*!< \hideinitializer \brief Nullpointer encountered where NULL was not expected. */
+#define SERUM_ERANGE						3	/*!< \hideinitializer \brief Value is out of the expected range. */
+#define SERUM_EALGORITHM					4	/*!< \hideinitializer \brief Algorithm error. */
 
 
 
@@ -26,14 +26,16 @@
 #define SERUM_SANITY_AREA(__x__)			__x__
 
 
-#define SERUM_RETERRNOIFEXPR(__expr, __ret, __errno)	\
-	if ((__expr)) {										\
-		errno = (__errno);								\
-		return (__ret);									\
+#define SERUM_RETERRNOIFEXPR(__expr, __ret, __errno)		\
+	if ((__expr)) {											\
+		if ((__errno) != 0 && (__ret) != SERUM_ESYSTEM) {	\
+			errno = (__errno);								\
+		}													\
+		return (__ret);										\
 	}
 
-#define SERUM_CHECK_NULLPTR(__ptr)			SERUM_RETERRNOIFEXPR(((__ptr) == NULL), SERUM_NULLPTR, ENOMSG)
-#define SERUM_CHECK_RANGE(__val, _lb, _ub)	SERUM_RETERRNOIFEXPR(( ( (__val) < (_lb) ) || ( (__val) > (_ub) ) ), SERUM_RANGE, ENOMSG);
+#define SERUM_CHECK_NULLPTR(__ptr)			SERUM_RETERRNOIFEXPR(((__ptr) == NULL), SERUM_ENULLPTR, 0)
+#define SERUM_CHECK_RANGE(__val, _lb, _ub)	SERUM_RETERRNOIFEXPR(( ( (__val) < (_lb) ) || ( (__val) > (_ub) ) ), SERUM_ERANGE, 0)
 
 
 
