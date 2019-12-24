@@ -7,7 +7,7 @@ PROJECT_NAME = serum
 PROJECT_SOURCE = ./src
 PROJECT_DIST = ./dist
 
-CFLAGS_EXTRA = -DSERUM_BUILD_MUTE=1 -Wpedantic
+CFLAGS_EXTRA = -DSERUM_BUILD_MUTE=1 -Wpedantic -Werror=all
 
 DEFAULT_TARGET = libserum
 
