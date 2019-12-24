@@ -77,6 +77,10 @@
 	SERUM_COMPILER_WARN_FEATURE("keyword for restricted pointers");
 #endif
 
+#if (!defined(SERUM_COMPILER_PUSH) || !defined(SERUM_COMPILER_POP) || !defined(SERUM_COMPILER_PEDANTIC))
+#	error Missing SERUM_COMPILER_PUSH, SERUM_COMPILER_POP, SERUM_COMPILER_PEDANTIC (unable to reliably perform compile-time assertions). Aborting.
+#endif
+
 
 
 

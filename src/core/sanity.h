@@ -18,9 +18,12 @@
 
 
 
+#define SERUM_ASSERT(__name, __expr)		extern int __name[(!!(__expr))]
+
+
+
+
 #define SERUM_SANITY_AREA(__x__)			__x__
-
-
 
 
 #define SERUM_RETERRNOIFEXPR(__expr, __ret, __errno)	\
@@ -31,6 +34,11 @@
 
 #define SERUM_CHECK_NULLPTR(__ptr)			SERUM_RETERRNOIFEXPR(((__ptr) == NULL), SERUM_NULLPTR, ENOMSG)
 #define SERUM_CHECK_RANGE(__val, _lb, _ub)	SERUM_RETERRNOIFEXPR(( ( (__val) < (_lb) ) || ( (__val) > (_ub) ) ), SERUM_RANGE, ENOMSG);
+
+
+
+
+#include "./sanity-compiletime.h"
 
 
 

@@ -17,6 +17,9 @@
 #	define SATTR_RESTRICT					__restrict
 
 #	define SERUM_COMPILER_MESG(msg)			__pragma(message(msg))
+//#	define SERUM_COMPILER_PUSH				__pragma()
+//#	define SERUM_COMPILER_POP				__pragma()
+//#	define SERUM_COMPILER_PEDANTIC			__pragma()
 
 #	define NO_MIN_MAX	/* Ensure the glorious Windows SDK doesn't reserve 'min' and 'max'. */
 #	define WIN32_LEAN_AND_MEAN
@@ -35,6 +38,9 @@
 #	define SATTR_RESTRICT					restrict
 
 #	define SERUM_COMPILER_MESG(msg)			_Pragma(SERUM_STRINGIFY(message msg))
+#	define SERUM_COMPILER_PUSH				_Pragma("GCC diagnostic push")
+#	define SERUM_COMPILER_POP				_Pragma("GCC diagnostic pop")
+#	define SERUM_COMPILER_PEDANTIC			_Pragma("GCC diagnostic error \"-Wpedantic\"")
 #endif
 
 
