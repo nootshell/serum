@@ -72,9 +72,9 @@ typedef unsigned int (*serum_interface_hash_update)(
 typedef unsigned int (*serum_interface_hash_finish)(
 	void *const SATTR_RESTRICT context,
 	unsigned char *const SATTR_RESTRICT digest,
-	void *const SATTR_RESTRICT block,
-	unsigned int block_remain,
-	unsigned long long int total_bytes
+	const void *const SATTR_RESTRICT block,
+	const unsigned int block_remain,
+	const unsigned long long int total_bytes
 );
 
 
