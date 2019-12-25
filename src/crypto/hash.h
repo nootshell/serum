@@ -101,8 +101,8 @@ struct serum_hash {
 
 	unsigned int context[16]; 		/*!< \brief Space reserved for a hash context. */
 
-	unsigned int buffer_fill;		/*!< \brief */
-	unsigned char buffer[512];		/*!< \brief */
+	unsigned int buffer_fill;		/*!< \brief Number of bytes to currently held in the buffer. */
+	unsigned char buffer[512];		/*!< \brief Buffer to retain data until a full block can be formed. */
 };
 
 
