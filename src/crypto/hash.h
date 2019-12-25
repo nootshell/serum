@@ -97,6 +97,7 @@ struct serum_hash_info {
 
 struct serum_hash {
 	struct serum_hash_info info;	/*!< \brief Structure containing algorithm information. */
+	unsigned long long int length;	/*!< \brief Total length of the message, in bytes. */
 
 	unsigned int context[16]; 		/*!< \brief Space reserved for a hash context. */
 
@@ -117,6 +118,7 @@ unsigned int serum_hash_getimpl(const unsigned int identifier, serum_interface_h
 unsigned int serum_hash_init(struct serum_hash *const ctx, const unsigned int identifier);
 unsigned int serum_hash_clear(struct serum_hash *const ctx);
 unsigned int serum_hash_update(struct serum_hash *const SATTR_RESTRICT ctx, const void *const SATTR_RESTRICT data, const size_t data_length);
+unsigned int serum_hash_finish(struct serum_hash *const SATTR_RESTRICT ctx, unsigned char *const SATTR_RESTRICT digest);
 
 #ifdef __cplusplus
 }

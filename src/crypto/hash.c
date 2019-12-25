@@ -158,6 +158,10 @@ serum_hash_update(struct serum_hash *const SATTR_RESTRICT ctx, const void *const
 	);
 
 
+	/* Update total message length. */
+	ctx->length += data_length;
+
+
 	/* Pre-dereference. */
 	const unsigned int block_size = ctx->info.block_size;
 	const unsigned int buffer_fill = ctx->buffer_fill;
@@ -217,6 +221,24 @@ serum_hash_update(struct serum_hash *const SATTR_RESTRICT ctx, const void *const
 		ctx->buffer_fill = length;
 	}
 
+
+	return SERUM_OK;
+}
+
+
+
+
+unsigned int
+serum_hash_finish(struct serum_hash *const SATTR_RESTRICT ctx, unsigned char *const SATTR_RESTRICT digest) {
+	SERUM_SANITY_AREA(
+		SERUM_CHECK_NULLPTR(ctx);
+		SERUM_CHECK_NULLPTR(digest);
+	);
+
+	const unsigned int res = ctx->info.f_finish(ctx->context, digest, ctx->buffer, ctx->buffer_fill, ctx->length);
+	if (res != SERUM_OK) {
+		return res;
+	}
 
 	return SERUM_OK;
 }
