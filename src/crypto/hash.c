@@ -2,6 +2,7 @@
 
 #include "../core/memory.h"
 
+#include "./hashing/debug.h"
 #include "./hashing/md5.h"
 
 
@@ -15,6 +16,20 @@ static unsigned int __runtime_checks = 1;
 /* Temporary substitution for upcoming in-section registration. */
 
 const static struct serum_hash_info __hash_register[] = {
+	/* Debug */ {
+		.f_init = serum_hash_debug_init,
+		.f_clear = serum_hash_debug_clear,
+		.f_update = serum_hash_debug_update,
+		.f_finish = serum_hash_debug_finish,
+
+		.identifier = SERUM_HASH_DEBUG,
+
+		.block_size = SERUM_HASH_DEBUG_BLOCK_SIZE,
+		.digest_size = SERUM_HASH_DEBUG_DIGEST_SIZE,
+		.context_size = 0,
+
+		.name = "DEBUG"
+	},
 	/* MD5 */ {
 		.f_init = (serum_interface_hash_init)serum_md5_init,
 		.f_clear = (serum_interface_hash_clear)serum_md5_clear,
