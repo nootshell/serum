@@ -123,6 +123,9 @@ serum_hash_init(struct serum_hash *const ctx, const unsigned int identifier) {
 		}
 	);
 
+	ctx->length = 0;
+	ctx->buffer_fill = 0;
+
 	return ctx->info.f_init(ctx->context);
 }
 
