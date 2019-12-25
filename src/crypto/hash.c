@@ -123,9 +123,30 @@ serum_hash_init(struct serum_hash *const ctx, const unsigned int identifier) {
 		}
 	);
 
+	return serum_hash_reset(ctx);
+}
+
+
+unsigned int
+serum_hash_reset(struct serum_hash *const ctx) {
+	SERUM_SANITY_AREA(
+		SERUM_CHECK_NULLPTR(ctx);
+	);
+
+	/* Clear buffer to prevent leaking. */
+	serum_erase(ctx->buffer, sizeof(ctx->buffer));
+
+	/* Have the implementation clear itself as well, just in case it does some allocations or whatever. */
+	const unsigned int res = ctx->info.f_clear(ctx->context);
+	if (res != SERUM_OK) {
+		return res;
+	}
+
+	/* Reset size trackers. */
 	ctx->length = 0;
 	ctx->buffer_fill = 0;
 
+	/* Reinit. */
 	return ctx->info.f_init(ctx->context);
 }
 
@@ -244,7 +265,7 @@ serum_hash_finish(struct serum_hash *const SATTR_RESTRICT ctx, unsigned char *co
 		return res;
 	}
 
-	return SERUM_OK;
+	return serum_hash_reset(ctx);
 }
 
 

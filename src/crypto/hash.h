@@ -116,6 +116,7 @@ unsigned int serum_hash_getinfo(const unsigned int identifier, struct serum_hash
 unsigned int serum_hash_getimpl(const unsigned int identifier, serum_interface_hash_init *const out_init, serum_interface_hash_clear *const out_clear, serum_interface_hash_update *const out_update, serum_interface_hash_finish *const out_finish);
 
 unsigned int serum_hash_init(struct serum_hash *const ctx, const unsigned int identifier);
+unsigned int serum_hash_reset(struct serum_hash *const ctx);
 unsigned int serum_hash_clear(struct serum_hash *const ctx);
 unsigned int serum_hash_update(struct serum_hash *const SATTR_RESTRICT ctx, const void *const SATTR_RESTRICT data, const size_t data_length);
 unsigned int serum_hash_finish(struct serum_hash *const SATTR_RESTRICT ctx, unsigned char *const SATTR_RESTRICT digest);
