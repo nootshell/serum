@@ -5,6 +5,8 @@
 #include "./hashing/debug.h"
 #include "./hashing/md5.h"
 
+#include <string.h>
+
 
 
 
@@ -141,6 +143,80 @@ serum_hash_clear(struct serum_hash *const ctx) {
 	}
 
 	serum_erase(ctx, sizeof(*ctx));
+
+	return SERUM_OK;
+}
+
+
+
+
+unsigned int
+serum_hash_update(struct serum_hash *const SATTR_RESTRICT ctx, const void *const SATTR_RESTRICT data, const size_t data_length) {
+	SERUM_SANITY_AREA(
+		SERUM_CHECK_NULLPTR(ctx);
+		SERUM_CHECK_NULLPTR(data);
+	);
+
+
+	/* Pre-dereference. */
+	const unsigned int block_size = ctx->info.block_size;
+	const unsigned int buffer_fill = ctx->buffer_fill;
+
+
+	/* True length of what we need to process. */
+	unsigned int register length = (buffer_fill + data_length);
+
+	/* Check if we even need to do any updates. If not, simply append to buffer and return. */
+	if (length < block_size) {
+		if (data_length > 0) {
+			memcpy(&ctx->buffer[buffer_fill], data, data_length);
+		}
+
+		return SERUM_OK;
+	}
+
+
+	/* We're going to do work, create a local block-sized buffer. */
+	unsigned char block[block_size];
+
+	/* First block is filled hybridly from the cache and direct input data. */
+	unsigned int register data_idx = (block_size - buffer_fill);
+	memcpy(block, ctx->buffer, buffer_fill);
+	memcpy(&block[buffer_fill], data, data_idx);
+
+
+	/* Pre-dereference function pointer and context. */
+	const serum_interface_hash_update f_update = ctx->info.f_update;
+	void *const sub_context = ctx->context;
+
+	/* Process input blocks until no full blocks remain. */
+	unsigned int register result;
+	for (;;) {
+		result = f_update(sub_context, block);
+		if (result != SERUM_OK) {
+			return result;
+		}
+
+		if ((length -= block_size) >= block_size) {
+			memcpy(block, &((unsigned char *)data)[data_idx], block_size);
+			data_idx += block_size;
+		} else {
+			break;
+		}
+	}
+
+
+	/* Erase buffers to prevent leaking. */
+	serum_erase(block, sizeof(block));
+	serum_erase(ctx->buffer, sizeof(ctx->buffer));
+
+
+	/* Check if we have any data left we need to buffer for next runs. */
+	if (length > 0) {
+		memcpy(ctx->buffer, &((unsigned char *)data)[data_idx], length);
+		ctx->buffer_fill = length;
+	}
+
 
 	return SERUM_OK;
 }
