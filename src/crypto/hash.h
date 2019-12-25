@@ -95,6 +95,16 @@ struct serum_hash_info {
 };
 
 
+struct serum_hash {
+	struct serum_hash_info info;	/*!< \brief Structure containing algorithm information. */
+
+	unsigned int context[16]; 		/*!< \brief Space reserved for a hash context. */
+
+	unsigned int buffer_fill;		/*!< \brief */
+	unsigned char buffer[512];		/*!< \brief */
+};
+
+
 
 
 #ifdef __cplusplus
@@ -103,6 +113,9 @@ extern "C" {
 
 unsigned int serum_hash_getinfo(const unsigned int identifier, struct serum_hash_info *const out_info);
 unsigned int serum_hash_getimpl(const unsigned int identifier, serum_interface_hash_init *const out_init, serum_interface_hash_clear *const out_clear, serum_interface_hash_update *const out_update, serum_interface_hash_finish *const out_finish);
+
+unsigned int serum_hash_init(struct serum_hash *const ctx, const unsigned int identifier);
+unsigned int serum_hash_clear(struct serum_hash *const ctx);
 
 #ifdef __cplusplus
 }

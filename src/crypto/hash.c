@@ -1,6 +1,13 @@
 #include "./hash.h"
 
+#include "../core/memory.h"
+
 #include "./hashing/md5.h"
+
+
+
+
+static unsigned int __runtime_checks = 1;
 
 
 
@@ -69,5 +76,56 @@ serum_hash_getimpl(const unsigned int identifier, serum_interface_hash_init *con
 	*out_clear = info.f_clear;
 	*out_update = info.f_update;
 	*out_finish = info.f_finish;
+	return SERUM_OK;
+}
+
+
+
+
+unsigned int
+serum_hash_init(struct serum_hash *const ctx, const unsigned int identifier) {
+	SERUM_SANITY_AREA(
+		SERUM_CHECK_NULLPTR(ctx);
+	);
+
+	unsigned int res;
+
+	res = serum_hash_getinfo(identifier, &ctx->info);
+	if (res != SERUM_OK) {
+		return res;
+	}
+
+	SERUM_SANITY_AREA(
+		if (__runtime_checks) {
+			SERUM_CHECK_RANGE(ctx->info.context_size, 0, sizeof(ctx->context));
+			SERUM_CHECK_RANGE(ctx->info.block_size, 0, sizeof(ctx->buffer));
+			SERUM_CHECK_NULLPTR(ctx->info.f_init);
+			SERUM_CHECK_NULLPTR(ctx->info.f_clear);
+			SERUM_CHECK_NULLPTR(ctx->info.f_update);
+			SERUM_CHECK_NULLPTR(ctx->info.f_finish);
+		}
+	);
+
+	return ctx->info.f_init(ctx->context);
+}
+
+
+unsigned int
+serum_hash_clear(struct serum_hash *const ctx) {
+	SERUM_SANITY_AREA(
+		SERUM_CHECK_NULLPTR(ctx);
+
+		if (__runtime_checks) {
+			SERUM_CHECK_NULLPTR(ctx->info.f_clear);
+		}
+	);
+
+	const unsigned int res = ctx->info.f_clear(ctx->context);
+	if (res != SERUM_OK) {
+		return res;
+	}
+
+	serum_erase(ctx, sizeof(*ctx));
+
 	return SERUM_OK;
 }
