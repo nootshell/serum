@@ -35,7 +35,7 @@
 #	define SATTR_NONNULL_EX(...)			SATTR_NONNULL((__VA_ARGS__))
 #	define SATTR_PURE						SATTR(pure)
 #	define SATTR_CONST						SATTR(const)
-#	define SATTR_RESTRICT					restrict
+#	define SATTR_RESTRICT					__restrict__
 
 #	define SERUM_COMPILER_MESG(msg)			_Pragma(SERUM_STRINGIFY(message msg))
 #	define SERUM_COMPILER_PUSH				_Pragma("GCC diagnostic push")
