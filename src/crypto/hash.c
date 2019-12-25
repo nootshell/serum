@@ -174,6 +174,7 @@ serum_hash_update(struct serum_hash *const SATTR_RESTRICT ctx, const void *const
 	if (length < block_size) {
 		if (data_length > 0) {
 			memcpy(&ctx->buffer[buffer_fill], data, data_length);
+			ctx->buffer_fill += data_length;
 		}
 
 		return SERUM_OK;
