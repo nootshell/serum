@@ -9,6 +9,12 @@
 
 
 
+#define SERUM_HASH_DEBUG					0xA0	/*!< \hideinitializer \brief Debug identifier. */
+#define SERUM_MD5							0xA1	/*!< \hideinitializer \brief MD5 algorithm identifier. */
+
+
+
+
 /*!
  * \brief Initializes the context referenced by \p context.
  *

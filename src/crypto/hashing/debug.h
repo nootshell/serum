@@ -9,9 +9,8 @@
 
 
 
-#define SERUM_HASH_DEBUG					0xA0
-#define SERUM_HASH_DEBUG_BLOCK_SIZE			64
-#define SERUM_HASH_DEBUG_DIGEST_SIZE		0
+#define SERUM_HASH_DEBUG_BLOCK_SIZE			64		/*!< \hideinitializer \brief Debug block size, in bytes. */
+#define SERUM_HASH_DEBUG_DIGEST_SIZE		0		/*!< \hideinitializer \brief Debug digest size, in bytes. */
 
 
 
