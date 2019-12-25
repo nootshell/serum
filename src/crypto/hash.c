@@ -246,3 +246,32 @@ serum_hash_finish(struct serum_hash *const SATTR_RESTRICT ctx, unsigned char *co
 
 	return SERUM_OK;
 }
+
+
+
+
+unsigned int
+serum_hash(const unsigned int identifier, unsigned char *const SATTR_RESTRICT digest, const void *const SATTR_RESTRICT data, const size_t data_length) {
+	SERUM_SANITY_AREA(
+		SERUM_CHECK_NULLPTR(digest);
+		SERUM_CHECK_NULLPTR(data);
+	);
+
+	struct serum_hash lux;
+
+	unsigned int result = serum_hash_init(&lux, identifier);
+	if (result != SERUM_OK) {
+		goto __cleanup;
+	}
+
+	result = serum_hash_update(&lux, data, data_length);
+	if (result != SERUM_OK) {
+		goto __cleanup;
+	}
+
+	result = serum_hash_finish(&lux, digest);
+
+__cleanup:
+	serum_hash_clear(&lux);
+	return result;
+}

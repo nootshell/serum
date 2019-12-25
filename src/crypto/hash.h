@@ -120,6 +120,8 @@ unsigned int serum_hash_clear(struct serum_hash *const ctx);
 unsigned int serum_hash_update(struct serum_hash *const SATTR_RESTRICT ctx, const void *const SATTR_RESTRICT data, const size_t data_length);
 unsigned int serum_hash_finish(struct serum_hash *const SATTR_RESTRICT ctx, unsigned char *const SATTR_RESTRICT digest);
 
+unsigned int serum_hash(const unsigned int identifier, unsigned char *const SATTR_RESTRICT digest, const void *const SATTR_RESTRICT data, const size_t data_length);
+
 #ifdef __cplusplus
 }
 #endif
